@@ -5,6 +5,7 @@
         "spaces": 2
     },
     "indentConditionalCompilationBlocks": false,
+    "indentSwitchCaseLabels": true,
     "prioritizeKeepingFunctionOutputTogether": true,
     "rules": {
         "AlwaysUseLowerCamelCase": false,

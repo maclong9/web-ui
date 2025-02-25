@@ -9,7 +9,7 @@ struct ElementTests {
   let html = Article {
     Text(heading: .h1) { "Hello, world!" }
     Section(id: "main-content") {
-      Text(heading: .h2) { "Introduction" }
+      Text(heading: .h2, role: .heading) { "Introduction" }
       Stack(classes: ["container"]) {
         Text { "This container has one class" }
       }
@@ -33,6 +33,9 @@ struct ElementTests {
       Stack {
         Text { "Hello, world!" }
       }
+    }
+    Button {
+      Text { "Click me" }
     }
   }.render()
 
@@ -99,6 +102,23 @@ struct ElementTests {
   func testTextWithAttributesRendering() async throws {
     #expect(html.contains("<span id=\"text-id\" class=\"text-class\">Styled text.</span>"))
   }
+
+  @Test("Render article with default role")
+  func testArticleRoleRendering() async throws {
+    #expect(html.contains("<h2 role=\"heading\">"))
+  }
+
+  @Test("Render section with no default role")
+  func testSectionNoRoleRendering() async throws {
+    #expect(html.contains("<section id=\"main-content\">"))
+    #expect(!html.contains("<section id=\"main-content\" role"))
+  }
+
+  @Test("Render stack with no default role")
+  func testStackNoRoleRendering() async throws {
+    #expect(html.contains("<div class=\"container\">"))
+    #expect(!html.contains("<div class=\"container\" role"))
+  }
 }
 
 // MARK: - Flow Control Tests
@@ -125,7 +145,7 @@ struct ElementTests {
         Text { "Content Not Visible" }
       }
     }.render()
-    
+
     #expect(html.contains("<section><span>Content Not Visible</span></section>"))
   }
 
@@ -137,7 +157,7 @@ struct ElementTests {
         Text { "\(number)" }
       }
     }.render()
-    
+
     #expect(html.contains("<section><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></section>"))
   }
 }

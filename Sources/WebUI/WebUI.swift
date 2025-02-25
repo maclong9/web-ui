@@ -95,30 +95,30 @@ public struct Document {
   private func renderHeader() -> String {
     let headerVariant = headerOverride ?? configuration.layout.header  // Use override if present
     switch headerVariant {
-    case .hidden:
-      return ""
-    case .normal:
-      return """
-        <header class="header-normal">
-          <div class="logo">\(configuration.metadata.site)</div>
-          <nav>
-            <ul>
-              \(configuration.layout.navigation.map { "<li><a href='\($0.path)'>\($0.label)</a></li>" }.joined(separator: "\n"))
-            </ul>
-          </nav>
-        </header>
-        """
-    case .logoCentered:
-      return """
-        <header class="header-centered">
-          <div class="logo">\(configuration.metadata.site)</div>
-          <nav>
-            <ul>
-              \(configuration.layout.navigation.map { "<li><a href='\($0.path)'>\($0.label)</a></li>" }.joined(separator: "\n"))
-            </ul>
-          </nav>
-        </header>
-        """
+      case .hidden:
+        return ""
+      case .normal:
+        return """
+          <header class="header-normal">
+            <div class="logo">\(configuration.metadata.site)</div>
+            <nav>
+              <ul>
+                \(configuration.layout.navigation.map { "<li><a href='\($0.path)'>\($0.label)</a></li>" }.joined(separator: "\n"))
+              </ul>
+            </nav>
+          </header>
+          """
+      case .logoCentered:
+        return """
+          <header class="header-centered">
+            <div class="logo">\(configuration.metadata.site)</div>
+            <nav>
+              <ul>
+                \(configuration.layout.navigation.map { "<li><a href='\($0.path)'>\($0.label)</a></li>" }.joined(separator: "\n"))
+              </ul>
+            </nav>
+          </header>
+          """
     }
   }
 
@@ -126,29 +126,29 @@ public struct Document {
   private func renderFooter() -> String {
     let footerVariant = footerOverride ?? configuration.layout.footer  // Use override if present
     switch footerVariant {
-    case .hidden:
-      return ""
-    case .normal:
-      return """
-        <footer class="footer-normal">
-          <div class="logo">\(configuration.metadata.site)</div>
-          <nav class="footer-grid">
-            \(configuration.layout.sitemap.map { "<a href='\($0.path)'>\($0.label)</a>" }.joined(separator: "\n"))
-          </nav>
-          <div class="footer-lower">
-            <span>© \(configuration.metadata.site) \(Date().formattedYear())</span>
-            <div class="social-icons">
-              <a href="https://twitter.com/\(configuration.metadata.twitter)">Twitter</a>
+      case .hidden:
+        return ""
+      case .normal:
+        return """
+          <footer class="footer-normal">
+            <div class="logo">\(configuration.metadata.site)</div>
+            <nav class="footer-grid">
+              \(configuration.layout.sitemap.map { "<a href='\($0.path)'>\($0.label)</a>" }.joined(separator: "\n"))
+            </nav>
+            <div class="footer-lower">
+              <span>© \(configuration.metadata.site) \(Date().formattedYear())</span>
+              <div class="social-icons">
+                <a href="https://twitter.com/\(configuration.metadata.twitter)">Twitter</a>
+              </div>
             </div>
-          </div>
-        </footer>
-        """
-    case .minimal:
-      return """
-        <footer class="footer-minimal">
-          <p>© \(configuration.metadata.site) \(Date().formattedYear())</p>
-        </footer>
-        """
+          </footer>
+          """
+      case .minimal:
+        return """
+          <footer class="footer-minimal">
+            <p>© \(configuration.metadata.site) \(Date().formattedYear())</p>
+          </footer>
+          """
     }
   }
 }
