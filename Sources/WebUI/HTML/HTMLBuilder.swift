@@ -41,5 +41,10 @@ struct HTMLBuilder {
     component
   }
 
-  // TODO: Add support for looping with ``buildArray``
+  /// Handles loops by transforming an array of HTML component arrays into a single flat array.
+  /// - Parameter components: An array of HTML component arrays, typically from a `for` loop.
+  /// - Returns: A flattened array of all HTML components.
+  static func buildArray(_ components: [[any HTML]]) -> [any HTML] {
+    components.flatMap { $0 }
+  }
 }
