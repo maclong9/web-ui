@@ -25,8 +25,8 @@ struct Document {
   let title: String
   let description: String?
   let content: String
-  let headerOverride: HeaderVariant?  // Optional override
-  let footerOverride: FooterVariant?  // Optional override
+  let headerOverride: HeaderVariant?
+  let footerOverride: FooterVariant?
 
   /// Initializes a new `Document` instance.
   ///
