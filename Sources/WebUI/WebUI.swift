@@ -24,9 +24,15 @@ struct Document {
   let configuration: Configuration
   let title: String
   let description: String?
-  let content: String
   let headerOverride: HeaderVariant?
   let footerOverride: FooterVariant?
+
+  private let contentBuilder: () -> [any HTML]
+
+  /// The computed property that evaluates the content builder to get the nested HTML components.
+  var content: [any HTML] {
+    get { contentBuilder() }
+  }
 
   /// Initializes a new `Document` instance.
   ///
@@ -41,16 +47,16 @@ struct Document {
     configuration: Configuration = Configuration(),
     title: String,
     description: String?,
-    content: String,
     headerOverride: HeaderVariant? = nil,
-    footerOverride: FooterVariant? = nil
+    footerOverride: FooterVariant? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML]
   ) {
     self.configuration = configuration
     self.title = title
     self.description = description
-    self.content = content
     self.headerOverride = headerOverride
     self.footerOverride = footerOverride
+    self.contentBuilder = content
   }
 
   /// Renders the document as an HTML string.
@@ -58,6 +64,7 @@ struct Document {
   /// - Returns: A `String` containing the rendered HTML document.
   func render() -> String {
     let pageTitle = "\(title) | \(configuration.metadata.site)"
+    let renderedContent = content.map { $0.render() }.joined()
 
     return """
       <!DOCTYPE html>
@@ -73,11 +80,11 @@ struct Document {
           <meta property="og:title" content="\(pageTitle)">
           <meta property="og:description" content="\(description ?? "")">
           <title>\(pageTitle)</title>
-          <link rel="/\(title.replacingOccurrences(of: " ", with: "-")).css">
+          <link rel="stylesheet" href="/\(title.replacingOccurrences(of: " ", with: "-")).css">
         </head>
         <body>
           \(renderHeader())
-          \(content)
+          \(renderedContent)
           \(renderFooter())
         </body>
       </html>
