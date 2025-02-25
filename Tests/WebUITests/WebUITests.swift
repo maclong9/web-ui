@@ -63,3 +63,44 @@ import Testing
     #expect(htmlTwo.contains("footer-normal"))
   }
 }
+
+@Suite("Element Tests") struct ElementTests {
+  let html = Article {
+    Section(id: "main-content") {
+      Stack(classes: ["container"]) {
+        "This container has one class"
+      }
+      Stack(classes: ["container primary"]) {
+        "This container has multiple classes"
+      }
+    }
+    Section(id: "featured", classes: ["article featured"]) {
+      Stack {
+        "Hello, world!"
+      }
+    }
+  }.render()
+
+  @Test func shouldRenderBasicLayoutElements() async throws {
+    print(html)
+    #expect(html.contains("<article>"))
+    #expect(html.contains("<div>"))
+    #expect(html.contains("<section"))
+  }
+
+  @Test func shouldRenderElementWithID() async throws {
+    #expect(html.contains("id=\"main-content\""))
+  }
+
+  @Test func shouldRenderElementWithClasses() async throws {
+    #expect(html.contains("class=\"container\""))
+    #expect(html.contains("class=\"container primary\""))
+    #expect(html.contains("<div class=\"container\">This container has one class</div>"))
+    #expect(html.contains("<div class=\"container primary\">This container has multiple classes</div></section>"))
+  }
+
+  @Test func shouldRenderElementWithBothIDAndClasses() async throws {
+    #expect(html.contains("id=\"featured\""))
+    #expect(html.contains("class=\"article featured\""))
+  }
+}
