@@ -1,7 +1,7 @@
 /// A base class representing an HTML element with a tag name, optional attributes, and nested content.
 ///
 /// This class serves as the foundation for all HTML elements in the DSL.
-class Element: HTML {
+public class Element: HTML {
   var tag: String
   var id: String?
   var classes: [String]?

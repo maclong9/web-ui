@@ -1,6 +1,6 @@
 /// An HTML article element.
 /// - Article elements represent self-contained compositions in a document, such as a blog post or news story.
-class Article: Element {
+public class Article: Element {
   /// Creates a new HTML article element with optional attributes and content.
   /// - Parameters:
   ///   - id: An optional ID attribute for the element.
@@ -14,7 +14,7 @@ class Article: Element {
 /// An HTML section element.
 /// - Section elements represent a standalone section of content within a document,
 ///   typically with its own heading.
-class Section: Element {
+public class Section: Element {
   /// Creates a new HTML section element with optional attributes and content.
   /// - Parameters:
   ///   - id: An optional ID attribute for the element.
@@ -27,7 +27,7 @@ class Section: Element {
 
 /// A container element implemented as an HTML div.
 /// - This is a generic container element useful for grouping and styling content.
-class Stack: Element {
+public class Stack: Element {
   /// Creates a new HTML div element with optional attributes and content.
   /// - Parameters:
   ///   - id: An optional ID attribute for the element.
@@ -39,7 +39,7 @@ class Stack: Element {
 }
 
 /// An action element for providing a user a space to click
-class Button: Element {
+public class Button: Element {
   /// Creates a new HTML button element with optional
   init(id: String? = nil, classes: [String]? = nil, @HTMLBuilder content: @escaping () -> [any HTML]) {
     super.init(tag: "button", id: id, classes: classes, content: content)
