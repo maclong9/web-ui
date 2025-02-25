@@ -29,8 +29,8 @@ class Element: HTML {
   /// Constructs attributes  and renders the element and its content as an HTML string.
   /// - Returns: A string containing the complete HTML representation of this element and its content.
   func render() -> String {
-    let classAttribute = classes?.isEmpty == false ? " class=\"\(classes!.joined(separator: " "))\"" : ""
-    let idAttribute = id?.isEmpty == false ? " id=\"\(id!)\"" : ""
+    let classAttribute = classes?.isEmpty == false ? " class=\"\(classes?.joined(separator: " ") ?? "")\"" : ""
+    let idAttribute = id?.isEmpty == false ? " id=\"\(id ?? "")\"" : ""
     let renderedContent = content.map { $0.render() }.joined()
     return "<\(tag)\(idAttribute)\(classAttribute)>\(renderedContent)</\(tag)>"
   }
