@@ -75,8 +75,8 @@ class Text: Element {
 
   override func render() -> String {
     if href != nil {
-      let classAttribute = classes?.isEmpty == false ? " class=\"\(classes!.joined(separator: " "))\"" : ""
-      let idAttribute = id?.isEmpty == false ? " id=\"\(id!)\"" : ""
+      let classAttribute = classes?.isEmpty == false ? " class=\"\(classes?.joined(separator: " ") ?? "")\"" : ""
+      let idAttribute = id?.isEmpty == false ? " id=\"\(id ?? "")\"" : ""
       let targetAttribute = target != nil ? " target=\"\(target!.value)\"" : ""
       let hrefAttribute = href != nil ? " href=\"\(href!)\"" : ""
       let renderedContent = content.map { $0.render() }.joined()
