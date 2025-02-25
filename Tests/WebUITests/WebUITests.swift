@@ -127,3 +127,34 @@ struct ElementTests {
     #expect(html.contains("class=\"article featured\""))
   }
 }
+
+// MARK: - Conditional Tests
+@Suite("Conditional Tests") struct ConditionalTests {
+  @Test("Should render conditional content correctly")
+  func conditionalRendering() async throws {
+    let isVisible = true
+    let html = Section {
+      if isVisible {
+        Stack { "Hello, world!" }
+      }
+    }.render()
+
+    #expect(html == "<section><div>Hello, world!</div></section>")
+  }
+
+  @Test("Should render conditional content correctly with else block")
+  func conditionalRenderingWithElse() async throws {
+    let isVisible = false
+    let html = Section {
+      Stack {
+        if isVisible {
+          "Hello, world!"
+        } else {
+          "No content"
+        }
+      }
+    }.render()
+
+    #expect(html == "<section><div>No content</div></section>")
+  }
+}

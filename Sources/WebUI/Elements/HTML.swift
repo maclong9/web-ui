@@ -20,5 +20,23 @@ struct HTMLBuilder {
   /// Builds a block of HTML components into an array.
   /// - Parameter components: A variadic list of HTML components.
   /// - Returns: An array containing all the provided HTML components.
-  static func buildBlock(_ components: any HTML...) -> [any HTML] { components }
+  static func buildBlock(_ components: [any HTML]...) -> [any HTML] {
+    components.flatMap { $0 }
+  }
+
+  static func buildExpression(_ expression: any HTML) -> [any HTML] {
+    [expression]
+  }
+
+  static func buildOptional(_ component: [any HTML]?) -> [any HTML] {
+    component ?? []
+  }
+
+  static func buildEither(first component: [any HTML]) -> [any HTML] {
+    component
+  }
+
+  static func buildEither(second component: [any HTML]) -> [any HTML] {
+    component
+  }
 }
