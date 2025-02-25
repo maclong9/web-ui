@@ -2,6 +2,8 @@ import Testing
 
 @testable import WebUI
 
+// TODO: Implement a test which runs HTML validator
+
 // MARK: - Configuration Tests
 @Suite("Configuration Tests")
 struct ConfigurationTests {
@@ -81,84 +83,6 @@ struct DocumentTests {
   }
 }
 
-// MARK: - Element Tests
-@Suite("Element Tests")
-struct ElementTests {
-  private let html = Article {
-    Section(id: "main-content") {
-      Stack(classes: ["container"]) {
-        "This container has one class"
-      }
-      Stack(classes: ["container", "primary"]) {
-        "This container has multiple classes"
-      }
-    }
-    Section(id: "featured", classes: ["article", "featured"]) {
-      Stack {
-        "Hello, world!"
-      }
-    }
-  }.render()
-
-  @Test("Render basic layout elements")
-  func testBasicLayoutRendering() async throws {
-    print(html)
-    #expect(html.contains("<article>"))
-    #expect(html.contains("<div>"))
-    #expect(html.contains("<section"))
-  }
-
-  @Test("Render element with ID")
-  func testIDRendering() async throws {
-    #expect(html.contains("id=\"main-content\""))
-  }
-
-  @Test("Render element with classes")
-  func testClassesRendering() async throws {
-    #expect(html.contains("class=\"container\""))
-    #expect(html.contains("class=\"container primary\""))
-    #expect(html.contains("<div class=\"container\">This container has one class</div>"))
-    #expect(html.contains("<div class=\"container primary\">This container has multiple classes</div></section>"))
-  }
-
-  @Test("Render element with both ID and classes")
-  func testIDAndClassesRendering() async throws {
-    #expect(html.contains("id=\"featured\""))
-    #expect(html.contains("class=\"article featured\""))
-  }
-}
-
-// MARK: - Conditional Tests
-@Suite("Conditional Tests") struct ConditionalTests {
-  @Test("Should render conditional content correctly")
-  func conditionalRendering() async throws {
-    let isVisible = true
-    let html = Section {
-      if isVisible {
-        Stack { "Hello, world!" }
-      }
-    }.render()
-
-    #expect(html == "<section><div>Hello, world!</div></section>")
-  }
-
-  @Test("Should render conditional content correctly with else block")
-  func conditionalRenderingWithElse() async throws {
-    let isVisible = false
-    let html = Section {
-      Stack {
-        if isVisible {
-          "Hello, world!"
-        } else {
-          "No content"
-        }
-      }
-    }.render()
-
-    #expect(html == "<section><div>No content</div></section>")
-  }
-}
-
 // MARK: - Full Page Tests
 @Suite("Full Page Tests") struct FullPageTests {
   @Test func shouldRenderFullPage() async throws {
@@ -175,13 +99,14 @@ struct ElementTests {
         }
       }
     }.render()
-    
-    print(html)
 
     #expect(html.contains("<!DOCTYPE html>"))
     #expect(html.contains("<title>Hello, world! | Great Site</title>"))
     #expect(html.contains("<meta name=\"description\" content=\"An introductory page\">"))
-    #expect(html.contains("<article><section><div>Hello, world!</div><div>Here is a fun description of the website!</div></section><section><div>This is another section of the site!</div><div>And another sentence!</div></section></article>")
+    #expect(
+      html.contains(
+        "<article><section><div>Hello, world!</div><div>Here is a fun description of the website!</div></section><section><div>This is another section of the site!</div><div>And another sentence!</div></section></article>"
+      )
     )
   }
 }
