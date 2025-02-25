@@ -39,7 +39,7 @@ class Stack: Element {
 }
 
 /// An action element for providing a user a space to click
-class Buttton: Element {
+class Button: Element {
   /// Creates a new HTML button element with optional
   init(id: String? = nil, classes: [String]? = nil, @HTMLBuilder content: @escaping () -> [any HTML]) {
     super.init(tag: "button", id: id, classes: classes, content: content)
