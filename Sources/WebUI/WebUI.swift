@@ -1,7 +1,7 @@
 import Foundation
 
 /// Represents the configuration settings for a document, including metadata, theme, and layout.
-struct Configuration {
+public struct Configuration {
   let metadata: Metadata
   let theme: Theme
   let layout: Layout
@@ -20,7 +20,7 @@ struct Configuration {
 }
 
 /// Represents a document containing content, configuration, and rendering logic.
-struct Document {
+public struct Document {
   let configuration: Configuration
   let title: String
   let description: String?
