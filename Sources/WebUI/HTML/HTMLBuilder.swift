@@ -6,7 +6,7 @@ struct HTMLBuilder {
   /// - Parameter components: A variadic list of HTML components.
   /// - Returns: An array containing all the provided HTML components.
   static func buildBlock(_ components: [any HTML]...) -> [any HTML] {
-    components.flatMap { $0 }
+    components.joined().map { $0 }
   }
 
   /// Converts a single HTML expression into an array of components.
@@ -40,4 +40,6 @@ struct HTMLBuilder {
   static func buildEither(second component: [any HTML]) -> [any HTML] {
     component
   }
+
+  // TODO: Add support for looping with ``buildArray``
 }
