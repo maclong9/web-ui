@@ -1,5 +1,6 @@
 /// A base class representing an HTML element with a tag name, optional attributes, and nested content.
-/// - This class serves as the foundation for all HTML elements in the DSL.
+///
+/// This class serves as the foundation for all HTML elements in the DSL.
 class Element: HTML {
   var tag: String
   var id: String?
@@ -25,9 +26,7 @@ class Element: HTML {
     self.contentBuilder = content
   }
 
-  /// Renders the element and its content as an HTML string.
-  /// - The rendering process constructs opening and closing tags with appropriate attributes,
-  ///   and recursively renders all nested content.
+  /// Constructs attributes  and renders the element and its content as an HTML string.
   /// - Returns: A string containing the complete HTML representation of this element and its content.
   func render() -> String {
     let classAttribute = classes?.isEmpty == false ? " class=\"\(classes!.joined(separator: " "))\"" : ""
