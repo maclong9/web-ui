@@ -5,9 +5,15 @@ public class Article: Element {
   /// - Parameters:
   ///   - id: An optional ID attribute for the element.
   ///   - classes: Optional CSS classes to apply to the element.
+  ///   - role: An optional ARIA role for accessibility (defaults to .article).
   ///   - content: A result builder closure that defines the nested content.
-  init(id: String? = nil, classes: [String]? = nil, @HTMLBuilder content: @escaping () -> [any HTML]) {
-    super.init(tag: "article", id: id, classes: classes, content: content)
+  init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+  ) {
+    super.init(tag: "article", id: id, classes: classes, role: role, content: content)
   }
 }
 
@@ -19,9 +25,15 @@ public class Section: Element {
   /// - Parameters:
   ///   - id: An optional ID attribute for the element.
   ///   - classes: Optional CSS classes to apply to the element.
+  ///   - role: An optional ARIA role for accessibility (defaults to nil).
   ///   - content: A result builder closure that defines the nested content.
-  init(id: String? = nil, classes: [String]? = nil, @HTMLBuilder content: @escaping () -> [any HTML]) {
-    super.init(tag: "section", id: id, classes: classes, content: content)
+  init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+  ) {
+    super.init(tag: "section", id: id, classes: classes, role: role, content: content)
   }
 }
 
@@ -32,16 +44,32 @@ public class Stack: Element {
   /// - Parameters:
   ///   - id: An optional ID attribute for the element.
   ///   - classes: Optional CSS classes to apply to the element.
+  ///   - role: An optional ARIA role for accessibility (defaults to nil).
   ///   - content: A result builder closure that defines the nested content.
-  init(id: String? = nil, classes: [String]? = nil, @HTMLBuilder content: @escaping () -> [any HTML]) {
-    super.init(tag: "div", id: id, classes: classes, content: content)
+  init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+  ) {
+    super.init(tag: "div", id: id, classes: classes, role: role, content: content)
   }
 }
 
 /// An action element for providing a user a space to click
 public class Button: Element {
-  /// Creates a new HTML button element with optional
-  init(id: String? = nil, classes: [String]? = nil, @HTMLBuilder content: @escaping () -> [any HTML]) {
-    super.init(tag: "button", id: id, classes: classes, content: content)
+  /// Creates a new HTML button element with optional attributes and content.
+  /// - Parameters:
+  ///   - id: An optional ID attribute for the element.
+  ///   - classes: Optional CSS classes to apply to the element.
+  ///   - role: An optional ARIA role for accessibility (defaults to .button).
+  ///   - content: A result builder closure that defines the nested content.
+  init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+  ) {
+    super.init(tag: "button", id: id, classes: classes, role: role, content: content)
   }
 }

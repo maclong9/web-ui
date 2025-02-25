@@ -12,9 +12,9 @@ enum LinkTarget {
   /// - Returns: A string representing the HTML `target` attribute value (e.g., "_blank").
   var value: String {
     switch self {
-    case .blank: return "_blank"
-    case .parent: return "_parent"
-    case .top: return "_top"
+      case .blank: return "_blank"
+      case .parent: return "_parent"
+      case .top: return "_top"
     }
   }
 }
@@ -31,12 +31,12 @@ enum HeadingLevel {
   /// - Returns: A string representing the HTML tag (e.g., "h1" for `.h1`).
   var tag: String {
     switch self {
-    case .h1: return "h1"
-    case .h2: return "h2"
-    case .h3: return "h3"
-    case .h4: return "h4"
-    case .h5: return "h5"
-    case .h6: return "h6"
+      case .h1: return "h1"
+      case .h2: return "h2"
+      case .h3: return "h3"
+      case .h4: return "h4"
+      case .h5: return "h5"
+      case .h6: return "h6"
     }
   }
 }
@@ -79,6 +79,7 @@ public class Text: Element {
     bold: Bool = false,
     emphasized: Bool = false,
     heading: HeadingLevel? = nil,
+    role: AriaRole? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML]
   ) {
     self.href = href
@@ -92,19 +93,19 @@ public class Text: Element {
     // Determine the appropriate tag based on provided parameters
     let tag: String
     switch (href, bold, emphasized, heading) {
-    case (_?, _, _, _):
-      tag = "a"
-    case (_, true, _, _):
-      tag = "b"
-    case (_, _, true, _):
-      tag = "em"
-    case (_, _, _, let heading?):
-      tag = heading.tag
-    default:
-      tag = sentenceCount > 1 ? "p" : "span"
+      case (_?, _, _, _):
+        tag = "a"
+      case (_, true, _, _):
+        tag = "b"
+      case (_, _, true, _):
+        tag = "em"
+      case (_, _, _, let heading?):
+        tag = heading.tag
+      default:
+        tag = sentenceCount > 1 ? "p" : "span"
     }
 
-    super.init(tag: tag, id: id, classes: classes, content: content)
+    super.init(tag: tag, id: id, classes: classes, role: role, content: content)
   }
 
   /// Renders the text element as an HTML string.
@@ -116,7 +117,10 @@ public class Text: Element {
   /// - Returns: A string containing the fully rendered HTML element.
   override func render() -> String {
     if href != nil {
-      let classAttribute = classes?.isEmpty == false ? " class=\"\(classes?.joined(separator: " ") ?? "")\"" : ""
+      let classAttribute =
+        classes?.isEmpty == false
+        ? " class=\"\(classes?.joined(separator: " ") ?? "")\""
+        : ""
       let idAttribute = id?.isEmpty == false ? " id=\"\(id ?? "")\"" : ""
       let targetAttribute = target != nil ? " target=\"\(target!.value)\"" : ""
       let hrefAttribute = href != nil ? " href=\"\(href!)\"" : ""
