@@ -1,3 +1,5 @@
+import Foundation
+
 /// Represents font size properties including size and optional line height.
 struct FontSize {
   let size: Double
@@ -24,14 +26,16 @@ struct Typography {
   let tracking: [String: Double]
   let leading: [String: Double]
 
-  /// Initializes a new `Typography` instance with customizable font settings.
+  /// Initializes a new `Typography` instance with customizable font settings using a type scale.
   ///
   /// - Parameters:
   ///   - heading: The heading fonts.
   ///   - body: The body fonts.
   ///   - mono: The monospaced fonts.
   ///   - width: The typography width.
-  ///   - sizes: A dictionary of font sizes.
+  ///   - baseSize: The base font size in rem (default 1).
+  ///   - scaleRatio: The ratio for the type scale (default 1.25 for a major third).
+  ///   - multiplier: Multiplier to increase/decrease all sizes (default 1.0).
   ///   - tracking: A dictionary of letter spacing values.
   ///   - leading: A dictionary of line heights.
   init(
@@ -39,21 +43,9 @@ struct Typography {
     body: [String] = ["system-ui", "sans-serif"],
     mono: [String] = ["system-ui", "monospace"],
     width: Int = 60,
-    sizes: [String: FontSize] = [
-      "xSmall": FontSize(size: 0.75, lineHeight: 1 / 0.75),
-      "small": FontSize(size: 0.875, lineHeight: 1.25 / 0.875),
-      "base": FontSize(size: 1),
-      "large": FontSize(size: 1.125, lineHeight: 1.75 / 1.125),
-      "xLarge": FontSize(size: 1.25, lineHeight: 1.75 / 1.25),
-      "twoXLarge": FontSize(size: 1.5, lineHeight: 2 / 1.5),
-      "threeXLarge": FontSize(size: 1.875, lineHeight: 2.25 / 1.875),
-      "fourXLarge": FontSize(size: 2.25, lineHeight: 2.5 / 2.25),
-      "fiveXLarge": FontSize(size: 3, lineHeight: 1),
-      "sixXLarge": FontSize(size: 3.75, lineHeight: 1),
-      "sevenXLarge": FontSize(size: 4.5, lineHeight: 1),
-      "eightXLarge": FontSize(size: 5.25, lineHeight: 1),
-      "nineXLarge": FontSize(size: 6, lineHeight: 1),
-    ],
+    baseSize: Double = 1.0,  // Base size in rem
+    scaleRatio: Double = 1.25,  // Major third scale (can use 1.2 for minor third, 1.333 for perfect fourth, etc.)
+    multiplier: Double = 1.0,  // Multiplier to scale all sizes up/down
     tracking: [String: Double] = [
       "tighter": -0.05,
       "tight": -0.025,
@@ -74,8 +66,64 @@ struct Typography {
     self.body = body
     self.mono = mono
     self.width = width
-    self.sizes = sizes
     self.tracking = tracking
     self.leading = leading
+
+    // Calculate sizes based on type scale
+    let adjustedBase = baseSize * multiplier
+    self.sizes = [
+      "xSmall": FontSize(
+        size: adjustedBase * pow(scaleRatio, -2),
+        lineHeight: 1.5
+      ),
+      "small": FontSize(
+        size: adjustedBase * pow(scaleRatio, -1),
+        lineHeight: 1.5
+      ),
+      "base": FontSize(
+        size: adjustedBase,
+        lineHeight: 1.5
+      ),
+      "large": FontSize(
+        size: adjustedBase * pow(scaleRatio, 1),
+        lineHeight: 1.625
+      ),
+      "xLarge": FontSize(
+        size: adjustedBase * pow(scaleRatio, 2),
+        lineHeight: 1.625
+      ),
+      "twoXLarge": FontSize(
+        size: adjustedBase * pow(scaleRatio, 3),
+        lineHeight: 1.75
+      ),
+      "threeXLarge": FontSize(
+        size: adjustedBase * pow(scaleRatio, 4),
+        lineHeight: 1.75
+      ),
+      "fourXLarge": FontSize(
+        size: adjustedBase * pow(scaleRatio, 5),
+        lineHeight: 1.75
+      ),
+      "fiveXLarge": FontSize(
+        size: adjustedBase * pow(scaleRatio, 6),
+        lineHeight: 1.5
+      ),
+      "sixXLarge": FontSize(
+        size: adjustedBase * pow(scaleRatio, 7),
+        lineHeight: 1.5
+      ),
+      "sevenXLarge": FontSize(
+        size: adjustedBase * pow(scaleRatio, 8),
+        lineHeight: 1.25
+      ),
+      "eightXLarge": FontSize(
+        size: adjustedBase * pow(scaleRatio, 9),
+        lineHeight: 1.25
+      ),
+      "nineXLarge": FontSize(
+        size: adjustedBase * pow(scaleRatio, 10),
+        lineHeight: 1.25
+      ),
+    ]
   }
 }
