@@ -58,7 +58,7 @@ class Text: Element {
     // Determine the appropriate tag based on provided parameters
     let tag: String
     switch (href, bold, emphasized, heading) {
-    case (let href?, _, _, _):
+    case (_?, _, _, _):
       tag = "a"
     case (_, true, _, _):
       tag = "b"
