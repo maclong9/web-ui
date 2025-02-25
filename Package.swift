@@ -11,12 +11,7 @@ let package = Package(
     )
   ],
   targets: [
-    .target(
-      name: "WebUI"
-    ),
-    .testTarget(
-      name: "WebUITests",
-      dependencies: ["WebUI"]
-    ),
+    .target(name: "WebUI"),
+    .testTarget(name: "WebUITests", dependencies: ["WebUI"]),
   ]
 )
