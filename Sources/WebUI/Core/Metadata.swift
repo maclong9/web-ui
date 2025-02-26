@@ -8,7 +8,7 @@ public struct Metadata {
   let locale: String
   let type: String?
 
-  /// Initializes a new `Metadata` instance with optional parameters.
+  /// Creates a new `Metadata` instance with optional parameters.
   ///
   /// - Parameters:
   ///   - site: The name of the website, defaulting to "Great Site".

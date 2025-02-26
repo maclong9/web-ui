@@ -23,6 +23,7 @@
 
 - [Static Site Generation with WebUI](./)
 - [Using WebUI with Hummingbird](./)
+- [Scaling a Hummingbird Application with Cloudflare](./)
 
 ## Inspirations & Sources
 

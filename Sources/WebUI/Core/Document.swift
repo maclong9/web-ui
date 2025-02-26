@@ -1,5 +1,7 @@
 import Foundation
 
+// TODO: Create bundles of css and js based on page title and only load the css and js needed
+
 /// Represents a document containing content, configuration, and rendering logic.
 public struct Document {
   let configuration: Configuration
@@ -15,7 +17,7 @@ public struct Document {
     get { contentBuilder() }
   }
 
-  /// Initializes a new `Document` instance.
+  /// Creates a new `Document` instance.
   ///
   /// - Parameters:
   ///   - configuration: The configuration settings.
@@ -53,7 +55,7 @@ public struct Document {
       headerVariant: headerOverride ?? configuration.layout.header,
       footerVariant: footerOverride ?? configuration.layout.footer
     )
-    
+
     let metadata = configuration.metadata
 
     return """

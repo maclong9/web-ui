@@ -1,6 +1,6 @@
-/// A base class representing an HTML element with a tag name, optional attributes, and nested content.
+/// A base class representing an HTML element with a tag name, optional attributes, styling possibility and nested content.
 ///
-/// This class serves as the foundation uor all HTML elements in the DSL.
+/// This class serves as the foundation for all HTML elements in the DSL.
 public class Element: HTML {
   let tag: String
   let id: String?
@@ -39,12 +39,12 @@ public class Element: HTML {
   /// - Returns: A string containing the complete HTML representation of this element and its content.
   func render() -> String {
     let attributes = [
-        id.map { "id=\"\($0)\"" },
-        classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
-        role.map { "role=\"\($0)\"" },
-      ]
-      .compactMap { $0 }
-      .joined(separator: " ")
+      id.map { "id=\"\($0)\"" },
+      classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
+      role.map { "role=\"\($0)\"" },
+    ]
+    .compactMap { $0 }
+    .joined(separator: " ")
 
     let attributesString = attributes.isEmpty ? "" : " \(attributes)"
     let contentString = content.map { $0.render() }.joined()
