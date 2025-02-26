@@ -1,7 +1,6 @@
 // TODO: Implement Styling
 
-/// An HTML article element.
-/// - Article elements represent self-contained compositions in a document, such as a blog post or news story.
+/// Represents a self-contained composition in a document, such as a blog post or news story.
 public class Article: Element {
   /// Creates a new HTML article element with optional attributes and content.
   /// - Parameters:
@@ -19,9 +18,7 @@ public class Article: Element {
   }
 }
 
-/// An HTML section element.
-/// - Section elements represent a standalone section of content within a document,
-///   typically with its own heading.
+/// A standalone section of content within a document.
 public class Section: Element {
   /// Creates a new HTML section element with optional attributes and content.
   /// - Parameters:
@@ -39,8 +36,7 @@ public class Section: Element {
   }
 }
 
-/// A container element implemented as an HTML div.
-/// - This is a generic container element useful for grouping and styling content.
+/// A generic container element implemented as an HTML div; useful for grouping content.
 public class Stack: Element {
   /// Creates a new HTML div element with optional attributes and content.
   /// - Parameters:
@@ -58,7 +54,7 @@ public class Stack: Element {
   }
 }
 
-/// An action element for providing a user a space to click
+/// An action element for providing the user a space to click
 public class Button: Element {
   /// Creates a new HTML button element with optional attributes and content.
   /// - Parameters:

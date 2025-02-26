@@ -5,7 +5,7 @@ public struct Route {
   let label: String
   let path: String
 
-  /// Initializes a new `Route`.
+  /// Creates a new `Route`.
   ///
   /// - Parameters:
   ///   - label: The display label for the route.
@@ -24,7 +24,7 @@ public struct Layout {
   let footer: FooterVariant
   let sitemap: [Route]
 
-  /// Initializes a new `Layout` with optional parameters.
+  /// Creates a new `Layout` with optional parameters.
   ///
   /// - Parameters:
   ///   - navigation: The navigation routes, defaulting to three sample routes.
@@ -55,7 +55,6 @@ public struct Layout {
 }
 
 // MARK: - Layout Renderer
-
 /// Represents different styles of the header in a layout.
 public enum HeaderVariant {
   case hidden, normal, logoCentered
@@ -73,7 +72,7 @@ public struct LayoutRenderer {
   let headerVariant: HeaderVariant
   let footerVariant: FooterVariant
 
-  /// Initializes a new LayoutRenderer instance.
+  /// Creates a new LayoutRenderer instance.
   ///
   /// - Parameters:
   ///   - configuration: The configuration settings.

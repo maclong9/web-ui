@@ -16,6 +16,8 @@ enum HeadingLevel: String {
   case h1, h2, h3, h4, h5, h6
 }
 
+// TODO: Split into `Text.font`, `Link`, `Emphasis`, `Strong`
+
 /// A versatile text element that renders as various HTML text-related tags based on configuration.
 ///
 /// The `Text` class dynamically generates HTML elements such as `<a>`, `<p>`, `<span>`, `<b>`, `<em>`,
@@ -28,9 +30,9 @@ public class Text: Element {
   private let href: String?
   private let target: LinkTarget?
 
-  /// Initializes a new text element with customizable attributes and content.
+  /// Creates a new text element with customizable attributes and content.
   ///
-  /// This initializer determines the appropriate HTML tag based on the provided parameters:
+  /// This Creater determines the appropriate HTML tag based on the provided parameters:
   /// - If `href` is provided, renders as an `<a>` tag.
   /// - If `bold` is true, renders as a `<b>` tag.
   /// - If `emphasized` is true, renders as an `<em>` tag.

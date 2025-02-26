@@ -5,7 +5,7 @@ struct FontSize {
   let size: Double
   let lineHeight: Double?
 
-  /// Initializes a new `FontSize` instance.
+  /// Creates a new `FontSize` instance.
   ///
   /// - Parameters:
   ///   - size: The font size.
@@ -26,7 +26,7 @@ struct Typography {
   let tracking: [String: Double]
   let leading: [String: Double]
 
-  /// Initializes a new `Typography` instance with customizable font settings using a type scale.
+  /// Creates a new `Typography` instance with customizable font settings using a type scale.
   ///
   /// - Parameters:
   ///   - heading: The heading fonts.

@@ -4,7 +4,7 @@ import Testing
 
 @Suite("Document Tests")
 struct DocumentTests {
-  @Test("Initialize with basic properties")
+  @Test("Create with basic properties")
   func testBasicInitialization() async throws {
     let config = Configuration()
     let testTitle = "Test Title"
@@ -21,7 +21,8 @@ struct DocumentTests {
 
   @Test("Render with alternate header and footer")
   func testAlternateHeaderFooterRendering() async throws {
-    let config = Configuration(metadata: Metadata(author: "Mac"), layout: Layout(header: .logoCentered, footer: .minimal))
+    let config = Configuration(
+      metadata: Metadata(author: "Mac"), layout: Layout(header: .logoCentered, footer: .minimal))
     let documentOne = Document(title: "Test Title", description: "Hello, world!") { "Hello, world!" }
     let documentTwo = Document(configuration: config, title: "Test Title", description: "Hello, world!") {
       "Hello, world!"

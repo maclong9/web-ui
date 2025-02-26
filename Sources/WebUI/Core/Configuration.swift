@@ -4,7 +4,7 @@ public struct Configuration {
   let theme: Theme
   let layout: Layout
 
-  /// Initializes a new `Configuration` instance with default or provided settings.
+  /// Creates a new `Configuration` instance with default or provided settings.
   ///
   /// - Parameters:
   ///   - metadata: Metadata information.

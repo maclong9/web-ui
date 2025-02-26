@@ -4,7 +4,7 @@ struct Theme {
   let colors: [String: String]
   let typography: Typography
 
-  /// Initializes a new `Theme` instance with optional design settings.
+  /// Creates a new `Theme` instance with optional design settings.
   ///
   /// - Parameters:
   ///   - breakpoints: A dictionary defining responsive breakpoints.
