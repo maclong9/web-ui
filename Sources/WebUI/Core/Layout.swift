@@ -1,15 +1,5 @@
 import Foundation
 
-/// Represents different styles of the header in a layout.
-public enum HeaderVariant {
-  case hidden, normal, logoCentered
-}
-
-/// Represents different styles of the footer in a layout.
-public enum FooterVariant {
-  case hidden, normal, minimal
-}
-
 /// Represents a navigational route within the layout.
 public struct Route {
   let label: String
@@ -64,8 +54,19 @@ public struct Layout {
   }
 }
 
-// TODO: Update to Get Socials from Configuration not Metadata
 // MARK: - Layout Renderer
+
+/// Represents different styles of the header in a layout.
+public enum HeaderVariant {
+  case hidden, normal, logoCentered
+}
+
+/// Represents different styles of the footer in a layout.
+public enum FooterVariant {
+  case hidden, normal, minimal
+}
+
+// TODO: Update to Get Socials from Configuration not Metadata
 /// A utility struct to handle rendering of layout components like headers and footers.
 public struct LayoutRenderer {
   let configuration: Configuration
