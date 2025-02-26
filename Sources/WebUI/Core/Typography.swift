@@ -43,9 +43,8 @@ struct Typography {
     body: [String] = ["system-ui", "sans-serif"],
     mono: [String] = ["system-ui", "monospace"],
     width: Int = 60,
-    baseSize: Double = 1.0,  // Base size in rem
-    scaleRatio: Double = 1.25,  // Major third scale (can use 1.2 for minor third, 1.333 for perfect fourth, etc.)
-    multiplier: Double = 1.0,  // Multiplier to scale all sizes up/down
+    scaleRatio: Double = 1.25,
+    multiplier: Double = 1.0,
     tracking: [String: Double] = [
       "tighter": -0.05,
       "tight": -0.025,
@@ -69,8 +68,9 @@ struct Typography {
     self.tracking = tracking
     self.leading = leading
 
+    // MARK: - Typescale
     // Calculate sizes based on type scale
-    let adjustedBase = baseSize * multiplier
+    let adjustedBase = 1.0 * multiplier
     self.sizes = [
       "xSmall": FontSize(
         size: adjustedBase * pow(scaleRatio, -2),

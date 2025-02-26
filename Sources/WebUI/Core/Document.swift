@@ -53,6 +53,8 @@ public struct Document {
       headerVariant: headerOverride ?? configuration.layout.header,
       footerVariant: footerOverride ?? configuration.layout.footer
     )
+    
+    let metadata = configuration.metadata
 
     return """
       <!DOCTYPE html>
@@ -60,11 +62,11 @@ public struct Document {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          \(configuration.metadata.author.map { "<meta name=\"author\" content=\"\($0)\">" } ?? "")
+          \(metadata.author.map { "<meta name=\"author\" content=\"\($0)\">" } ?? "")
           \(description.map { "<meta name=\"description\" content=\"\($0)\">" } ?? "")
-          \(configuration.metadata.keywords.map { "<meta name=\"keywords\" content=\"\($0.joined(separator: ", "))\">" } ?? "")
-          \(configuration.metadata.twitter.map { "<meta name=\"twitter:creator\" content=\"\($0)\">" } ?? "")
-          \(configuration.metadata.type.map { "<meta property=\"og:type\" content=\"\($0)\">" } ?? "")
+          \(metadata.keywords.map { "<meta name=\"keywords\" content=\"\($0.joined(separator: ", "))\">" } ?? "")
+          \(metadata.twitter.map { "<meta name=\"twitter:creator\" content=\"\($0)\">" } ?? "")
+          \(metadata.type.map { "<meta property=\"og:type\" content=\"\($0)\">" } ?? "")
           <meta property="og:title" content="\(pageTitle)">
           \(description.map { "<meta property=\"og:description\" content=\"\($0)\">" } ?? "")
           <title>\(pageTitle)</title>
