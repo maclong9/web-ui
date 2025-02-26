@@ -4,41 +4,16 @@ import Foundation
 ///
 /// This enumeration maps to standard HTML `target` attribute values and provides a type-safe way to specify
 /// link behavior in HTML generation.
-enum LinkTarget {
+enum LinkTarget: String {
   case blank, parent, top
-
-  /// Returns the HTML-compatible string value for the target attribute.
-  ///
-  /// - Returns: A string representing the HTML `target` attribute value (e.g., "_blank").
-  var value: String {
-    switch self {
-      case .blank: return "_blank"
-      case .parent: return "_parent"
-      case .top: return "_top"
-    }
-  }
 }
 
 /// Defines valid heading levels for HTML heading tags (`<h1>` through `<h6>`).
 ///
 /// Use this enumeration to specify the semantic level of headings in HTML content, ensuring proper
 /// document structure and accessibility.
-enum HeadingLevel {
+enum HeadingLevel: String {
   case h1, h2, h3, h4, h5, h6
-
-  /// Provides the corresponding HTML tag name for the heading level.
-  ///
-  /// - Returns: A string representing the HTML tag (e.g., "h1" for `.h1`).
-  var tag: String {
-    switch self {
-      case .h1: return "h1"
-      case .h2: return "h2"
-      case .h3: return "h3"
-      case .h4: return "h4"
-      case .h5: return "h5"
-      case .h6: return "h6"
-    }
-  }
 }
 
 /// A versatile text element that renders as various HTML text-related tags based on configuration.
@@ -100,7 +75,7 @@ public class Text: Element {
       case (_, _, true, _):
         tag = "em"
       case (_, _, _, let heading?):
-        tag = heading.tag
+        tag = heading.rawValue
       default:
         tag = sentenceCount > 1 ? "p" : "span"
     }
@@ -116,17 +91,18 @@ public class Text: Element {
   ///
   /// - Returns: A string containing the fully rendered HTML element.
   override func render() -> String {
-    if href != nil {
-      let classAttribute =
-        classes?.isEmpty == false
-        ? " class=\"\(classes?.joined(separator: " ") ?? "")\""
-        : ""
-      let idAttribute = id?.isEmpty == false ? " id=\"\(id ?? "")\"" : ""
-      let targetAttribute = target != nil ? " target=\"\(target!.value)\"" : ""
-      let hrefAttribute = href != nil ? " href=\"\(href!)\"" : ""
-      let renderedContent = content.map { $0.render() }.joined()
-      return "<\(tag)\(idAttribute)\(classAttribute)\(hrefAttribute)\(targetAttribute)>\(renderedContent)</\(tag)>"
-    }
-    return super.render()
+    guard let href = href else { return super.render() }
+
+    let attributes = [
+      id.map { "id=\"\($0)\"" },
+      classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
+      "href=\"\(href)\"",
+      target.map { "target=\"_\($0.rawValue)\"" },
+    ]
+    .compactMap { $0 }
+    .joined(separator: " ")
+
+    let contentString = content.map { $0.render() }.joined()
+    return "<\(tag) \(attributes)>\(contentString)</\(tag)>"
   }
 }

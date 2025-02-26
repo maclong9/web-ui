@@ -38,16 +38,16 @@ public class Element: HTML {
   /// Constructs attributes  and renders the element and its content as an HTML string.
   /// - Returns: A string containing the complete HTML representation of this element and its content.
   func render() -> String {
-    let classAttribute =
-      classes?.isEmpty == false
-      ? " class=\"\(classes?.joined(separator: " ") ?? "")\""
-      : ""
-    let idAttribute = id?.isEmpty == false ? " id=\"\(id ?? "")\"" : ""
-    let roleAttribute =
-      role?.rawValue.isEmpty == false
-      ? " role=\"\(role?.rawValue ?? "")\""
-      : ""
-    let renderedContent = content.map { $0.render() }.joined()
-    return "<\(tag)\(idAttribute)\(classAttribute)\(roleAttribute)>\(renderedContent)</\(tag)>"
+    let attributes = [
+        id.map { "id=\"\($0)\"" },
+        classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
+        role.map { "role=\"\($0)\"" },
+      ]
+      .compactMap { $0 }
+      .joined(separator: " ")
+
+    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
+    let contentString = content.map { $0.render() }.joined()
+    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
   }
 }

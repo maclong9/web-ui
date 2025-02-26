@@ -3,7 +3,7 @@ import Testing
 @testable import WebUI
 
 // Note: This assumes a hypothetical HTMLValidator library exists
-// You would need to integrate a real HTML validation tool
+// Need to integrate a real HTML validation tool
 @Suite("HTML Validator Tests")
 struct HTMLValidatorTests {
   @Test("Validate generated HTML is well-formed")
