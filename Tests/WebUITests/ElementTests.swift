@@ -26,6 +26,7 @@ struct ElementTests {
         "Here is some text"
         Text(bold: true) { "With some nested text as well" }
       }
+      Button { "Click me" }
     }
     Section(id: "featured", classes: ["article", "featured"]) {
       Text(heading: .h2) { "More Content" }
