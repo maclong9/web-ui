@@ -29,10 +29,10 @@ public struct Metadata {
   func render(
     pageTitle: String,
     description: String,
-    twitter: String?,
-    author: String?,
-    keywords: [String]?,
-    type: String?
+    twitter: String? = nil,
+    author: String? = nil,
+    keywords: [String]? = nil,
+    type: String? = nil
   ) -> String {
     // Determine effective values: page-specific takes precedence, fallback to site-wide
     let effectiveAuthor = author?.isEmpty == false ? author : self.author
