@@ -19,12 +19,16 @@ struct MetadataTests {
     #expect(html.contains("<title>Home</title>"))
     #expect(html.contains("<meta name=\"description\" content=\"Welcome\">"))
     #expect(html.contains("<meta charset=\"UTF-8\">"))
+    #expect(!html.contains("<meta name=\"author\""))
+    #expect(!html.contains("<meta name=\"twitter:creator\""))
+    #expect(!html.contains("<meta name=\"keywords\""))
+    #expect(!html.contains("<meta property=\"og:type\""))
     #expect(html.contains("<link rel=\"stylesheet\" href=\"/home.css\">"))
   }
 
   @Test("Metadata prioritizes page-specific values")
   func testPageSpecificValues() throws {
-    let metadata = Metadata(author: "Site Author", keywords: ["site"])
+    let metadata = Metadata(author: "Site Author", keywords: ["site"], twitter: "siteuser", type: "website")
     let html = metadata.render(
       pageTitle: "Test",
       description: "Desc",
@@ -38,5 +42,59 @@ struct MetadataTests {
     #expect(html.contains("<meta name=\"keywords\" content=\"page\">"))
     #expect(html.contains("<meta name=\"twitter:creator\" content=\"@testuser\">"))
     #expect(html.contains("<meta property=\"og:type\" content=\"article\">"))
+    #expect(!html.contains("Site Author"))
+    #expect(!html.contains("siteuser"))
+    #expect(!html.contains("site"))
+    #expect(!html.contains("website"))
+  }
+
+  @Test("Metadata falls back to site-wide values when page-specific are nil")
+  func testFallbackToSiteWide() throws {
+    let metadata = Metadata(author: "Site Author", keywords: ["site", "wide"], twitter: "siteuser", type: "website")
+    let html = metadata.render(
+      pageTitle: "Test",
+      description: "Desc",
+      twitter: nil,
+      author: nil,
+      keywords: nil,
+      type: nil
+    )
+
+    #expect(html.contains("<meta name=\"author\" content=\"Site Author\">"))
+    #expect(html.contains("<meta name=\"keywords\" content=\"site, wide\">"))
+    #expect(html.contains("<meta name=\"twitter:creator\" content=\"@siteuser\">"))
+    #expect(html.contains("<meta property=\"og:type\" content=\"website\">"))
+  }
+
+  @Test("Metadata omits optional tags when both site-wide and page-specific are empty or nil")
+  func testEmptyValues() throws {
+    let metadata = Metadata(author: "", keywords: [], twitter: "", type: "")
+    let html = metadata.render(
+      pageTitle: "Test",
+      description: "Desc",
+      twitter: "",
+      author: "",
+      keywords: [],
+      type: ""
+    )
+
+    #expect(!html.contains("<meta name=\"author\""))
+    #expect(!html.contains("<meta name=\"keywords\""))
+    #expect(!html.contains("<meta name=\"twitter:creator\""))
+    #expect(!html.contains("<meta property=\"og:type\""))
+  }
+
+  @Test("Metadata handles mixed nil and empty page-specific values with site-wide fallbacks")
+  func testMixedValues() throws {
+    let metadata = Metadata(author: "Site Author", keywords: ["site"], twitter: "siteuser", type: "website")
+    let html = metadata.render(
+      pageTitle: "Test",
+      description: "Desc",
+      keywords: ["page"]
+    )
+
+    #expect(html.contains("<meta name=\"author\" content=\"Site Author\">"))  // Falls back to site-wide
+    #expect(html.contains("<meta name=\"keywords\" content=\"page\">"))  // Uses page-specific
+    #expect(html.contains("<meta name=\"twitter:creator\" content=\"@siteuser\">"))  // Falls back to site-wide
   }
 }
