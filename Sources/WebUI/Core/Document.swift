@@ -1,6 +1,7 @@
 import Foundation
 
-// TODO: Create optimised bundles of css and js named `{page-title}.css`
+// TODO: Create optimised bundles of CSS and JS named `{page-title}.css`
+// TODO: Validate the HTML, CSS and JS output on build
 
 /// Represents a document containing content, configuration, and rendering logic.
 public struct Document {
