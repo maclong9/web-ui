@@ -1,4 +1,3 @@
-/// Represents metadata associated with a website, including author, keywords, and social media information.
 public struct Metadata {
   let site: String
   let title: String
@@ -9,15 +8,6 @@ public struct Metadata {
   let type: String?
 
   /// Creates a new `Metadata` instance with optional parameters.
-  ///
-  /// - Parameters:
-  ///   - site: The name of the website, defaulting to "Great Site".
-  ///   - title: The title format, defaulting to `"%s"`.
-  ///   - author: The author of the content, optional and defaulting to nil.
-  ///   - keywords: An array of keywords for SEO, optional and defaulting to nil.
-  ///   - twitter: The Twitter handle associated with the site, optional and defaulting to nil.
-  ///   - locale: The locale of the site, defaulting to "en".
-  ///   - type: The type of the site, optional and defaulting to nil.
   init(
     site: String = "Great Site",
     title: String = "%s",
@@ -28,11 +18,45 @@ public struct Metadata {
     type: String? = nil
   ) {
     self.site = site
-    self.title = "%s | \(site)"
+    self.title = "\(title) | \(site)"
     self.author = author
     self.keywords = keywords
     self.twitter = twitter
     self.locale = locale
     self.type = type
+  }
+
+  func render(
+    pageTitle: String,
+    description: String,
+    twitter: String?,
+    author: String?,
+    keywords: [String]?,
+    type: String?
+  ) -> String {
+    // Determine effective values: page-specific takes precedence, fallback to site-wide
+    let effectiveAuthor = author?.isEmpty == false ? author : self.author
+    let effectiveKeywords = keywords?.isEmpty == false ? keywords : self.keywords
+    let effectiveTwitter = twitter?.isEmpty == false ? twitter : self.twitter
+    let effectiveType = type?.isEmpty == false ? type : self.type
+
+    return """
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>\(pageTitle)</title>
+        <meta property="og:title" content="\(pageTitle)">
+        <meta name="description" content="\(description)">
+        <meta property="og:description" content="\(description)">
+        <meta name="twitter:card" content="summary_large_image">
+        \(effectiveAuthor?.isEmpty == false ? "<meta name=\"author\" content=\"\(effectiveAuthor ?? "")\">" : "")
+        \(effectiveType?.isEmpty == false ? "<meta property=\"og:type\" content=\"\(effectiveType ?? "")\">" : "")
+        \(effectiveTwitter?.isEmpty == false ? "<meta name=\"twitter:creator\" content=\"\(effectiveTwitter ?? "")\">" : "")
+        \(effectiveKeywords?.isEmpty == false
+            ? "<meta name=\"keywords\" content=\"\(effectiveKeywords?.joined(separator: ", ") ?? "")\">"
+            : "")
+        <link rel="stylesheet" href="/\(title.replacingOccurrences(of: " ", with: "-")).css">
+      </head>
+      """
   }
 }
