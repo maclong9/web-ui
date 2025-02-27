@@ -19,6 +19,7 @@ struct MetadataTests {
     #expect(html.contains("<title>Home</title>"))
     #expect(html.contains("<meta name=\"description\" content=\"Welcome\">"))
     #expect(html.contains("<meta charset=\"UTF-8\">"))
+    #expect(html.contains("<link rel=\"stylesheet\" href=\"/home.css\">"))
   }
 
   @Test("Metadata prioritizes page-specific values")
@@ -35,7 +36,7 @@ struct MetadataTests {
 
     #expect(html.contains("<meta name=\"author\" content=\"Page Author\">"))
     #expect(html.contains("<meta name=\"keywords\" content=\"page\">"))
-    #expect(html.contains("<meta name=\"twitter:creator\" content=\"testuser\">"))
+    #expect(html.contains("<meta name=\"twitter:creator\" content=\"@testuser\">"))
     #expect(html.contains("<meta property=\"og:type\" content=\"article\">"))
   }
 }
