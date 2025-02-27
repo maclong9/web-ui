@@ -1,7 +1,13 @@
 struct Social {
   let label: String
   let url: String
-  let icon: String  // TODO: Implement an icon pack prefarably as fonts
+  let icon: String?  // TODO: Implement an icon pack prefarably as fonts
+  
+  init(label: String, url: String, icon: String? = nil) {
+    self.label = label
+    self.url = url
+    self.icon = icon
+  }
 }
 
 /// Represents the configuration settings for a document, including metadata, theme, and layout.

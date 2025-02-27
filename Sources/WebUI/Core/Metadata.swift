@@ -51,11 +51,11 @@ public struct Metadata {
         <meta name="twitter:card" content="summary_large_image">
         \(effectiveAuthor?.isEmpty == false ? "<meta name=\"author\" content=\"\(effectiveAuthor ?? "")\">" : "")
         \(effectiveType?.isEmpty == false ? "<meta property=\"og:type\" content=\"\(effectiveType ?? "")\">" : "")
-        \(effectiveTwitter?.isEmpty == false ? "<meta name=\"twitter:creator\" content=\"\(effectiveTwitter ?? "")\">" : "")
+        \(effectiveTwitter?.isEmpty == false ? "<meta name=\"twitter:creator\" content=\"@\(effectiveTwitter ?? "")\">" : "")
         \(effectiveKeywords?.isEmpty == false
             ? "<meta name=\"keywords\" content=\"\(effectiveKeywords?.joined(separator: ", ") ?? "")\">"
             : "")
-        <link rel="stylesheet" href="/\(title.replacingOccurrences(of: " ", with: "-")).css">
+        <link rel="stylesheet" href="/\(pageTitle.split(separator: "|")[0].replacingOccurrences(of: " ", with: "-").lowercased()).css">
       </head>
       """
   }
