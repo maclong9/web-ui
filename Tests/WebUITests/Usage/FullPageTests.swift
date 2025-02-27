@@ -20,7 +20,6 @@ import Testing
         }
       }
     }.render()
-    print(html)
 
     #expect(html.contains("<!DOCTYPE html>"))
     #expect(html.contains("<title>Hello, world! | Great Site</title>"))
