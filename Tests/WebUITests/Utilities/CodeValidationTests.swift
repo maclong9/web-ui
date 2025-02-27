@@ -8,8 +8,8 @@ import Testing
   @Test("Code Validation Tests")
   func testCodeValidation() async throws {
     // JS Validation
-    #expect(validateJS("function test() { return 1 + 2; }") == true)
-    #expect(validateJS("function test() { return 1 + ; }") == false)
+    #expect(validateJS("function test() { return 1 + 2; }"))
+    #expect(!validateJS("function test() { return 1 + ; }"))
 
     // HTML Validation
     let validHTMLResult = try await validateHTML(
@@ -21,7 +21,7 @@ import Testing
     // CSS Validation
     let validCSSResult = try await validateCSS("body { color: blue; }")
     let invalidCSSResult = try await validateCSS("body color:; }")
-    #expect(validCSSResult == true)
-    #expect(invalidCSSResult == false)
+    #expect(validCSSResult)
+    #expect(!invalidCSSResult)
   }
 }
