@@ -4,8 +4,7 @@ import Testing
 
 // Note: This assumes a hypothetical HTMLValidator library exists
 // Need to integrate a real HTML validation tool
-@Suite("HTML Validator Tests")
-struct HTMLValidatorTests {
+@Suite("HTML Validator Tests") struct HTMLValidatorTests {
   @Test("Validate generated HTML is well-formed")
   func testHTMLWellFormed() async throws {
     let document = Document(title: "Test", description: "Test") {

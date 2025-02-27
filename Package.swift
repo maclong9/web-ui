@@ -5,10 +5,7 @@ import PackageDescription
 let package = Package(
   name: "WebUI",
   products: [
-    .library(
-      name: "WebUI",
-      targets: ["WebUI"]
-    )
+    .library(name: "WebUI", targets: ["WebUI"])
   ],
   targets: [
     .target(name: "WebUI"),
