@@ -35,7 +35,7 @@ public class Element: HTML {
 
   /// Constructs attributes and renders the element and its content as an HTML string.
   /// - Returns: A string containing the complete HTML representation of this element and its content.
-  func render() -> String {
+  public func render() -> String {
     let attributes = [
       id.map { "id=\"\($0)\"" },
       classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,

@@ -74,7 +74,7 @@ public class Link: Element {
     super.init(tag: "a", id: id, classes: classes, role: role, content: content)
   }
 
-  override func render() -> String {
+  public override func render() -> String {
     let attributes = [
       id.map { "id=\"\($0)\"" },
       classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
