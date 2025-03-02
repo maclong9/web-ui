@@ -34,7 +34,6 @@ public struct Metadata {
     keywords: [String]? = nil,
     type: String? = nil
   ) -> String {
-    // Determine effective values: page-specific takes precedence, fallback to site-wide
     let effectiveAuthor = author?.isEmpty == false ? author : self.author
     let effectiveKeywords = keywords?.isEmpty == false ? keywords : self.keywords
     let effectiveTwitter = twitter?.isEmpty == false ? twitter : self.twitter
