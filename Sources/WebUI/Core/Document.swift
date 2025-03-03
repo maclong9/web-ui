@@ -1,8 +1,5 @@
 import Foundation
 
-// TODO: Create optimised bundles of CSS and JS named `{page-title}.css`
-// TODO: Validate the HTML, CSS and JS output on build
-
 public struct Document {
   let configuration: Configuration
   let title: String
