@@ -1,8 +1,3 @@
-/// Represents a header section, usually reserved for titles, navigation and key information.
-///
-/// The `Header` class generates an HTML `<header>` element
-///
-/// - SeeAlso: `Main` and `Footer` for layout classes
 public class Header: Element {
   init(
     id: String? = nil,
@@ -14,9 +9,6 @@ public class Header: Element {
   }
 }
 
-/// Represents a navigation section for links.
-///
-/// The `Navigation` class generates an HTML `<nav>` element
 public class Navigation: Element {
   init(
     id: String? = nil,
@@ -28,11 +20,6 @@ public class Navigation: Element {
   }
 }
 
-/// Represents a main section, this is where the main content of the page will go
-///
-/// The `Main` class generates an HTML `<main>` element
-///
-/// - SeeAlso: `Header` and `Footer` for other Layout classes
 public class Main: Element {
   init(
     id: String? = nil,
@@ -44,11 +31,6 @@ public class Main: Element {
   }
 }
 
-/// Represents a header section, usually reserved for titles, navigation and key information.
-///
-/// The `Footer` class generates an HTML `<footer>` element
-///
-/// - SeeAlso: `Header` and `Main` for layout classes
 public class Footer: Element {
   init(
     id: String? = nil,

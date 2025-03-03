@@ -1,4 +1,3 @@
-/// A base class representing an HTML element with a tag name, optional attributes, styling possibility and nested content.
 public class Element: HTML {
   let tag: String
   let id: String?
@@ -6,19 +5,10 @@ public class Element: HTML {
   let role: AriaRole?
   private let contentBuilder: () -> [any HTML]
 
-  /// The computed property that evaluates the content builder to get the nested HTML components.
   var content: [any HTML] {
     contentBuilder()
   }
 
-  /// Creates a new HTML element with the specified tag, attributes, and content.
-  /// - Parameters:
-  ///   - tag: The HTML tag name for this element.
-  ///   - id: An optional ID attribute for the element.
-  ///   - classes: Optional CSS classes to apply to the element.
-  ///   - role: Optional AriaRole for accessibility.
-  ///   - content: A result builder closure that defines the nested content.
-  /// - Note: The content is captured as a closure and only evaluated when rendering.
   init(
     tag: String,
     id: String? = nil,
@@ -33,8 +23,6 @@ public class Element: HTML {
     self.contentBuilder = content
   }
 
-  /// Constructs attributes and renders the element and its content as an HTML string.
-  /// - Returns: A string containing the complete HTML representation of this element and its content.
   public func render() -> String {
     let attributes = [
       id.map { "id=\"\($0)\"" },
