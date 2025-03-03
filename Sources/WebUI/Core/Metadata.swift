@@ -7,7 +7,6 @@ public struct Metadata {
   let locale: String
   let type: String?
 
-  /// Creates a new `Metadata` instance with optional parameters.
   init(
     site: String = "Great Site",
     title: String = "%s",

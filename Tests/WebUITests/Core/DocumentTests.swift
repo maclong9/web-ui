@@ -44,12 +44,14 @@ struct DocumentTests {
       title: "Test",
       description: "Test desc"
     ) {
-      "<h1>Heading</h1>"
-      "<p>Paragraph</p>"
+      Heading(level: .h1) { "Heading" }
+      Text { "Paragraph" }
+      Text { "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." }
     }
 
     let html = document.render()
     #expect(html.contains("<h1>Heading</h1>"))
-    #expect(html.contains("<p>Paragraph</p>"))
+    #expect(html.contains("<span>Paragraph</span>"))
+    #expect(html.contains("<p>"))
   }
 }
