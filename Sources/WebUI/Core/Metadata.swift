@@ -54,6 +54,7 @@ public struct Metadata {
             ? "<meta name=\"keywords\" content=\"\(effectiveKeywords?.joined(separator: ", ") ?? "")\">"
             : "")
         <link rel="stylesheet" href="/\(pageTitle.split(separator: "|")[0].replacingOccurrences(of: " ", with: "-").lowercased()).css">
+        <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
       </head>
       """
   }

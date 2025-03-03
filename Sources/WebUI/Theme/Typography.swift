@@ -1,51 +1,59 @@
 import Foundation
 
-enum Tracking: Double {
-  case tighter = -0.05
-  case tight = -0.025
-  case normal = 0
-  case wide = 0.025
-  case wider = 0.05
-  case widest = 0.1
+enum Size: String {
+  case
+    xs = "text-xs",
+    sm = "text-sm",
+    base = "text-base",
+    lg = "text-lg",
+    xl = "text-xl",
+    _2xl = "text-2xl",
+    _3xl = "text-3xl",
+    _4xl = "text-4xl",
+    _5xl = "text-5xl",
+    _6xl = "text-6xl",
+    _7xl = "text-7xl",
+    _8xl = "text-8xl",
+    _9xl = "text-9xl"
 }
 
-enum Leading: Double {
-  case tightest = 1.0
-  case tighter = 1.25
-  case tight = 1.375
-  case normal = 1.5
-  case relaxed = 1.625
-  case loose = 2.0
+enum Alignment: String {
+  case left, center, right
+
+  var rawValue: String {
+    return "text-\(self)"
+  }
 }
 
-enum Size: String, CaseIterable {
-  case xs
-  case sm
-  case base
-  case lg
-  case xl
-  case xl2
-  case xl3
-  case xl4
-  case xl5
-  case xl6
-  case xl7
-  case xl8
-  case xl9
+enum Weight: String {
+  case thin, extralight, light, normal, medium, semibold, bold, extrabold, black
 
-  var lineHeight: Double {
-    switch self {
-      case .xs, .sm, .base:
-        return 1.5
-      case .lg, .xl:
-        return 1.625
-      case .xl2, .xl3, .xl4:
-        return 1.75
-      case .xl5, .xl6:
-        return 1.5
-      case .xl7, .xl8, .xl9:
-        return 1.25
-    }
+  var rawValue: String {
+    return "font-\(self)"
+  }
+}
+
+enum Tracking: String {
+  case tighter, tight, normal, wide, wider, widest
+
+  var rawValue: String {
+    return "tracking-\(self)"
+  }
+}
+
+enum Leading: String {
+  case tightest, tighter, tight, normal, relaxed, loose
+
+  var rawValue: String {
+    return "leading-\(self)"
+  }
+}
+
+enum Decoration: String {
+  case underline, lineThrough, double, dotted, dashed, wavy
+
+  var rawValue: String {
+    return "decoration-\(self)"
   }
 }
 
@@ -53,20 +61,15 @@ struct Typography {
   let heading: [String]
   let body: [String]
   let mono: [String]
-  let width: Int
-  let multiplier: Double
 
   init(
     heading: [String] = ["system-ui", "sans-serif"],
     body: [String] = ["system-ui", "sans-serif"],
     mono: [String] = ["system-ui", "monospace"],
-    width: Int = 60,
-    multiplier: Double = 1.0
+    width: Int = 60
   ) {
     self.heading = heading
     self.body = body
     self.mono = mono
-    self.width = width
-    self.multiplier = multiplier
   }
 }

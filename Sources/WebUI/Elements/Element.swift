@@ -3,7 +3,7 @@ public class Element: HTML {
   let id: String?
   let classes: [String]?
   let role: AriaRole?
-  private let contentBuilder: () -> [any HTML]
+  let contentBuilder: () -> [any HTML]
 
   var content: [any HTML] {
     contentBuilder()
@@ -34,6 +34,7 @@ public class Element: HTML {
 
     let attributesString = attributes.isEmpty ? "" : " \(attributes)"
     let contentString = content.map { $0.render() }.joined()
+
     return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
   }
 }
