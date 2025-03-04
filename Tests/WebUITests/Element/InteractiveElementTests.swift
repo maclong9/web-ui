@@ -65,4 +65,16 @@ struct InteractiveElementTests {
     }.render()
     #expect(html == "<button>Plain</button>")
   }
+
+  @Test("Input element renders as self closing")
+  func testInputRendersAsSelfClosing() throws {
+    let html = Input(type: .number).render()
+    #expect(html == "<input type=\"number\">")
+  }
+
+  @Test("Textarea element renders correctly")
+  func testTextareaRendersCorrectly() throws {
+    let html = Textarea(placeholder: "Add a message").render()
+    #expect(html == "<textarea placeholder=\"Add a message\"></textarea>")
+  }
 }
