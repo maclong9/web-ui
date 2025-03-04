@@ -6,10 +6,10 @@ public class Element: HTML {
   let id: String?
   let classes: [String]?
   let role: AriaRole?
-  let contentBuilder: () -> [any HTML]
+  let contentBuilder: () -> [any HTML]?
 
   var content: [any HTML] {
-    contentBuilder()
+    contentBuilder() ?? { [] }()
   }
 
   /// Sets up a new HTML element with specific properties and content.
@@ -25,7 +25,7 @@ public class Element: HTML {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping () -> [any HTML]? = { [] }
   ) {
     self.tag = tag
     self.id = id
@@ -48,7 +48,6 @@ public class Element: HTML {
 
     let attributesString = attributes.isEmpty ? "" : " \(attributes)"
     let contentString = content.map { $0.render() }.joined()
-
     return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
   }
 }
