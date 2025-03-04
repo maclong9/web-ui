@@ -24,9 +24,18 @@ struct TextElementTests {
 
   @Test("Heading renders with correct level")
   func testHeadingRender() throws {
-    let heading = Heading(level: .h2, id: "title") {
+    
+    
+    let heading =
+    
+    
+    
+    Heading(level: .h2, id: "title") {
       "Section Title"
     }
+  
+    
+    
     let html = heading.render()
     #expect(html == "<h2 id=\"title\">Section Title</h2>")
   }
