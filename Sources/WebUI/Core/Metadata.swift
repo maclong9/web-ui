@@ -1,3 +1,9 @@
+/// Manages and renders HTML metadata.
+/// This holds information such as site name, title, author, keywords, Twitter handle, locale, and type.
+/// Its `render()` function generates the `<head>` section of an HTML document, including:
+/// - `<meta>` tags for character set, viewport, description, Open Graph properties, and more.
+/// - A `<title>` tag with the provided page title.
+/// - Conditional `<meta>` tags for author, keywords, Twitter creator, and Open Graph type if provided.
 public struct Metadata {
   let site: String
   let title: String

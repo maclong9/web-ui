@@ -1,10 +1,19 @@
 import Foundation
 
+/// Represents different levels of HTML heading tags, from h1 to h6.
+/// Each case corresponds to a specific heading level, used to structure and organize content on a web page.
 enum HeadingLevel: String {
   case h1, h2, h3, h4, h5, h6
 }
 
-public class Text: Element {
+/// Creates HTML text elements.
+/// This can render either a `<p>` (paragraph) tag or a `<span>` tag based on the content.
+/// - If the content contains more than one sentence, it is rendered as a `<p>` tag.
+/// - If the content contains one sentence or less, it is rendered as a `<span>` tag.
+///
+/// The `<p>` tag is used to represent a paragraph of text, which is a block-level element.
+/// The `<span>` tag is used to group inline elements for styling or other purposes without adding semantic meaning.
+class Text: Element {
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -20,6 +29,12 @@ public class Text: Element {
   }
 }
 
+/// Creates HTML heading elements.
+/// This can render heading tags from `<h1>` to `<h6>`, depending on the `level` parameter.
+///
+/// Heading tags are used to structure the content of a web page and indicate the hierarchy of sections.
+/// - `<h1>` is typically used for the main heading of the page.
+/// - `<h2>` to `<h6>` are used for subheadings, with `<h2>` being the next most important after `<h1>`, and so on.
 public class Heading: Element {
   init(
     level: HeadingLevel,
@@ -32,6 +47,10 @@ public class Heading: Element {
   }
 }
 
+/// A class for creating HTML anchor elements.
+/// This class renders an `<a>` tag, which is used to create a link to another resource, such as a web page or a file.
+///
+/// The `<a>` tag supports attributes like `href` for the URL and `target` to specify where to open the linked resource.
 public class Link: Element {
   private let href: String
   private let newTab: Bool?
@@ -65,6 +84,10 @@ public class Link: Element {
   }
 }
 
+/// Creates HTML emphasis elements.
+/// This renders an `<em>` tag, which is used to indicate that its content has stress emphasis compared to the surrounding text.
+///
+/// The `<em>` tag is typically rendered in italic text by default in most browsers.
 public class Emphasis: Element {
   init(
     id: String? = nil,
@@ -76,6 +99,10 @@ public class Emphasis: Element {
   }
 }
 
+/// Creates HTML strong importance elements.
+/// This renders a `<strong>` tag, which is used to indicate that its content has strong importance, seriousness, or urgency.
+///
+/// The `<strong>` tag is typically rendered in bold text by default in most browsers.
 public class Strong: Element {
   init(
     id: String? = nil,

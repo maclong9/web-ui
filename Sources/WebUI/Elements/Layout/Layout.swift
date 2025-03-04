@@ -1,3 +1,5 @@
+/// Creates HTML header elements.
+/// This renders a `<header>` tag, which is used to contain introductory content or a set of navigational links for a document or section.
 public class Header: Element {
   init(
     id: String? = nil,
@@ -9,6 +11,8 @@ public class Header: Element {
   }
 }
 
+/// Creates HTML header elements.
+/// This renders a `<header>` tag, which is used to contain introductory content or a set of navigational links for a document or section.
 public class Navigation: Element {
   init(
     id: String? = nil,
@@ -20,6 +24,8 @@ public class Navigation: Element {
   }
 }
 
+/// Creates the main content area of an HTML document.
+/// This renders a `<main>` tag, which contains the primary content of the page that is unique to that page and should be relevant to the page's purpose.
 public class Main: Element {
   init(
     id: String? = nil,
@@ -31,6 +37,8 @@ public class Main: Element {
   }
 }
 
+/// Creates HTML footer elements.
+/// This renders a `<footer>` tag, which typically contains information about the author, copyright, links to terms of use, etc., and is placed at the bottom of a web page or section.
 public class Footer: Element {
   init(
     id: String? = nil,
