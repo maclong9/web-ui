@@ -1,3 +1,4 @@
+/// Represents the type of a button element.
 enum ButtonType {
   case submit, reset
 }
@@ -41,7 +42,6 @@ public class Button: Element {
 
     let attributesString = attributes.isEmpty ? "" : " \(attributes)"
     let contentString = content.map { $0.render() }.joined()
-
     return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
   }
 }
