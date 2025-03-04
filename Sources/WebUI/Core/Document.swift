@@ -50,7 +50,7 @@ public struct Document {
   }
 
   /// Generates a complete HTML document as a string.
-  /// This builds the full webpage, combining the `<html>` tag with language settings, the `<head>` section from metadata, and the `<body>` with content, like "<!DOCTYPE html><html lang=\"en\">...".
+  /// This builds the full webpage, combining the `<html>` tag with language settings, the `<head>` section from metadata, and the `<body>` with content
   func render() -> String {
     let pageTitle = "\(title) | \(configuration.metadata.site)"
 
