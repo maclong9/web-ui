@@ -24,8 +24,10 @@ public class Section: Element {
   }
 }
 
-/// Creates HTML division elements.
-/// This renders a `<div>` tag, which is a generic container used to group other HTML elements for styling or other purposes without adding specific semantic meaning.
+/// Creates standard HTML grouping elements.
+///
+/// This renders a `<div>` tag, which is a generic container used to group other HTML elements
+/// for styling or other purposes without adding specific semantic meaning.
 public class Stack: Element {
   init(
     id: String? = nil,
@@ -34,18 +36,5 @@ public class Stack: Element {
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     super.init(tag: "div", id: id, classes: classes, role: role, content: content)
-  }
-}
-
-/// Creates HTML button elements.
-/// This renders a `<button>` tag, which is used to create a clickable button that can be used to trigger an action or submit a form.
-public class Button: Element {
-  init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
-  ) {
-    super.init(tag: "button", id: id, classes: classes, role: role, content: content)
   }
 }
