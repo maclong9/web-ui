@@ -20,7 +20,7 @@ public class Navigation: Element {
     role: AriaRole? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "header", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "nav", id: id, classes: classes, role: role, content: content)
   }
 }
 
