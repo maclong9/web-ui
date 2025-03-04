@@ -18,4 +18,60 @@ import Testing
 
     #expect(element.contains("font-extrabold text-5xl text-right tracking-wider leading-relaxed decoration-double"))
   }
+
+  @Test("Flex Styles Render Correctly")
+  func flexStylesShouldRenderCorrectly() async throws {
+    let element = Text { "Flex Container" }
+      .flex(
+        .column,
+        justify: .between,
+        align: .center
+      )
+      .render()
+
+    #expect(element.contains("flex justify-between items-center flex-col"))
+  }
+
+  @Test("Grid Styles Render Correctly")
+  func gridStylesShouldRenderCorrectly() async throws {
+    let element = Text { "Grid Container" }
+      .grid(
+        justify: .center,
+        align: .stretch,
+        columns: 3
+      )
+      .render()
+
+    #expect(element.contains("grid justify-center items-stretch grid-cols-3"))
+  }
+
+  @Test("Hidden Style Renders Correctly When True")
+  func hiddenStyleShouldRenderCorrectlyWhenTrue() async throws {
+    let element = Text { "Hidden Element" }
+      .hidden(true)
+      .render()
+
+    #expect(element.contains("hidden"))
+  }
+
+  @Test("Hidden Style Does Not Render When False")
+  func hiddenStyleShouldNotRenderWhenFalse() async throws {
+    let element = Text { "Visible Element" }
+      .hidden(false)
+      .render()
+
+    #expect(!element.contains("hidden"))
+  }
+
+  @Test("Chained Styles Render Correctly")
+  func chainedStylesShouldRenderCorrectly() async throws {
+    let element = Text { "Chained Styles" }
+      .flex(.row, justify: .around)
+      .font(weight: .bold, size: .lg)
+      .hidden(false)
+      .render()
+
+    #expect(element.contains("flex justify-around flex-row font-bold text-lg"))
+    #expect(!element.contains("hidden"))
+  }
 }
