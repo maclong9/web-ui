@@ -1,3 +1,5 @@
+/// Represents different font sizes.
+/// Each case corresponds to a specific CSS text size class.
 enum Size: String {
   case xs, sm, base, lg, xl, xl2, xl3, xl4, xl5, xl6, xl7, xl8, xl9
 
@@ -10,6 +12,8 @@ enum Size: String {
   }
 }
 
+/// Represents different text alignments.
+/// Each case corresponds to a specific CSS text alignment class.
 enum Alignment: String {
   case left, center, right
 
@@ -18,6 +22,8 @@ enum Alignment: String {
   }
 }
 
+/// Represents different font weights.
+/// Each case corresponds to a specific Tailwind CSS font weight class.
 enum Weight: String {
   case thin, extralight, light, normal, medium, semibold, bold, extrabold, black
 
@@ -26,6 +32,8 @@ enum Weight: String {
   }
 }
 
+/// Represents different letter spacings (tracking).
+/// Each case corresponds to a specific Tailwind CSS tracking class.
 enum Tracking: String {
   case tighter, tight, normal, wide, wider, widest
 
@@ -34,6 +42,8 @@ enum Tracking: String {
   }
 }
 
+/// Represents different line heights (leading).
+/// Each case corresponds to a specific CSS leading class.
 enum Leading: String {
   case tightest, tighter, tight, normal, relaxed, loose
 
@@ -42,6 +52,8 @@ enum Leading: String {
   }
 }
 
+/// Represents different text decorations.
+/// Each case corresponds to a specific CSS decoration class.
 enum Decoration: String {
   case underline, lineThrough, double, dotted, dashed, wavy
 
@@ -52,6 +64,15 @@ enum Decoration: String {
 
 // MARK: - Element Modifiers
 extension Element {
+  /// Adds font styling classes to the element.
+  /// - Parameters:
+  ///   - weight: Font weight.
+  ///   - size: Font size.
+  ///   - alignment: Text alignment.
+  ///   - tracking: Letter spacing.
+  ///   - leading: Line height.
+  ///   - decoration: Text decoration.
+  /// - Returns: A new Element with updated classes.
   func font(
     weight: Weight? = nil,
     size: Size? = nil,

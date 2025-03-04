@@ -1,5 +1,8 @@
 import JavaScriptCore
 
+/// This function checks if a piece of JavaScript code is valid.
+/// It takes a string of JavaScript code, runs it in a safe environment, and returns true if it works without errors, or false if there’s a problem.
+/// If an error occurs, it prints a message with details about the issue.
 func validateJS(_ jsCode: String) -> Bool {
   let context = JSContext()!
 
