@@ -8,7 +8,7 @@ import Testing
     let element = Text { "Hello, world!" }
       .font(
         weight: .extrabold,
-        size: ._5xl,
+        size: .xl5,
         alignment: .right,
         tracking: .wider,
         leading: .relaxed,
