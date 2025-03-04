@@ -12,7 +12,7 @@ public class Header: Element {
 }
 
 /// Creates HTML header elements.
-/// This renders a `<header>` tag, which is used to contain introductory content or a set of navigational links for a document or section.
+/// This renders a `<header>` tag, which is used to render a set of navigational links for a document or section.
 public class Navigation: Element {
   init(
     id: String? = nil,

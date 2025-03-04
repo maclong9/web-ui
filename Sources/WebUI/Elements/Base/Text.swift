@@ -55,6 +55,11 @@ public class Link: Element {
   private let href: String
   private let newTab: Bool?
 
+  /// Creates a new HTML anchor element
+  ///
+  /// - Parameters:
+  ///   - href: The path or url the link should point to
+  ///   - newTab: whether or not the link should open in a new browser tab
   init(
     href: String,
     newTab: Bool? = nil,

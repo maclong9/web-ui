@@ -13,6 +13,17 @@ public struct Metadata {
   let locale: String
   let type: String?
 
+  /// Creates metadata for an HTML document.
+  ///
+  /// This prepares details like the site name, title format, and other optional info for the webpage’s `<head>` section.
+  /// - Parameters:
+  ///   - site: The name of the website, like "Great Site", used in the title and branding.
+  ///   - title: A template for the page title, like "%s", which gets combined with the site name.
+  ///   - author: An optional name of the page’s creator, like "John Smith".
+  ///   - keywords: Optional words or phrases, like "tech, coding", for search engines.
+  ///   - twitter: An optional Twitter handle, like "johndoe", without the "@" symbol.
+  ///   - locale: The language setting, like "en" for English, with "en" as the default.
+  ///   - type: An optional category, like "article", to describe the page type.
   init(
     site: String = "Great Site",
     title: String = "%s",
@@ -31,6 +42,8 @@ public struct Metadata {
     self.type = type
   }
 
+  /// Generates the HTML `<head>` section with metadata for the webpage.
+  /// This builds a string containing the page title, description, and optional details like author or keywords, formatted as HTML tags like "<head><title>My Page</title>...</head>".
   func render(
     pageTitle: String,
     description: String,

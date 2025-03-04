@@ -11,6 +11,12 @@ struct Typography {
   let body: [String]
   let mono: [String]
 
+  /// Creates typography settings for text styling.
+  /// This prepares font choices for headings, body text, and monospaced text on the webpage.
+  /// - Parameters:
+  ///   - heading: Font names for headings, like "system-ui, sans-serif", with a default if not provided.
+  ///   - body: Font names for regular text, like "system-ui, sans-serif", with a default if not provided.
+  ///   - mono: Font names for monospaced text, like "system-ui, monospace", with a default if not provided.
   init(
     heading: [String] = ["system-ui", "sans-serif"],
     body: [String] = ["system-ui", "sans-serif"],
@@ -28,6 +34,11 @@ struct Theme {
   let breakpoints: [String: Int]
   let typography: Typography
 
+  /// Creates theme settings for the webpage’s look and feel.
+  /// This prepares styling options like breakpoints and typography for consistent design.
+  /// - Parameters:
+  ///   - breakpoints: Screen size settings, like "sm: 40", with an empty default if not provided.
+  ///   - typography: Typography settings for fonts, with a default if not provided.
   init(
     breakpoints: [String: Int] = [:],
     typography: Typography = Typography()
