@@ -2,7 +2,9 @@
 
 A library for generating Web User Interfaces in a simple, type-safe, and consistent manner.
 
-## Tutorials
+No need to worry if you are not an HTML expert, this library contains extensive documentation explaining the semantic meaning for each of the elements it can render. Building off of a design system inspired by modern utility-first CSS frameworks allows you to build beautiful looking websites without overthinking your styles.
+
+## Guides
 
 - [Static Site Generation with WebUI](./)
 - [Using WebUI with Hummingbird](./)
