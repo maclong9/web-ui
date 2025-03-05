@@ -57,7 +57,7 @@ public class Input: Element {
       attribute("type", type?.rawValue),
       attribute("value", value),
       attribute("placeholder", placeholder),
-      booleanAttribute("autofocus", autofocus)
+      booleanAttribute("autofocus", autofocus),
     ]
     .compactMap { $0 }
     .joined(separator: " ")
