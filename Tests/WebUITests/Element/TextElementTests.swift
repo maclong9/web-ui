@@ -27,7 +27,7 @@ struct TextElementTests {
 
     let heading =
 
-      Heading(level: .h2, id: "title") {
+      Heading(level: .level2, id: "title") {
         "Section Title"
       }
 

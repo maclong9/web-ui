@@ -19,8 +19,15 @@ final public class Textarea: Input {
     autofocus: Bool? = nil
   ) {
     super.init(
-      tag: "textarea", id: id, classes: classes, role: role, type: type, value: value, placeholder: placeholder,
-      autofocus: autofocus)
+      tag: "textarea",
+      id: id,
+      classes: classes,
+      role: role,
+      type: type,
+      value: value,
+      placeholder: placeholder,
+      autofocus: autofocus
+    )
   }
 
   /// Generates the HTML string for this textarea element.
@@ -30,8 +37,8 @@ final public class Textarea: Input {
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
       attribute("placeholder", placeholder),
-      booleanAttribute("autofocus", autofocus),
       attribute("role", role?.rawValue),
+      booleanAttribute("autofocus", autofocus),
     ]
     .compactMap { $0 }
     .joined(separator: " ")
