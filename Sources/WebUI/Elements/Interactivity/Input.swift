@@ -49,7 +49,7 @@ public class Input: Element {
   }
 
   /// Generates the HTML string for this input element.
-  /// This combines the input tag with any ID, classes, role, type, value, placeholder, and autofocus as attributes, producing a self-closing HTML snippet like "<input type=\"text\" placeholder=\"Name\" autofocus>".
+  /// This combines the input tag with any ID, classes, role, type, value, placeholder, and autofocus as attributes, producing a self-closing HTML snippet
   public override func render() -> String {
     let attributes = [
       attribute("id", id),

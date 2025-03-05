@@ -39,8 +39,8 @@ public class Button: Element {
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
       attribute("type", type?.rawValue),
-      booleanAttribute("autofocus", autofocus),
       attribute("role", role?.rawValue),
+      booleanAttribute("autofocus", autofocus),
     ]
     .compactMap { $0 }
     .joined(separator: " ")

@@ -9,27 +9,27 @@ public enum Size: String {
   /// Represents a large font size
   case lg
   /// Represents an extra-large font size
-  case xl
+  case extralLarge
   /// Represents a 2x extra-large font size
-  case xl2
+  case extraLarge2
   /// Represents a 3x extra-large font size
-  case xl3
+  case extraLarge3
   /// Represents a 4x extra-large font size
-  case xl4
+  case extraLarge4
   /// Represents a 5x extra-large font size
-  case xl5
+  case extraLarge5
   /// Represents a 6x extra-large font size
-  case xl6
+  case extraLarge6
   /// Represents a 7x extra-large font size
-  case xl7
+  case extraLarge7
   /// Represents a 8x extra-large font size
-  case xl8
+  case extraLarge8
   /// Represents a 9x extra-large font size
-  case xl9
+  case extraLarge9
 
   public var rawValue: String {
     let raw = String(describing: self)
-    if raw.hasPrefix("xl"), let number = raw.dropFirst(2).first {
+    if raw.hasPrefix("extraLarge"), let number = raw.dropFirst(10).first {
       return "text-\(number)xl"
     }
     return "text-\(raw)"
