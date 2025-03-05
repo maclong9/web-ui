@@ -1,5 +1,4 @@
 /// Represents different font sizes.
-/// Each case corresponds to a specific CSS text size class.
 public enum Size: String {
   /// Represents an extra-small font size
   case xs
@@ -38,7 +37,6 @@ public enum Size: String {
 }
 
 /// Represents different text alignments.
-/// Each case corresponds to a specific CSS text alignment class.
 public enum Alignment: String {
   /// Aligns text to the left
   case left
@@ -53,7 +51,6 @@ public enum Alignment: String {
 }
 
 /// Represents different font weights.
-/// Each case corresponds to a specific  CSS font weight class.
 public enum Weight: String {
   /// Represents a thin font weight (100)
   case thin
@@ -80,7 +77,6 @@ public enum Weight: String {
 }
 
 /// Represents different letter spacings (tracking).
-/// Each case corresponds to a specific  CSS tracking class.
 public enum Tracking: String {
   /// Represents a very tight letter spacing
   case tighter
@@ -101,7 +97,6 @@ public enum Tracking: String {
 }
 
 /// Represents different line heights (leading).
-/// Each case corresponds to a specific CSS leading class.
 public enum Leading: String {
   /// Represents the tightest line height
   case tightest
@@ -122,7 +117,6 @@ public enum Leading: String {
 }
 
 /// Represents different text decorations.
-/// Each case corresponds to a specific CSS decoration class.
 public enum Decoration: String {
   /// Represents an underline text decoration
   case underline
@@ -144,6 +138,7 @@ public enum Decoration: String {
 
 extension Element {
   /// Adds font styling classes to the element.
+  /// 
   /// - Parameters:
   ///   - weight: Font weight.
   ///   - size: Font size.
