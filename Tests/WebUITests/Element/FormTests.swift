@@ -20,7 +20,7 @@ struct FormElementTests {
     }
     let html = form.render()
     #expect(
-      html == "<form action=\"/login\" method=\"get\" id=\"login-form\" class=\"auth compact\">Login fields</form>")
+      html == "<form id=\"login-form\" class=\"auth compact\" action=\"/login\" method=\"get\">Login fields</form>")
   }
 
   @Test("Form renders with enctype attribute when specified")
@@ -53,7 +53,7 @@ struct FormElementTests {
     let html = form.render()
     #expect(
       html
-        == "<form action=\"/contact\" method=\"post\" id=\"contact-form\"><input type=\"text\" placeholder=\"Your name\"><textarea placeholder=\"Your message\"></textarea><button type=\"submit\">Send</button></form>"
+        == "<form id=\"contact-form\" action=\"/contact\" method=\"post\"><input type=\"text\" placeholder=\"Your name\"><textarea placeholder=\"Your message\"></textarea><button type=\"submit\">Send</button></form>"
     )
   }
 

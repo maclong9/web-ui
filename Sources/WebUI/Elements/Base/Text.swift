@@ -25,6 +25,7 @@ public enum HeadingLevel: String {
 /// The `<p>` tag is used to represent a paragraph of text, which is a block-level element.
 /// The `<span>` tag is used to group inline elements for styling or other purposes without adding semantic meaning.
 class Text: Element {
+  /// - SeeAlso: ``Element``
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -47,6 +48,7 @@ class Text: Element {
 /// - `<h1>` is typically used for the main heading of the page.
 /// - `<h2>` to `<h6>` are used for subheadings, with `<h2>` being the next most important after `<h1>`, and so on.
 public class Heading: Element {
+  /// - SeeAlso: ``Element``
   init(
     level: HeadingLevel,
     id: String? = nil,
@@ -71,6 +73,8 @@ public class Link: Element {
   /// - Parameters:
   ///   - href: The path or url the link should point to
   ///   - newTab: whether or not the link should open in a new browser tab
+  ///
+  /// - SeeAlso: ``Element``
   init(
     href: String,
     newTab: Bool? = nil,
@@ -105,6 +109,7 @@ public class Link: Element {
 ///
 /// The `<em>` tag is typically rendered in italic text by default in most browsers.
 public class Emphasis: Element {
+  /// - SeeAlso: ``Element``
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -120,6 +125,7 @@ public class Emphasis: Element {
 ///
 /// The `<strong>` tag is typically rendered in bold text by default in most browsers.
 public class Strong: Element {
+  /// - SeeAlso: ``Element``
   init(
     id: String? = nil,
     classes: [String]? = nil,

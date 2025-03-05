@@ -76,12 +76,6 @@ public class Element: HTML {
   /// Attributes are only included if they have non-empty values, and the resulting string
   /// is formatted with proper spacing.
   ///
-  /// - Parameters:
-  ///   - tag: The HTML tag name (e.g., "div", "span").
-  ///   - id: An optional identifier for the element.
-  ///   - classes: An optional array of class names to apply to the element.
-  ///   - role: An optional ARIA role for accessibility.
-  ///   - content: An array of nested elements or content to render inside the tag.
   /// - Returns: A string representing the complete HTML element, e.g., `<div id="main" class="container">Content</div>`.
   public func render() -> String {
     let attributes = [

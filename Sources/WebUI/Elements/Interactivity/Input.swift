@@ -29,6 +29,8 @@ public class Input: Element {
   ///   - value: An optional starting value, like "user@example.com", shown in the input when it loads.
   ///   - placeholder: An optional hint, like "Enter your email", displayed when the input is empty.
   ///   - autofocus: Whether the input should be automatically focused when the page loads.
+  ///
+  /// - SeeAlso: ``Element``
   init(
     tag: String = "input",
     id: String? = nil,
