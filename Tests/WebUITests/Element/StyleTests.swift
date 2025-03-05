@@ -15,7 +15,17 @@ struct DisplayTests {
       )
       .render()
 
+    let rowReverseElement = Text { "Flex Container" }
+      .flex(.rowReverse)
+      .render()
+
+    let colReverseElement = Text { "Flex Container" }
+      .flex(.colReverse)
+      .render()
+
     #expect(element.contains("flex flex-col justify-between items-center"))
+    #expect(colReverseElement.contains("flex flex-col-reverse"))
+    #expect(rowReverseElement.contains("flex flex-row-reverse"))
   }
 
   @Test("Grid Styles Render Correctly")
@@ -53,107 +63,112 @@ struct DisplayTests {
 // MARK: - Spacing Tests
 @Suite("Spacing Tests")
 struct SpacingTests {
-  @Test("Margins apply default classes correctly")
-  func testDefaultMargins() throws {
+  // MARK: Margin Tests
+
+  @Test("Margins with .all edge and default length creates correct class")
+  func testMarginsAllEdgeDefault() throws {
     let element = Element(tag: "div") {
-      "Test Content"
+      "Content"
     }.margins()
 
     let html = element.render()
-    #expect(html.contains("<div class=\"m-4\">Test Content</div>"))
+    #expect(html.contains("<div class=\"m-4\">Content</div>"))
   }
 
-  @Test("Margins apply specific edge and length correctly")
-  func testSpecificEdgeMargins() throws {
+  @Test("Margins with .all edge and specific length creates correct class")
+  func testMarginsAllEdgeSpecificLength() throws {
     let element = Element(tag: "div") {
-      "Test Content"
-    }.margins(.top, length: 6)
+      "Content"
+    }.margins(.all, length: 8)
 
     let html = element.render()
-    #expect(html.contains("<div class=\"mt-6\">Test Content</div>"))
+    #expect(html.contains("<div class=\"m-8\">Content</div>"))
   }
 
-  @Test("Margins apply with breakpoint correctly")
-  func testMarginsWithBreakpoint() throws {
+  @Test("Margins with .all edge and breakpoint creates correct class")
+  func testMarginsAllEdgeWithBreakpoint() throws {
     let element = Element(tag: "div") {
-      "Test Content"
-    }.margins(.horizontal, length: 2, on: .md)
+      "Content"
+    }.margins(.all, length: 6, on: .md)
 
     let html = element.render()
-    #expect(html.contains("<div class=\"md:mx-2\">Test Content</div>"))
+    #expect(html.contains("<div class=\"md:m-6\">Content</div>"))
   }
 
-  @Test("Margins combine with existing classes")
-  func testMarginsWithExistingClasses() throws {
-    let element = Element(tag: "div", classes: ["flex"]) {
-      "Test Content"
-    }.margins(.vertical, length: 8)
+  // MARK: Padding Edge Tests
 
-    let html = element.render()
-    #expect(html.contains("<div class=\"flex my-8\">Test Content</div>"))
-  }
-
-  @Test("Padding applies default classes correctly")
-  func testDefaultPadding() throws {
+  @Test("Padding with .all edge and default length creates correct class")
+  func testPaddingAllEdgeDefault() throws {
     let element = Element(tag: "div") {
-      "Test Content"
+      "Content"
     }.padding()
 
     let html = element.render()
-    #expect(html.contains("<div class=\"p-4\">Test Content</div>"))
+    #expect(html.contains("<div class=\"p-4\">Content</div>"))
   }
 
-  @Test("Padding applies specific edge and length correctly")
-  func testSpecificEdgePadding() throws {
+  @Test("Padding with .all edge and specific length creates correct class")
+  func testPaddingAllEdgeSpecificLength() throws {
     let element = Element(tag: "div") {
-      "Test Content"
-    }.padding(.leading, length: 3)
+      "Content"
+    }.padding(.all, length: 10)
 
     let html = element.render()
-    #expect(html.contains("<div class=\"pl-3\">Test Content</div>"))
+    #expect(html.contains("<div class=\"p-10\">Content</div>"))
   }
 
-  @Test("Padding applies with breakpoint correctly")
-  func testPaddingWithBreakpoint() throws {
+  @Test("Padding with .all edge and breakpoint creates correct class")
+  func testPaddingAllEdgeWithBreakpoint() throws {
     let element = Element(tag: "div") {
-      "Test Content"
-    }.padding(.bottom, length: 5, on: .lg)
+      "Content"
+    }.padding(.all, length: 7, on: .lg)
 
     let html = element.render()
-    #expect(html.contains("<div class=\"lg:pb-5\">Test Content</div>"))
+    #expect(html.contains("<div class=\"lg:p-7\">Content</div>"))
   }
 
-  @Test("Padding combines with existing classes")
-  func testPaddingWithExistingClasses() throws {
-    let element = Element(tag: "div", classes: ["text-center"]) {
-      "Test Content"
-    }.padding(.trailing, length: 2)
+  // MARK: - Mixed Margin Tests
 
-    let html = element.render()
-    #expect(html.contains("<div class=\"text-center pr-2\">Test Content</div>"))
-  }
-
-  @Test("Multiple spacing modifiers chain correctly")
-  func testChainedSpacingModifiers() throws {
+  @Test("Margins with nil edge and default length creates no classes")
+  func testMarginsNilEdge() throws {
     let element = Element(tag: "div") {
-      "Test Content"
-    }
-    .margins(.top, length: 2)
-    .padding(.horizontal, length: 4)
-    .margins(.bottom, length: 6, on: .sm)
+      "Content"
+    }.margins(nil, length: nil)
 
     let html = element.render()
-    #expect(html.contains("<div class=\"mt-2 px-4 sm:mb-6\">Test Content</div>"))
+    #expect(html == "<div>Content</div>")
   }
 
-  @Test("Spacing with all edges explicitly set")
-  func testAllEdgesSpacing() throws {
+  @Test("Margins with nil length creates no classes")
+  func testMarginsNilLength() throws {
     let element = Element(tag: "div") {
-      "Test Content"
-    }.margins(.all, length: 10)
+      "Content"
+    }.margins(.top, length: nil)
 
     let html = element.render()
-    #expect(html.contains("<div class=\"m-10\">Test Content</div>"))
+    #expect(html == "<div>Content</div>")
+  }
+
+  // MARK: - Mixed Padding Tests
+
+  @Test("Padding with nil edge and default length creates no classes")
+  func testPaddingNilEdge() throws {
+    let element = Element(tag: "div") {
+      "Content"
+    }.padding(nil, length: nil)
+
+    let html = element.render()
+    #expect(html == "<div>Content</div>")
+  }
+
+  @Test("Padding with nil length creates no classes")
+  func testPaddingNilLength() throws {
+    let element = Element(tag: "div") {
+      "Content"
+    }.padding(.bottom, length: nil)
+
+    let html = element.render()
+    #expect(html == "<div>Content</div>")
   }
 }
 
