@@ -1,5 +1,5 @@
 /// Represents the type of a button element.
-public enum ButtonType {
+public enum ButtonType: String {
   /// Indicates a button that submits form data
   case submit
   /// Indicates a button that resets form data
@@ -34,11 +34,11 @@ public class Button: Element {
   /// This combines the button tag with any ID, classes, role, type, and autofocus as attributes, then adds the rendered content inside the opening and closing tags, producing a complete HTML snippet like "<button type=\"submit\" autofocus>Submit</button>".
   public override func render() -> String {
     let attributes = [
-      id.map { "id=\"\($0)\"" },
-      classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
-      role.map { "role=\"\($0.rawValue)\"" },
-      type.map { "type=\"\($0 == .submit ? "submit" : "reset")\"" },
-      autofocus == true ? "autofocus" : nil,
+      attribute("id", id),
+      attribute("class", classes?.joined(separator: " ")),
+      attribute("type", type?.rawValue),
+      booleanAttribute("autofocus", autofocus),
+      attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
     .joined(separator: " ")

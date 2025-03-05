@@ -25,11 +25,11 @@ final public class Textarea: Input {
   /// This combines the textarea tag with any ID, classes, role, type, value, placeholder, and autofocus as attributes, producing an HTML snippet
   public override func render() -> String {
     let attributes = [
-      id.map { "id=\"\($0)\"" },
-      classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
-      role.map { "role=\"\($0.rawValue)\"" },
-      placeholder.map { "placeholder=\"\($0)\"" },
-      autofocus == true ? "autofocus" : nil,
+      attribute("id", id),
+      attribute("class", classes?.joined(separator: " ")),
+      attribute("placeholder", placeholder),
+      booleanAttribute("autofocus", autofocus),
+      attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
     .joined(separator: " ")

@@ -16,7 +16,6 @@ public enum InputType: String {
 /// This renders an `<input>` tag, which is used to collect user input, such as text, numbers, or form submissions.
 public class Input: Element {
 
-
   let type: InputType?
   let value: String?
   let placeholder: String?
@@ -51,13 +50,12 @@ public class Input: Element {
   /// This combines the input tag with any ID, classes, role, type, value, placeholder, and autofocus as attributes, producing a self-closing HTML snippet like "<input type=\"text\" placeholder=\"Name\" autofocus>".
   public override func render() -> String {
     let attributes = [
-      id.map { "id=\"\($0)\"" },
-      classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
-      role.map { "role=\"\($0.rawValue)\"" },
-      type.map { "type=\"\($0.rawValue)\"" },
-      value.map { "value=\"\($0)\"" },
-      placeholder.map { "placeholder=\"\($0)\"" },
-      autofocus == true ? "autofocus" : nil,
+      attribute("id", id),
+      attribute("class", classes?.joined(separator: " ")),
+      attribute("type", type?.rawValue),
+      attribute("value", value),
+      attribute("placeholder", placeholder),
+      booleanAttribute("autofocus", autofocus)
     ]
     .compactMap { $0 }
     .joined(separator: " ")
