@@ -3,6 +3,15 @@ import Testing
 @testable import WebUI
 
 @Suite("Style Tests") struct StyleTests {
+  @Test("Breakpoints Render Correctly")
+  func breakpointsShouldRenderCorrectly() async throws {
+    let element = Text { "Hello, world!" }
+      .font(weight: .bold)
+      .font(weight: .extrabold, on: .xl)
+      .render()
+    
+    #expect(element.contains("font-bold xl:font-extrabold"))
+  }
   @Test("Font Styles Render Correctly")
   func fontStylesShouldRenderCorrectly() async throws {
     let element = Text { "Hello, world!" }
@@ -29,7 +38,7 @@ import Testing
       )
       .render()
 
-    #expect(element.contains("flex justify-between items-center flex-col"))
+    #expect(element.contains("flex flex-col justify-between items-center"))
   }
 
   @Test("Grid Styles Render Correctly")
@@ -71,7 +80,7 @@ import Testing
       .hidden(false)
       .render()
 
-    #expect(element.contains("flex justify-around flex-row font-bold text-lg"))
+    #expect(element.contains("flex flex-row justify-around font-bold text-lg"))
     #expect(!element.contains("hidden"))
   }
 }

@@ -58,23 +58,37 @@ public enum Direction: String {
 }
 
 extension Element {
-  /// Applies flexbox styling to the element.
+  /// Applies flexbox styling to the element with an optional breakpoint.
   ///
   /// This modifier adds the `flex` class to make the element a flex container, along with optional justification, alignment, and direction classes.
   ///
   /// - Parameters:
-  ///   - justify: Controls how flex items are distributed along the main axis (e.g., horizontally in `row` direction). Maps to 's `justify-*` classes.
-  ///   - align: Controls how flex items are aligned along the vertical axis (e.g., vertically in `row` direction). Maps to 's `items-*` classes.
-  ///   - direction: Sets the direction of the main axis (horizontal or vertical). Maps to 's `flex-*` classes like `flex-row`.
+  ///   - direction: Sets the direction of the main axis (horizontal or vertical). Maps to Tailwind’s `flex-*` classes like `flex-row`.
+  ///   - justify: Controls how flex items are distributed along the main axis (e.g., horizontally in `row` direction). Maps to Tailwind’s `justify-*` classes.
+  ///   - align: Controls how flex items are aligned along the cross axis (e.g., vertically in `row` direction). Maps to Tailwind’s `items-*` classes.
+  ///   - breakpoint: Optional breakpoint prefix (e.g., md applies styles at 768px and up).
   /// - Returns: A new `Element` with the updated flexbox classes.
   func flex(
     _ direction: Direction? = nil,
     justify: Justify? = nil,
-    align: Align? = nil
+    align: Align? = nil,
+    breakpoint: Breakpoint? = nil
   ) -> Element {
-    let updatedClasses: [String] =
-      (self.classes ?? [])
-      + ["flex", justify?.rawValue, align?.rawValue, direction?.rawValue].compactMap { $0 }
+    let prefix = breakpoint?.rawValue ?? ""
+    var newClasses: [String] = []
+
+    newClasses.append(prefix + "flex")
+    if let directionValue = direction?.rawValue {
+      newClasses.append(prefix + directionValue)
+    }
+    if let justifyValue = justify?.rawValue {
+      newClasses.append(prefix + justifyValue)
+    }
+    if let alignValue = align?.rawValue {
+      newClasses.append(prefix + alignValue)
+    }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
       tag: self.tag,
       id: self.id,
@@ -84,23 +98,37 @@ extension Element {
     )
   }
 
-  /// Applies grid styling to the element.
+  /// Applies grid styling to the element with an optional breakpoint.
   ///
   /// This modifier adds the `grid` class to make the element a grid container, along with optional justification, alignment, and column classes.
   ///
   /// - Parameters:
-  ///   - justify: Controls how grid items are distributed along the inline (row) axis. Maps to 's `justify-*` classes.
-  ///   - align: Controls how grid items are aligned along the block (column) axis. Maps to 's `items-*` classes.
-  ///   - columns: Defines the number of columns in the grid layout. Maps to 's `grid-cols-*` classes.
+  ///   - justify: Controls how grid items are distributed along the inline (row) axis. Maps to Tailwind’s `justify-*` classes.
+  ///   - align: Controls how grid items are aligned along the block (column) axis. Maps to Tailwind’s `items-*` classes.
+  ///   - columns: Defines the number of columns in the grid layout. Maps to Tailwind’s `grid-cols-*` classes.
+  ///   - breakpoint: Which screen size to apply these styles to
   /// - Returns: A new `Element` with the updated grid classes.
   func grid(
     justify: Justify? = nil,
     align: Align? = nil,
-    columns: Int? = nil
+    columns: Int? = nil,
+    on breakpoint: Breakpoint? = nil
   ) -> Element {
-    let updatedClasses: [String] =
-      (self.classes ?? [])
-      + ["grid", justify?.rawValue, align?.rawValue, "grid-cols-\(columns ?? 1)"].compactMap { $0 }
+    let prefix = breakpoint?.rawValue ?? ""
+    var newClasses: [String] = []
+
+    newClasses.append(prefix + "grid")  // Base grid class is always added
+    if let justifyValue = justify?.rawValue {
+      newClasses.append(prefix + justifyValue)
+    }
+    if let alignValue = align?.rawValue {
+      newClasses.append(prefix + alignValue)
+    }
+    if let columnsValue = columns {
+      newClasses.append(prefix + "grid-cols-\(columnsValue)")
+    }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
       tag: self.tag,
       id: self.id,
@@ -110,16 +138,23 @@ extension Element {
     )
   }
 
-  /// Toggles the visibility of the element.
+  /// Toggles the visibility of the element with an optional breakpoint.
   ///
   /// This modifier adds or omits the `hidden` class, which sets `display: none` in CSS, hiding the element from the layout.
-  /// 
-  /// - Parameter isHidden: If `true` (default), adds the `hidden` class; if `false`, no class is added.
+  ///
+  /// - Parameters:
+  ///   - isHidden: If `true` (default), adds the `hidden` class; if `false`, no class is added.
+  ///   - breakpoint: Which screen size to apply these styles to
   /// - Returns: A new `Element` with the updated visibility class.
-  func hidden(_ isHidden: Bool = true) -> Element {
-    let updatedClasses: [String] =
-      (self.classes ?? [])
-      + (isHidden ? ["hidden"] : [])
+  func hidden(_ isHidden: Bool = true, breakpoint: Breakpoint? = nil) -> Element {
+    let prefix = breakpoint?.rawValue ?? ""
+    var newClasses: [String] = []
+
+    if isHidden {
+      newClasses.append(prefix + "hidden")
+    }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
       tag: self.tag,
       id: self.id,
