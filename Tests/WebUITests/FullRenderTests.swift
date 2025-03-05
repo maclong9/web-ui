@@ -50,7 +50,10 @@ struct FullPageTests {
 
             Text { "This is a test paragraph with styled text." }
               .font(size: .base, tracking: .normal, leading: .normal)
-
+            
+            Text { "This text is small on mobile and xl on desktop." }
+              .font(size: .xs)
+              .font(size: .xl5, on: .md)
           }
 
           Form(
@@ -110,7 +113,7 @@ struct FullPageTests {
     // Flex and font styling tests
     #expect(
       html.contains(
-        "class=\"flex justify-center items-center flex-col font-bold text-3xl text-center decoration-underline\""))
+        "class=\"flex flex-col justify-center items-center font-bold text-3xl text-center decoration-underline\""))
     #expect(html.contains("class=\"text-base tracking-normal leading-normal\""))
 
     // Form tests
