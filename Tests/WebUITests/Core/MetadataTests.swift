@@ -97,4 +97,33 @@ struct MetadataTests {
     #expect(html.contains("<meta name=\"keywords\" content=\"page\">"))  // Uses page-specific
     #expect(html.contains("<meta name=\"twitter:creator\" content=\"@siteuser\">"))  // Falls back to site-wide
   }
+
+  @Test("Stylesheet generation handles complex page titles")
+  func testStylesheetGeneration() throws {
+    let metadata = Metadata()
+    let html1 = metadata.render(
+      pageTitle: "About Us | Great Site",
+      description: "Company Information"
+    )
+    #expect(html1.contains("<link rel=\"stylesheet\" href=\"/about-us.css\">"))
+
+    let html2 = metadata.render(
+      pageTitle: "Contact Page with Multiple Words | Great Site",
+      description: "Get in Touch"
+    )
+    #expect(html2.contains("<link rel=\"stylesheet\" href=\"/contact-page-with-multiple-words.css\">"))
+  }
+
+  @Test("Metadata initializer sets correct default values")
+  func testMetadataInitializer() throws {
+    let metadata = Metadata()
+
+    #expect(metadata.site == "Great Site")
+    #expect(metadata.title == "%s | Great Site")
+    #expect(metadata.author == nil)
+    #expect(metadata.keywords == nil)
+    #expect(metadata.twitter == nil)
+    #expect(metadata.locale == "en")
+    #expect(metadata.type == nil)
+  }
 }

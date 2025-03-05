@@ -37,11 +37,11 @@ public enum Direction: String {
   /// Sets the main axis to horizontal (left to right)
   case row
   /// Sets the main axis to vertical (top to bottom)
-  case column = "col"
+  case column
   /// Sets the main axis to horizontal (right to left)
-  case rowReverse = "row-reverse"
+  case rowReverse
   /// Sets the main axis to vertical (bottom to top)
-  case colReverse = "col-reverse"
+  case colReverse
 
   public var rawValue: String {
     switch self {
@@ -77,7 +77,7 @@ extension Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
 
-    newClasses.append(prefix + "flex")
+    newClasses.append(prefix + "flex")  // Base flex class is always added
     if let directionValue = direction?.rawValue {
       newClasses.append(prefix + directionValue)
     }
