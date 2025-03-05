@@ -17,10 +17,10 @@ struct ElementTests {
       tag: "span",
       id: "test-id",
       classes: ["class1", "class2"],
-      role: .main
+      role: .menu
     ) {}
     let html = element.render()
-    #expect(html == "<span id=\"test-id\" class=\"class1 class2\" role=\"main\"></span>")
+    #expect(html == "<span id=\"test-id\" class=\"class1 class2\" role=\"menu\"></span>")
   }
 
   @Test("Element renders nested content")

@@ -2,8 +2,19 @@ import Foundation
 
 /// Represents different levels of HTML heading tags, from h1 to h6.
 /// Each case corresponds to a specific heading level, used to structure and organize content on a web page.
-enum HeadingLevel: String {
-  case h1, h2, h3, h4, h5, h6
+public enum HeadingLevel: String {
+  /// Represents the primary title or main topic of a page (h1)
+  case h1
+  /// Represents a major section or subtopic within the page (h2)
+  case h2
+  /// Represents a subsection within a major section (h3)
+  case h3
+  /// Represents a sub-subsection or deeper detail within a subsection (h4)
+  case h4
+  /// Represents a minor detail or supporting heading within a sub-subsection (h5)
+  case h5
+  /// Represents the finest level of detail or a rare, deeply nested heading (h6)
+  case h6
 }
 
 /// Creates HTML text elements.

@@ -1,10 +1,21 @@
+/// Represents the type of an input element.
+public enum InputType: String {
+  /// Represents a single-line text input field
+  case text
+  /// Represents a masked password input field
+  case password
+  /// Represents an email address input field
+  case email
+  /// Represents a numeric input field
+  case number
+  /// Represents a submit button input
+  case submit
+}
+
 /// Creates HTML input elements.
 /// This renders an `<input>` tag, which is used to collect user input, such as text, numbers, or form submissions.
 public class Input: Element {
-  /// Represents the type of an input element.
-  enum InputType: String {
-    case text, password, email, number, submit
-  }
+
 
   let type: InputType?
   let value: String?

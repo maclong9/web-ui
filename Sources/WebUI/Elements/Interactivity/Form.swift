@@ -1,3 +1,11 @@
+/// Represents the HTTP method for form submission.
+public enum FormMethod: String {
+  /// Represents an HTTP GET request method
+  case get
+  /// Represents an HTTP POST request method
+  case post
+}
+
 /// Creates an HTML form element.
 /// This renders a `<form>` tag, which is a block-level container used to group input elements (like text fields, checkboxes, or buttons) for collecting user data, typically for submission to a server.
 ///
@@ -6,20 +14,15 @@
 /// - `method`: The HTTP method for submission, typically "get" or "post".
 /// - `enctype`: The encoding type for form data, used when the method is "post".
 public class Form: Element {
-  /// Represents the HTTP method for form submission.
-  enum Method: String {
-    case get, post
-  }
-
   /// Represents the encoding type for form data submission.
-  enum EncodingType: String {
+  public enum EncodingType: String {
     case applicationXWWWFormUrlencoded = "application/x-www-form-urlencoded"
     case multipartFormData = "multipart/form-data"
     case textPlain = "text/plain"
   }
 
   private let action: String
-  private let method: Method
+  private let method: FormMethod
   private let enctype: EncodingType?
 
   /// Creates a new HTML form element.
@@ -34,7 +37,7 @@ public class Form: Element {
   ///   - content: A closure that builds the form’s content, such as inputs, textareas, and buttons.
   init(
     action: String,
-    method: Method,
+    method: FormMethod = .post,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,

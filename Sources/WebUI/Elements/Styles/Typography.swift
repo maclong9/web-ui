@@ -1,9 +1,34 @@
 /// Represents different font sizes.
 /// Each case corresponds to a specific CSS text size class.
-enum Size: String {
-  case xs, sm, base, lg, xl, xl2, xl3, xl4, xl5, xl6, xl7, xl8, xl9
+public enum Size: String {
+  /// Represents an extra-small font size
+  case xs
+  /// Represents a small font size
+  case sm
+  /// Represents the base (default) font size
+  case base
+  /// Represents a large font size
+  case lg
+  /// Represents an extra-large font size
+  case xl
+  /// Represents a 2x extra-large font size
+  case xl2
+  /// Represents a 3x extra-large font size
+  case xl3
+  /// Represents a 4x extra-large font size
+  case xl4
+  /// Represents a 5x extra-large font size
+  case xl5
+  /// Represents a 6x extra-large font size
+  case xl6
+  /// Represents a 7x extra-large font size
+  case xl7
+  /// Represents a 8x extra-large font size
+  case xl8
+  /// Represents a 9x extra-large font size
+  case xl9
 
-  var rawValue: String {
+  public var rawValue: String {
     let raw = String(describing: self)
     if raw.hasPrefix("xl"), let number = raw.dropFirst(2).first {
       return "text-\(number)xl"
@@ -14,55 +39,109 @@ enum Size: String {
 
 /// Represents different text alignments.
 /// Each case corresponds to a specific CSS text alignment class.
-enum Alignment: String {
-  case left, center, right
+public enum Alignment: String {
+  /// Aligns text to the left
+  case left
+  /// Centers text horizontally
+  case center
+  /// Aligns text to the right
+  case right
 
-  var rawValue: String {
+  public var rawValue: String {
     return "text-\(self)"
   }
 }
 
 /// Represents different font weights.
-/// Each case corresponds to a specific Tailwind CSS font weight class.
-enum Weight: String {
-  case thin, extralight, light, normal, medium, semibold, bold, extrabold, black
+/// Each case corresponds to a specific  CSS font weight class.
+public enum Weight: String {
+  /// Represents a thin font weight (100)
+  case thin
+  /// Represents an extra-light font weight (200)
+  case extralight
+  /// Represents a light font weight (300)
+  case light
+  /// Represents a normal font weight (400)
+  case normal
+  /// Represents a medium font weight (500)
+  case medium
+  /// Represents a semi-bold font weight (600)
+  case semibold
+  /// Represents a bold font weight (700)
+  case bold
+  /// Represents an extra-bold font weight (800)
+  case extrabold
+  /// Represents a black font weight (900)
+  case black
 
-  var rawValue: String {
+  public var rawValue: String {
     return "font-\(self)"
   }
 }
 
 /// Represents different letter spacings (tracking).
-/// Each case corresponds to a specific Tailwind CSS tracking class.
-enum Tracking: String {
-  case tighter, tight, normal, wide, wider, widest
+/// Each case corresponds to a specific  CSS tracking class.
+public enum Tracking: String {
+  /// Represents a very tight letter spacing
+  case tighter
+  /// Represents a tight letter spacing
+  case tight
+  /// Represents normal letter spacing
+  case normal
+  /// Represents a wide letter spacing
+  case wide
+  /// Represents a wider letter spacing
+  case wider
+  /// Represents the widest letter spacing
+  case widest
 
-  var rawValue: String {
+  public var rawValue: String {
     return "tracking-\(self)"
   }
 }
 
 /// Represents different line heights (leading).
 /// Each case corresponds to a specific CSS leading class.
-enum Leading: String {
-  case tightest, tighter, tight, normal, relaxed, loose
+public enum Leading: String {
+  /// Represents the tightest line height
+  case tightest
+  /// Represents a tighter line height
+  case tighter
+  /// Represents a tight line height
+  case tight
+  /// Represents a normal line height
+  case normal
+  /// Represents a relaxed line height
+  case relaxed
+  /// Represents a loose line height
+  case loose
 
-  var rawValue: String {
+  public var rawValue: String {
     return "leading-\(self)"
   }
 }
 
 /// Represents different text decorations.
 /// Each case corresponds to a specific CSS decoration class.
-enum Decoration: String {
-  case underline, lineThrough, double, dotted, dashed, wavy
+public enum Decoration: String {
+  /// Represents an underline text decoration
+  case underline
+  /// Represents a line-through (strikethrough) text decoration
+  case lineThrough
+  /// Represents a double underline text decoration
+  case double
+  /// Represents a dotted underline text decoration
+  case dotted
+  /// Represents a dashed underline text decoration
+  case dashed
+  /// Represents a wavy underline text decoration
+  case wavy
 
-  var rawValue: String {
+  public var rawValue: String {
     return "decoration-\(self)"
   }
 }
 
-// MARK: - Element Modifiers
 extension Element {
   /// Adds font styling classes to the element.
   /// - Parameters:
