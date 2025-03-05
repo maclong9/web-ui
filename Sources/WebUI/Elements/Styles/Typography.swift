@@ -137,15 +137,16 @@ public enum Decoration: String {
 }
 
 extension Element {
-  /// Adds font styling classes to the element.
-  /// 
+  /// Adds font styling classes to the element with an optional breakpoint.
+  ///
   /// - Parameters:
-  ///   - weight: Font weight.
-  ///   - size: Font size.
-  ///   - alignment: Text alignment.
-  ///   - tracking: Letter spacing.
-  ///   - leading: Line height.
-  ///   - decoration: Text decoration.
+  ///   - weight: Font weight (e.g., bold).
+  ///   - size: Font size (e.g., lg).
+  ///   - alignment: Text alignment (e.g., center).
+  ///   - tracking: Letter spacing (e.g., tight).
+  ///   - leading: Line height (e.g., normal).
+  ///   - decoration: Text decoration (e.g., underline).
+  ///   - breakpoint: Optional breakpoint prefix (e.g., sm applies styles at 640px and up).
   /// - Returns: A new Element with updated classes.
   func font(
     weight: Weight? = nil,
@@ -153,18 +154,32 @@ extension Element {
     alignment: Alignment? = nil,
     tracking: Tracking? = nil,
     leading: Leading? = nil,
-    decoration: Decoration? = nil
+    decoration: Decoration? = nil,
+    on breakpoint: Breakpoint? = nil
   ) -> Element {
-    let updatedClasses: [String] =
-      (self.classes ?? [])
-      + [
-        weight?.rawValue,
-        size?.rawValue,
-        alignment?.rawValue,
-        tracking?.rawValue,
-        leading?.rawValue,
-        decoration?.rawValue,
-      ].compactMap { $0 }
+    let prefix: String = breakpoint?.rawValue ?? ""
+
+    var newClasses: [String] = []
+    if let weightValue = weight?.rawValue {
+      newClasses.append(prefix + weightValue)
+    }
+    if let sizeValue = size?.rawValue {
+      newClasses.append(prefix + sizeValue)
+    }
+    if let alignmentValue = alignment?.rawValue {
+      newClasses.append(prefix + alignmentValue)
+    }
+    if let trackingValue = tracking?.rawValue {
+      newClasses.append(prefix + trackingValue)
+    }
+    if let leadingValue = leading?.rawValue {
+      newClasses.append(prefix + leadingValue)
+    }
+    if let decorationValue = decoration?.rawValue {
+      newClasses.append(prefix + decorationValue)
+    }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
 
     return Element(
       tag: self.tag,
