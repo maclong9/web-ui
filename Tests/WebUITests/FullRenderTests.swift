@@ -12,14 +12,6 @@ struct FullPageTests {
         title: "%s",
         twitter: "testuser",
         locale: "en-US"
-      ),
-      theme: Theme(
-        breakpoints: ["sm": Breakpoint.small.rawValue, "md": Breakpoint.medium.rawValue],
-        typography: Typography(
-          heading: ["Arial", "sans-serif"],
-          body: ["Helvetica", "sans-serif"],
-          mono: ["Courier", "monospace"]
-        )
       )
     )
 
@@ -58,6 +50,7 @@ struct FullPageTests {
 
             Text { "This is a test paragraph with styled text." }
               .font(size: .base, tracking: .normal, leading: .normal)
+
           }
 
           Form(
