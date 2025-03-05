@@ -35,6 +35,8 @@ public class Form: Element {
   ///   - role: An optional ARIA role for accessibility (e.g., "form").
   ///   - enctype: An optional encoding type for form data, required for file uploads with "multipart/form-data".
   ///   - content: A closure that builds the form’s content, such as inputs, textareas, and buttons.
+  ///
+  /// - SeeAlso: ``Element``
   init(
     action: String,
     method: FormMethod = .post,

@@ -17,6 +17,8 @@ public class Button: Element {
   /// - Parameters:
   ///   - type: The kind of button to render, for example submit for triggering a form submit action
   ///   - autofocus: Whether or not the button should be automatically focused on page load
+  ///
+  /// - SeeAlso: ``Element``
   init(
     id: String? = nil,
     classes: [String]? = nil,
