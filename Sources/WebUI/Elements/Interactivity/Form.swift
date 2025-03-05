@@ -54,12 +54,12 @@ public class Form: Element {
   /// This combines the form tag with attributes like action, method, id, classes, role, and enctype, then includes the rendered content (e.g., inputs and buttons) inside the opening and closing tags.
   public override func render() -> String {
     let attributes = [
-      "action=\"\(action)\"",
-      "method=\"\(method.rawValue)\"",
-      id.map { "id=\"\($0)\"" },
-      classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
-      role.map { "role=\"\($0.rawValue)\"" },
-      enctype.map { "enctype=\"\($0.rawValue)\"" },
+      attribute("id", id),
+      attribute("class", classes?.joined(separator: " ")),
+      attribute("action", action),
+      attribute("method", method.rawValue),
+      attribute("enctype", enctype?.rawValue),
+      attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
     .joined(separator: " ")

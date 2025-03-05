@@ -50,14 +50,44 @@ public class Element: HTML {
     self.contentBuilder = content
   }
 
-  /// Generates the HTML string for this element.
-  /// This combines the tag name with any ID, classes, or role as attributes, then adds the rendered content inside the
-  /// opening and closing tags, producing a complete HTML snippet like "<div id=\"example\">content</div>".
+  /// Creates a formatted HTML attribute string if the value is non-empty.
+  ///
+  /// - Parameters:
+  ///   - name: The name of the attribute (e.g., "id", "class", "role").
+  ///   - value: An optional string value for the attribute.
+  /// - Returns: A string in the format `name="value"` if the value is non-empty, or `nil` if the value is `nil` or empty.
+  func attribute(_ name: String, _ value: String?) -> String? {
+    value?.isEmpty == false ? "\(name)=\"\(value!)\"" : nil
+  }
+
+  /// Returns the attribute name if the condition is true, for boolean HTML attributes.
+  ///
+  /// - Parameters:
+  ///   - name: The name of the attribute (e.g., "id", "class", "role").
+  ///   - enabled: A boolean stating whether this attriute is enabled or disabled
+  public func booleanAttribute(_ name: String, _ enabled: Bool?) -> String? {
+    enabled == true ? name : nil
+  }
+
+  /// Renders an HTML element as a string with its tag, attributes, and content.
+  ///
+  /// This function constructs a properly formatted HTML string representation of an element,
+  /// including optional attributes like `id`, `class`, and `role`, and nested content.
+  /// Attributes are only included if they have non-empty values, and the resulting string
+  /// is formatted with proper spacing.
+  ///
+  /// - Parameters:
+  ///   - tag: The HTML tag name (e.g., "div", "span").
+  ///   - id: An optional identifier for the element.
+  ///   - classes: An optional array of class names to apply to the element.
+  ///   - role: An optional ARIA role for accessibility.
+  ///   - content: An array of nested elements or content to render inside the tag.
+  /// - Returns: A string representing the complete HTML element, e.g., `<div id="main" class="container">Content</div>`.
   public func render() -> String {
     let attributes = [
-      id.map { "id=\"\($0)\"" },
-      classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
-      role.map { "role=\"\($0)\"" },
+      attribute("id", id),
+      attribute("class", classes?.joined(separator: " ")),
+      attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
     .joined(separator: " ")

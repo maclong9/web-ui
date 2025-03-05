@@ -86,11 +86,11 @@ public class Link: Element {
 
   public override func render() -> String {
     let attributes = [
-      id.map { "id=\"\($0)\"" },
-      classes?.isEmpty == false ? "class=\"\(classes!.joined(separator: " "))\"" : nil,
-      "href=\"\(href)\"",
-      newTab == true ? "target=\"_blank\"" : nil,
-      role.map { "role=\"\($0.rawValue)\"" },
+      attribute("id", id),
+      attribute("class", classes?.joined(separator: " ")),
+      attribute("href", href),
+      attribute("target", newTab == true ? "_blank" : nil),
+      attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
     .joined(separator: " ")

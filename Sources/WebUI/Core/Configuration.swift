@@ -11,4 +11,3 @@ public struct Configuration {
     self.metadata = metadata
   }
 }
-
