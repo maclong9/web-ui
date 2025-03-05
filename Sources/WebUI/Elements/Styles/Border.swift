@@ -84,15 +84,11 @@ public enum ShadowSize: String {
 extension Element {
   /// Applies border styling to the element with an optional breakpoint.
   ///
-  /// This modifier adds TailwindCSS border classes for width (e.g., `border-2`), radius (e.g., `rounded-md` or `rounded-tl-lg`),
-  /// and style (e.g., `border-dashed`). If `style` is `.divide`, it applies a divider class (e.g., `divide-x-2`) instead of a
-  /// standard border.
-  ///
   /// - Parameters:
-  ///   - width: The border width in Tailwind units (e.g., 2 = 2px). Optional, defaults to nil (no width class).
-  ///   - radius: A tuple of `(side, size)` to specify border radius (e.g., `(.all, .md)` for `rounded-md`, `(.topLeft, .lg)` for `rounded-tl-lg`). Optional.
-  ///   - style: The border style (e.g., `.solid`, `.dashed`). Optional, defaults to nil (no style class).
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - width: The border width to be rendered
+  ///   - radius: A tuple of `(side, size)` to specify border radius
+  ///   - style: The border style
+  ///   - breakpoint: Optional breakpoint prefix
   /// - Returns: A new `Element` with the updated border classes.
   func border(
     width: Int? = nil,
@@ -131,12 +127,10 @@ extension Element {
 
   /// Applies outline styling to the element with an optional breakpoint.
   ///
-  /// This modifier adds TailwindCSS outline classes for width (e.g., `outline-2`) and style (e.g., `outline-dashed`).
-  ///
   /// - Parameters:
-  ///   - width: The outline width in Tailwind units (e.g., 2 = 2px). Optional, defaults to nil (no width class).
-  ///   - style: The outline style (e.g., `.solid`, `.dashed`). Optional, defaults to nil (no style class).
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - width: The outline width
+  ///   - style: The outline style
+  ///   - breakpoint: Optional breakpoint prefix
   /// - Returns: A new `Element` with the updated outline classes.
   func outline(
     width: Int? = nil,
@@ -165,11 +159,9 @@ extension Element {
 
   /// Applies box shadow styling to the element with an optional breakpoint.
   ///
-  /// This modifier adds TailwindCSS shadow classes (e.g., `shadow-md`, `shadow-none`).
-  ///
   /// - Parameters:
-  ///   - size: The shadow size (e.g., `.md` for medium, `.none` for no shadow). Required.
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - size: The shadow size
+  ///   - breakpoint: Optional breakpoint prefix
   /// - Returns: A new `Element` with the updated shadow class.
   func boxShadow(
     size: ShadowSize,
@@ -192,11 +184,9 @@ extension Element {
 
   /// Applies a ring effect to the element with an optional breakpoint.
   ///
-  /// This modifier adds TailwindCSS ring classes (e.g., `ring-2`) to create an outline-like effect using shadows.
-  ///
   /// - Parameters:
-  ///   - size: The ring width in Tailwind units (e.g., 2 = 2px). Required.
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - size: The ring width
+  ///   - breakpoint: Optional breakpoint prefix
   /// - Returns: A new `Element` with the updated ring class.
   func ring(
     size: Int,
@@ -205,7 +195,7 @@ extension Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
 
-    newClasses.append("\(prefix)ring-\(size)")  // Example: ring-2
+    newClasses.append("\(prefix)ring-\(size)")
 
     let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
