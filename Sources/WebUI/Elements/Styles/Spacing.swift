@@ -19,12 +19,10 @@ public enum Edge: String {
 extension Element {
   /// Applies margin styling to the element with an optional breakpoint.
   ///
-  /// This modifier adds TailwindCSS margin classes in the format `m{edge}-{length}` (e.g., `mt-4` for top margin of 1rem).
-  ///
   /// - Parameters:
   ///   - edges: Specifies which edges to apply the margin to. Defaults to `.all`.
   ///   - length: The spacing value in `0.25rem` increments (e.g., `4 = 1rem`). Defaults to `4`.
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - breakpoint: Optional breakpoint prefix
   /// - Returns: A new `Element` with the updated margin classes.
   func margins(
     _ edges: Edge? = .all,
@@ -51,11 +49,9 @@ extension Element {
 
   /// Applies padding styling to the element with an optional breakpoint.
   ///
-  /// This modifier adds TailwindCSS padding classes in the format `p{edge}-{length}` (e.g., `pt-4` for top padding of 1rem).
-  ///
   /// - Parameters:
   ///   - edges: Specifies which edges to apply the padding to. Defaults to `.all`.
-  ///   - length: The spacing value in Tailwind units (0.25rem increments, e.g., 4 = 1rem). Defaults to 4.
+  ///   - length: The spacing value 
   ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
   /// - Returns: A new `Element` with the updated padding classes.
   func padding(
