@@ -1,15 +1,15 @@
 /// Represents Tailwind CSS breakpoints for responsive design.
 public enum Breakpoint: String {
-    /// Small breakpoint (min-width: 640px)
-    case sm = "sm:"
-    /// Medium breakpoint (min-width: 768px)
-    case md = "md:"
-    /// Large breakpoint (min-width: 1024px)
-    case lg = "lg:"
-    /// Extra-large breakpoint (min-width: 1280px)
-    case xl = "xl:"
-    /// 2x extra-large breakpoint (min-width: 1536px)
-    case xl2 = "2xl:"
+  /// Small breakpoint (min-width: 640px)
+  case sm = "sm:"
+  /// Medium breakpoint (min-width: 768px)
+  case md = "md:"
+  /// Large breakpoint (min-width: 1024px)
+  case lg = "lg:"
+  /// Extra-large breakpoint (min-width: 1280px)
+  case xl = "xl:"
+  /// 2x extra-large breakpoint (min-width: 1536px)
+  case xl2 = "2xl:"
 }
 
 /// Represents different ARIA roles for accessibility.

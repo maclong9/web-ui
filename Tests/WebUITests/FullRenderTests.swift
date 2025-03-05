@@ -47,10 +47,12 @@ struct FullPageTests {
                 alignment: .center,
                 decoration: .underline
               )
+              .margins(.bottom, on: .md)
 
             Text { "This is a test paragraph with styled text." }
               .font(size: .base, tracking: .normal, leading: .normal)
-            
+              .padding()
+
             Text { "This text is small on mobile and xl on desktop." }
               .font(size: .xs)
               .font(size: .xl5, on: .md)
@@ -113,8 +115,9 @@ struct FullPageTests {
     // Flex and font styling tests
     #expect(
       html.contains(
-        "class=\"flex flex-col justify-center items-center font-bold text-3xl text-center decoration-underline\""))
-    #expect(html.contains("class=\"text-base tracking-normal leading-normal\""))
+        "class=\"flex flex-col justify-center items-center font-bold text-3xl text-center decoration-underline md:mb-4\""
+      ))
+    #expect(html.contains("class=\"text-base tracking-normal leading-normal p-4\""))
 
     // Form tests
     #expect(html.contains("<form action=\"/submit\" method=\"post\" enctype=\"multipart/form-data\">"))
