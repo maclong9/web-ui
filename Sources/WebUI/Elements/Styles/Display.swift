@@ -57,6 +57,14 @@ public enum Direction: String {
   }
 }
 
+/// Represents a flex grow value; dictates whether the container should fill remaining space
+public enum Grow: Int {
+  /// Indicates the container should not fill remaining space
+  case zero = 0
+  /// Indicates the container should fill remaining space
+  case one = 1
+}
+
 extension Element {
   /// Applies flexbox styling to the element with an optional breakpoint.
   ///
@@ -72,12 +80,13 @@ extension Element {
     _ direction: Direction? = nil,
     justify: Justify? = nil,
     align: Align? = nil,
+    grow: Grow? = nil,
     breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
 
-    newClasses.append(prefix + "flex")  // Base flex class is always added
+    newClasses.append(prefix + "flex")
     if let directionValue = direction?.rawValue {
       newClasses.append(prefix + directionValue)
     }
@@ -86,6 +95,9 @@ extension Element {
     }
     if let alignValue = align?.rawValue {
       newClasses.append(prefix + alignValue)
+    }
+    if let growValue = grow {
+      newClasses.append(prefix + "flex-\(growValue.rawValue)")
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
