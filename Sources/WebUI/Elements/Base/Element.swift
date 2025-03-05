@@ -1,12 +1,23 @@
+/// Represents different ARIA roles for accessibility.
+public enum AriaRole: String {
+  /// Designates an area containing search functionality
+  case search
+  /// Represents a widget with a list of selectable options
+  case listbox
+  /// Indicates a set of user-selectable options
+  case menu
+  /// Defines metadata about the document (e.g., footer)
+  case contentinfo
+  /// Represents a dialog box or subwindow
+  case dialog
+  /// Identifies content that complements the main content
+  case complementary
+}
+
 /// A base for creating any HTML element.
 /// Can render any HTML tag specified by the `tag` property.
 /// The semantic purpose of the HTML tag rendered depends on the specific tag name provided.
 public class Element: HTML {
-  /// Represents different ARIA roles for accessibility.
-  enum AriaRole: String {
-    case button, checkbox, main, navigation, search, listbox, menu, contentinfo, dialog, article, heading, complementary
-  }
-
   let tag: String
   let id: String?
   let classes: [String]?

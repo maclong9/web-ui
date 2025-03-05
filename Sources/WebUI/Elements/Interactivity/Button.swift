@@ -1,11 +1,14 @@
+/// Represents the type of a button element.
+public enum ButtonType {
+  /// Indicates a button that submits form data
+  case submit
+  /// Indicates a button that resets form data
+  case reset
+}
+
 /// Creates HTML button elements.
 /// This renders a `<button>` tag, which is used to create a clickable button that can be used to trigger an action or submit a form.
 public class Button: Element {
-  /// Represents the type of a button element.
-  enum ButtonType {
-    case submit, reset
-  }
-
   let type: ButtonType?
   let autofocus: Bool?
 

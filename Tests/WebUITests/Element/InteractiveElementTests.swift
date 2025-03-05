@@ -6,11 +6,11 @@ import Testing
 struct InteractiveElementTests {
   @Test("Button renders as button tag")
   func testButtonRender() throws {
-    let button = Button(id: "btn1", role: .button) {
+    let button = Button(id: "btn1") {
       "Click me"
     }
     let html = button.render()
-    #expect(html == "<button id=\"btn1\" role=\"button\">Click me</button>")
+    #expect(html == "<button id=\"btn1\">Click me</button>")
   }
 
   @Test("Link renders with href and optional target")
@@ -52,10 +52,10 @@ struct InteractiveElementTests {
 
   @Test("Button renders with both type and autofocus when specified")
   func testButtonWithTypeAndAutofocus() throws {
-    let html = Button(id: "save", classes: ["btn"], role: .button, type: .submit, autofocus: true) {
+    let html = Button(id: "save", classes: ["btn"], type: .submit, autofocus: true) {
       "Save"
     }.render()
-    #expect(html == "<button id=\"save\" class=\"btn\" role=\"button\" type=\"submit\" autofocus>Save</button>")
+    #expect(html == "<button id=\"save\" class=\"btn\" type=\"submit\" autofocus>Save</button>")
   }
 
   @Test("Button renders without type or autofocus when unspecified")

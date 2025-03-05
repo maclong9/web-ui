@@ -1,26 +1,52 @@
 /// Represents justification options for flexbox or grid layouts.
 /// Each case maps to a CSS `justify-*` utility class, controlling how items are distributed along the main axis.
-enum Justify: String {
-  case start, end, center, between, around, evenly
-  var rawValue: String { "justify-\(self)" }
+public enum Justify: String {
+  /// Aligns items to the start of the horizontal axis
+  case start
+  /// Aligns items to the end of the horizontal axis
+  case end
+  /// Centers items along the horizontal axis
+  case center
+  /// Distributes items with equal space between them
+  case between
+  /// Distributes items with equal space around them
+  case around
+  /// Distributes items with equal space between and around them
+  case evenly
+
+  public var rawValue: String { "justify-\(self)" }
 }
 
 /// Represents alignment options for flexbox or grid items.
-/// Each case maps to a Tailwind CSS `items-*` utility class, controlling how items align along the cross axis (e.g., vertically in row layouts).
-enum Align: String {
-  case start, end, center, baseline, stretch
-  var rawValue: String { "items-\(self)" }
+/// Each case maps to a  CSS `items-*` utility class, controlling how items align along the vertical axis (e.g., vertically in row layouts).
+public enum Align: String {
+  /// Aligns items to the start of the vertical axis
+  case start
+  /// Aligns items to the end of the vertical axis
+  case end
+  /// Centers items along the vertical axis
+  case center
+  /// Aligns items to their baseline
+  case baseline
+  /// Stretches items to fill the vertical axis
+  case stretch
+
+  public var rawValue: String { "items-\(self)" }
 }
 
 /// Represents flexbox direction options.
-/// Each case maps to a Tailwind CSS `flex-*` utility class, controlling the main axis direction of a flex container.
-enum Direction: String {
+/// Each case maps to a  CSS `flex-*` utility class, controlling the main axis direction of a flex container.
+public enum Direction: String {
+  /// Sets the main axis to horizontal (left to right)
   case row
+  /// Sets the main axis to vertical (top to bottom)
   case column = "col"
+  /// Sets the main axis to horizontal (right to left)
   case rowReverse = "row-reverse"
+  /// Sets the main axis to vertical (bottom to top)
   case colReverse = "col-reverse"
 
-  var rawValue: String {
+  public var rawValue: String {
     switch self {
       case .row:
         return "flex-row"
@@ -33,13 +59,14 @@ enum Direction: String {
     }
   }
 }
+
 extension Element {
   /// Applies flexbox styling to the element.
   /// This modifier adds the `flex` class to make the element a flex container, along with optional justification, alignment, and direction classes.
   /// - Parameters:
-  ///   - justify: Controls how flex items are distributed along the main axis (e.g., horizontally in `row` direction). Maps to Tailwind's `justify-*` classes.
-  ///   - align: Controls how flex items are aligned along the cross axis (e.g., vertically in `row` direction). Maps to Tailwind's `items-*` classes.
-  ///   - direction: Sets the direction of the main axis (horizontal or vertical). Maps to Tailwind's `flex-*` classes like `flex-row`.
+  ///   - justify: Controls how flex items are distributed along the main axis (e.g., horizontally in `row` direction). Maps to 's `justify-*` classes.
+  ///   - align: Controls how flex items are aligned along the vertical axis (e.g., vertically in `row` direction). Maps to 's `items-*` classes.
+  ///   - direction: Sets the direction of the main axis (horizontal or vertical). Maps to 's `flex-*` classes like `flex-row`.
   /// - Returns: A new `Element` with the updated flexbox classes.
   func flex(
     _ direction: Direction? = nil,
@@ -61,9 +88,9 @@ extension Element {
   /// Applies grid styling to the element.
   /// This modifier adds the `grid` class to make the element a grid container, along with optional justification, alignment, and column classes.
   /// - Parameters:
-  ///   - justify: Controls how grid items are distributed along the inline (row) axis. Maps to Tailwind's `justify-*` classes.
-  ///   - align: Controls how grid items are aligned along the block (column) axis. Maps to Tailwind's `items-*` classes.
-  ///   - columns: Defines the number of columns in the grid layout. Maps to Tailwind's `grid-cols-*` classes.
+  ///   - justify: Controls how grid items are distributed along the inline (row) axis. Maps to 's `justify-*` classes.
+  ///   - align: Controls how grid items are aligned along the block (column) axis. Maps to 's `items-*` classes.
+  ///   - columns: Defines the number of columns in the grid layout. Maps to 's `grid-cols-*` classes.
   /// - Returns: A new `Element` with the updated grid classes.
   func grid(
     justify: Justify? = nil,
