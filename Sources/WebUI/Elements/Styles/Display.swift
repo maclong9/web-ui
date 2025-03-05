@@ -1,5 +1,4 @@
 /// Represents justification options for flexbox or grid layouts.
-/// Each case maps to a CSS `justify-*` utility class, controlling how items are distributed along the main axis.
 public enum Justify: String {
   /// Aligns items to the start of the horizontal axis
   case start
@@ -18,7 +17,6 @@ public enum Justify: String {
 }
 
 /// Represents alignment options for flexbox or grid items.
-/// Each case maps to a  CSS `items-*` utility class, controlling how items align along the vertical axis (e.g., vertically in row layouts).
 public enum Align: String {
   /// Aligns items to the start of the vertical axis
   case start
@@ -35,7 +33,6 @@ public enum Align: String {
 }
 
 /// Represents flexbox direction options.
-/// Each case maps to a  CSS `flex-*` utility class, controlling the main axis direction of a flex container.
 public enum Direction: String {
   /// Sets the main axis to horizontal (left to right)
   case row
@@ -62,7 +59,9 @@ public enum Direction: String {
 
 extension Element {
   /// Applies flexbox styling to the element.
+  ///
   /// This modifier adds the `flex` class to make the element a flex container, along with optional justification, alignment, and direction classes.
+  ///
   /// - Parameters:
   ///   - justify: Controls how flex items are distributed along the main axis (e.g., horizontally in `row` direction). Maps to 's `justify-*` classes.
   ///   - align: Controls how flex items are aligned along the vertical axis (e.g., vertically in `row` direction). Maps to 's `items-*` classes.
@@ -86,7 +85,9 @@ extension Element {
   }
 
   /// Applies grid styling to the element.
+  ///
   /// This modifier adds the `grid` class to make the element a grid container, along with optional justification, alignment, and column classes.
+  ///
   /// - Parameters:
   ///   - justify: Controls how grid items are distributed along the inline (row) axis. Maps to 's `justify-*` classes.
   ///   - align: Controls how grid items are aligned along the block (column) axis. Maps to 's `items-*` classes.
@@ -110,7 +111,9 @@ extension Element {
   }
 
   /// Toggles the visibility of the element.
+  ///
   /// This modifier adds or omits the `hidden` class, which sets `display: none` in CSS, hiding the element from the layout.
+  /// 
   /// - Parameter isHidden: If `true` (default), adds the `hidden` class; if `false`, no class is added.
   /// - Returns: A new `Element` with the updated visibility class.
   func hidden(_ isHidden: Bool = true) -> Element {
