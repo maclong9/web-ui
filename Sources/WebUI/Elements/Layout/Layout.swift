@@ -26,6 +26,19 @@ public class Navigation: Element {
   }
 }
 
+/// Creates an HTML aside element.
+/// This renders an `<aside>` tag, used for content that is tangentially related to the surrounding content, such as sidebars or callouts.
+public class Aside: Element {
+  init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+  ) {
+    super.init(tag: "aside", id: id, classes: classes, role: role, content: content)
+  }
+}
+
 /// Creates the main content area of an HTML document.
 /// This renders a `<main>` tag, which contains the primary content of the page that is unique to that page and should be relevant to the page's purpose.
 public class Main: Element {

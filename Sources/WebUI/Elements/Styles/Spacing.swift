@@ -51,7 +51,7 @@ extension Element {
   ///
   /// - Parameters:
   ///   - edges: Specifies which edges to apply the padding to. Defaults to `.all`.
-  ///   - length: The spacing value 
+  ///   - length: The spacing value
   ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
   /// - Returns: A new `Element` with the updated padding classes.
   func padding(
