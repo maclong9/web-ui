@@ -2,6 +2,9 @@
 
 import PackageDescription
 
+// TODO: Implement Colors
+// TODO: Implement Custom CSS (classes evaluated at end of document render)
+
 let package = Package(
   name: "WebUI",
   platforms: [.macOS(.v15)],
