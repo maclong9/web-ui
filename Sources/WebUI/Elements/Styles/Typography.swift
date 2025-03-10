@@ -149,22 +149,23 @@ extension Element {
   ///   - breakpoint: Which screen size to apply these styles to
   /// - Returns: A new Element with updated classes.
   func font(
-    weight: Weight? = nil,
     size: Size? = nil,
+    weight: Weight? = nil,
     alignment: Alignment? = nil,
     tracking: Tracking? = nil,
     leading: Leading? = nil,
     decoration: Decoration? = nil,
+    color: Color? = nil,
     on breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix: String = breakpoint?.rawValue ?? ""
 
     var newClasses: [String] = []
-    if let weightValue = weight?.rawValue {
-      newClasses.append(prefix + weightValue)
-    }
     if let sizeValue = size?.rawValue {
       newClasses.append(prefix + sizeValue)
+    }
+    if let weightValue = weight?.rawValue {
+      newClasses.append(prefix + weightValue)
     }
     if let alignmentValue = alignment?.rawValue {
       newClasses.append(prefix + alignmentValue)
@@ -177,6 +178,9 @@ extension Element {
     }
     if let decorationValue = decoration?.rawValue {
       newClasses.append(prefix + decorationValue)
+    }
+    if let color = color?.rawValue {
+      newClasses.append("\(prefix)text-\(color)")
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses

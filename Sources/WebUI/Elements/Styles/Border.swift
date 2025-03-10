@@ -94,6 +94,7 @@ extension Element {
     width: Int? = nil,
     radius: (side: RadiusSide, size: RadiusSize)? = nil,
     style: BorderStyle? = nil,
+    color: Color? = nil,
     breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
@@ -113,6 +114,9 @@ extension Element {
     }
     if let styleValue = style, style != .divide {
       newClasses.append("\(prefix)border-\(styleValue.rawValue)")
+    }
+    if let color = color?.rawValue {
+      newClasses.append("\(prefix)border-\(color)")
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
@@ -135,6 +139,7 @@ extension Element {
   func outline(
     width: Int? = nil,
     style: BorderStyle? = nil,
+    color: Color? = nil,
     breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
@@ -145,6 +150,9 @@ extension Element {
     }
     if let styleValue = style, style != .divide {  // Divide not applicable for outline
       newClasses.append("\(prefix)outline-\(styleValue.rawValue)")
+    }
+    if let color = color?.rawValue {
+      newClasses.append("\(prefix)outline-\(color)")
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
@@ -165,12 +173,16 @@ extension Element {
   /// - Returns: A new `Element` with the updated shadow class.
   func boxShadow(
     size: ShadowSize,
+    color: Color? = nil,
     breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
 
-    newClasses.append("\(prefix)shadow-\(size.rawValue)")  // Example: shadow-md
+    newClasses.append("\(prefix)shadow-\(size.rawValue)")
+    if let color = color?.rawValue {
+      newClasses.append("\(prefix)shadow-\(color)")
+    }
 
     let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
@@ -189,13 +201,17 @@ extension Element {
   ///   - breakpoint: Optional breakpoint prefix
   /// - Returns: A new `Element` with the updated ring class.
   func ring(
-    size: Int,
+    size: Int = 1,
+    color: Color? = nil,
     breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
 
     newClasses.append("\(prefix)ring-\(size)")
+    if let color = color?.rawValue {
+      newClasses.append("\(prefix)ring-\(color)")
+    }
 
     let updatedClasses = (self.classes ?? []) + newClasses
     return Element(

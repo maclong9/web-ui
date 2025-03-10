@@ -54,21 +54,21 @@ struct TextElementsTests {
   func fontStylesShouldRenderCorrectly() async throws {
     let element = Text { "Hello, world!" }
       .font(
-        weight: .extrabold, size: .extraLarge5, alignment: .right, tracking: .wider, leading: .relaxed,
+        size: .extraLarge5, weight: .extrabold, alignment: .right, tracking: .wider, leading: .relaxed,
         decoration: .double
       )
       .render()
-    #expect(element.contains("font-extrabold text-5xl text-right tracking-wider leading-relaxed decoration-double"))
+    #expect(element.contains("text-5xl font-extrabold text-right tracking-wider leading-relaxed decoration-double"))
   }
 
   @Test("Chained Styles Render Correctly")
   func chainedStylesShouldRenderCorrectly() async throws {
     let element = Text { "Chained Styles" }
       .flex(.row, justify: .around, grow: .one)
-      .font(weight: .bold, size: .lg)
+      .font(size: .lg, weight: .bold)
       .hidden(false)
       .render()
-    #expect(element.contains("flex flex-row justify-around flex-1 font-bold text-lg"))
+    #expect(element.contains("flex flex-row justify-around flex-1 text-lg font-bold"))
     #expect(!element.contains("hidden"))
   }
 }
