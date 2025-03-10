@@ -1,4 +1,4 @@
-/// Represents transition properties in TailwindCSS.
+/// Represents transition properties
 public enum TransitionProperty: String {
   case all
   case colors
@@ -7,7 +7,7 @@ public enum TransitionProperty: String {
   case transform
 }
 
-/// Represents easing functions for transitions in TailwindCSS.
+/// Represents easing functions for transitions
 public enum Easing: String {
   case linear
   case `in`

@@ -1,4 +1,4 @@
-/// Represents cursor types in TailwindCSS.
+/// Represents cursor types.
 public enum CursorType: String {
   case auto
   case `default`

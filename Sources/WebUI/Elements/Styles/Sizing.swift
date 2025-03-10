@@ -1,6 +1,6 @@
-/// Represents dimensions for width and height in TailwindCSS sizing utilities.
+/// Represents dimensions for width and height.
 public enum Dimension {
-  /// Fixed size in Tailwind units (e.g., 4 = 1rem).
+  /// Fixed size 
   case fixed(Int)
   /// Fractional size (e.g., 1/2 = 50%).
   case fraction(Int, Int)

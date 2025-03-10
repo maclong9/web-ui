@@ -71,9 +71,9 @@ extension Element {
   /// This modifier adds the `flex` class to make the element a flex container, along with optional justification, alignment, and direction classes.
   ///
   /// - Parameters:
-  ///   - direction: Sets the direction of the main axis (horizontal or vertical). Maps to Tailwind’s `flex-*` classes like `flex-row`.
-  ///   - justify: Controls how flex items are distributed along the main axis (e.g., horizontally in `row` direction). Maps to Tailwind’s `justify-*` classes.
-  ///   - align: Controls how flex items are aligned along the cross axis (e.g., vertically in `row` direction). Maps to Tailwind’s `items-*` classes.
+  ///   - direction: Sets the direction of the main axis (horizontal or vertical).
+  ///   - justify: Controls how flex items are distributed along the main axis (e.g., horizontally in `row` direction).
+  ///   - align: Controls how flex items are aligned along the cross axis (e.g., vertically in `row` direction).
   ///   - breakpoint: Optional breakpoint prefix (e.g., md applies styles at 768px and up).
   /// - Returns: A new `Element` with the updated flexbox classes.
   func flex(
@@ -115,9 +115,9 @@ extension Element {
   /// This modifier adds the `grid` class to make the element a grid container, along with optional justification, alignment, and column classes.
   ///
   /// - Parameters:
-  ///   - justify: Controls how grid items are distributed along the inline (row) axis. Maps to Tailwind’s `justify-*` classes.
-  ///   - align: Controls how grid items are aligned along the block (column) axis. Maps to Tailwind’s `items-*` classes.
-  ///   - columns: Defines the number of columns in the grid layout. Maps to Tailwind’s `grid-cols-*` classes.
+  ///   - justify: Controls how grid items are distributed along the inline (row) axis.
+  ///   - align: Controls how grid items are aligned along the block (column) axis.
+  ///   - columns: Defines the number of columns in the grid layout. 
   ///   - breakpoint: Which screen size to apply these styles to
   /// - Returns: A new `Element` with the updated grid classes.
   func grid(

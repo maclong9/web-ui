@@ -174,4 +174,28 @@ struct StylingTests {
     let html = element.render()
     #expect(html.contains("<div class=\"lg:cursor-not-allowed\">Content</div>"))
   }
+
+  // Background Tests
+  @Test("Background color renders correctly")
+  func testBackgroundColor() throws {
+    let element = Element(tag: "div") { "Content" }.background(color: .blue(._500))
+    let html = element.render()
+    #expect(html.contains("bg-blue-500"))
+  }
+
+  @Test("Background color renders with breakpoints")
+  func testBackgroundColorWithBreakpoints() throws {
+    let element = Element(tag: "div") { "Content" }
+      .background(color: .green(._300))
+      .background(color: .blue(._500), on: .medium)
+    let html = element.render()
+    #expect(html.contains("bg-green-300 md:bg-blue-500"))
+  }
+  
+  @Test("Background color renders with custom value")
+  func testBackgroundColorWithCustomValue() throws {
+    let element = Element(tag: "div") { "Content" }.background(color: .custom("#0099ff"))
+    let html = element.render()
+    #expect(html.contains("bg-[#0099ff]"))
+  }
 }

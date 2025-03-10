@@ -1,4 +1,4 @@
-/// Represents Tailwind CSS breakpoints for responsive design.
+/// Represents CSS breakpoints for responsive design.
 public enum Breakpoint: String {
   /// Small breakpoint (min-width: 640px)
   case small = "sm:"
