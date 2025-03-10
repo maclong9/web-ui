@@ -1,4 +1,3 @@
-// StylingTests.swift
 import Testing
 
 @testable import WebUI
@@ -92,6 +91,103 @@ struct StylingTests {
       .border(style: .double)
     let html = element.render()
     #expect(html.contains("<div class=\"border-1 sm:rounded-bl-xs border-double\">Test Content</div>"))
+  }
+
+  // New Border Color Tests
+  @Test("Border applies color correctly")
+  func testBorderColor() throws {
+    let element = Element(tag: "div") { "Test Content" }.border(color: .red(._600))
+    let html = element.render()
+    #expect(html.contains("<div class=\"border-red-600\">Test Content</div>"))
+  }
+
+  @Test("Border applies custom color correctly")
+  func testBorderCustomColor() throws {
+    let element = Element(tag: "div") { "Test Content" }.border(color: .custom("#ffcc00"))
+    let html = element.render()
+    #expect(html.contains("<div class=\"border-[#ffcc00]\">Test Content</div>"))
+  }
+
+  @Test("Border applies color with breakpoint correctly")
+  func testBorderColorWithBreakpoint() throws {
+    let element = Element(tag: "div") { "Test Content" }.border(color: .purple(._400), breakpoint: .large)
+    let html = element.render()
+    #expect(html.contains("<div class=\"lg:border-purple-400\">Test Content</div>"))
+  }
+
+  @Test("Border combines color with other properties correctly")
+  func testBorderColorWithOtherProperties() throws {
+    let element = Element(tag: "div") { "Test Content" }.border(width: 2, style: .solid, color: .teal(._700))
+    let html = element.render()
+    #expect(html.contains("<div class=\"border-2 border-solid border-teal-700\">Test Content</div>"))
+  }
+
+  // New Outline Color Tests
+  @Test("Outline applies color correctly")
+  func testOutlineColor() throws {
+    let element = Element(tag: "div") { "Test Content" }.outline(color: .indigo(._500))
+    let html = element.render()
+    #expect(html.contains("<div class=\"outline-indigo-500\">Test Content</div>"))
+  }
+
+  @Test("Outline applies custom color with width correctly")
+  func testOutlineCustomColorWithWidth() throws {
+    let element = Element(tag: "div") { "Test Content" }.outline(width: 2, color: .custom("#00ff99"))
+    let html = element.render()
+    #expect(html.contains("<div class=\"outline-2 outline-[#00ff99]\">Test Content</div>"))
+  }
+
+  // New Box Shadow Color Tests
+  @Test("Box shadow applies color correctly")
+  func testBoxShadowColor() throws {
+    let element = Element(tag: "div") { "Test Content" }.boxShadow(size: .medium, color: .gray(._300))
+    let html = element.render()
+    #expect(html.contains("<div class=\"shadow-md shadow-gray-300\">Test Content</div>"))
+  }
+
+  @Test("Box shadow applies custom color with breakpoint correctly")
+  func testBoxShadowCustomColorWithBreakpoint() throws {
+    let element = Element(tag: "div") { "Test Content" }.boxShadow(
+      size: .large, color: .custom("#123456"), breakpoint: .medium)
+    let html = element.render()
+    #expect(html.contains("<div class=\"md:shadow-lg md:shadow-[#123456]\">Test Content</div>"))
+  }
+
+  // New Ring Color Tests
+  @Test("Ring applies color correctly")
+  func testRingColor() throws {
+    let element = Element(tag: "div") { "Test Content" }.ring(size: 3, color: .pink(._400))
+    let html = element.render()
+    #expect(html.contains("<div class=\"ring-3 ring-pink-400\">Test Content</div>"))
+  }
+
+  @Test("Ring applies custom color with default size correctly")
+  func testRingCustomColor() throws {
+    let element = Element(tag: "div") { "Test Content" }.ring(color: .custom("#abcdef"))
+    let html = element.render()
+    #expect(html.contains("<div class=\"ring-1 ring-[#abcdef]\">Test Content</div>"))
+  }
+
+  // New Typography Color Tests
+  @Test("Font applies color correctly")
+  func testFontColor() throws {
+    let element = Element(tag: "p") { "Text" }.font(color: .emerald(._600))
+    let html = element.render()
+    #expect(html.contains("<p class=\"text-emerald-600\">Text</p>"))
+  }
+
+  @Test("Font applies custom color with breakpoint correctly")
+  func testFontCustomColorWithBreakpoint() throws {
+    let element = Element(tag: "p") { "Text" }.font(color: .custom("#ff00ff"), on: .small)
+    let html = element.render()
+    #expect(html.contains("<p class=\"sm:text-[#ff00ff]\">Text</p>"))
+  }
+
+  @Test("Font combines color with other properties correctly")
+  func testFontColorWithOtherProperties() throws {
+    let element = Element(tag: "p") { "Text" }.font(size: .lg, weight: .bold, color: .cyan(._700))
+    let html = element.render()
+    #expect(html.contains("<p class=\"text-lg font-bold text-cyan-700\">Text</p>"))
   }
 
   // From TransformTests
@@ -191,7 +287,7 @@ struct StylingTests {
     let html = element.render()
     #expect(html.contains("bg-green-300 md:bg-blue-500"))
   }
-  
+
   @Test("Background color renders with custom value")
   func testBackgroundColorWithCustomValue() throws {
     let element = Element(tag: "div") { "Content" }.background(color: .custom("#0099ff"))
