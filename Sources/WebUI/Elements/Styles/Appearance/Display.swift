@@ -117,7 +117,7 @@ extension Element {
   /// - Parameters:
   ///   - justify: Controls how grid items are distributed along the inline (row) axis.
   ///   - align: Controls how grid items are aligned along the block (column) axis.
-  ///   - columns: Defines the number of columns in the grid layout. 
+  ///   - columns: Defines the number of columns in the grid layout.
   ///   - breakpoint: Which screen size to apply these styles to
   /// - Returns: A new `Element` with the updated grid classes.
   func grid(
