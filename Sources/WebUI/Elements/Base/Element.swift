@@ -44,7 +44,7 @@ public class Element: HTML {
     contentBuilder() ?? { [] }()
   }
 
-  /// Sets up a new HTML element with specific properties and content.
+  /// Creates  a new HTML element with specific properties and content.
   ///
   /// - Parameters:
   ///   - tag: The name of the HTML tag, such as "div" or "p", that defines what kind of element this is.
@@ -81,7 +81,7 @@ public class Element: HTML {
   /// - Parameters:
   ///   - name: The name of the attribute (e.g., "id", "class", "role").
   ///   - enabled: A boolean stating whether this attriute is enabled or disabled
-  public func booleanAttribute(_ name: String, _ enabled: Bool?) -> String? {
+  func booleanAttribute(_ name: String, _ enabled: Bool?) -> String? {
     enabled == true ? name : nil
   }
 
