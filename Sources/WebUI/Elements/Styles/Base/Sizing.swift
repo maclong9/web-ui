@@ -1,6 +1,6 @@
 /// Represents dimensions for width and height.
 public enum Dimension {
-  /// Fixed size 
+  /// Fixed size
   case fixed(Int)
   /// Fractional size (e.g., 1/2 = 50%).
   case fraction(Int, Int)

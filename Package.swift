@@ -2,6 +2,7 @@
 
 import PackageDescription
 
+// TODO: Implement ``Application`` class for creating static sites (add ``Document(name: String? = nil)``
 // TODO: Implement Custom CSS (classes evaluated at end of document render)
 // TODO: Implement asset file creation for JS and CSS on build
 
