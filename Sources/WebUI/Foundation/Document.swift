@@ -13,24 +13,12 @@ public struct Document {
   let keywords: [String]?
   let author: String?
   let type: String?
-
   private let contentBuilder: () -> [any HTML]
 
   var content: [any HTML] {
     contentBuilder()
   }
 
-  /// Creates a new HTML document with its details and content.
-  ///
-  /// This prepares everything needed to create a full webpage, including its settings, title, description, and content.
-  /// - Parameters:
-  ///   - configuration: The overall settings for the document, like metadata and theme, with a default if not provided.
-  ///   - title: The main title of the webpage, shown in the browser tab.
-  ///   - description: A short summary of the webpage’s purpose or content.
-  ///   - keywords: Optional words or phrases, like "blog, news", to help search engines understand the page.
-  ///   - author: An optional name of the person who created the page, like "Jane Doe".
-  ///   - type: An optional label, like "article" or "website", to categorize the page.
-  ///   - content: A builder that provides the main HTML content, such as text or other elements, to fill the page.
   init(
     configuration: Configuration = Configuration(),
     title: String,
@@ -49,25 +37,23 @@ public struct Document {
     self.contentBuilder = content
   }
 
-  /// Generates a complete HTML document as a string.
-  /// This builds the full webpage, combining the `<html>` tag with language settings, the `<head>` section from metadata, and the `<body>` with content
   func render() -> String {
     let pageTitle = "\(title) | \(configuration.metadata.site)"
 
     return """
       <!DOCTYPE html>
       <html lang="\(configuration.metadata.locale)">
-        \(configuration.metadata.render(
-          pageTitle: pageTitle,
-          description: description,
-          twitter: configuration.metadata.twitter,
-          author: author,
-          keywords: keywords,
-          type: type
-        ))
-        <body>
-          \(content.map { $0.render() }.joined())
-        </body>
+          \(configuration.metadata.render(
+                pageTitle: pageTitle,
+                description: description,
+                twitter: configuration.metadata.twitter,
+                author: author,
+                keywords: keywords,
+                type: type
+            ))
+          <body>
+            \(content.map { $0.render() }.joined())
+          </body>
       </html>
       """
   }

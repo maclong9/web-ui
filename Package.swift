@@ -3,6 +3,7 @@
 import PackageDescription
 
 // TODO: Implement Custom CSS (classes evaluated at end of document render)
+// TODO: Implement asset file creation for JS and CSS on build
 
 let package = Package(
   name: "WebUI",
