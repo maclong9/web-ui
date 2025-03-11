@@ -1,4 +1,4 @@
-/// Represents an HTML image element (`<img>`).
+/// Represents an HTML image element.
 ///
 /// This class creates a self-closing `<img>` tag used to embed images in HTML documents.
 /// The semantic purpose is to display visual content with optional accessibility
@@ -11,7 +11,7 @@ public class Image: Element {
   let width: Int?
   let height: Int?
 
-  /// Initializes an HTML image element with specified attributes.
+  /// Creates an HTML image element with specified attributes.
   ///
   /// - Parameters:
   ///   - source: The URL or path to the image file. Required.
@@ -22,7 +22,7 @@ public class Image: Element {
   ///   - classes: Array of CSS class names. Optional.
   ///   - role: ARIA role for accessibility. Optional.
   public init(
-    src: String,
+    source: String,
     alt: String? = nil,
     width: Int? = nil,
     height: Int? = nil,
@@ -30,7 +30,7 @@ public class Image: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil
   ) {
-    self.source = src
+    self.source = source
     self.alt = alt
     self.width = width
     self.height = height
@@ -58,23 +58,21 @@ public class Image: Element {
   }
 }
 
-/// Represents an HTML video element (`<video>`).
+/// Represents an HTML video element.
 ///
 /// This class creates a `<video>` tag used to embed video content in HTML documents.
 /// Semantically, it represents multimedia content with optional playback controls,
 /// designed for user interaction and accessibility.
-///
-/// - Note: Can contain child elements (like `<source>`) via the content builder.
 public class Video: Element {
-  let source: String?
+  let source: String
   let controls: Bool?
   let autoplay: Bool?
   let loop: Bool?
 
-  /// Initializes an HTML video element with specified attributes.
+  /// Creates an HTML video element with specified attributes.
   ///
   /// - Parameters:
-  ///   - source: The URL or path to the video file. Optional if content provides sources.
+  ///   - source: The URL or path to the video file.
   ///   - controls: If true, displays playback controls. Optional.
   ///   - autoplay: If true, starts playback automatically. Optional.
   ///   - loop: If true, loops the video indefinitely. Optional.
@@ -83,7 +81,7 @@ public class Video: Element {
   ///   - role: ARIA role for accessibility. Optional.
   ///   - content: A closure building child HTML elements, defaults to empty.
   public init(
-    source: String? = nil,
+    source: String,
     controls: Bool? = nil,
     autoplay: Bool? = nil,
     loop: Bool? = nil,
@@ -121,23 +119,21 @@ public class Video: Element {
   }
 }
 
-/// Represents an HTML audio element (`<audio>`).
+/// Represents an HTML audio element.
 ///
 /// This class creates an `<audio>` tag used to embed audio content in HTML documents.
 /// Semantically, it represents sound content (like music or speech) with optional
 /// playback controls, enhancing document accessibility and interactivity.
-///
-/// - Note: Can contain child elements (like `<source>`) via the content builder.
 public class Audio: Element {
-  let source: String?
+  let source: String
   let controls: Bool?
   let autoplay: Bool?
   let loop: Bool?
 
-  /// Initializes an HTML audio element with specified attributes.
+  /// Creates an HTML audio element with specified attributes.
   ///
   /// - Parameters:
-  ///   - src: The URL or path to the audio file. Optional if content provides sources.
+  ///   - source: The URL or path to the audio file.
   ///   - controls: If true, displays playback controls. Optional.
   ///   - autoplay: If true, starts playback automatically. Optional.
   ///   - loop: If true, loops the audio indefinitely. Optional.
@@ -146,7 +142,7 @@ public class Audio: Element {
   ///   - role: ARIA role for accessibility. Optional.
   ///   - content: A closure building child HTML elements, defaults to empty.
   public init(
-    src: String? = nil,
+    source: String,
     controls: Bool? = nil,
     autoplay: Bool? = nil,
     loop: Bool? = nil,
@@ -155,7 +151,7 @@ public class Audio: Element {
     role: AriaRole? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    self.source = src
+    self.source = source
     self.controls = controls
     self.autoplay = autoplay
     self.loop = loop
