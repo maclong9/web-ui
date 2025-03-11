@@ -38,23 +38,21 @@ public struct Document {
   }
 
   func render() -> String {
-    let pageTitle = "\(title) | \(configuration.metadata.site)"
-
-    return """
-      <!DOCTYPE html>
-      <html lang="\(configuration.metadata.locale)">
-          \(configuration.metadata.render(
-                pageTitle: pageTitle,
+    """
+    <!DOCTYPE html>
+    <html lang="\(configuration.metadata.locale)">
+        \(configuration.metadata.render(
+                pageTitle: "\(title) | \(configuration.metadata.site)",
                 description: description,
                 twitter: configuration.metadata.twitter,
                 author: author,
                 keywords: keywords,
                 type: type
             ))
-          <body>
-            \(content.map { $0.render() }.joined())
-          </body>
-      </html>
-      """
+        <body>
+          \(content.map { $0.render() }.joined())
+        </body>
+    </html>
+    """
   }
 }
