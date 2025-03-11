@@ -1,5 +1,7 @@
 /// Represents CSS breakpoints for responsive design.
 public enum Breakpoint: String {
+  /// Extra small breakpoint (min-width: 480px)
+  case extraSmall = "xs:"
   /// Small breakpoint (min-width: 640px)
   case small = "sm:"
   /// Medium breakpoint (min-width: 768px)

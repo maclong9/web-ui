@@ -92,6 +92,13 @@ public struct Metadata {
               : "")
         <link rel="stylesheet" href="/\(pageTitle.split(separator: " |")[0].replacingOccurrences(of: " ", with: "-").lowercased()).css">
         <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+        <style type="text/tailwindcss">
+          @theme {
+            --breakpoint-xs: 30rem;
+            --breakpoint-3xl: 120rem;
+            --breakpoint-4xl: 160rem;
+          }
+        </style>
       </head>
       """
   }
