@@ -13,7 +13,7 @@ public enum FormMethod: String {
 /// - `action`: The URL where the form data is sent.
 /// - `method`: The HTTP method for submission, typically "get" or "post".
 /// - `enctype`: The encoding type for form data, used when the method is "post".
-public class Form: Element {
+public class Form: Element { 
   /// Represents the encoding type for form data submission.
   public enum EncodingType: String {
     case applicationXWWWFormUrlencoded = "application/x-www-form-urlencoded"
@@ -30,11 +30,7 @@ public class Form: Element {
   /// - Parameters:
   ///   - action: The URL where the form data will be submitted (e.g., "/submit" or "https://example.com/api").
   ///   - method: The HTTP method to use for submission, either "get" (data in URL) or "post" (data in request body).
-  ///   - id: An optional unique identifier for the form (e.g., "login-form").
-  ///   - classes: Optional CSS classes for styling (e.g., ["form", "compact"]).
-  ///   - role: An optional ARIA role for accessibility (e.g., "form").
   ///   - enctype: An optional encoding type for form data, required for file uploads with "multipart/form-data".
-  ///   - content: A closure that builds the form’s content, such as inputs, textareas, and buttons.
   ///
   /// - SeeAlso: ``Element``
   init(
