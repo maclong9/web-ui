@@ -32,7 +32,7 @@ public enum AttributeName {
   /// Hides an element from view and layout.
   case hidden
   /// A custom data attribute (e.g., data-id).
-  case data(String)  // e.g., data-id becomes "data-id"
+  case data(String)
   /// Specifies the source URL for media elements (e.g., img, video).
   case src
   /// Provides alternative text for images.
