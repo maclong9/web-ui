@@ -1,9 +1,16 @@
 /// Creates an HTML progress element.
 /// This renders a `<progress>` tag, used to display the progress of a task, such as a download or form completion.
-public class Progress: Element {
+public class Progress: Element { 
   let value: Double?
   let max: Double?
 
+  /// Creates a new HTML progress element.
+  ///
+  /// - Parameters:
+  ///   - value: The current value of the progress bar.
+  ///   - max: The maximum value the progress bar can reach.
+  ///   
+  /// - SeeAlso: ``Element``
   init(
     value: Double? = nil,
     max: Double? = nil,

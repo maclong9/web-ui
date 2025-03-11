@@ -6,11 +6,19 @@ public enum ListType: String {
   case unordered = "ul"
 }
 
-/// Creates an HTML list element.
-/// This renders either an `<ol>` or `<ul>` tag based on the specified type, used for ordered or unordered lists.
+/// Represents an HTML list element (`<ul>` or `<ol>`).
+///
+/// This class creates either an unordered list (`<ul>`) for items without a specific sequence,
+/// or an ordered list (`<ol>`) for items with a defined order. Semantically, `<ul>` is used
+/// for collections where order doesn't matter (e.g., bullet points), while `<ol>` is used
+/// for sequences (e.g., numbered steps).
 public class List: Element {
   let type: ListType
-
+  /// Creates a new HTML list element.
+  ///
+  /// - Parameter type: Whether to render an ordered or unordered list.
+  ///
+  /// - SeeAlso: ``Element``
   init(
     type: ListType,
     id: String? = nil,
@@ -23,9 +31,14 @@ public class List: Element {
   }
 }
 
-/// Creates an HTML list item element.
-/// This renders an `<li>` tag, used as an item within a `<ul>` or `<ol>` list.
+/// Represents an HTML list item element (`<li>`).
+///
+/// This class creates an `<li>` tag, used as a child of `<ul>` or `<ol>` elements to represent
+/// individual items in a list. Semantically, it defines a single entry within a list,
+/// whether ordered (numbered) or unordered (bulleted), and can contain text, elements,
+/// or nested lists for complex structures.
 public class ListItem: Element {
+  /// - SeeAlso: ``Element``
   init(
     id: String? = nil,
     classes: [String]? = nil,

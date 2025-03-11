@@ -48,6 +48,11 @@ class Text: Element {
 /// - `<h1>` is typically used for the main heading of the page.
 /// - `<h2>` to `<h6>` are used for subheadings, with `<h2>` being the next most important after `<h1>`, and so on.
 public class Heading: Element {
+  /// Creates a new heading element.
+  ///
+  /// - Parameters:
+  ///   - level: The semantic level of the heading ranging from 1–6.
+  ///
   /// - SeeAlso: ``Element``
   init(
     level: HeadingLevel,
@@ -64,7 +69,7 @@ public class Heading: Element {
 /// This class renders an `<a>` tag, which is used to create a link to another resource, such as a web page or a file.
 ///
 /// The `<a>` tag supports attributes like `href` for the URL and `target` to specify where to open the linked resource.
-public class Link: Element {
+public class Link: Element { 
   private let href: String
   private let newTab: Bool?
 
@@ -108,7 +113,7 @@ public class Link: Element {
 /// This renders an `<em>` tag, which is used to indicate that its content has stress emphasis compared to the surrounding text.
 ///
 /// The `<em>` tag is typically rendered in italic text by default in most browsers.
-public class Emphasis: Element {
+public class Emphasis: Element { 
   /// - SeeAlso: ``Element``
   init(
     id: String? = nil,
@@ -124,7 +129,7 @@ public class Emphasis: Element {
 /// This renders a `<strong>` tag, which is used to indicate that its content has strong importance, seriousness, or urgency.
 ///
 /// The `<strong>` tag is typically rendered in bold text by default in most browsers.
-public class Strong: Element {
+public class Strong: Element { 
   /// - SeeAlso: ``Element``
   init(
     id: String? = nil,

@@ -5,7 +5,7 @@
 /// information via the `alt` attribute.
 ///
 /// - Note: This element is void (self-closing) and cannot contain child content.
-public class Image: Element {
+public class Image: Element { 
   let source: String
   let alt: String?
   let width: Int?
@@ -18,9 +18,8 @@ public class Image: Element {
   ///   - alt: Text description for screen readers or when the image fails to load. Optional.
   ///   - width: Pixel width of the image. Optional.
   ///   - height: Pixel height of the image. Optional.
-  ///   - id: Unique identifier for the element. Optional.
-  ///   - classes: Array of CSS class names. Optional.
-  ///   - role: ARIA role for accessibility. Optional.
+  ///
+  /// - SeeAlso: ``Element``
   public init(
     source: String,
     alt: String? = nil,
@@ -63,7 +62,7 @@ public class Image: Element {
 /// This class creates a `<video>` tag used to embed video content in HTML documents.
 /// Semantically, it represents multimedia content with optional playback controls,
 /// designed for user interaction and accessibility.
-public class Video: Element {
+public class Video: Element { 
   let source: String
   let controls: Bool?
   let autoplay: Bool?
@@ -76,10 +75,8 @@ public class Video: Element {
   ///   - controls: If true, displays playback controls. Optional.
   ///   - autoplay: If true, starts playback automatically. Optional.
   ///   - loop: If true, loops the video indefinitely. Optional.
-  ///   - id: Unique identifier for the element. Optional.
-  ///   - classes: Array of CSS class names. Optional.
-  ///   - role: ARIA role for accessibility. Optional.
-  ///   - content: A closure building child HTML elements, defaults to empty.
+  ///
+  /// - SeeAlso: ``Element``
   public init(
     source: String,
     controls: Bool? = nil,
@@ -124,7 +121,7 @@ public class Video: Element {
 /// This class creates an `<audio>` tag used to embed audio content in HTML documents.
 /// Semantically, it represents sound content (like music or speech) with optional
 /// playback controls, enhancing document accessibility and interactivity.
-public class Audio: Element {
+public class Audio: Element { 
   let source: String
   let controls: Bool?
   let autoplay: Bool?
@@ -137,10 +134,8 @@ public class Audio: Element {
   ///   - controls: If true, displays playback controls. Optional.
   ///   - autoplay: If true, starts playback automatically. Optional.
   ///   - loop: If true, loops the audio indefinitely. Optional.
-  ///   - id: Unique identifier for the element. Optional.
-  ///   - classes: Array of CSS class names. Optional.
-  ///   - role: ARIA role for accessibility. Optional.
-  ///   - content: A closure building child HTML elements, defaults to empty.
+  ///
+  /// - SeeAlso: ``Element``
   public init(
     source: String,
     controls: Bool? = nil,

@@ -8,7 +8,7 @@ public enum ButtonType: String {
 
 /// Creates HTML button elements.
 /// This renders a `<button>` tag, which is used to create a clickable button that can be used to trigger an action or submit a form.
-public class Button: Element {
+public class Button: Element { 
   let type: ButtonType?
   let autofocus: Bool?
 
