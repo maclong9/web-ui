@@ -21,7 +21,7 @@ public class Input: Element {
   let placeholder: String?
   let autofocus: Bool?
 
-  /// Sets up a new HTML input element.
+  /// Creates a new HTML input element.
   ///
   /// This prepares an input field with options for its type, initial value, placeholder text, and focus behavior.
   /// - Parameters:

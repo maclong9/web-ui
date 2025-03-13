@@ -1,4 +1,4 @@
-/// Sets up a new HTML textarea element.
+/// Creates a new HTML textarea element.
 final public class Textarea: Input {
   /// This prepares an input field with options for its type, initial value, placeholder text, and focus behavior.
   /// This input type is used for longform text over the standard input of type text
