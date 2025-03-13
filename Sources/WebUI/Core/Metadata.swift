@@ -75,6 +75,7 @@ public struct Metadata {
     let effectiveTwitter = twitter?.isEmpty == false ? twitter : self.twitter
     let effectiveType = type?.isEmpty == false ? type : self.type
 
+    // FIXME: Figure out how to stop undefined metadata rendering as blank lines
     return """
       <head>
         <meta charset="UTF-8">

@@ -17,7 +17,6 @@ public struct Application {
         at: directory.appendingPathComponent(route.path),
         withIntermediateDirectories: true
       )
-      // create file at ".build/\(route.path).html"
       fileManager.createFile(
         atPath: ".build/\(route.path).html",
         contents: route.render().data(using: .utf8) ?? "".data(using: .utf8)
