@@ -120,4 +120,13 @@ struct InteractiveElementsTests {
         == "<form action=\"/query\" method=\"get\"><input type=\"text\" placeholder=\"Search term\"><button type=\"submit\">Search</button></form>"
     )
   }
+  
+  @Test("Label renders correctly")
+  func testLabelRendersCorrectly() throws {
+    let label = Label(for: "email") {
+      "Email Address"
+    }
+    let html = label.render()
+    #expect(html == "<label for=\"email\">Email Address</label>")
+  }
 }
