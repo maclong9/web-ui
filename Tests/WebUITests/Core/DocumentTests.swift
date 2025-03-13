@@ -8,6 +8,7 @@ struct DocumentTests {
   func testBasicRender() throws {
     let config = Configuration()
     let document = Document(
+      path: "home",
       configuration: config,
       title: "Home",
       description: "Welcome to my site"
@@ -26,6 +27,7 @@ struct DocumentTests {
   func testHeaderFooterOverrides() throws {
     let config = Configuration()
     let document = Document(
+      path: "home",
       configuration: config,
       title: "Test",
       description: "Test page"
@@ -41,7 +43,8 @@ struct DocumentTests {
   @Test("Content builder evaluates correctly")
   func testContentBuilder() throws {
     let document = Document(
-      title: "Test",
+      path: "projects/test",
+      title: "Test Project",
       description: "Test desc"
     ) {
       Heading(level: .level1) { "Heading" }
@@ -57,3 +60,5 @@ struct DocumentTests {
     #expect(html.contains("<p>"))
   }
 }
+
+
