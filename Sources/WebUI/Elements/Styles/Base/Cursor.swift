@@ -13,8 +13,8 @@ extension Element {
   /// Sets the cursor style of the element with an optional breakpoint.
   ///
   /// - Parameters:
-  ///   - type: The cursor type (e.g., `.pointer`, `.wait`).
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - type: The cursor type.
+  ///   - breakpoint: Optional breakpoint prefix.
   /// - Returns: A new `Element` with the updated cursor class.
   func cursor(_ type: CursorType, on breakpoint: Breakpoint? = nil) -> Element {
     let prefix = breakpoint?.rawValue ?? ""

@@ -2,7 +2,7 @@
 ///
 /// This enum encapsulates a color palette, including shades ranging from 50 to 950, as well as a custom option for arbitrary color values.
 ///
-/// - Note: The `custom` case allows for arbitrary CSS color values (e.g., hex codes, RGB) wrapped in square brackets.
+/// - Note: The `custom` case allows for arbitrary CSS color values wrapped in square brackets.
 public enum Color {
   /// A slate gray color with varying intensity shades.
   case slate(Shade)
@@ -48,7 +48,7 @@ public enum Color {
   case pink(Shade)
   /// A warm rose color with varying intensity shades.
   case rose(Shade)
-  /// A custom color defined by a raw CSS value (e.g., `#ff0000`, `rgb(255, 0, 0)`).
+  /// A custom color defined by a raw CSS value
   case custom(String)
 
   /// Represents the shade intensity of a color
@@ -137,7 +137,7 @@ extension Element {
   ///
   /// - Parameters:
   ///   - color: The color to apply as the background, from the `Color` enum. Supports default palette or custom values.
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up). If `nil`, the style applies at all screen sizes.
+  ///   - breakpoint: Optional breakpoint prefix. If `nil`, the style applies at all screen sizes.
   /// - Returns: A new `Element` with the updated background color class.
   ///
   /// Example:

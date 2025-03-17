@@ -7,7 +7,7 @@
 /// - Note: This element is void (self-closing) and cannot contain child content.
 public class Image: Element { 
   let source: String
-  let alt: String?
+  let description: String
   let width: Int?
   let height: Int?
 
@@ -15,14 +15,14 @@ public class Image: Element {
   ///
   /// - Parameters:
   ///   - source: The URL or path to the image file. Required.
-  ///   - alt: Text description for screen readers or when the image fails to load. Optional.
-  ///   - width: Pixel width of the image. Optional.
-  ///   - height: Pixel height of the image. Optional.
+  ///   - description: Text description for screen readers or when the image fails to load. Optional.
+  ///   - width: Pixel width of the image
+  ///   - height: Pixel height of the image
   ///
   /// - SeeAlso: ``Element``
   public init(
     source: String,
-    alt: String? = nil,
+    description: String,
     width: Int? = nil,
     height: Int? = nil,
     id: String? = nil,
@@ -30,7 +30,7 @@ public class Image: Element {
     role: AriaRole? = nil
   ) {
     self.source = source
-    self.alt = alt
+    self.description = description
     self.width = width
     self.height = height
     super.init(tag: "img", id: id, classes: classes, role: role)
@@ -44,7 +44,7 @@ public class Image: Element {
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
       attribute("src", source),
-      attribute("alt", alt),
+      attribute("alt", description),
       attribute("width", width?.description),
       attribute("height", height?.description),
       attribute("role", role?.rawValue),
@@ -52,8 +52,7 @@ public class Image: Element {
     .compactMap { $0 }
     .joined(separator: " ")
 
-    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
-    return "<\(tag)\(attributesString)>"
+    return "<\(tag) \(attributes)>"
   }
 }
 

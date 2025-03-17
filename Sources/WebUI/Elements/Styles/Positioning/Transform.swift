@@ -2,15 +2,15 @@ extension Element {
   /// Applies transform styling to the element with an optional breakpoint.
   ///
   /// - Parameters:
-  ///   - scale: Scale value for both axes (e.g., "110" for `scale-110`).
-  ///   - scaleX: Scale value for x-axis (e.g., "50" for `scale-x-50`).
-  ///   - scaleY: Scale value for y-axis (e.g., "150" for `scale-y-150`).
-  ///   - rotate: Rotation value (e.g., "45" for `rotate-45`, "-45" for `-rotate-45`, "[45deg]" for `rotate-[45deg]`).
-  ///   - translateX: Translation on x-axis (e.g., "4" for `translate-x-4`, "[-2rem]" for `translate-x-[-2rem]`).
-  ///   - translateY: Translation on y-axis (e.g., "2" for `translate-y-2`).
-  ///   - skewX: Skew on x-axis (e.g., "10" for `skew-x-10`).
-  ///   - skewY: Skew on y-axis (e.g., "5" for `skew-y-5`).
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - scale: Scale value for both axes.
+  ///   - scaleX: Scale value for x-axis.
+  ///   - scaleY: Scale value for y-axis.
+  ///   - rotate: Rotation value.
+  ///   - translateX: Translation on x-axis.
+  ///   - translateY: Translation on y-axis.
+  ///   - skewX: Skew on x-axis.
+  ///   - skewY: Skew on y-axis.
+  ///   - breakpoint: Optional breakpoint to apply styles to.
   /// - Returns: A new `Element` with the updated transform classes.
   func transform(
     scale: String? = nil,

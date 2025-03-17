@@ -1,22 +1,5 @@
 import Foundation
 
-/// Represents different levels of HTML heading tags, from h1 to h6.
-/// Each case corresponds to a specific heading level, used to structure and organize content on a web page.
-public enum HeadingLevel: String {
-  /// Represents the primary title or main topic of a page (h1)
-  case level1 = "h1"
-  /// Represents a major section or subtopic within the page (h2)
-  case level2 = "h2"
-  /// Represents a subsection within a major section (h3)
-  case level3 = "h3"
-  /// Represents a sub-subsection or deeper detail within a subsection (h4)
-  case level4 = "h4"
-  /// Represents a minor detail or supporting heading within a sub-subsection (h5)
-  case level5 = "h5"
-  /// Represents the finest level of detail or a rare, deeply nested heading (h6)
-  case level6 = "h6"
-}
-
 /// Creates HTML text elements.
 /// This can render either a `<p>` (paragraph) tag or a `<span>` tag based on the content.
 /// - If the content contains more than one sentence, it is rendered as a `<p>` tag.
@@ -39,6 +22,23 @@ class Text: Element {
     let tag = sentenceCount > 1 ? "p" : "span"
     super.init(tag: tag, id: id, classes: classes, role: role, content: content)
   }
+}
+
+/// Represents different levels of HTML heading tags, from h1 to h6.
+/// Each case corresponds to a specific heading level, used to structure and organize content on a web page.
+public enum HeadingLevel: String {
+  /// Represents the primary title or main topic of a page (h1)
+  case one = "h1"
+  /// Represents a major section or subtopic within the page (h2)
+  case two = "h2"
+  /// Represents a subsection within a major section (h3)
+  case three = "h3"
+  /// Represents a sub-subsection or deeper detail within a subsection (h4)
+  case four = "h4"
+  /// Represents a minor detail or supporting heading within a sub-subsection (h5)
+  case five = "h5"
+  /// Represents the finest level of detail or a rare, deeply nested heading (h6)
+  case six = "h6"
 }
 
 /// Creates HTML heading elements.
@@ -81,14 +81,14 @@ public class Link: Element {
   ///
   /// - SeeAlso: ``Element``
   init(
-    href: String,
+    destination: String,
     newTab: Bool? = nil,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML]
   ) {
-    self.href = href
+    self.href = destination
     self.newTab = newTab
     super.init(tag: "a", id: id, classes: classes, role: role, content: content)
   }
@@ -99,6 +99,7 @@ public class Link: Element {
       attribute("class", classes?.joined(separator: " ")),
       attribute("href", href),
       attribute("target", newTab == true ? "_blank" : nil),
+      attribute("rel", newTab == true ? "noreferrer" : nil),
       attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }

@@ -2,11 +2,11 @@
 public enum Dimension {
   /// Fixed size
   case fixed(Int)
-  /// Fractional size (e.g., 1/2 = 50%).
+  /// Fractional size.
   case fraction(Int, Int)
-  /// Full width or height (100%).
+  /// Full width or height.
   case full
-  /// Screen width or height (100vw or 100vh).
+  /// Screen width or height.
   case screen
   /// Auto width or height.
   case auto
@@ -16,7 +16,7 @@ public enum Dimension {
   case maxContent
   /// Fit content size.
   case fitContent
-  /// Arbitrary custom value (e.g., "200px" for `[200px]`).
+  /// Arbitrary custom value.
   case custom(String)
 }
 
@@ -49,8 +49,8 @@ extension Element {
   /// Sets the width and height of the element with an optional breakpoint.
   ///
   /// - Parameters:
-  ///   - width: The width dimension (e.g., `.full`, `.fixed(4)`, `.custom("200px")`).
-  ///   - height: The height dimension (e.g., `.screen`, `.fraction(1,2)`).
+  ///   - width: The width dimension.
+  ///   - height: The height dimension.
   ///   - breakpoint: Optional breakpoint prefix
   /// - Returns: A new `Element` with the updated sizing classes.
   func frame(width: Dimension? = nil, height: Dimension? = nil, on breakpoint: Breakpoint? = nil) -> Element {

@@ -72,9 +72,9 @@ extension Element {
   ///
   /// - Parameters:
   ///   - direction: Sets the direction of the main axis (horizontal or vertical).
-  ///   - justify: Controls how flex items are distributed along the main axis (e.g., horizontally in `row` direction).
-  ///   - align: Controls how flex items are aligned along the cross axis (e.g., vertically in `row` direction).
-  ///   - breakpoint: Optional breakpoint prefix (e.g., md applies styles at 768px and up).
+  ///   - justify: Controls how flex items are distributed along the main axis.
+  ///   - align: Controls how flex items are aligned along the cross axis.
+  ///   - breakpoint: Optional breakpoint prefix.
   /// - Returns: A new `Element` with the updated flexbox classes.
   func flex(
     _ direction: Direction? = nil,

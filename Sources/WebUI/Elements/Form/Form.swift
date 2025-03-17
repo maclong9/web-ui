@@ -13,7 +13,7 @@ public enum FormMethod: String {
 /// - `action`: The URL where the form data is sent.
 /// - `method`: The HTTP method for submission, typically "get" or "post".
 /// - `enctype`: The encoding type for form data, used when the method is "post".
-public class Form: Element { 
+public class Form: Element {
   /// Represents the encoding type for form data submission.
   public enum EncodingType: String {
     case applicationXWWWFormUrlencoded = "application/x-www-form-urlencoded"
@@ -28,7 +28,7 @@ public class Form: Element {
   /// Creates a new HTML form element.
   ///
   /// - Parameters:
-  ///   - action: The URL where the form data will be submitted (e.g., "/submit" or "https://example.com/api").
+  ///   - action: The URL where the form data will be submitted
   ///   - method: The HTTP method to use for submission, either "get" (data in URL) or "post" (data in request body).
   ///   - enctype: An optional encoding type for form data, required for file uploads with "multipart/form-data".
   ///
@@ -49,7 +49,7 @@ public class Form: Element {
   }
 
   /// Generates the HTML string for this form element.
-  /// This combines the form tag with attributes like action, method, id, classes, role, and enctype, then includes the rendered content (e.g., inputs and buttons) inside the opening and closing tags.
+  /// This combines the form tag with attributes like action, method, id, classes, role, and enctype, then includes the rendered content inside the opening and closing tags.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),

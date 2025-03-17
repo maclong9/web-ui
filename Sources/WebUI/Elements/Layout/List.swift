@@ -10,8 +10,8 @@ public enum ListType: String {
 ///
 /// This class creates either an unordered list (`<ul>`) for items without a specific sequence,
 /// or an ordered list (`<ol>`) for items with a defined order. Semantically, `<ul>` is used
-/// for collections where order doesn't matter (e.g., bullet points), while `<ol>` is used
-/// for sequences (e.g., numbered steps).
+/// for collections where order doesn't matter, while `<ol>` is used
+/// for sequences
 public class List: Element {
   let type: ListType
   /// Creates a new HTML list element.

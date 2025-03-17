@@ -2,16 +2,18 @@
 
 import PackageDescription
 
+// Roadmap
 // Version 1.0.0
-// TODO: Implement ``Application`` class for creating static sites (add ``Document(name: String? = nil)``
 // TODO: Implement asset file creation for JS and CSS on build
 // Version 1.1.0
-// TODO: Implement markdown rendering with admonitions and syntax highlighting
 // TODO: Implement Custom CSS (classes evaluated at end of document render)
 // Version 1.2.0
-// TODO: Create tutorial for static site generation with blog
+// TODO: Create tutorial for static site generation with blog, ensure usage of SwiftPM Snippets
 // TODO: Create tutorial for SSR Hummingbird site with todos
-// TODO: Create tutorial for scaling todos app with Cloudflare 
+// TODO: Create tutorial for scaling todos app with Cloudflare
+// Version 1.3.0
+// TODO: Implement complex components like accordion, dialog, admonition and tabs
+// TODO: Create tutorial for Ecommerce with Hummingbird and Stripe
 
 let package = Package(
   name: "WebUI",

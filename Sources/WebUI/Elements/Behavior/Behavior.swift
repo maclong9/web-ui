@@ -1,5 +1,17 @@
 import Foundation
 
+/// Defines possible DOM manipulation tasks for the script method.
+enum Task {
+  /// Logs the targeted DOM element to the console.
+  case log
+  /// Adds a class or attribute to the targeted DOM element.
+  case add
+  /// Removes a class, or attribute from the targeted DOM element.
+  case remove
+  /// Toggles a class, or attribute on the targeted DOM element.
+  case toggle
+}
+
 extension Element {
   /// Adds a JavaScript script to the element for DOM manipulation.
   ///
@@ -7,73 +19,68 @@ extension Element {
   /// JavaScript to manipulate the DOM. When an `action` is provided, the manipulation
   /// is wrapped in an event listener; otherwise, it executes immediately.
   ///
-  /// - Note: Only one action (`toggle`, `add`, or `remove`) should be true. Priority is:
-  ///   1. toggle, 2. add, 3. remove.
-  ///
   /// - Parameters:
-  ///   - select: Optional CSS selector or ID to target (e.g., "#el", ".class"); defaults to targeting this element.
-  ///   - className: Class name to manipulate (e.g., "active").
-  ///   - style: Style property to manipulate (e.g., .color).
-  ///   - attribute: Attribute to manipulate (e.g., .disabled).
-  ///   - toggle: Toggles the specified property if true.
-  ///   - add: Adds the specified property if true.
-  ///   - remove: Removes the specified property if true.
-  ///   - value: Value for the action (e.g., "red" for style).
-  ///   - action: DOM event to trigger the manipulation (e.g., .click); nil for immediate execution.
+  ///   - task: The DOM manipulation task to perform (log, add, remove, or toggle).
+  ///   - select: Optional CSS selector or ID to target; defaults to targeting this element.
+  ///   - className: Class name to manipulate
+  ///   - attribute: Attribute to manipulate
+  ///   - value: Value for the action.
+  ///   - action: DOM event to trigger the manipulation; nil for immediate execution.
   /// - Returns: New Element with original content and script.
   func script(
+    _ task: Task,
     select: String? = nil,
     className: String? = nil,
-    style: StyleProperty? = nil,
     attribute: AttributeName? = nil,
-    toggle: Bool = false,
-    add: Bool = false,
-    remove: Bool = false,
     value: String? = nil,
     on action: Action? = nil
   ) -> Element {
     // Validate input
-    guard className != nil || style != nil || attribute != nil else { return self }
-    let requiresValue = style != nil || attribute != nil || (className != nil && (toggle || add))
-    guard !requiresValue || value != nil else { return self }
+    guard task == .log || className != nil || attribute != nil else { return self }
+    let requiresValue = attribute != nil || (className != nil && task != .remove)
+    guard task == .log || !requiresValue || value != nil else { return self }
 
     // Setup
-    let elementId = self.id ?? "gen\(UUID().uuidString.replacingOccurrences(of: "-", with: ""))"
+    let elementId = self.id ?? "gen\(UUID().uuidString.replacingOccurrences(of: "-", with: "").dropFirst(28))"
     let selector = select.map { $0.hasPrefix("#") || $0.hasPrefix(".") ? $0 : "#\($0)" } ?? "#\(elementId)"
     let elementRef = "document.querySelector('\(selector)')"
-    let actionType = toggle ? "toggle" : add ? "add" : remove ? "remove" : ""
 
-    // Generate manipulation
+    // Generate manipulation based on task
     let manipulation: String
-    switch (className, style, attribute) {
-      case (let className?, nil, nil):
-        let valueOrClass = actionType == "remove" ? className : value!
-        manipulation = "\(elementRef).classList.\(actionType)('\(valueOrClass)');"
-
-      case (nil, let style?, nil):
-        let propName = style.rawValue
-        if actionType == "toggle" {
-          manipulation =
-            "\(elementRef).style.\(propName) = \(elementRef).style.\(propName) === '\(value!)' ? '' : '\(value!)';"
-        } else if actionType == "add" {
-          manipulation = "\(elementRef).style.\(propName) = '\(value!)';"
-        } else {  // remove
-          manipulation = "\(elementRef).style.\(propName) = '';"
+    switch task {
+      case .log:
+        manipulation = "console.log('\(elementId):', '\(value ?? "")');"
+      case .toggle:
+        switch (className, attribute) {
+          case (className, nil):
+            manipulation = "\(elementRef).classList.toggle('\(value!)');"
+          case (nil, let attribute?):
+            let attrName = attribute.rawValue
+            manipulation =
+              "\(elementRef).hasAttribute('\(attrName)') ? \(elementRef).removeAttribute('\(attrName)') : \(elementRef).setAttribute('\(attrName)', '\(value!)');"
+          default:
+            return self
         }
 
-      case (nil, nil, let attribute?):
-        let attrName = attribute.rawValue
-        if actionType == "toggle" {
-          manipulation =
-            "\(elementRef).hasAttribute('\(attrName)') ? \(elementRef).removeAttribute('\(attrName)') : \(elementRef).setAttribute('\(attrName)', '\(value!)');"
-        } else if actionType == "add" {
-          manipulation = "\(elementRef).setAttribute('\(attrName)', '\(value!)');"
-        } else {
-          manipulation = "\(elementRef).removeAttribute('\(attrName)');"
+      case .add:
+        switch (className, attribute) {
+          case (className, nil):
+            manipulation = "\(elementRef).classList.add('\(value!)');"
+          case (nil, let attribute?):
+            manipulation = "\(elementRef).setAttribute('\(attribute.rawValue)', '\(value!)');"
+          default:
+            return self
         }
 
-      default:
-        return self
+      case .remove:
+        switch (className, attribute) {
+          case (let className?, nil):
+            manipulation = "\(elementRef).classList.remove('\(className)');"
+          case (nil, let attribute?):
+            manipulation = "\(elementRef).removeAttribute('\(attribute.rawValue)');"
+          default:
+            return self
+        }
     }
 
     // Wrap in event listener if needed
