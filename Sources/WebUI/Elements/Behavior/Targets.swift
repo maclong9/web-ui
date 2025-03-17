@@ -3,11 +3,11 @@ public enum StyleProperty {
   case color
   /// The background color of the element.
   case backgroundColor
-  /// The display type of the element (e.g., block, inline).
+  /// The display type of the element
   case display
-  /// The visibility of the element (e.g., visible, hidden).
+  /// The visibility of the element
   case visibility
-  /// The font size of the element (e.g., 16px).
+  /// The font size of the element
   case fontSize
   /// A custom style property specified by a string
   case custom(String)
@@ -27,13 +27,13 @@ public enum StyleProperty {
 
 /// Represents common HTML attributes for JavaScript manipulation.
 public enum AttributeName {
-  /// Indicates whether an element is disabled (e.g., for form inputs).
+  /// Indicates whether an element is disabled
   case disabled
   /// Hides an element from view and layout.
   case hidden
-  /// A custom data attribute (e.g., data-id).
+  /// A custom data attribute
   case data(String)
-  /// Specifies the source URL for media elements (e.g., img, video).
+  /// Specifies the source URL for media elements
   case src
   /// Provides alternative text for images.
   case alt

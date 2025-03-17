@@ -22,7 +22,7 @@ public enum AriaRole: String {
   case listbox
   /// Indicates a set of user-selectable options
   case menu
-  /// Defines metadata about the document (e.g., footer)
+  /// Defines metadata about the document
   case contentinfo
   /// Represents a dialog box or subwindow
   case dialog
@@ -47,11 +47,11 @@ public class Element: HTML {
   /// Creates  a new HTML element with specific properties and content.
   ///
   /// - Parameters:
-  ///   - tag: The name of the HTML tag, such as "div" or "p", that defines what kind of element this is.
-  ///   - id: An optional unique identifier for the element, like "main-section", used to reference it elsewhere.
-  ///   - classes: Optional styling names, like "button" or "hidden", to control how the element looks.
-  ///   - role: An optional accessibility label, like "button" or "navigation", to help screen readers understand the element’s purpose.
-  ///   - content: A builder that provides the inner HTML content, such as text or other elements, to go inside the tag.
+  ///   - tag: The name of the HTML tag
+  ///   - id: An optional unique identifier for the element
+  ///   - classes: Optional class names for identification and styling
+  ///   - role: An optional accessibility label, to help screen readers understand the element’s purpose.
+  ///   - content: A builder that provides the inner HTML content
   init(
     tag: String,
     id: String? = nil,
@@ -69,7 +69,7 @@ public class Element: HTML {
   /// Creates a formatted HTML attribute string if the value is non-empty.
   ///
   /// - Parameters:
-  ///   - name: The name of the attribute (e.g., "id", "class", "role").
+  ///   - name: The name of the attribute
   ///   - value: An optional string value for the attribute.
   /// - Returns: A string in the format `name="value"` if the value is non-empty, or `nil` if the value is `nil` or empty.
   func attribute(_ name: String, _ value: String?) -> String? {
@@ -79,7 +79,7 @@ public class Element: HTML {
   /// Returns the attribute name if the condition is true, for boolean HTML attributes.
   ///
   /// - Parameters:
-  ///   - name: The name of the attribute (e.g., "id", "class", "role").
+  ///   - name: The name of the attribute
   ///   - enabled: A boolean stating whether this attriute is enabled or disabled
   func booleanAttribute(_ name: String, _ enabled: Bool?) -> String? {
     enabled == true ? name : nil
@@ -92,7 +92,7 @@ public class Element: HTML {
   /// Attributes are only included if they have non-empty values, and the resulting string
   /// is formatted with proper spacing.
   ///
-  /// - Returns: A string representing the complete HTML element, e.g., `<div id="main" class="container">Content</div>`.
+  /// - Returns: A string representing the complete HTML element
   public func render() -> String {
     let attributes = [
       attribute("id", id),

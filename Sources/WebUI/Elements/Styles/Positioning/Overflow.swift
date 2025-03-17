@@ -17,7 +17,7 @@ extension Element {
   /// Sets the overflow behavior of the element with an optional breakpoint.
   ///
   /// - Parameters:
-  ///   - type: The overflow behavior (e.g., `.hidden`, `.scroll`).
+  ///   - type: The overflow behavior.
   ///   - axis: The axis to apply the overflow to (`.x`, `.y`, `.both`). Defaults to `.both`.
   ///   - breakpoint: Optional breakpoint prefix
   /// - Returns: A new `Element` with the updated overflow classes.

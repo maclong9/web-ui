@@ -57,7 +57,7 @@ public enum BorderStyle: String {
   case hidden = "hidden"
   /// No border (none)
   case none = "none"
-  /// Divider style for child elements (e.g., divide-x)
+  /// Divider style for child elements
   case divide = "divide"
 }
 

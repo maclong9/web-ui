@@ -10,7 +10,7 @@ public enum Action {
   case focus
   /// Triggered when the element loses focus.
   case blur
-  /// A custom event specified by a string.
+  /// A custom action for extending
   case custom(String)
 
   /// Returns the raw JavaScript event name.

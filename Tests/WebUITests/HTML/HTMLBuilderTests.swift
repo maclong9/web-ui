@@ -2,8 +2,7 @@ import Testing
 
 @testable import WebUI
 
-@Suite("HTMLBuilder Tests")
-struct HTMLBuilderTests {
+@Suite("HTMLBuilder Tests") struct HTMLBuilderTests {
   @Test("BuildBlock combines multiple components")
   func testBuildBlock() throws {
     let result = HTMLBuilder.buildBlock(

@@ -20,8 +20,8 @@ extension Element {
   /// Applies margin styling to the element with an optional breakpoint.
   ///
   /// - Parameters:
-  ///   - edges: Specifies which edges to apply the margin to. Defaults to `.all`.
-  ///   - length: The spacing value in `0.25rem` increments (e.g., `4 = 1rem`). Defaults to `4`.
+  ///   - edges: Specifies which edges to apply the margin to.
+  ///   - length: The spacing value in `0.25rem` increments.
   ///   - breakpoint: Optional breakpoint prefix
   /// - Returns: A new `Element` with the updated margin classes.
   func margins(
@@ -52,7 +52,7 @@ extension Element {
   /// - Parameters:
   ///   - edges: Specifies which edges to apply the padding to. Defaults to `.all`.
   ///   - length: The spacing value
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - breakpoint: Optional breakpoint prefix.
   /// - Returns: A new `Element` with the updated padding classes.
   func padding(
     _ edges: Edge? = .all,

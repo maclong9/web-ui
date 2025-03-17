@@ -140,12 +140,12 @@ extension Element {
   /// Adds font styling classes to the element with an optional breakpoint.
   ///
   /// - Parameters:
-  ///   - weight: Font weight (e.g., bold).
-  ///   - size: Font size (e.g., lg).
-  ///   - alignment: Text alignment (e.g., center).
-  ///   - tracking: Letter spacing (e.g., tight).
-  ///   - leading: Line height (e.g., normal).
-  ///   - decoration: Text decoration (e.g., underline).
+  ///   - weight: Font weight.
+  ///   - size: Font size.
+  ///   - alignment: Text alignment.
+  ///   - tracking: Letter spacing.
+  ///   - leading: Line height.
+  ///   - decoration: Text decoration.
   ///   - breakpoint: Which screen size to apply these styles to
   /// - Returns: A new Element with updated classes.
   func font(

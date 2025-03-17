@@ -11,13 +11,13 @@ extension Element {
   /// Sets the position type, optional inset, and edge values of the element with an optional breakpoint.
   ///
   /// - Parameters:
-  ///   - type: The position type (e.g., `.absolute`, `.relative`).
-  ///   - inset: The value for all edges (e.g., "0", "auto", "[2rem]"). Applies `inset-{value}` if specified.
-  ///   - top: The value for the top edge (e.g., "0", "4", "[2rem]").
-  ///   - right: The value for the right edge (e.g., "auto", "1/2").
-  ///   - bottom: The value for the bottom edge (e.g., "0", "[50%]").
-  ///   - left: The value for the left edge (e.g., "4", "full").
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - type: The position type.
+  ///   - inset: The value for all edges. Applies `inset-{value}` if specified.
+  ///   - top: The value for the top edge.
+  ///   - right: The value for the right edge.
+  ///   - bottom: The value for the bottom edge.
+  ///   - left: The value for the left edge.
+  ///   - breakpoint: Optional breakpoint prefix.
   /// - Returns: A new `Element` with the updated position, inset, and edge classes.
   func position(
     _ type: PositionType,

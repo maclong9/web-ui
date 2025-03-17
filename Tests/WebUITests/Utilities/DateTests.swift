@@ -3,8 +3,7 @@ import Testing
 
 @testable import WebUI
 
-@Suite("Date Tests")
-struct DateTests {
+@Suite("Date Tests") struct DateTests {
   @Test("Formatted year returns correct string")
   func testFormattedYear() throws {
     let date = Date(timeIntervalSince1970: 1677657600)  // Feb 28, 2023

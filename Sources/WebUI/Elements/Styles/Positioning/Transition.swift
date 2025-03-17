@@ -19,11 +19,11 @@ extension Element {
   /// Applies transition styling to the element with an optional breakpoint.
   ///
   /// - Parameters:
-  ///   - property: The property to transition (e.g., `.colors`). If nil, uses default `transition`.
-  ///   - duration: Duration in milliseconds (e.g., 300 for `duration-300`).
-  ///   - easing: Easing function (e.g., `.inOut` for `ease-in-out`).
-  ///   - delay: Delay in milliseconds (e.g., 150 for `delay-150`).
-  ///   - breakpoint: Optional breakpoint prefix (e.g., `md:` applies styles at 768px and up).
+  ///   - property: The property to transition,
+  ///   - duration: Duration in milliseconds.
+  ///   - easing: Easing function.
+  ///   - delay: Delay in milliseconds.
+  ///   - breakpoint: Optional breakpoint prefix.
   /// - Returns: A new `Element` with the updated transition classes.
   func transition(
     property: TransitionProperty? = nil,
