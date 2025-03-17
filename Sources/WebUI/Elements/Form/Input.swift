@@ -14,8 +14,8 @@ public enum InputType: String {
 
 /// Creates HTML input elements.
 /// This renders an `<input>` tag, which is used to collect user input, such as text, numbers, or form submissions.
-public class Input: Element { 
-
+public class Input: Element {
+  let name: String
   let type: InputType?
   let value: String?
   let placeholder: String?
@@ -36,11 +36,13 @@ public class Input: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
+    name: String,
     type: InputType? = nil,
     value: String? = nil,
     placeholder: String? = nil,
     autofocus: Bool? = nil
   ) {
+    self.name = name
     self.type = type
     self.value = value
     self.placeholder = placeholder

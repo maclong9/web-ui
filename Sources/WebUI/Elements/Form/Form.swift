@@ -21,9 +21,9 @@ public class Form: Element {
     case textPlain = "text/plain"
   }
 
-  private let action: String
-  private let method: FormMethod
-  private let enctype: EncodingType?
+  let action: String
+  let method: FormMethod
+  let enctype: EncodingType?
 
   /// Creates a new HTML form element.
   ///
@@ -62,8 +62,7 @@ public class Form: Element {
     .compactMap { $0 }
     .joined(separator: " ")
 
-    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
     let contentString = content.map { $0.render() }.joined()
-    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
+    return "<\(tag) \(attributes)>\(contentString)</\(tag)>"
   }
 }
