@@ -33,7 +33,6 @@ public class Button: Element {
   }
 
   /// Generates the HTML string for this button element.
-  /// This combines the button tag with any ID, classes, role, type, and autofocus as attributes, then adds the rendered content inside the opening and closing tags, producing a complete HTML snippet like "<button type=\"submit\" autofocus>Submit</button>".
   public override func render() -> String {
     let attributes = [
       attribute("id", id),

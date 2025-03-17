@@ -29,7 +29,6 @@ public class Input: Element {
   ///   - value: An optional starting value, like "user@example.com", shown in the input when it loads.
   ///   - placeholder: An optional hint, like "Enter your email", displayed when the input is empty.
   ///   - autofocus: Whether the input should be automatically focused when the page loads.
-  ///
   /// - SeeAlso: ``Element``
   init(
     tag: String = "input",
@@ -56,6 +55,7 @@ public class Input: Element {
     let attributes = [
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
+      attribute("name", name),
       attribute("type", type?.rawValue),
       attribute("value", value),
       attribute("placeholder", placeholder),
