@@ -1,14 +1,18 @@
-/// Creates a new HTML textarea element.
+/// Generates an HTML textarea element.
+///
+/// Provides a multi-line text input for long-form content.
 final public class Textarea: Input {
-  /// This prepares an input field with options for its type, initial value, placeholder text, and focus behavior.
-  /// This input type is used for longform text over the standard input of type text
-  /// - Parameters:
-  ///   - type: The kind of input, like "text" or "email", to define what data it accepts.
-  ///   - value: An optional starting value, like "user@example.com", shown in the input when it loads.
-  ///   - placeholder: An optional hint, like "Enter your email", displayed when the input is empty.
-  ///   - autofocus: Whether the input should be automatically focused when the page loads.
+  /// Creates a new HTML textarea element.
   ///
-  /// - SeeAlso: ``Element``
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - name: Name for form submission.
+  ///   - type: Input type, optional.
+  ///   - value: Initial value, optional.
+  ///   - placeholder: Hint text when empty, optional.
+  ///   - autofocus: Focuses on page load if true, optional.
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -32,8 +36,9 @@ final public class Textarea: Input {
     )
   }
 
-  /// Generates the HTML string for this textarea element.
-  /// This combines the textarea tag with any ID, classes, role, type, value, placeholder, and autofocus as attributes, producing an HTML snippet
+  /// Renders the textarea as an HTML string.
+  ///
+  /// - Returns: Complete `<textarea>` tag string with attributes and content.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),

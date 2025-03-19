@@ -1,4 +1,6 @@
-/// Represents the sides for border radius, including individual corners.
+/// Defines sides for applying border radius.
+///
+/// Represents individual corners or groups of corners for styling border radius.
 public enum RadiusSide: String {
   /// Applies radius to all corners
   case all = ""
@@ -20,7 +22,9 @@ public enum RadiusSide: String {
   case bottomRight = "br"
 }
 
-/// Represents the size options for border radius.
+/// Specifies sizes for border radius.
+///
+/// Defines a range of radius values from none to full circular.
 public enum RadiusSize: String {
   /// No border radius (0)
   case none = "none"
@@ -43,7 +47,9 @@ public enum RadiusSize: String {
 
 }
 
-/// Represents the style options for borders and outlines.
+/// Defines styles for borders and outlines.
+///
+/// Provides options for solid, dashed, and other border appearances.
 public enum BorderStyle: String {
   /// Solid line border
   case solid = "solid"
@@ -61,7 +67,9 @@ public enum BorderStyle: String {
   case divide = "divide"
 }
 
-/// Represents the size options for box shadow.
+/// Specifies sizes for box shadows.
+///
+/// Defines shadow sizes from none to extra-large.
 public enum ShadowSize: String {
   /// No shadow
   case none = "none"
@@ -82,14 +90,17 @@ public enum ShadowSize: String {
 }
 
 extension Element {
-  /// Applies border styling to the element with an optional breakpoint.
+  /// Applies border styling to the element.
+  ///
+  /// Adds classes for border width, radius, style, and color, optionally scoped to a breakpoint.
   ///
   /// - Parameters:
-  ///   - width: The border width to be rendered
-  ///   - radius: A tuple of `(side, size)` to specify border radius
-  ///   - style: The border style
-  ///   - breakpoint: Optional breakpoint prefix
-  /// - Returns: A new `Element` with the updated border classes.
+  ///   - width: Sets the border width in pixels.
+  ///   - radius: Specifies the side and size of the border radius.
+  ///   - style: Defines the border style (e.g., solid, dashed).
+  ///   - color: Sets the border color from the color palette.
+  ///   - breakpoint: Applies the styles at a specific screen size.
+  /// - Returns: A new element with updated border classes.
   func border(
     width: Int? = nil,
     radius: (side: RadiusSide, size: RadiusSize)? = nil,
@@ -129,13 +140,16 @@ extension Element {
     )
   }
 
-  /// Applies outline styling to the element with an optional breakpoint.
+  /// Applies outline styling to the element.
+  ///
+  /// Adds classes for outline width, style, and color, optionally scoped to a breakpoint.
   ///
   /// - Parameters:
-  ///   - width: The outline width
-  ///   - style: The outline style
-  ///   - breakpoint: Optional breakpoint prefix
-  /// - Returns: A new `Element` with the updated outline classes.
+  ///   - width: Sets the outline width in pixels.
+  ///   - style: Defines the outline style (e.g., solid, dashed).
+  ///   - color: Sets the outline color from the color palette.
+  ///   - breakpoint: Applies the styles at a specific screen size.
+  /// - Returns: A new element with updated outline classes.
   func outline(
     width: Int? = nil,
     style: BorderStyle? = nil,
@@ -146,9 +160,9 @@ extension Element {
     var newClasses: [String] = []
 
     if let widthValue = width {
-      newClasses.append("\(prefix)outline-\(widthValue)")  // Example: outline-2
+      newClasses.append("\(prefix)outline-\(widthValue)")
     }
-    if let styleValue = style, style != .divide {  // Divide not applicable for outline
+    if let styleValue = style, style != .divide {
       newClasses.append("\(prefix)outline-\(styleValue.rawValue)")
     }
     if let color = color?.rawValue {
@@ -165,12 +179,15 @@ extension Element {
     )
   }
 
-  /// Applies box shadow styling to the element with an optional breakpoint.
+  /// Applies box shadow styling to the element.
+  ///
+  /// Adds a shadow class based on size and optional color, scoped to a breakpoint if provided.
   ///
   /// - Parameters:
-  ///   - size: The shadow size
-  ///   - breakpoint: Optional breakpoint prefix
-  /// - Returns: A new `Element` with the updated shadow class.
+  ///   - size: Sets the shadow size (e.g., small, large).
+  ///   - color: Applies a shadow color from the color palette.
+  ///   - breakpoint: Applies the styles at a specific screen size.
+  /// - Returns: A new element with updated shadow classes.
   func boxShadow(
     size: ShadowSize,
     color: Color? = nil,
@@ -194,12 +211,15 @@ extension Element {
     )
   }
 
-  /// Applies a ring effect to the element with an optional breakpoint.
+  /// Applies a ring effect to the element.
+  ///
+  /// Adds a ring class with specified width and optional color, scoped to a breakpoint if provided.
   ///
   /// - Parameters:
-  ///   - size: The ring width
-  ///   - breakpoint: Optional breakpoint prefix
-  /// - Returns: A new `Element` with the updated ring class.
+  ///   - size: Sets the ring width in pixels (defaults to 1).
+  ///   - color: Applies a ring color from the color palette.
+  ///   - breakpoint: Applies the styles at a specific screen size.
+  /// - Returns: A new element with updated ring classes.
   func ring(
     size: Int = 1,
     color: Color? = nil,

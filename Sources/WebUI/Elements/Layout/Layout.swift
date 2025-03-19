@@ -1,7 +1,14 @@
-/// Creates HTML header elements.
-/// This renders a `<header>` tag, which is used to contain introductory content or a set of navigational links for a document or section.
-public class Header: Element { 
-  /// - SeeAlso: ``Element``
+/// Generates an HTML header element.
+///
+/// Contains introductory content or navigation links.
+public class Header: Element {
+  /// Creates a new HTML header element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing header content, defaults to empty.
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -12,10 +19,17 @@ public class Header: Element {
   }
 }
 
-/// Creates HTML header elements.
-/// This renders a `<header>` tag, which is used to render a set of navigational links for a document or section.
-public class Navigation: Element { 
-  /// - SeeAlso: ``Element``
+/// Generates an HTML navigation element.
+///
+/// Provides a set of navigational links.
+public class Navigation: Element {
+  /// Creates a new HTML navigation element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing navigation content, defaults to empty.
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -26,10 +40,17 @@ public class Navigation: Element {
   }
 }
 
-/// Creates an HTML aside element.
-/// This renders an `<aside>` tag, used for content that is tangentially related to the surrounding content, such as sidebars or callouts.
+/// Generates an HTML aside element.
+///
+/// Holds content tangentially related to the main content.
 public class Aside: Element {
-  /// - SeeAlso: ``Element``
+  /// Creates a new HTML aside element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing aside content, defaults to empty.
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -40,10 +61,17 @@ public class Aside: Element {
   }
 }
 
-/// Creates the main content area of an HTML document.
-/// This renders a `<main>` tag, which contains the primary content of the page that is unique to that page and should be relevant to the page's purpose.
-public class Main: Element { 
-  /// - SeeAlso: ``Element``
+/// Generates an HTML main element.
+///
+/// Contains the primary, unique content of a page.
+public class Main: Element {
+  /// Creates a new HTML main element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing main content, defaults to empty.
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -54,10 +82,17 @@ public class Main: Element {
   }
 }
 
-/// Creates HTML footer elements.
-/// This renders a `<footer>` tag, which typically contains information about the author, copyright, links to terms of use, etc., and is placed at the bottom of a web page or section.
-public class Footer: Element { 
-  /// - SeeAlso: ``Element``
+/// Generates an HTML footer element.
+///
+/// Holds author info, copyright, or related links.
+public class Footer: Element {
+  /// Creates a new HTML footer element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing footer content, defaults to empty.
   init(
     id: String? = nil,
     classes: [String]? = nil,

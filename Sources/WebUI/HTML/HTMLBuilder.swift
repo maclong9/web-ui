@@ -1,44 +1,69 @@
-/// A result builder for creating HTML content in a declarative syntax.
-/// - This enables a SwiftUI-like syntax for building HTML structures.
+/// Enables declarative construction of HTML content.
+///
+/// Provides a result builder for creating HTML structures with a SwiftUI-like syntax.
 @resultBuilder
 struct HTMLBuilder {
-  /// Builds a block of HTML components into an array.
-  /// - Parameter components: A variadic list of HTML components.
-  /// - Returns: An array containing all the provided HTML components.
+  /// Combines multiple HTML component arrays into a single array.
+  ///
+  /// Joins variadic HTML component lists into a flat array.
+  ///
+  /// - Parameters:
+  ///   - components: Variadic arrays of HTML components.
+  /// - Returns: A flattened array of all provided HTML components.
   static func buildBlock(_ components: [any HTML]...) -> [any HTML] {
     components.joined().map { $0 }
   }
 
-  /// Converts a single HTML expression into an array of components.
-  /// - Parameter expression: An individual HTML entity to be included in the builder.
+  /// Wraps a single HTML entity in an array.
+  ///
+  /// Converts an individual HTML expression into a component array.
+  ///
+  /// - Parameters:
+  ///   - expression: The HTML entity to include.
   /// - Returns: An array containing the single HTML entity.
   static func buildExpression(_ expression: any HTML) -> [any HTML] {
     [expression]
   }
 
-  /// Handles optional HTML components in the builder.
-  /// - Parameter component: An optional array of HTML components, which may be nil.
-  /// - Returns: The array of components if present, or an empty array if nil.
+  /// Handles optional HTML components.
+  ///
+  /// Returns the components if present, or an empty array if nil.
+  ///
+  /// - Parameters:
+  ///   - component: An optional array of HTML components.
+  /// - Returns: The components or an empty array if nil.
   static func buildOptional(_ component: [any HTML]?) -> [any HTML] {
     component ?? []
   }
 
-  /// Resolves the first branch of a conditional HTML structure.
-  /// - Parameter component: An array of HTML components from the "true" branch of an if-else.
-  /// - Returns: The array of components from the first branch.
+  /// Resolves the true branch of a conditional HTML structure.
+  ///
+  /// Returns components from the first branch of an if-else statement.
+  ///
+  /// - Parameters:
+  ///   - component: The HTML components from the true branch.
+  /// - Returns: The components from the first branch.
   static func buildEither(first component: [any HTML]) -> [any HTML] {
     component
   }
 
-  /// Resolves the second branch of a conditional HTML structure.
-  /// - Parameter component: An array of HTML components from the "false" branch of an if-else.
-  /// - Returns: The array of components from the second branch.
+  /// Resolves the false branch of a conditional HTML structure.
+  ///
+  /// Returns components from the second branch of an if-else statement.
+  ///
+  /// - Parameters:
+  ///   - component: The HTML components from the false branch.
+  /// - Returns: The components from the second branch.
   static func buildEither(second component: [any HTML]) -> [any HTML] {
     component
   }
 
-  /// Handles loops by transforming an array of HTML component arrays into a single flat array.
-  /// - Parameter components: An array of HTML component arrays, typically from a `for` loop.
+  /// Flattens an array of HTML component arrays.
+  ///
+  /// Converts a nested array from a loop into a single array of components.
+  ///
+  /// - Parameters:
+  ///   - components: An array of HTML component arrays.
   /// - Returns: A flattened array of all HTML components.
   static func buildArray(_ components: [[any HTML]]) -> [any HTML] {
     components.flatMap { $0 }

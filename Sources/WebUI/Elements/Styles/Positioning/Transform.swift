@@ -1,17 +1,19 @@
 extension Element {
-  /// Applies transform styling to the element with an optional breakpoint.
+  /// Applies transformation styling to the element.
+  ///
+  /// Adds classes for scaling, rotating, translating, and skewing, optionally scoped to a breakpoint.
   ///
   /// - Parameters:
-  ///   - scale: Scale value for both axes.
-  ///   - scaleX: Scale value for x-axis.
-  ///   - scaleY: Scale value for y-axis.
-  ///   - rotate: Rotation value.
-  ///   - translateX: Translation on x-axis.
-  ///   - translateY: Translation on y-axis.
-  ///   - skewX: Skew on x-axis.
-  ///   - skewY: Skew on y-axis.
-  ///   - breakpoint: Optional breakpoint to apply styles to.
-  /// - Returns: A new `Element` with the updated transform classes.
+  ///   - scale: Sets the scale factor for both axes.
+  ///   - scaleX: Sets the scale factor for the x-axis.
+  ///   - scaleY: Sets the scale factor for the y-axis.
+  ///   - rotate: Specifies the rotation angle in degrees.
+  ///   - translateX: Sets the horizontal translation distance.
+  ///   - translateY: Sets the vertical translation distance.
+  ///   - skewX: Specifies the x-axis skew angle.
+  ///   - skewY: Specifies the y-axis skew angle.
+  ///   - breakpoint: Applies the styles at a specific screen size.
+  /// - Returns: A new element with updated transform classes.
   func transform(
     scale: String? = nil,
     scaleX: String? = nil,

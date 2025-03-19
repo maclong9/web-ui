@@ -1,19 +1,21 @@
-/// Represents common DOM events for triggering JavaScript actions.
+/// Defines common DOM events for JavaScript actions.
 public enum Action {
-  /// Triggered when the element is clicked.
+  /// Triggered when an element is clicked.
   case click
-  /// Triggered when the mouse enters the element.
+  /// Triggered when the mouse enters an element.
   case mouseenter
-  /// Triggered when the mouse leaves the element.
+  /// Triggered when the mouse leaves an element.
   case mouseleave
-  /// Triggered when the element gains focus.
+  /// Triggered when an element gains focus.
   case focus
-  /// Triggered when the element loses focus.
+  /// Triggered when an element loses focus.
   case blur
-  /// A custom action for extending
+  /// Custom event with a specified name.
   case custom(String)
 
-  /// Returns the raw JavaScript event name.
+  /// Provides the raw JavaScript event name.
+  ///
+  /// - Returns: String representing the event name.
   public var rawValue: String {
     switch self {
       case .click: return "click"

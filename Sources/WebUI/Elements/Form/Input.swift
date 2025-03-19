@@ -1,19 +1,20 @@
-/// Represents the type of an input element.
+/// Defines types for HTML input elements.
 public enum InputType: String {
-  /// Represents a single-line text input field
+  /// Single-line text input field.
   case text
-  /// Represents a masked password input field
+  /// Masked password input field.
   case password
-  /// Represents an email address input field
+  /// Email address input field.
   case email
-  /// Represents a numeric input field
+  /// Numeric input field.
   case number
-  /// Represents a submit button input
+  /// Submit button input.
   case submit
 }
 
-/// Creates HTML input elements.
-/// This renders an `<input>` tag, which is used to collect user input, such as text, numbers, or form submissions.
+/// Generates an HTML input element.
+///
+/// Collects user input like text or numbers.
 public class Input: Element {
   let name: String
   let type: InputType?
@@ -23,13 +24,16 @@ public class Input: Element {
 
   /// Creates a new HTML input element.
   ///
-  /// This prepares an input field with options for its type, initial value, placeholder text, and focus behavior.
   /// - Parameters:
-  ///   - type: The kind of input, like "text" or "email", to define what data it accepts.
-  ///   - value: An optional starting value, like "user@example.com", shown in the input when it loads.
-  ///   - placeholder: An optional hint, like "Enter your email", displayed when the input is empty.
-  ///   - autofocus: Whether the input should be automatically focused when the page loads.
-  /// - SeeAlso: ``Element``
+  ///   - tag: HTML tag, defaults to "input".
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - name: Name for form submission.
+  ///   - type: Input type, optional.
+  ///   - value: Initial value, optional.
+  ///   - placeholder: Hint text when empty, optional.
+  ///   - autofocus: Focuses on page load if true, optional.
   init(
     tag: String = "input",
     id: String? = nil,
@@ -49,8 +53,9 @@ public class Input: Element {
     super.init(tag: tag, id: id, classes: classes, role: role)
   }
 
-  /// Generates the HTML string for this input element.
-  /// This combines the input tag with any ID, classes, role, type, value, placeholder, and autofocus as attributes, producing a self-closing HTML snippet
+  /// Renders the input as an HTML string.
+  ///
+  /// - Returns: Complete self-closing `<input>` tag string.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),

@@ -1,15 +1,17 @@
 import Foundation
 
-/// Creates an application with a collection of routes.
-///
-/// Creates and populates a `.build` directory with rendered HTML, CSS, and JS.
-/// Will also copy relevant image files to the build directory.
+/// Manages an application’s routes and generates a build directory.
 public struct Application {
+  /// Collection of documents representing application routes.
   let routes: [Document]
 
   /// Builds the application by rendering routes to a directory.
-  /// - Parameter directory: The target directory URL (defaults to `.build`).
-  /// - Throws: An error if directory creation or file writing fails.
+  ///
+  /// Creates a `.build` directory if it doesn’t exist and writes HTML files for each route.
+  ///
+  /// - Parameter directory: Destination URL for build output, defaults to `.build`.
+  /// - Throws: Errors from directory creation or file writing failures.
+  /// - Complexity: O(n) where n is the number of routes.
   func build(to directory: URL = URL(fileURLWithPath: ".build")) throws {
     try FileManager.default.createDirectory(
       at: directory,

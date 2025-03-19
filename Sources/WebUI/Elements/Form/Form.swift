@@ -1,18 +1,22 @@
-/// Represents the HTTP method for form submission.
+/// Defines HTTP methods for form submission.
 public enum FormMethod: String {
-  /// Represents an HTTP GET request method
+  /// HTTP GET request method.
   case get
-  /// Represents an HTTP POST request method
+  /// HTTP POST request method.
   case post
 }
 
-/// Creates an HTML form element.
-/// This renders a `<form>` tag, which is a block-level container used to group input elements (like text fields, checkboxes, or buttons) for collecting user data, typically for submission to a server.
+/// Generates an HTML form element.
+///
+/// Represents a container for collecting user input, typically submitted to a server.
 public class Form: Element {
-  /// Represents the encoding type for form data submission.
+  /// Defines encoding types for form data submission.
   public enum EncodingType: String {
+    /// Default. All characters are encoded before sent (spaces are converted to "+" symbols, and special characters are converted to ASCII HEX values)
     case applicationXWWWFormUrlencoded = "application/x-www-form-urlencoded"
+    /// This value is necessary if the user will upload a file through the form
     case multipartFormData = "multipart/form-data"
+    /// Sends data without any encoding at all. Not recommended
     case textPlain = "text/plain"
   }
 
@@ -23,10 +27,13 @@ public class Form: Element {
   /// Creates a new HTML form element.
   ///
   /// - Parameters:
-  ///   - action: The URL where the form data will be submitted
-  ///   - method: The HTTP method to use for submission, either "get" (data in URL) or "post" (data in request body).
-  ///   - enctype: An optional encoding type for form data, required for file uploads with "multipart/form-data".
-  /// - SeeAlso: ``Element``
+  ///   - action: URL for form data submission.
+  ///   - method: HTTP method for submission, defaults to `.post`.
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - enctype: Encoding type for form data, optional.
+  ///   - content: Closure providing form content.
   init(
     action: String,
     method: FormMethod = .post,
@@ -42,8 +49,9 @@ public class Form: Element {
     super.init(tag: "form", id: id, classes: classes, role: role, content: content)
   }
 
-  /// Generates the HTML string for this form element.
-  /// This combines the form tag with attributes like action, method, id, classes, role, and enctype, then includes the rendered content inside the opening and closing tags.
+  /// Renders the form as an HTML string.
+  ///
+  /// - Returns: Complete `<form>` tag string with attributes and content.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),

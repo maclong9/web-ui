@@ -1,11 +1,18 @@
-/// Creates HTML label element for a form field
+/// Generates an HTML label element.
+///
+/// Associates descriptive text with a form field for accessibility.
 public class Label: Element {
   let `for`: String
 
-  /// Creates a new HTML input element.
-  /// - Parameter for: The input element that the label is describing
+  /// Creates a new HTML label element.
   ///
-  /// - SeeAlso: ``Element``
+  /// - Parameters:
+  ///   - tag: HTML tag, defaults to "label".
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - for: ID of the associated input element.
+  ///   - content: Closure providing label content, defaults to empty.
   init(
     tag: String = "label",
     id: String? = nil,
@@ -18,8 +25,9 @@ public class Label: Element {
     super.init(tag: tag, id: id, classes: classes, role: role, content: content)
   }
 
-  /// Generates the HTML string for this input element.
-  /// This combines the input tag with any ID, classes, role, type, value, placeholder, and autofocus as attributes, producing a self-closing HTML snippet
+  /// Renders the label as an HTML string.
+  ///
+  /// - Returns: Complete `<label>` tag string with attributes and content.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),

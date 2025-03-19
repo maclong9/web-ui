@@ -1,24 +1,24 @@
-/// Represents the type of a button element.
+/// Defines types of HTML button elements.
 public enum ButtonType: String {
-  /// Indicates a button that submits form data
-  case submit
-  /// Indicates a button that resets form data
-  case reset
+  case submit, reset
 }
 
 /// Creates HTML button elements.
-/// This renders a `<button>` tag, which is used to create a clickable button that can be used to trigger an action or submit a form.
-public class Button: Element { 
+///
+/// Represents a clickable element that triggers an action or event.
+public class Button: Element {
   let type: ButtonType?
   let autofocus: Bool?
 
-  /// Creates a new HTML button element.
+  /// Creates a new HTML button.
   ///
   /// - Parameters:
-  ///   - type: The kind of button to render, for example submit for triggering a form submit action
-  ///   - autofocus: Whether or not the button should be automatically focused on page load
-  ///
-  /// - SeeAlso: ``Element``
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - type: Button type, optional.
+  ///   - autofocus: Enables autofocus on load, optional.
+  ///   - content: Closure providing button content, defaults to empty.
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -32,7 +32,9 @@ public class Button: Element {
     super.init(tag: "button", id: id, classes: classes, role: role, content: content)
   }
 
-  /// Generates the HTML string for this button element.
+  /// Renders the button as an HTML string.
+  ///
+  /// - Returns: Complete HTML button string with attributes and content.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),

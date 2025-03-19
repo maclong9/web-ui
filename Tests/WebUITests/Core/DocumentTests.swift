@@ -11,9 +11,9 @@ import Testing
       description: "Simple description"
     )
   ) { "Hello, world!" }
-  
+
   @Test("Should render page structure correctly")
-  func renderPageStructure() async throws {
+  func renderPageStructure() {
     let html = document.render()
     #expect(html.contains("<!DOCTYPE html>"))
     #expect(html.contains("<html lang=\"en\">"))
@@ -22,15 +22,15 @@ import Testing
     #expect(html.contains("</body>"))
     #expect(html.contains("</html>"))
   }
-  
+
   @Test("Should render page title correctly")
-  func renderPageTitle() async throws {
+  func renderPageTitle() {
     let html = document.render()
     #expect(html.contains("<title>Hello, world! | Test</title>"))
   }
 
   @Test("Optional Metadata tags are rendered correctly")
-  mutating func renderOptionalMetadata() async throws {
+  mutating func renderOptionalMetadata() {
     document.metadata.titleSeperator = "-"
     document.metadata.author = "Jane Doe"
     document.metadata.keywords = ["swift", "webui"]
@@ -42,5 +42,12 @@ import Testing
     #expect(html.contains("<meta name=\"twitter:card\" content=\"summary_large_image\">"))
     #expect(html.contains("<meta name=\"twitter:creator\" content=\"@janedoe\">"))
     #expect(html.contains("<meta property=\"og:type\" content=\"article\">"))
+  }
+
+  @Test("Should render with a custom locale")
+  mutating func renderWithCustomLocale() {
+    document .metadata.locale = .de
+    let html = document.render()
+    #expect(html.contains("<html lang=\"de\">"))
   }
 }

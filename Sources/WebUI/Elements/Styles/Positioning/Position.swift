@@ -1,24 +1,33 @@
-/// Represents position types
+/// Defines positioning types for elements.
+///
+/// Specifies how an element is positioned within its parent or viewport.
 public enum PositionType: String {
+  /// Positions the элемент using the normal document flow.
   case `static`
+  /// Positions the element relative to its normal position.
   case relative
+  /// Positions the element relative to its nearest positioned ancestor.
   case absolute
+  /// Positions the element relative to the viewport and fixes it in place.
   case fixed
+  /// Positions the element relative to its normal position and sticks on scroll.
   case sticky
 }
 
 extension Element {
-  /// Sets the position type, optional inset, and edge values of the element with an optional breakpoint.
+  /// Applies positioning styling to the element.
+  ///
+  /// Sets the position type and optional inset values, scoped to a breakpoint if provided.
   ///
   /// - Parameters:
-  ///   - type: The position type.
-  ///   - inset: The value for all edges. Applies `inset-{value}` if specified.
-  ///   - top: The value for the top edge.
-  ///   - right: The value for the right edge.
-  ///   - bottom: The value for the bottom edge.
-  ///   - left: The value for the left edge.
-  ///   - breakpoint: Optional breakpoint prefix.
-  /// - Returns: A new `Element` with the updated position, inset, and edge classes.
+  ///   - type: Specifies the positioning method (e.g., absolute, fixed).
+  ///   - inset: Sets the distance from all edges.
+  ///   - top: Sets the distance from the top edge.
+  ///   - right: Sets the distance from the right edge.
+  ///   - bottom: Sets the distance from the bottom edge.
+  ///   - left: Sets the distance from the left edge.
+  ///   - breakpoint: Applies the styles at a specific screen size.
+  /// - Returns: A new element with updated position classes.
   func position(
     _ type: PositionType,
     inset: String? = nil,

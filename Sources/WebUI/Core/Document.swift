@@ -1,38 +1,41 @@
-/// Represents a complete HTML document with fixed metadata.
-///
-/// This structure encapsulates both the document’s content and its metadata, including site information,
-/// page title, description, and other HTML `<head>` elements such as `<meta>` and `<title>` tags.
-/// - All metadata is set at initialization and cannot be altered during rendering.
-/// - Produces a fully formatted HTML document with `<head>` and `<body>` sections.
+/// Represents an immutable HTML document with metadata and content.
 public struct Document {
+  /// Navigation path for the document.
   let path: String
+
+  /// Metadata configuration for the document’s head section.
   var metadata: Metadata
+
+  /// Closure generating the document’s HTML content.
   private let contentBuilder: () -> [any HTML]
 
+  /// Computed HTML content from the content builder.
   var content: [any HTML] {
     contentBuilder()
   }
 
-  /// Creates an HTML document with fixed metadata and content.
+  /// Creates a new HTML document with metadata and content.
   ///
   /// - Parameters:
-  ///   - path: The pathname for navigatin to that document
-  ///   - metadata: The complete metadata configuration for the document.
-  ///   - content: The HTML content for the `<body>` section.
-  init(path: String, metadata: Metadata, @HTMLBuilder content: @escaping () -> [any HTML]) {
+  ///   - path: URL path for navigating to the document.
+  ///   - metadata: Configuration for the head section.
+  ///   - content: Closure building the body’s HTML content.
+  init(
+    path: String,
+    metadata: Metadata,
+    @HTMLBuilder content: @escaping () -> [any HTML]
+  ) {
     self.path = path
     self.metadata = metadata
     self.contentBuilder = content
   }
 
-  /// Generates a complete HTML document string.
+  /// Renders the document as a complete HTML string.
   ///
-  /// This function renders a full HTML document including the `<head>` section with all metadata
+  /// Generates HTML with a head section (metadata) and body (content).
   ///
-  /// - Note: The CSS filename is derived from the first part of `metadata.pageTitle` (before "|"),
-  ///   with spaces replaced by hyphens and converted to lowercase
-  ///
-  /// - Returns: A string containing the complete HTML document.
+  /// - Returns: Complete HTML document string.
+  /// - Complexity: O(n) where n is the number of content elements.
   func render() -> String {
     let cssFilename = metadata.pageTitle
       .split(separator: " \(metadata.titleSeperator)")[0]

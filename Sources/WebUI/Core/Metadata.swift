@@ -1,21 +1,14 @@
-/// Supported Open Graph content types for the document.
+/// Defines supported Open Graph content types for a document.
 public enum ContentType: String {
-  case website = "website"
-  case article = "article"
-  case video = "video"
-  case profile = "profile"
+  case website, article, video, profile
 }
 
-/// Supported language locales for the document.
+/// Defines supported language locales for a document.
 public enum Locale: String {
-  case english = "en"
-  case spanish = "es"
-  case french = "fr"
-  case german = "de"
-  case japanese = "ja"
+  case en, sp, fr, de, ja
 }
 
-/// Metadata configuration for the document's `<head>` section.
+/// Stores metadata configuration for a document’s head section.
 public struct Metadata {
   var site: String?
   var title: String
@@ -28,18 +21,18 @@ public struct Metadata {
   var locale: Locale
   var type: ContentType?
 
-  /// Creates metadata configuration for the document.
+  /// Creates metadata for a document’s head section.
   ///
   /// - Parameters:
-  ///   - site: The website name, used in title and branding (default: nil).
-  ///   - title: Base template for the page title.
-  ///   - titleSeperator: The string used to seperate the title and description.
-  ///   - description: A brief summary of the page content for `<meta>` tags.
-  ///   - author: Optional author name for the content.
-  ///   - keywords: Optional SEO keywords.
-  ///   - twitter: Optional Twitter handle (without "@").
-  ///   - locale: Language setting (default: .english).
-  ///   - type: Optional Open Graph content type.
+  ///   - site: Website name used in title and branding, optional.
+  ///   - title: Base title template for the page.
+  ///   - titleSeperator: Separator between title and site, defaults to "|".
+  ///   - description: Brief summary of page content for meta tags.
+  ///   - author: Author name, optional.
+  ///   - keywords: SEO keywords, optional.
+  ///   - twitter: Twitter handle without "@", optional.
+  ///   - locale: Language setting, defaults to `.en`.
+  ///   - type: Open Graph content type, optional.
   init(
     site: String? = nil,
     title: String,
@@ -48,7 +41,7 @@ public struct Metadata {
     author: String? = nil,
     keywords: [String]? = nil,
     twitter: String? = nil,
-    locale: Locale = .english,
+    locale: Locale = .en,
     type: ContentType? = nil
   ) {
     self.site = site
