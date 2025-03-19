@@ -115,7 +115,7 @@ extension Element {
   /// - Returns: JavaScript string for toggling.
   private func toggleManipulation(_ ref: String, className: String?, attribute: AttributeName?, value: String) -> String
   {
-    if let className { return "\(ref).classList.toggle('\(value)');" }
+    if className != nil { return "\(ref).classList.toggle('\(value)');" }
     if let attr = attribute {
       let name = attr.rawValue
       return
@@ -134,7 +134,7 @@ extension Element {
   ///   - value: Value to set for the addition.
   /// - Returns: JavaScript string for adding.
   private func addManipulation(_ ref: String, className: String?, attribute: AttributeName?, value: String) -> String {
-    if let className { return "\(ref).classList.add('\(value)');" }
+    if className != nil { return "\(ref).classList.add('\(value)');" }
     if let attr = attribute { return "\(ref).setAttribute('\(attr.rawValue)', '\(value)');" }
     return ""
   }

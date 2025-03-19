@@ -37,8 +37,7 @@ public class Label: Element {
     .compactMap { $0 }
     .joined(separator: " ")
 
-    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
     let contentString = content.map { $0.render() }.joined()
-    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
+    return "<\(tag) \(attributes)>\(contentString)</\(tag)>"
   }
 }

@@ -38,8 +38,7 @@ public class Progress: Element {
     ]
     .compactMap { $0 }
     .joined(separator: " ")
-
-    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
-    return "<\(tag)\(attributesString)>"
+    
+    return "<\(tag) \(attributes)>"
   }
 }

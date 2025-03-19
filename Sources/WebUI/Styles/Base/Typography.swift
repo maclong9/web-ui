@@ -1,5 +1,5 @@
 /// Represents different font sizes.
-public enum Size: String {
+public enum TextSize: String {
   /// Represents an extra-small font size
   case xs
   /// Represents a small font size
@@ -152,7 +152,7 @@ extension Element {
   ///   - breakpoint: Applies the styles at a specific screen size.
   /// - Returns: A new element with updated font classes.
   func font(
-    size: Size? = nil,
+    size: TextSize? = nil,
     weight: Weight? = nil,
     alignment: Alignment? = nil,
     tracking: Tracking? = nil,

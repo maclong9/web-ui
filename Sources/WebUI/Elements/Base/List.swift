@@ -19,7 +19,7 @@ public class List: Element {
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing list items.
   init(
-    type: ListType,
+    type: ListType = .unordered,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,

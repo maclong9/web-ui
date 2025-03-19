@@ -89,7 +89,7 @@ extension Element {
     justify: Justify? = nil,
     align: Align? = nil,
     grow: Grow? = nil,
-    breakpoint: Breakpoint? = nil
+    on breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
@@ -168,7 +168,7 @@ extension Element {
   /// - Returns: A new element with updated visibility classes.
   func hidden(
     isHidden: Bool = true,
-    breakpoint: Breakpoint? = nil
+    on breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []

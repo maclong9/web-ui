@@ -1,133 +1,197 @@
-/// Generates an HTML image element.
-public class Image: Element {
-  let source: String
-  let description: String
+// Represents image size by width and height
+public struct ImageSize {
   let width: Int?
   let height: Int?
-
-  /// Creates a new HTML image.
-  ///
-  /// - Parameters:
-  ///   - source: URL or path to the image.
-  ///   - description: Alt text for accessibility.
-  ///   - width: Image width in pixels, optional.
-  ///   - height: Image height in pixels, optional.
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
-  public init(
-    source: String,
-    description: String,
-    width: Int? = nil,
-    height: Int? = nil,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil
-  ) {
-    self.source = source
-    self.description = description
-    self.width = width
-    self.height = height
-    super.init(tag: "img", id: id, classes: classes, role: role)
-  }
-
-  /// Renders the image as an HTML string.
-  ///
-  /// - Returns: Complete self-closing `<img>` tag string.
-  public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
-      attribute("src", source),
-      attribute("alt", description),
-      attribute("width", width?.description),
-      attribute("height", height?.description),
-      attribute("role", role?.rawValue),
-    ]
-    .compactMap { $0 }
-    .joined(separator: " ")
-
-    return "<\(tag) \(attributes)>"
-  }
 }
 
-/// Generates an HTML video element.
-public class Video: Element {
-  let source: String
-  let controls: Bool?
-  let autoplay: Bool?
-  let loop: Bool?
+/// Generates an HTML figure element containing a picture with optional sources and caption.
+public class Figure: Element {
+  let picture: Image
+  let caption: String?
 
-  /// Creates a new HTML video.
+  /// Creates a new HTML figure element wrapping a picture with multiple sources.
   ///
   /// - Parameters:
-  ///   - source: URL or path to the video.
-  ///   - controls: Shows playback controls if true, optional.
-  ///   - autoplay: Starts playback automatically if true, optional.
-  ///   - loop: Loops video if true, optional.
   ///   - id: Unique identifier, optional.
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
-  ///   - content: Closure providing fallback content, defaults to empty.
+  ///   - sources: Array of URLs or paths to image files (first valid source is used by browser).
+  ///   - description: Alt text for accessibility on the fallback image.
+  ///   - caption: Text for the optional `<figcaption>`, nil if omitted.
+  ///   - size: Image size dimensions, optional.
   public init(
-    source: String,
-    controls: Bool? = nil,
-    autoplay: Bool? = nil,
-    loop: Bool? = nil,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    sources: [String],
+    description: String,
+    caption: String? = nil,
+    size: ImageSize? = nil
   ) {
-    self.source = source
-    self.controls = controls
-    self.autoplay = autoplay
-    self.loop = loop
-    super.init(tag: "video", id: id, classes: classes, role: role, content: content)
+    self.picture = Image(
+      sources: sources,
+      description: description,
+      size: size
+    )
+    self.caption = caption
+    super.init(tag: "figure", id: id, classes: classes, role: role)
   }
 
-  /// Renders the video as an HTML string.
+  /// Renders the figure as an HTML string with picture and optional caption.
   ///
-  /// - Returns: Complete `<video>` tag string with attributes and content.
+  /// - Returns: Complete `<figure>` tag string containing a `<picture>` and optional `<figcaption>`.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
-      attribute("src", source),
-      booleanAttribute("controls", controls),
-      booleanAttribute("autoplay", autoplay),
-      booleanAttribute("loop", loop),
       attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
     .joined(separator: " ")
 
     let attributesString = attributes.isEmpty ? "" : " \(attributes)"
-    let contentString = content.map { $0.render() }.joined()
-    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
+    let captionString = caption.map { "<figcaption>\($0)</figcaption>" } ?? ""
+    return "<\(tag)\(attributesString)>\(picture.render())\(captionString)</\(tag)>"
   }
 }
 
-/// Generates an HTML audio element.
-public class Audio: Element {
-  let source: String
+/// Generates an HTML picture element with multiple source tags and a fallback image.
+public class Image: Element {
+  let sourceURLs: [String]
+  let description: String
+  let size: ImageSize?
+
+  /// Creates a new HTML picture element with embedded sources.
+  ///
+  /// - Parameters:
+  ///   - sources: Array of URLs or paths to image files (first valid source is used by browser).
+  ///   - description: Alt text for accessibility on the fallback image.
+  ///   - size: Image size dimensions, optional.
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  public init(
+    sources: [String],
+    description: String,
+    size: ImageSize? = nil,
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil
+  ) {
+    self.sourceURLs = sources
+    self.description = description
+    self.size = size
+    super.init(tag: "picture", id: id, classes: classes, role: role)
+  }
+
+  /// Renders a `<picture>` HTML string with source tags and fallback image.
+  ///
+  /// - Returns: A string containing the full `<picture>` tag.
+  public override func render() -> String {
+    let attributes = [
+      attribute("id", id),
+      attribute("class", classes?.joined(separator: " ")),
+      attribute("role", role?.rawValue),
+    ]
+    .compactMap { $0 }
+    .joined(separator: " ")
+
+    let sourceTags = sourceURLs.dropLast()
+      .map { "<source src=\"\($0)\">" }
+      .joined()
+
+    let fallbackImage =
+      "<img src=\"\(sourceURLs.last ?? "")\" alt=\"\(description)\""
+      + (size?.width != nil ? " width=\"\(size!.width!)\"" : "")
+      + (size?.height != nil ? " height=\"\(size!.height!)\"" : "") + ">"
+
+    return "<\(tag)\(attributes)>\(sourceTags)\(fallbackImage)</\(tag)>"
+  }
+}
+
+/// Generates an HTML video element with multiple source tags.
+public class Video: Element {
+  let sourceURLs: [String]
   let controls: Bool?
   let autoplay: Bool?
   let loop: Bool?
+  let size: ImageSize?
 
-  /// Creates a new HTML audio element.
+  /// Creates a new HTML video element with embedded sources.
   ///
   /// - Parameters:
-  ///   - source: URL or path to the audio.
-  ///   - controls: Shows playback controls if true, optional.
-  ///   - autoplay: Starts playback automatically if true, optional.
-  ///   - loop: Loops audio if true, optional.
+  ///   - sources: Array of URLs or paths to video files (first valid source is used by browser).
+  ///   - controls: Displays playback controls if true, optional.
+  ///   - autoplay: Automatically starts playback if true, optional.
+  ///   - loop: Repeats video playback if true, optional.
+  ///   - size: Video size dimensions, optional.
   ///   - id: Unique identifier, optional.
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing fallback content, defaults to empty.
   public init(
-    source: String,
+    sources: [String],
+    controls: Bool? = nil,
+    autoplay: Bool? = nil,
+    loop: Bool? = nil,
+    size: ImageSize? = nil,
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+  ) {
+    self.sourceURLs = sources
+    self.controls = controls
+    self.autoplay = autoplay
+    self.loop = loop
+    self.size = size
+    super.init(tag: "video", id: id, classes: classes, role: role, content: content)
+  }
+
+  /// Renders the video as an HTML string with multiple source tags.
+  ///
+  /// - Returns: Complete `<video>` tag string including `<source>` tags and optional fallback content.
+  public override func render() -> String {
+    let attributes = [
+      attribute("id", id),
+      attribute("class", classes?.joined(separator: " ")),
+      booleanAttribute("controls", controls),
+      booleanAttribute("autoplay", autoplay),
+      booleanAttribute("loop", loop),
+      attribute("width", size?.width.map { String($0) }),
+      attribute("height", size?.height.map { String($0) }),
+      attribute("role", role?.rawValue),
+    ]
+    .compactMap { $0 }
+    .joined(separator: " ")
+
+    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
+    let sourceTags = sourceURLs.map { "<source src=\"\($0)\">" }.joined()
+    let contentString = content.map { $0.render() }.joined()
+    return "<\(tag)\(attributesString)>\(sourceTags)\(contentString)</\(tag)>"
+  }
+}
+
+/// Generates an HTML audio element with multiple source tags.
+public class Audio: Element {
+  let sourceURLs: [String]
+  let controls: Bool?
+  let autoplay: Bool?
+  let loop: Bool?
+
+  /// Creates a new HTML audio element with embedded sources.
+  ///
+  /// - Parameters:
+  ///   - sources: Array of URLs or paths to audio files (first valid source is used by browser).
+  ///   - controls: Displays playback controls if true, optional.
+  ///   - autoplay: Automatically starts playback if true, optional.
+  ///   - loop: Repeats audio playback if true, optional.
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing fallback content, defaults to empty.
+  public init(
+    sources: [String],
     controls: Bool? = nil,
     autoplay: Bool? = nil,
     loop: Bool? = nil,
@@ -136,22 +200,21 @@ public class Audio: Element {
     role: AriaRole? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    self.source = source
+    self.sourceURLs = sources
     self.controls = controls
     self.autoplay = autoplay
     self.loop = loop
     super.init(tag: "audio", id: id, classes: classes, role: role, content: content)
   }
 
-  /// Renders the audio as an HTML string.
+  /// Renders the audio as an HTML string with multiple source tags.
   ///
-  /// - Returns: Complete `<audio>` tag string with attributes and content.
-  /// - Complexity: O(n + m) where n is attributes and m is child elements.
+  /// - Returns: Complete `<audio>` tag string including `<source>` tags and optional fallback content.
+  /// - Complexity: O(n + m) where n is the number of attributes and m is the number of child elements plus sources.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
-      attribute("src", source),
       booleanAttribute("controls", controls),
       booleanAttribute("autoplay", autoplay),
       booleanAttribute("loop", loop),
@@ -161,7 +224,8 @@ public class Audio: Element {
     .joined(separator: " ")
 
     let attributesString = attributes.isEmpty ? "" : " \(attributes)"
+    let sourceTags = sourceURLs.map { "<source src=\"\($0)\">" }.joined()
     let contentString = content.map { $0.render() }.joined()
-    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
+    return "<\(tag)\(attributesString)>\(sourceTags)\(contentString)</\(tag)>"
   }
 }
