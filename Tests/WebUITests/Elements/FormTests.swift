@@ -34,16 +34,22 @@ import Testing
         <form action="/api/update" method="get"><button type="submit">Update</button></form>
         """)
   }
-  
+
   @Test("Should render a progess indicator correctly")
   func progressIndicatorRendersCorrectly() {
     let html = Progress(value: 65, max: 100).render()
     #expect(html == #"<progress value="65.0" max="100.0">"#)
   }
-  
+
   @Test("Should render form input correctly")
   func formInputRendersCorrectly() {
     let html = Input(name: "name", type: .text).render()
     #expect(html == #"<input name="name" type="text">"#)
+  }
+
+  @Test("Should render textarea correctly")
+  func textAreaRendersCorrectly() {
+    let html = TextArea(name: "name").render()
+    #expect(html == #"<textarea name="name"></textarea>"#)
   }
 }

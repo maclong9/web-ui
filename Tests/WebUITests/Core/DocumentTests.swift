@@ -46,7 +46,7 @@ import Testing
 
   @Test("Should render with a custom locale")
   mutating func renderWithCustomLocale() {
-    document .metadata.locale = .de
+    document.metadata.locale = .de
     let html = document.render()
     #expect(html.contains("<html lang=\"de\">"))
   }
