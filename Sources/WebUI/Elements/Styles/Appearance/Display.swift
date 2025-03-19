@@ -1,22 +1,27 @@
-/// Represents justification options for flexbox or grid layouts.
+/// Defines justification options for layout alignment.
+///
+/// Specifies how items are distributed along the main axis in flexbox or grid layouts.
 public enum Justify: String {
-  /// Aligns items to the start of the horizontal axis
+  /// Aligns items to the start of the horizontal axis.
   case start
-  /// Aligns items to the end of the horizontal axis
+  /// Aligns items to the end of the horizontal axis.
   case end
-  /// Centers items along the horizontal axis
+  /// Centers items along the horizontal axis.
   case center
-  /// Distributes items with equal space between them
+  /// Distributes items with equal space between them.
   case between
-  /// Distributes items with equal space around them
+  /// Distributes items with equal space around them.
   case around
-  /// Distributes items with equal space between and around them
+  /// Distributes items with equal space between and around them.
   case evenly
 
+  /// Provides the raw CSS class value.
   public var rawValue: String { "justify-\(self)" }
 }
 
 /// Represents alignment options for flexbox or grid items.
+///
+/// Specifies how items are aligned along the secondary axis in flexbox or grid layouts.
 public enum Align: String {
   /// Aligns items to the start of the vertical axis
   case start
@@ -33,6 +38,8 @@ public enum Align: String {
 }
 
 /// Represents flexbox direction options.
+///
+/// Dictates the direction elements flow in a flexbox layout.
 public enum Direction: String {
   /// Sets the main axis to horizontal (left to right)
   case row
@@ -66,18 +73,19 @@ public enum Grow: Int {
 }
 
 extension Element {
-  /// Applies flexbox styling to the element with an optional breakpoint.
+  /// Applies flexbox styling to the element.
   ///
-  /// This modifier adds the `flex` class to make the element a flex container, along with optional justification, alignment, and direction classes.
+  /// Configures the element as a flex container with direction, justification, and alignment.
   ///
   /// - Parameters:
-  ///   - direction: Sets the direction of the main axis (horizontal or vertical).
-  ///   - justify: Controls how flex items are distributed along the main axis.
-  ///   - align: Controls how flex items are aligned along the cross axis.
-  ///   - breakpoint: Optional breakpoint prefix.
-  /// - Returns: A new `Element` with the updated flexbox classes.
+  ///   - direction: Sets the main axis direction (e.g., row, column).
+  ///   - justify: Distributes items along the main axis.
+  ///   - align: Aligns items along the cross axis.
+  ///   - grow: Determines if the element fills remaining space.
+  ///   - breakpoint: Applies the styles at a specific screen size.
+  /// - Returns: A new element with updated flexbox classes.
   func flex(
-    _ direction: Direction? = nil,
+    direction: Direction? = nil,
     justify: Justify? = nil,
     align: Align? = nil,
     grow: Grow? = nil,
@@ -110,16 +118,16 @@ extension Element {
     )
   }
 
-  /// Applies grid styling to the element with an optional breakpoint.
+  /// Applies grid styling to the element.
   ///
-  /// This modifier adds the `grid` class to make the element a grid container, along with optional justification, alignment, and column classes.
+  /// Configures the element as a grid container with justification, alignment, and column count.
   ///
   /// - Parameters:
-  ///   - justify: Controls how grid items are distributed along the inline (row) axis.
-  ///   - align: Controls how grid items are aligned along the block (column) axis.
-  ///   - columns: Defines the number of columns in the grid layout.
-  ///   - breakpoint: Which screen size to apply these styles to
-  /// - Returns: A new `Element` with the updated grid classes.
+  ///   - justify: Distributes items along the row axis.
+  ///   - align: Aligns items along the column axis.
+  ///   - columns: Sets the number of grid columns.
+  ///   - breakpoint: Applies the styles at a specific screen size.
+  /// - Returns: A new element with updated grid classes.
   func grid(
     justify: Justify? = nil,
     align: Align? = nil,
@@ -129,7 +137,7 @@ extension Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
 
-    newClasses.append(prefix + "grid")  // Base grid class is always added
+    newClasses.append(prefix + "grid")
     if let justifyValue = justify?.rawValue {
       newClasses.append(prefix + justifyValue)
     }
@@ -150,15 +158,18 @@ extension Element {
     )
   }
 
-  /// Toggles the visibility of the element with an optional breakpoint.
+  /// Toggles visibility of the element.
   ///
-  /// This modifier adds or omits the `hidden` class, which sets `display: none` in CSS, hiding the element from the layout.
+  /// Hides or shows the element by adding or omitting the `hidden` class.
   ///
   /// - Parameters:
-  ///   - isHidden: If `true` (default), adds the `hidden` class; if `false`, no class is added.
-  ///   - breakpoint: Which screen size to apply these styles to
-  /// - Returns: A new `Element` with the updated visibility class.
-  func hidden(_ isHidden: Bool = true, breakpoint: Breakpoint? = nil) -> Element {
+  ///   - isHidden: Hides the element if true (defaults to true).
+  ///   - breakpoint: Applies the visibility at a specific screen size.
+  /// - Returns: A new element with updated visibility classes.
+  func hidden(
+    isHidden: Bool = true,
+    breakpoint: Breakpoint? = nil
+  ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
 

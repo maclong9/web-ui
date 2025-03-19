@@ -1,16 +1,18 @@
-/// Creates an HTML progress element.
-/// This renders a `<progress>` tag, used to display the progress of a task, such as a download or form completion.
-public class Progress: Element { 
+/// Generates an HTML progress element.
+///
+/// Displays the progress of a task, like a download.
+public class Progress: Element {
   let value: Double?
   let max: Double?
 
   /// Creates a new HTML progress element.
   ///
   /// - Parameters:
-  ///   - value: The current value of the progress bar.
-  ///   - max: The maximum value the progress bar can reach.
-  ///   
-  /// - SeeAlso: ``Element``
+  ///   - value: Current progress value, optional.
+  ///   - max: Maximum progress value, optional.
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
   init(
     value: Double? = nil,
     max: Double? = nil,
@@ -23,6 +25,9 @@ public class Progress: Element {
     super.init(tag: "progress", id: id, classes: classes, role: role)
   }
 
+  /// Renders the progress as an HTML string.
+  ///
+  /// - Returns: Complete `<progress>` tag string with attributes.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),

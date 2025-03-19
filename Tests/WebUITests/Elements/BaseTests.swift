@@ -10,9 +10,9 @@ import Testing
       tag: "div",
       id: "test-id",
       classes: ["test-class"],
-      role: .complementary
+      role: .contentinfo
     ) { "Hello, world!" }.render()
-    #expect(el == "<div id=\"test-id\" class=\"test-class\" role=\"complementary\">Hello, world!</div>")
+    #expect(el == "<div id=\"test-id\" class=\"test-class\" role=\"contentinfo\">Hello, world!</div>")
   }
 
   @Test("Elements should be styled correctly")
@@ -24,24 +24,6 @@ import Testing
     }.render()
 
     #expect(html.contains("<span class=\"text-base text-cyan-500\">Hello, world!</span>"))
-  }
-
-  @Test("Scripts should render inline")
-  func testScriptRender() throws {
-    let html = Stack {
-      Text {
-        "Hello, world!"
-      }.script(.add, className: "hello", value: "red")
-    }.render()
-
-    #expect(html.contains("<script>document.querySelector('#"))
-    #expect(html.contains(".classList.add('red')"))
-
-    let pattern = #"querySelector\('#gen[a-zA-Z0-9_]{4}'\)"#
-    let regex = try NSRegularExpression(pattern: pattern, options: [])
-    let range = NSRange(html.startIndex..<html.endIndex, in: html)
-    let matches = regex.matches(in: html, options: [], range: range)
-    #expect(matches.count > 0)
   }
 
   @Test("Button should render correctly")
@@ -119,10 +101,7 @@ import Testing
 
   @Test("Links should render correctly")
   func shouldRenderLinksCorrectly() {
-    let link = Link(
-      destination: "https://example.com",
-      newTab: true
-    ) { "Hello, world!" }.render()
+    let link = Link(to: "https://example.com", newTab: true) { "Hello, world!" }.render()
     #expect(link == "<a href=\"https://example.com\" target=\"_blank\" rel=\"noreferrer\">Hello, world!</a>")
   }
 

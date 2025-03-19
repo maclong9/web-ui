@@ -137,17 +137,20 @@ public enum Decoration: String {
 }
 
 extension Element {
-  /// Adds font styling classes to the element with an optional breakpoint.
+  /// Applies font styling to the element.
+  ///
+  /// Adds classes for font size, weight, alignment, and other text properties.
   ///
   /// - Parameters:
-  ///   - weight: Font weight.
-  ///   - size: Font size.
-  ///   - alignment: Text alignment.
-  ///   - tracking: Letter spacing.
-  ///   - leading: Line height.
-  ///   - decoration: Text decoration.
-  ///   - breakpoint: Which screen size to apply these styles to
-  /// - Returns: A new Element with updated classes.
+  ///   - size: Sets the font size (e.g., small, large).
+  ///   - weight: Defines the font weight (e.g., bold, normal).
+  ///   - alignment: Aligns the text (e.g., left, center).
+  ///   - tracking: Adjusts letter spacing.
+  ///   - leading: Sets line height.
+  ///   - decoration: Applies text decoration (e.g., underline).
+  ///   - color: Sets the text color from the palette.
+  ///   - breakpoint: Applies the styles at a specific screen size.
+  /// - Returns: A new element with updated font classes.
   func font(
     size: Size? = nil,
     weight: Weight? = nil,
@@ -158,9 +161,9 @@ extension Element {
     color: Color? = nil,
     on breakpoint: Breakpoint? = nil
   ) -> Element {
-    let prefix: String = breakpoint?.rawValue ?? ""
-
+    let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
+
     if let sizeValue = size?.rawValue {
       newClasses.append(prefix + sizeValue)
     }
@@ -184,7 +187,6 @@ extension Element {
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
-
     return Element(
       tag: self.tag,
       id: self.id,

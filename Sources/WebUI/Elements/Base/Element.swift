@@ -1,38 +1,28 @@
-/// Represents CSS breakpoints for responsive design.
+/// Defines CSS breakpoints for responsive design.
 public enum Breakpoint: String {
-  /// Extra small breakpoint (min-width: 480px)
+  /// Extra small breakpoint at 480px min-width.
   case extraSmall = "xs:"
-  /// Small breakpoint (min-width: 640px)
+  /// Small breakpoint at 640px min-width.
   case small = "sm:"
-  /// Medium breakpoint (min-width: 768px)
+  /// Medium breakpoint at 768px min-width.
   case medium = "md:"
-  /// Large breakpoint (min-width: 1024px)
+  /// Large breakpoint at 1024px min-width.
   case large = "lg:"
-  /// Extra-large breakpoint (min-width: 1280px)
+  /// Extra-large breakpoint at 1280px min-width.
   case extraLarge = "xl:"
-  /// 2x extra-large breakpoint (min-width: 1536px)
+  /// 2x extra-large breakpoint at 1536px min-width.
   case extraLarge2 = "2xl:"
 }
 
-/// Represents different ARIA roles for accessibility.
+/// Defines ARIA roles for accessibility.
 public enum AriaRole: String {
-  /// Designates an area containing search functionality
+  /// Indicates a search functionality area.
   case search
-  /// Represents a widget with a list of selectable options
-  case listbox
-  /// Indicates a set of user-selectable options
-  case menu
-  /// Defines metadata about the document
+  /// Provides metadata about the document.
   case contentinfo
-  /// Represents a dialog box or subwindow
-  case dialog
-  /// Identifies content that complements the main content
-  case complementary
 }
 
-/// A base for creating any HTML element.
-/// Can render any HTML tag specified by the `tag` property.
-/// The semantic purpose of the HTML tag rendered depends on the specific tag name provided.
+/// Base class for creating HTML elements.
 public class Element: HTML {
   let tag: String
   let id: String?
@@ -40,18 +30,19 @@ public class Element: HTML {
   let role: AriaRole?
   let contentBuilder: () -> [any HTML]?
 
+  /// Computed inner HTML content.
   var content: [any HTML] {
     contentBuilder() ?? { [] }()
   }
 
-  /// Creates  a new HTML element with specific properties and content.
+  /// Creates a new HTML element.
   ///
   /// - Parameters:
-  ///   - tag: The name of the HTML tag
-  ///   - id: An optional unique identifier for the element
-  ///   - classes: Optional class names for identification and styling
-  ///   - role: An optional accessibility label, to help screen readers understand the element’s purpose.
-  ///   - content: A builder that provides the inner HTML content
+  ///   - tag: HTML tag name.
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing inner HTML, defaults to empty.
   init(
     tag: String,
     id: String? = nil,
@@ -66,33 +57,29 @@ public class Element: HTML {
     self.contentBuilder = content
   }
 
-  /// Creates a formatted HTML attribute string if the value is non-empty.
+  /// Builds an HTML attribute string if the value exists.
   ///
   /// - Parameters:
-  ///   - name: The name of the attribute
-  ///   - value: An optional string value for the attribute.
-  /// - Returns: A string in the format `name="value"` if the value is non-empty, or `nil` if the value is `nil` or empty.
+  ///   - name: Attribute name.
+  ///   - value: Attribute value, optional.
+  /// - Returns: Formatted attribute string or nil if value is empty.
   func attribute(_ name: String, _ value: String?) -> String? {
     value?.isEmpty == false ? "\(name)=\"\(value!)\"" : nil
   }
 
-  /// Returns the attribute name if the condition is true, for boolean HTML attributes.
+  /// Builds a boolean HTML attribute if enabled.
   ///
   /// - Parameters:
-  ///   - name: The name of the attribute
-  ///   - enabled: A boolean stating whether this attriute is enabled or disabled
+  ///   - name: Attribute name.
+  ///   - enabled: Boolean enabling the attribute, optional.
+  /// - Returns: Attribute name if true, nil otherwise.
   func booleanAttribute(_ name: String, _ enabled: Bool?) -> String? {
     enabled == true ? name : nil
   }
 
-  /// Renders an HTML element as a string with its tag, attributes, and content.
+  /// Renders the element as an HTML string.
   ///
-  /// This function constructs a properly formatted HTML string representation of an element,
-  /// including optional attributes like `id`, `class`, and `role`, and nested content.
-  /// Attributes are only included if they have non-empty values, and the resulting string
-  /// is formatted with proper spacing.
-  ///
-  /// - Returns: A string representing the complete HTML element
+  /// - Returns: Complete HTML element string with attributes and content.
   public func render() -> String {
     let attributes = [
       attribute("id", id),

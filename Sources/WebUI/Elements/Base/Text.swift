@@ -1,14 +1,19 @@
 import Foundation
 
-/// Creates HTML text elements.
-/// This can render either a `<p>` (paragraph) tag or a `<span>` tag based on the content.
-/// - If the content contains more than one sentence, it is rendered as a `<p>` tag.
-/// - If the content contains one sentence or less, it is rendered as a `<span>` tag.
+/// Generates HTML text elements as `<p>` or `<span>` based on content.
 ///
-/// The `<p>` tag is used to represent a paragraph of text, which is a block-level element.
-/// The `<span>` tag is used to group inline elements for styling or other purposes without adding semantic meaning.
+/// Paragraphs are for long form content with multiple sentences and
+/// a `<span>` tag is used for a single sentences of text and grouping inline content.
 class Text: Element {
-  /// - SeeAlso: ``Element``
+  /// Creates a new text element.
+  ///
+  /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing text content.
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -24,36 +29,35 @@ class Text: Element {
   }
 }
 
-/// Represents different levels of HTML heading tags, from h1 to h6.
-/// Each case corresponds to a specific heading level, used to structure and organize content on a web page.
+/// Defines levels for HTML heading tags from h1 to h6.
 public enum HeadingLevel: String {
-  /// Represents the primary title or main topic of a page (h1)
+  /// Primary title or main topic (h1).
   case one = "h1"
-  /// Represents a major section or subtopic within the page (h2)
+  /// Major section or subtopic (h2).
   case two = "h2"
-  /// Represents a subsection within a major section (h3)
+  /// Subsection within a major section (h3).
   case three = "h3"
-  /// Represents a sub-subsection or deeper detail within a subsection (h4)
+  /// Sub-subsection or deeper detail (h4).
   case four = "h4"
-  /// Represents a minor detail or supporting heading within a sub-subsection (h5)
+  /// Minor detail or supporting heading (h5).
   case five = "h5"
-  /// Represents the finest level of detail or a rare, deeply nested heading (h6)
+  /// Finest level of detail (h6).
   case six = "h6"
 }
 
-/// Creates HTML heading elements.
-/// This can render heading tags from `<h1>` to `<h6>`, depending on the `level` parameter.
+/// Generates a HTML heading elements from `<h1>` to `<h6>`.
 ///
-/// Heading tags are used to structure the content of a web page and indicate the hierarchy of sections.
-/// - `<h1>` is typically used for the main heading of the page.
-/// - `<h2>` to `<h6>` are used for subheadings, with `<h2>` being the next most important after `<h1>`, and so on.
+/// The level of the heading should descend through the document,
+/// with the main page title being 1 and then section headings being 2.
 public class Heading: Element {
-  /// Creates a new heading element.
+  /// Creates a new heading.
   ///
   /// - Parameters:
-  ///   - level: The semantic level of the heading ranging from 1–6.
-  ///
-  /// - SeeAlso: ``Element``
+  ///   - level: Heading level (h1 to h6).
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing heading content.
   init(
     level: HeadingLevel,
     id: String? = nil,
@@ -65,23 +69,22 @@ public class Heading: Element {
   }
 }
 
-/// A class for creating HTML anchor elements.
-/// This class renders an `<a>` tag, which is used to create a link to another resource, such as a web page or a file.
-///
-/// The `<a>` tag supports attributes like `href` for the URL and `target` to specify where to open the linked resource.
-public class Link: Element { 
+/// Generates an HTML anchor element; for linking to other locations.
+public class Link: Element {
   private let href: String
   private let newTab: Bool?
 
-  /// Creates a new HTML anchor element
+  /// Creates a new anchor link.
   ///
   /// - Parameters:
-  ///   - href: The path or url the link should point to
-  ///   - newTab: whether or not the link should open in a new browser tab
-  ///
-  /// - SeeAlso: ``Element``
+  ///   - destination: URL or path the link points to.
+  ///   - newTab: Opens in a new tab if true, optional.
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing link content.
   init(
-    destination: String,
+    to destination: String,
     newTab: Bool? = nil,
     id: String? = nil,
     classes: [String]? = nil,
@@ -93,6 +96,9 @@ public class Link: Element {
     super.init(tag: "a", id: id, classes: classes, role: role, content: content)
   }
 
+  /// Renders the anchor as an HTML string.
+  ///
+  /// - Returns: Complete `<a>` tag string with attributes and content.
   public override func render() -> String {
     let attributes = [
       attribute("id", id),
@@ -110,12 +116,17 @@ public class Link: Element {
   }
 }
 
-/// Creates HTML emphasis elements.
-/// This renders an `<em>` tag, which is used to indicate that its content has stress emphasis compared to the surrounding text.
+/// Generates an HTML emphasis element.
 ///
-/// The `<em>` tag is typically rendered in italic text by default in most browsers.
-public class Emphasis: Element { 
-  /// - SeeAlso: ``Element``
+/// To be used to draw attention to text within another body of text.
+public class Emphasis: Element {
+  /// Creates a new emphasis element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing emphasized content.
   init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -126,12 +137,17 @@ public class Emphasis: Element {
   }
 }
 
-/// Creates HTML strong importance elements.
-/// This renders a `<strong>` tag, which is used to indicate that its content has strong importance, seriousness, or urgency.
+/// Generates an HTML strong importance element.
 ///
-/// The `<strong>` tag is typically rendered in bold text by default in most browsers.
-public class Strong: Element { 
-  /// - SeeAlso: ``Element``
+/// To be used for drawing strong attention to text within another body of text.
+public class Strong: Element {
+  /// Creates a new strong element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing strong content.
   init(
     id: String? = nil,
     classes: [String]? = nil,

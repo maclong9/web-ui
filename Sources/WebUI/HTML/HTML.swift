@@ -1,5 +1,11 @@
-/// An interface that any entity must follow to be able to generate HTML content.
-/// It requires the entity to have a `render()` method that outputs the HTML as a string.
+/// Defines requirements for generating HTML content.
+///
+/// Requires entities to provide a method for rendering HTML as a string.
 public protocol HTML {
+  /// Renders the entity as an HTML string.
+  ///
+  /// Converts the conforming type into its HTML representation.
+  ///
+  /// - Returns: The HTML content as a string.
   func render() -> String
 }

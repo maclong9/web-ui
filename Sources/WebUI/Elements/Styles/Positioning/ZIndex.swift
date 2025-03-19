@@ -1,10 +1,12 @@
 extension Element {
-  /// Sets the z-index of the element with an optional breakpoint.
+  /// Applies a z-index to the element.
+  ///
+  /// Sets the stacking order of the element, optionally scoped to a breakpoint.
   ///
   /// - Parameters:
-  ///   - value: The z-index value.
-  ///   - breakpoint: Optional breakpoint prefix.
-  /// - Returns: A new `Element` with the updated z-index class.
+  ///   - value: Specifies the z-index value as a string.
+  ///   - breakpoint: Applies the z-index at a specific screen size.
+  /// - Returns: A new element with updated z-index classes.
   func zIndex(_ value: String, on breakpoint: Breakpoint? = nil) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     let className = "\(prefix)z-\(value)"

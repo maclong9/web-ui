@@ -12,12 +12,9 @@ import Testing
           Header {
             Text { "Logo" }
             Navigation {
-              Link(destination: "home") { "Home" }
-              Link(destination: "about") { "About" }
-              Link(
-                destination: "https://example.com",
-                newTab: true
-              ) {
+              Link(to: "home") { "Home" }
+              Link(to: "about") { "About" }
+              Link(to: "https://example.com", newTab: true) {
                 "Other"
               }
             }

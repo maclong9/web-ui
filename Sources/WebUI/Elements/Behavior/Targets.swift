@@ -1,18 +1,21 @@
+/// Defines CSS style properties for JavaScript manipulation.
 public enum StyleProperty {
-  /// The text color of the element.
+  /// Text color of an element.
   case color
-  /// The background color of the element.
+  /// Background color of an element.
   case backgroundColor
-  /// The display type of the element
+  /// Display type of an element.
   case display
-  /// The visibility of the element
+  /// Visibility of an element.
   case visibility
-  /// The font size of the element
+  /// Font size of an element.
   case fontSize
-  /// A custom style property specified by a string
+  /// Custom style property with a specified name.
   case custom(String)
 
-  /// Returns the raw JavaScript property name.
+  /// Provides the raw JavaScript property name.
+  ///
+  /// - Returns: String representing the property name.
   public var rawValue: String {
     switch self {
       case .color: return "color"
@@ -25,22 +28,24 @@ public enum StyleProperty {
   }
 }
 
-/// Represents common HTML attributes for JavaScript manipulation.
+/// Defines common HTML attributes for JavaScript manipulation.
 public enum AttributeName {
-  /// Indicates whether an element is disabled
+  /// Indicates if an element is disabled.
   case disabled
   /// Hides an element from view and layout.
   case hidden
-  /// A custom data attribute
+  /// Custom data attribute with a specified name.
   case data(String)
-  /// Specifies the source URL for media elements
+  /// Source URL for media elements.
   case src
-  /// Provides alternative text for images.
+  /// Alternative text for images.
   case alt
-  /// A custom attribute specified by a string.
+  /// Custom attribute with a specified name.
   case custom(String)
 
-  /// Returns the raw HTML attribute name.
+  /// Provides the raw HTML attribute name.
+  ///
+  /// - Returns: String representing the attribute name.
   public var rawValue: String {
     switch self {
       case .disabled: return "disabled"

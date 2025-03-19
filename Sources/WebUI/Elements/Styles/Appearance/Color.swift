@@ -1,8 +1,6 @@
-/// Represents a color value compatible with color utilities.
+/// Represents a color value for styling utilities.
 ///
-/// This enum encapsulates a color palette, including shades ranging from 50 to 950, as well as a custom option for arbitrary color values.
-///
-/// - Note: The `custom` case allows for arbitrary CSS color values wrapped in square brackets.
+/// Defines a palette of colors with shades and a custom option for arbitrary values.
 public enum Color {
   /// A slate gray color with varying intensity shades.
   case slate(Shade)
@@ -51,9 +49,9 @@ public enum Color {
   /// A custom color defined by a raw CSS value
   case custom(String)
 
-  /// Represents the shade intensity of a color
+  /// Defines shade intensity for colors.
   ///
-  /// Shades range from 50 (lightest) to 950 (darkest), with increments of 50 or 100, depending on the color palette.
+  /// Specifies a range of shades from lightest (50) to darkest (950).
   public enum Shade: Int {
     /// The lightest shade, typically a very faint tint.
     case _50 = 50
@@ -79,7 +77,7 @@ public enum Color {
     case _950 = 950
   }
 
-  /// Rendered color string
+  /// Provides the raw CSS class value for the color.
   public var rawValue: String {
     switch self {
       case .slate(let shade):
@@ -133,20 +131,18 @@ public enum Color {
 }
 
 extension Element {
-  /// Applies a background color to the element with an optional breakpoint.
+  /// Applies a background color to the element.
+  ///
+  /// Adds a background color class based on the provided color and optional breakpoint.
   ///
   /// - Parameters:
-  ///   - color: The color to apply as the background, from the `Color` enum. Supports default palette or custom values.
-  ///   - breakpoint: Optional breakpoint prefix. If `nil`, the style applies at all screen sizes.
-  /// - Returns: A new `Element` with the updated background color class.
-  ///
-  /// Example:
-  /// ```swift
-  /// let element = Element(tag: "div")
-  ///   .background(color: .blue(._500))  // Adds "bg-blue-500"
-  ///   .background(color: .custom("#ff0000"), on: .md)  // Adds "md:bg-[#ff0000]"
-  /// ```
-  func background(color: Color, on breakpoint: Breakpoint? = nil) -> Element {
+  ///   - color: Sets the background color from the palette or a custom value.
+  ///   - breakpoint: Applies the color at a specific screen size.
+  /// - Returns: A new element with updated background classes.
+  func background(
+    color: Color,
+    on breakpoint: Breakpoint? = nil
+  ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
 

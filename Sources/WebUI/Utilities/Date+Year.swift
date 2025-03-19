@@ -1,8 +1,14 @@
 import Foundation
 
-/// This extension provides a way to format a date into a year-only string.
-/// The `formattedYear()` method takes a date and returns it as a four-digit year, such as "2025".
+/// Extends Date with year formatting functionality.
+///
+/// Provides a method to format dates as four-digit years.
 extension Date {
+  /// Formats the date as a four-digit year.
+  ///
+  /// Converts the date into a string representing its year (e.g., "2025").
+  ///
+  /// - Returns: The year as a string.
   func formattedYear() -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy"
