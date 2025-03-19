@@ -1,7 +1,7 @@
 /// Generates an HTML textarea element.
 ///
 /// Provides a multi-line text input for long-form content.
-final public class Textarea: Input {
+final public class TextArea: Input {
   /// Creates a new HTML textarea element.
   ///
   /// - Parameters:
@@ -44,13 +44,13 @@ final public class Textarea: Input {
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
       attribute("placeholder", placeholder),
+      attribute("name", name),
       attribute("role", role?.rawValue),
       booleanAttribute("autofocus", autofocus),
     ]
     .compactMap { $0 }
     .joined(separator: " ")
 
-    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
-    return "<\(tag)\(attributesString)>\(value ?? "")</\(tag)>"
+    return "<\(tag) \(attributes)>\(value ?? "")</\(tag)>"
   }
 }
