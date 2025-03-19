@@ -106,7 +106,7 @@ extension Element {
     radius: (side: RadiusSide, size: RadiusSize)? = nil,
     style: BorderStyle? = nil,
     color: Color? = nil,
-    breakpoint: Breakpoint? = nil
+    on breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
@@ -154,7 +154,7 @@ extension Element {
     width: Int? = nil,
     style: BorderStyle? = nil,
     color: Color? = nil,
-    breakpoint: Breakpoint? = nil
+    on breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
@@ -223,7 +223,7 @@ extension Element {
   func ring(
     size: Int = 1,
     color: Color? = nil,
-    breakpoint: Breakpoint? = nil
+    on breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []

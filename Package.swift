@@ -5,6 +5,7 @@ import PackageDescription
 // Roadmap
 // Version 1.0.0
 // TODO: Increase test coverage to > 95%
+// TODO: Add modifier for hovers and focus etc.
 // TODO: Attempt adding a server style process using SwiftNIO to drop Hummingbird
 // TODO: Implement asset file creation for JS and CSS on build
 // Version 1.1.0
@@ -15,6 +16,7 @@ import PackageDescription
 // TODO: Create tutorial for static site generation with blog, ensure usage of SwiftPM Snippets
 // TODO: Create tutorial for SSR Hummingbird site with todos
 // TODO: Create tutorial for scaling todos app with Cloudflare
+// TODO: Write reasoning for choices such as utiltiy classes and the Image class
 // Version 1.3.0
 // TODO: Implement complex components like accordion, dialog, admonition and tabs
 // TODO: Create tutorial for Ecommerce with Hummingbird and Stripe
