@@ -69,7 +69,7 @@ extension Element {
   /// - Returns: True if the task is valid, false otherwise.
   private func isValidTask(_ task: Task, className: String?, attribute: AttributeName?, value: String?) -> Bool {
     guard task == .log || className != nil || attribute != nil else { return false }
-    let requiresValue = attribute != nil || (className != nil && task != .remove)
+    let requiresValue = (attribute != nil && task != .remove) || (className != nil && task != .remove)
     return task == .log || !requiresValue || value != nil
   }
 
