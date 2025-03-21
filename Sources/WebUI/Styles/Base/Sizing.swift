@@ -63,8 +63,8 @@ extension Element {
     if let height = height {
       newClasses.append("\(prefix)h-\(height.rawValue)")
     }
-
     let updatedClasses = (self.classes ?? []) + newClasses
+    print("UPDATED CLASSES: \(self.id ?? ""): \(updatedClasses)")
     return Element(
       tag: self.tag,
       id: self.id,

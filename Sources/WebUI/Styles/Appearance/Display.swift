@@ -42,26 +42,13 @@ public enum Align: String {
 /// Dictates the direction elements flow in a flexbox layout.
 public enum Direction: String {
   /// Sets the main axis to horizontal (left to right)
-  case row
+  case row = "flex-row"
   /// Sets the main axis to vertical (top to bottom)
-  case column
+  case column = "flex-col"
   /// Sets the main axis to horizontal (right to left)
-  case rowReverse
+  case rowReverse = "flex-row-reverse"
   /// Sets the main axis to vertical (bottom to top)
-  case colReverse
-
-  public var rawValue: String {
-    switch self {
-      case .row:
-        return "flex-row"
-      case .column:
-        return "flex-col"
-      case .rowReverse:
-        return "flex-row-reverse"
-      case .colReverse:
-        return "flex-col-reverse"
-    }
-  }
+  case colReverse = "flex-col-reverse"
 }
 
 /// Represents a flex grow value; dictates whether the container should fill remaining space
@@ -167,7 +154,7 @@ extension Element {
   ///   - breakpoint: Applies the visibility at a specific screen size.
   /// - Returns: A new element with updated visibility classes.
   func hidden(
-    isHidden: Bool = true,
+    _ isHidden: Bool = true,
     on breakpoint: Breakpoint? = nil
   ) -> Element {
     let prefix = breakpoint?.rawValue ?? ""

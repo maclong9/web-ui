@@ -1,7 +1,7 @@
 /// Represents an immutable HTML document with metadata and content.
 public struct Document {
   /// Navigation path for the document.
-  let path: String
+  let path: String?
 
   /// Metadata configuration for the document’s head section.
   var metadata: Metadata
@@ -17,11 +17,11 @@ public struct Document {
   /// Creates a new HTML document with metadata and content.
   ///
   /// - Parameters:
-  ///   - path: URL path for navigating to the document.
+  ///   - path: URL path for navigating to the document. Required for build, not for server side rendering.
   ///   - metadata: Configuration for the head section.
   ///   - content: Closure building the body’s HTML content.
   init(
-    path: String,
+    path: String? = nil,
     metadata: Metadata,
     @HTMLBuilder content: @escaping () -> [any HTML]
   ) {

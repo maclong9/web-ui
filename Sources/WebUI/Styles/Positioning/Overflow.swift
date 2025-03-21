@@ -12,18 +12,6 @@ public enum OverflowType: String {
   case scroll
 }
 
-/// Defines axes for applying overflow behavior.
-///
-/// Represents the direction(s) in which overflow rules are applied.
-public enum Axis: String {
-  /// Applies to the horizontal axis.
-  case x
-  /// Applies to the vertical axis.
-  case y
-  /// Applies to both horizontal and vertical axes.
-  case both = ""
-}
-
 extension Element {
   /// Applies overflow styling to the element.
   ///
