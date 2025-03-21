@@ -15,19 +15,31 @@ public enum OverflowType: String {
 extension Element {
   /// Applies overflow styling to the element.
   ///
-  /// Sets how overflowing content is handled, optionally on a specific axis and breakpoint.
+  /// Sets how overflowing content is handled, optionally on a specific axis and with modifiers.
   ///
   /// - Parameters:
   ///   - type: Determines the overflow behavior (e.g., hidden, scroll).
   ///   - axis: Specifies the axis for overflow (defaults to both).
-  ///   - breakpoint: Applies the styles at a specific screen size.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated overflow classes.
-  func overflow(_ type: OverflowType, axis: Axis = .both, on breakpoint: Breakpoint? = nil) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
+  func overflow(
+    _ type: OverflowType,
+    axis: Axis = .both,
+    on modifiers: Modifier...
+  ) -> Element {
     let axisString = axis.rawValue.isEmpty ? "" : "-\(axis.rawValue)"
-    let className = "\(prefix)overflow\(axisString)-\(type.rawValue)"
+    let baseClass = "overflow\(axisString)-\(type.rawValue)"
 
-    let updatedClasses = (self.classes ?? []) + [className]
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = [baseClass]
+    } else {
+      newClasses = modifiers.map { modifier in
+        "\(modifier.rawValue)\(baseClass)"
+      }
+    }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
       tag: self.tag,
       id: self.id,

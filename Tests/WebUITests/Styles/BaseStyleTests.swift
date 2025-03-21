@@ -57,7 +57,7 @@ import Testing
   @Test("Element should render with multiple margin sides")
   func shouldRenderWithMultipleMargins() {
     let element = Element(tag: "div")
-      .margins([.bottom, .leading], length: 6)
+      .margins(.bottom, .leading, length: 6)
       .render()
     #expect(element == "<div class=\"mb-6 ml-6\"></div>")
   }
@@ -73,7 +73,7 @@ import Testing
   @Test("Element should render with multiple padding sides")
   func shouldRenderWithMultiplePaddingSides() {
     let element = Element(tag: "div")
-      .padding([.bottom, .leading], length: 6)
+      .padding(.bottom, .leading, length: 6)
       .render()
     #expect(element == "<div class=\"pb-6 pl-6\"></div>")
   }

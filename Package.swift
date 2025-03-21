@@ -3,8 +3,10 @@
 import PackageDescription
 
 // Roadmap
+// Version 0.0.1
+// TODO: Confirm there isn't a more reusable way to write Element's and Styles
+// TODO: Create tutorial for static site generation with blog, ensure usage of SwiftPM Snippets
 // Version 1.0.0
-// TODO: Add modifier for hovers and focus etc.
 // TODO: Extend enumerations, such as ContentType, with more options
 // TODO: Implement arbirtray `Script` and `Style` for overriding library
 // TODO: Implement asset file creation for JS and CSS on build
@@ -18,7 +20,6 @@ import PackageDescription
 // Documentation
 // TODO: Create a snippet for core layouts, see deno fresh apps for examples
 // TODO: Write reasoning for choices such as utiltiy classes and the Image class in README
-// TODO: Create tutorial for static site generation with blog, ensure usage of SwiftPM Snippets
 // TODO: Create tutorial for SSR Hummingbird site with todos
 // TODO: Create tutorial for scaling todos app with Cloudflare
 // TODO: Create tutorial for Ecommerce with Hummingbird and Stripe

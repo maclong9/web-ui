@@ -1,7 +1,11 @@
-/// Defines CSS breakpoints for responsive design.
+/// Represents CSS modifiers that apply styles under specific conditions, such as hover or focus states.
 ///
-/// - Note: You do not need redfine all styles on each breakpoint, just the ones that change.
-public enum Breakpoint: String {
+/// This enum maps to Tailwind CSS prefixes like `hover:` and `focus:`, enabling conditional styling
+/// when used with `Element` methods like `opacity` or `backgroundColor`. Also contains
+/// optional breakpoint modifiers for applying styles to different screen sizes.
+///
+/// - Note: You do not need redfine all styles on each modifier, just the ones that change.
+public enum Modifier: String {
   /// Extra small breakpoint at 480px min-width.
   case xs
   /// Small breakpoint at 640px min-width.
@@ -14,7 +18,15 @@ public enum Breakpoint: String {
   case xl
   /// 2x extra-large breakpoint at 1536px min-width.
   case xl2
-  
+  /// Applies the style when the element is hovered over (e.g., `hover:`).
+  case hover = "hover:"
+  /// Applies the style when the element is focused (e.g., `focus:`).
+  case focus = "focus:"
+  /// Applies the style when the element is active (e.g., `active:`).
+  case active = "active:"
+  /// Applies the style to a placeholder state (e.g., `placeholder:`).
+  case placeholder = "placeholder:"
+
   public var rawValue: String {
     "\(self):"
   }

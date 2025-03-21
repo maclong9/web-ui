@@ -60,39 +60,25 @@ public enum Grow: Int {
 }
 
 extension Element {
-  /// Applies flexbox styling to the element.
-  ///
-  /// Configures the element as a flex container with direction, justification, and alignment.
-  ///
-  /// - Parameters:
-  ///   - direction: Sets the main axis direction (e.g., row, column).
-  ///   - justify: Distributes items along the main axis.
-  ///   - align: Aligns items along the cross axis.
-  ///   - grow: Determines if the element fills remaining space.
-  ///   - breakpoint: Applies the styles at a specific screen size.
-  /// - Returns: A new element with updated flexbox classes.
   func flex(
     direction: Direction? = nil,
     justify: Justify? = nil,
     align: Align? = nil,
     grow: Grow? = nil,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+    var baseClasses: [String] = ["flex"]
+    if let directionValue = direction?.rawValue { baseClasses.append(directionValue) }
+    if let justifyValue = justify?.rawValue { baseClasses.append(justifyValue) }
+    if let alignValue = align?.rawValue { baseClasses.append(alignValue) }
+    if let growValue = grow { baseClasses.append("flex-\(growValue.rawValue)") }
 
-    newClasses.append(prefix + "flex")
-    if let directionValue = direction?.rawValue {
-      newClasses.append(prefix + directionValue)
-    }
-    if let justifyValue = justify?.rawValue {
-      newClasses.append(prefix + justifyValue)
-    }
-    if let alignValue = align?.rawValue {
-      newClasses.append(prefix + alignValue)
-    }
-    if let growValue = grow {
-      newClasses.append(prefix + "flex-\(growValue.rawValue)")
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
@@ -105,34 +91,23 @@ extension Element {
     )
   }
 
-  /// Applies grid styling to the element.
-  ///
-  /// Configures the element as a grid container with justification, alignment, and column count.
-  ///
-  /// - Parameters:
-  ///   - justify: Distributes items along the row axis.
-  ///   - align: Aligns items along the column axis.
-  ///   - columns: Sets the number of grid columns.
-  ///   - breakpoint: Applies the styles at a specific screen size.
-  /// - Returns: A new element with updated grid classes.
   func grid(
     justify: Justify? = nil,
     align: Align? = nil,
     columns: Int? = nil,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+    var baseClasses: [String] = ["grid"]
+    if let justifyValue = justify?.rawValue { baseClasses.append(justifyValue) }
+    if let alignValue = align?.rawValue { baseClasses.append(alignValue) }
+    if let columnsValue = columns { baseClasses.append("grid-cols-\(columnsValue)") }
 
-    newClasses.append(prefix + "grid")
-    if let justifyValue = justify?.rawValue {
-      newClasses.append(prefix + justifyValue)
-    }
-    if let alignValue = align?.rawValue {
-      newClasses.append(prefix + alignValue)
-    }
-    if let columnsValue = columns {
-      newClasses.append(prefix + "grid-cols-\(columnsValue)")
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
@@ -145,23 +120,21 @@ extension Element {
     )
   }
 
-  /// Toggles visibility of the element.
-  ///
-  /// Hides or shows the element by adding or omitting the `hidden` class.
-  ///
-  /// - Parameters:
-  ///   - isHidden: Hides the element if true (defaults to true).
-  ///   - breakpoint: Applies the visibility at a specific screen size.
-  /// - Returns: A new element with updated visibility classes.
   func hidden(
     _ isHidden: Bool = true,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
-
+    let baseClass = "hidden"
+    let newClasses: [String]
     if isHidden {
-      newClasses.append(prefix + "hidden")
+      if modifiers.isEmpty {
+        newClasses = [baseClass]
+      } else {
+        let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+        newClasses = ["\(combinedModifierPrefix)\(baseClass)"]
+      }
+    } else {
+      newClasses = []
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses

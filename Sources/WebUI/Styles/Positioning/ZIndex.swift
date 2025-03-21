@@ -1,17 +1,28 @@
 extension Element {
   /// Applies a z-index to the element.
   ///
-  /// Sets the stacking order of the element, optionally scoped to a breakpoint.
+  /// Sets the stacking order of the element, optionally scoped to modifiers.
   ///
   /// - Parameters:
-  ///   - value: Specifies the z-index value as a string.
-  ///   - breakpoint: Applies the z-index at a specific screen size.
+  ///   - value: Specifies the z-index value as an integer.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated z-index classes.
-  func zIndex(_ value: Int, on breakpoint: Breakpoint? = nil) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    let className = "\(prefix)z-\(value)"
+  func zIndex(
+    _ value: Int,
+    on modifiers: Modifier...
+  ) -> Element {
+    let baseClass = "z-\(value)"
 
-    let updatedClasses = (self.classes ?? []) + [className]
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = [baseClass]
+    } else {
+      newClasses = modifiers.map { modifier in
+        "\(modifier.rawValue)\(baseClass)"
+      }
+    }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
       tag: self.tag,
       id: self.id,

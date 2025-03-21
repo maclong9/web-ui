@@ -41,7 +41,7 @@ import Testing
     #expect(section == "<section class=\"fixed inset-0\"></section>")
 
     let stack = Stack()
-      .position(.sticky, edge: .top, length: 0)
+      .position(.sticky, edges: .top, length: 0)
       .render()
     #expect(stack == "<div class=\"sticky top-0\"></div>")
   }
@@ -49,7 +49,7 @@ import Testing
   @Test("Element should render with position and directional values")
   func shouldRenderWithPositionAndDirectional() {
     let header = Header()
-      .position(.absolute, edges: [.top, .horizontal], length: 0)
+      .position(.absolute, edges: .top, .horizontal, length: 0)
       .render()
     #expect(header == "<header class=\"absolute top-0 inset-x-0\"></header>")
   }
@@ -121,7 +121,7 @@ import Testing
   @Test("Element should render with combined positioning styles")
   func shouldRenderWithCombinedPositioningStyles() {
     let stack = Stack()
-      .position(.sticky, edge: .top, length: 0)
+      .position(.sticky, edges: .top, length: 0)
       .zIndex(50)
       .overflow(.hidden)
       .transform(scale: (x: 1, y: nil as Int?))
@@ -134,7 +134,7 @@ import Testing
   @Test("Element should render with absolute positioning and corner insets")
   func shouldRenderWithAbsolutePositioningAndCornerInsets() {
     let header = Header()
-      .position(.absolute, edges: [.top, .trailing], length: 4)
+      .position(.absolute, edges: .top, .trailing, length: 4)
       .render()
     #expect(header == "<header class=\"absolute top-4 right-4\"></header>")
   }
@@ -143,7 +143,7 @@ import Testing
   func shouldRenderWithPositioningOnBreakpoints() {
     let navigation = Navigation()
       .position(.relative, on: .md)
-      .position(.absolute, edge: .top, length: 0, on: .lg)
+      .position(.absolute, edges: .top, length: 0, on: .lg)
       .overflow(.auto, axis: .x, on: .sm)
       .zIndex(20, on: .md)
       .render()
@@ -165,7 +165,7 @@ import Testing
   @Test("Element should render with combination of all positioning features")
   func shouldRenderWithAllPositioningFeatures() {
     let modal = Stack()
-      .position(.absolute, edge: .all, length: 0)
+      .position(.absolute, edges: .all, length: 0)
       .zIndex(40)
       .overflow(.auto)
       .transform(translate: (x: 0, y: 0))
@@ -208,22 +208,22 @@ import Testing
   @Test("Element should render with all single edge insets")
   func shouldRenderWithAllSingleEdges() {
     let topDiv = Stack()
-      .position(.absolute, edge: .top, length: 2)
+      .position(.absolute, edges: .top, length: 2)
       .render()
     #expect(topDiv == "<div class=\"absolute top-2\"></div>")
 
     let leadingDiv = Stack()
-      .position(.absolute, edge: .leading, length: 2)
+      .position(.absolute, edges: .leading, length: 2)
       .render()
     #expect(leadingDiv == "<div class=\"absolute left-2\"></div>")
 
     let trailingDiv = Stack()
-      .position(.absolute, edge: .trailing, length: 2)
+      .position(.absolute, edges: .trailing, length: 2)
       .render()
     #expect(trailingDiv == "<div class=\"absolute right-2\"></div>")
 
     let bottomDiv = Stack()
-      .position(.absolute, edge: .bottom, length: 2)
+      .position(.absolute, edges: .bottom, length: 2)
       .render()
     #expect(bottomDiv == "<div class=\"absolute bottom-2\"></div>")
   }
@@ -231,12 +231,12 @@ import Testing
   @Test("Element should render with composite edge insets")
   func shouldRenderWithCompositeEdges() {
     let horizontalDiv = Stack()
-      .position(.absolute, edge: .horizontal, length: 4)
+      .position(.absolute, edges: .horizontal, length: 4)
       .render()
     #expect(horizontalDiv == "<div class=\"absolute inset-x-4\"></div>")
 
     let verticalDiv = Stack()
-      .position(.absolute, edge: .vertical, length: 4)
+      .position(.absolute, edges: .vertical, length: 4)
       .render()
     #expect(verticalDiv == "<div class=\"absolute inset-y-4\"></div>")
   }
@@ -244,7 +244,7 @@ import Testing
   @Test("Element should render with multiple edges without length")
   func shouldRenderWithMultipleEdgesNoLength() {
     let div = Stack()
-      .position(.fixed, edges: [.top, .bottom, .leading])
+      .position(.fixed, edges: .top, .bottom, .leading)
       .render()
     #expect(div == "<div class=\"fixed\"></div>")
   }
@@ -252,7 +252,7 @@ import Testing
   @Test("Element should render with all edges and breakpoint")
   func shouldRenderWithAllEdgesAndBreakpoint() {
     let div = Stack()
-      .position(.absolute, edges: [.top, .bottom, .leading, .trailing], length: 8, on: .lg)
+      .position(.absolute, edges: .top, .bottom, .leading, .trailing, length: 8, on: .lg)
       .render()
     #expect(div == "<div class=\"lg:absolute lg:top-8 lg:bottom-8 lg:left-8 lg:right-8\"></div>")
   }
@@ -260,7 +260,7 @@ import Testing
   @Test("Element should render with mixed edge combinations")
   func shouldRenderWithMixedEdgeCombinations() {
     let div = Stack()
-      .position(.relative, edges: [.vertical, .trailing], length: 6)
+      .position(.relative, edges: .vertical, .trailing, length: 6)
       .render()
     #expect(div == "<div class=\"relative inset-y-6 right-6\"></div>")
   }

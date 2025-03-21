@@ -38,31 +38,30 @@ extension Element {
   ///   - duration: Sets the transition duration in milliseconds.
   ///   - easing: Defines the timing function for the transition.
   ///   - delay: Sets the delay before the transition starts in milliseconds.
-  ///   - breakpoint: Applies the styles at a specific screen size.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated transition classes.
   func transition(
     property: TransitionProperty? = nil,
     duration: Int? = nil,
     easing: Easing? = nil,
     delay: Int? = nil,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+    var baseClasses: [String] = []
+    baseClasses.append(property != nil ? "transition-\(property!.rawValue)" : "transition")
+    if let duration = duration { baseClasses.append("duration-\(duration)") }
+    if let easing = easing { baseClasses.append("ease-\(easing.rawValue)") }
+    if let delay = delay { baseClasses.append("delay-\(delay)") }
 
-    if let property = property {
-      newClasses.append("\(prefix)transition-\(property.rawValue)")
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
     } else {
-      newClasses.append("\(prefix)transition")
-    }
-    if let duration = duration {
-      newClasses.append("\(prefix)duration-\(duration)")
-    }
-    if let easing = easing {
-      newClasses.append("\(prefix)ease-\(easing.rawValue)")
-    }
-    if let delay = delay {
-      newClasses.append("\(prefix)delay-\(delay)")
+      newClasses = baseClasses.flatMap { base in
+        modifiers.map { modifier in
+          "\(modifier.rawValue)\(base)"
+        }
+      }
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
