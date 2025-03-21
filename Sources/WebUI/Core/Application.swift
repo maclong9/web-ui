@@ -21,12 +21,12 @@ public struct Application {
 
     for route in routes {
       try FileManager.default.createDirectory(
-        at: directory.appendingPathComponent(route.path),
+        at: directory.appendingPathComponent(route.path ?? ""),
         withIntermediateDirectories: true
       )
 
       FileManager.default.createFile(
-        atPath: directory.appendingPathComponent("\(route.path).html").path,
+        atPath: directory.appendingPathComponent("\(route.path ?? "").html").path,
         contents: route.render().data(using: .utf8)
       )
     }

@@ -9,148 +9,77 @@ public enum TextSize: String {
   /// Represents a large font size
   case lg
   /// Represents an extra-large font size
-  case extralLarge
+  case xl
   /// Represents a 2x extra-large font size
-  case extraLarge2
+  case xl2
   /// Represents a 3x extra-large font size
-  case extraLarge3
+  case xl3
   /// Represents a 4x extra-large font size
-  case extraLarge4
+  case xl4
   /// Represents a 5x extra-large font size
-  case extraLarge5
+  case xl5
   /// Represents a 6x extra-large font size
-  case extraLarge6
+  case xl6
   /// Represents a 7x extra-large font size
-  case extraLarge7
+  case xl7
   /// Represents a 8x extra-large font size
-  case extraLarge8
+  case xl8
   /// Represents a 9x extra-large font size
-  case extraLarge9
+  case xl9
 
-  public var rawValue: String {
+  public var className: String {
     let raw = String(describing: self)
-    if raw.hasPrefix("extraLarge"), let number = raw.dropFirst(10).first {
+    if raw.hasPrefix("xl"), let number = raw.dropFirst(2).first {
       return "text-\(number)xl"
     }
     return "text-\(raw)"
   }
 }
 
-/// Represents different text alignments.
+/// Text alignment options
 public enum Alignment: String {
-  /// Aligns text to the left
-  case left
-  /// Centers text horizontally
-  case center
-  /// Aligns text to the right
-  case right
-
-  public var rawValue: String {
-    return "text-\(self)"
-  }
+  case left, center, right
+  var className: String { "text-\(rawValue)" }
 }
 
-/// Represents different font weights.
+/// Font weight options
 public enum Weight: String {
-  /// Represents a thin font weight (100)
-  case thin
-  /// Represents an extra-light font weight (200)
-  case extralight
-  /// Represents a light font weight (300)
-  case light
-  /// Represents a normal font weight (400)
-  case normal
-  /// Represents a medium font weight (500)
-  case medium
-  /// Represents a semi-bold font weight (600)
-  case semibold
-  /// Represents a bold font weight (700)
-  case bold
-  /// Represents an extra-bold font weight (800)
-  case extrabold
-  /// Represents a black font weight (900)
-  case black
-
-  public var rawValue: String {
-    return "font-\(self)"
-  }
+  case thin, extralight, light, normal
+  case medium, semibold, bold, extrabold, black
+  var className: String { "font-\(rawValue)" }
 }
 
-/// Represents different letter spacings (tracking).
+/// Letter spacing options
 public enum Tracking: String {
-  /// Represents a very tight letter spacing
-  case tighter
-  /// Represents a tight letter spacing
-  case tight
-  /// Represents normal letter spacing
-  case normal
-  /// Represents a wide letter spacing
-  case wide
-  /// Represents a wider letter spacing
-  case wider
-  /// Represents the widest letter spacing
-  case widest
-
-  public var rawValue: String {
-    return "tracking-\(self)"
-  }
+  case tighter, tight, normal, wide, wider, widest
+  var className: String { "tracking-\(rawValue)" }
 }
 
-/// Represents different line heights (leading).
+/// Line height options
 public enum Leading: String {
-  /// Represents the tightest line height
-  case tightest
-  /// Represents a tighter line height
-  case tighter
-  /// Represents a tight line height
-  case tight
-  /// Represents a normal line height
-  case normal
-  /// Represents a relaxed line height
-  case relaxed
-  /// Represents a loose line height
-  case loose
-
-  public var rawValue: String {
-    return "leading-\(self)"
-  }
+  case tightest, tighter, tight, normal, relaxed, loose
+  var className: String { "leading-\(rawValue)" }
 }
 
-/// Represents different text decorations.
+/// Text decoration options
 public enum Decoration: String {
-  /// Represents an underline text decoration
-  case underline
-  /// Represents a line-through (strikethrough) text decoration
-  case lineThrough
-  /// Represents a double underline text decoration
-  case double
-  /// Represents a dotted underline text decoration
-  case dotted
-  /// Represents a dashed underline text decoration
-  case dashed
-  /// Represents a wavy underline text decoration
-  case wavy
-
-  public var rawValue: String {
-    return "decoration-\(self)"
-  }
+  case underline, lineThrough, double, dotted, dashed, wavy
+  var className: String { "decoration-\(rawValue)" }
 }
 
 extension Element {
-  /// Applies font styling to the element.
-  ///
-  /// Adds classes for font size, weight, alignment, and other text properties.
+  /// Applies font styling to the element with an optional breakpoint.
   ///
   /// - Parameters:
-  ///   - size: Sets the font size (e.g., small, large).
-  ///   - weight: Defines the font weight (e.g., bold, normal).
-  ///   - alignment: Aligns the text (e.g., left, center).
-  ///   - tracking: Adjusts letter spacing.
-  ///   - leading: Sets line height.
-  ///   - decoration: Applies text decoration (e.g., underline).
-  ///   - color: Sets the text color from the palette.
-  ///   - breakpoint: Applies the styles at a specific screen size.
-  /// - Returns: A new element with updated font classes.
+  ///   - size: The font size.
+  ///   - weight: The font weight.
+  ///   - alignment: The text alignment.
+  ///   - tracking: The letter spacing.
+  ///   - leading: The line height.
+  ///   - decoration: The text decoration.
+  ///   - color: The text color.
+  ///   - breakpoint: Optional breakpoint prefix.
+  /// - Returns: A new `Element` with the updated font styling classes.
   func font(
     size: TextSize? = nil,
     weight: Weight? = nil,
@@ -164,26 +93,26 @@ extension Element {
     let prefix = breakpoint?.rawValue ?? ""
     var newClasses: [String] = []
 
-    if let sizeValue = size?.rawValue {
-      newClasses.append(prefix + sizeValue)
+    if let size = size {
+      newClasses.append("\(prefix)\(size.className)")
     }
-    if let weightValue = weight?.rawValue {
-      newClasses.append(prefix + weightValue)
+    if let weight = weight {
+      newClasses.append("\(prefix)\(weight.className)")
     }
-    if let alignmentValue = alignment?.rawValue {
-      newClasses.append(prefix + alignmentValue)
+    if let alignment = alignment {
+      newClasses.append("\(prefix)\(alignment.className)")
     }
-    if let trackingValue = tracking?.rawValue {
-      newClasses.append(prefix + trackingValue)
+    if let tracking = tracking {
+      newClasses.append("\(prefix)\(tracking.className)")
     }
-    if let leadingValue = leading?.rawValue {
-      newClasses.append(prefix + leadingValue)
+    if let leading = leading {
+      newClasses.append("\(prefix)\(leading.className)")
     }
-    if let decorationValue = decoration?.rawValue {
-      newClasses.append(prefix + decorationValue)
+    if let decoration = decoration {
+      newClasses.append("\(prefix)\(decoration.className)")
     }
-    if let color = color?.rawValue {
-      newClasses.append("\(prefix)text-\(color)")
+    if let color = color {
+      newClasses.append("\(prefix)text-\(color.rawValue)")
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses

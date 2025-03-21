@@ -1,19 +1,3 @@
-/// Defines CSS breakpoints for responsive design.
-public enum Breakpoint: String {
-  /// Extra small breakpoint at 480px min-width.
-  case extraSmall = "xs:"
-  /// Small breakpoint at 640px min-width.
-  case small = "sm:"
-  /// Medium breakpoint at 768px min-width.
-  case medium = "md:"
-  /// Large breakpoint at 1024px min-width.
-  case large = "lg:"
-  /// Extra-large breakpoint at 1280px min-width.
-  case extraLarge = "xl:"
-  /// 2x extra-large breakpoint at 1536px min-width.
-  case extraLarge2 = "2xl:"
-}
-
 /// Defines ARIA roles for accessibility.
 public enum AriaRole: String {
   /// Indicates a search functionality area.

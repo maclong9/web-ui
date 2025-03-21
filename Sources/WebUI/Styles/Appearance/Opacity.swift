@@ -5,7 +5,7 @@ extension Element {
   ///   - value: The opacity value.
   ///   - breakpoint: Optional breakpoint prefix.
   /// - Returns: A new `Element` with the updated opacity class.
-  func opacity(_ value: String, on breakpoint: Breakpoint? = nil) -> Element {
+  func opacity(_ value: Int, on breakpoint: Breakpoint? = nil) -> Element {
     let prefix = breakpoint?.rawValue ?? ""
     let className = "\(prefix)opacity-\(value)"
 
