@@ -4,7 +4,6 @@ import PackageDescription
 
 // Roadmap
 // Version 0.0.1
-// TODO: Confirm there isn't a more reusable way to write Element's and Styles
 // TODO: Create tutorial for static site generation with blog, ensure usage of SwiftPM Snippets
 // Version 1.0.0
 // TODO: Extend enumerations, such as ContentType, with more options

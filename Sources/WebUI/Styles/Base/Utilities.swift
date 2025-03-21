@@ -17,18 +17,23 @@ public enum Modifier: String {
   /// Extra-large breakpoint at 1280px min-width.
   case xl
   /// 2x extra-large breakpoint at 1536px min-width.
-  case xl2
+  case xl2 = "2xl"
   /// Applies the style when the element is hovered over (e.g., `hover:`).
-  case hover = "hover:"
+  case hover
   /// Applies the style when the element is focused (e.g., `focus:`).
-  case focus = "focus:"
+  case focus
   /// Applies the style when the element is active (e.g., `active:`).
-  case active = "active:"
+  case active
   /// Applies the style to a placeholder state (e.g., `placeholder:`).
-  case placeholder = "placeholder:"
+  case placeholder
 
   public var rawValue: String {
-    "\(self):"
+    switch self {
+      case .xs, .sm, .md, .lg, .xl, .hover, .focus, .active, .placeholder:
+        return "\(self):"
+      case .xl2:
+        return "2xl:"
+    }
   }
 }
 
