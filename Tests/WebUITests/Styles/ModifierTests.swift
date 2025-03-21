@@ -55,7 +55,7 @@ import Testing
       .transform(scale: (x: 110, y: 90), on: .xl2)
       .zIndex(10, on: .xl2)
       .render()
-    #expect(element == "<div class=\"xl2:transform xl2:scale-x-110 xl2:scale-y-90 xl2:z-10\"></div>")
+    #expect(element == "<div class=\"2xl:transform 2xl:scale-x-110 2xl:scale-y-90 2xl:z-10\"></div>")
   }
 
   @Test("Element should render with hover state modifier")
