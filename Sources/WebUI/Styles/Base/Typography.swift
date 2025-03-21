@@ -68,7 +68,7 @@ public enum Decoration: String {
 }
 
 extension Element {
-  /// Applies font styling to the element with an optional breakpoint.
+  /// Applies font styling to the element with optional modifiers.
   ///
   /// - Parameters:
   ///   - size: The font size.
@@ -78,8 +78,8 @@ extension Element {
   ///   - leading: The line height.
   ///   - decoration: The text decoration.
   ///   - color: The text color.
-  ///   - breakpoint: Optional breakpoint prefix.
-  /// - Returns: A new `Element` with the updated font styling classes.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
+  /// - Returns: A new element with updated font styling classes.
   func font(
     size: TextSize? = nil,
     weight: Weight? = nil,
@@ -88,32 +88,21 @@ extension Element {
     leading: Leading? = nil,
     decoration: Decoration? = nil,
     color: Color? = nil,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+    var baseClasses: [String] = []
+    if let size = size { baseClasses.append(size.className) }
+    if let weight = weight { baseClasses.append(weight.className) }
+    if let alignment = alignment { baseClasses.append(alignment.className) }
+    if let tracking = tracking { baseClasses.append(tracking.className) }
+    if let leading = leading { baseClasses.append(leading.className) }
+    if let decoration = decoration { baseClasses.append(decoration.className) }
+    if let color = color { baseClasses.append("text-\(color.rawValue)") }
 
-    if let size = size {
-      newClasses.append("\(prefix)\(size.className)")
-    }
-    if let weight = weight {
-      newClasses.append("\(prefix)\(weight.className)")
-    }
-    if let alignment = alignment {
-      newClasses.append("\(prefix)\(alignment.className)")
-    }
-    if let tracking = tracking {
-      newClasses.append("\(prefix)\(tracking.className)")
-    }
-    if let leading = leading {
-      newClasses.append("\(prefix)\(leading.className)")
-    }
-    if let decoration = decoration {
-      newClasses.append("\(prefix)\(decoration.className)")
-    }
-    if let color = color {
-      newClasses.append("\(prefix)text-\(color.rawValue)")
-    }
+    let newClasses =
+      modifiers.isEmpty
+      ? baseClasses
+      : baseClasses.flatMap { base in modifiers.map { "\($0.rawValue)\(base)" } }
 
     let updatedClasses = (self.classes ?? []) + newClasses
     return Element(

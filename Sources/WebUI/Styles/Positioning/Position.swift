@@ -15,64 +15,49 @@ public enum PositionType: String {
 }
 
 extension Element {
-  /// Applies positioning styling to the element with a single edge.
+  /// Applies positioning styling to the element with one or more edges.
   ///
-  /// Sets the position type and optional inset values for a specific edge, scoped to a breakpoint if provided.
-  ///
-  /// - Parameters:
-  ///   - type: Specifies the positioning method (e.g., absolute, fixed).
-  ///   - edge: The edge to apply the inset to. Defaults to `.all`.
-  ///   - length: The distance value for the specified edge (e.g., "0", "4", "auto").
-  ///   - breakpoint: Applies the styles at a specific screen size.
-  /// - Returns: A new element with updated position classes.
-  func position(
-    _ type: PositionType,
-    edge: Edge = .all,
-    length: Int? = nil,
-    on breakpoint: Breakpoint? = nil
-  ) -> Element {
-    position(type, edges: [edge], length: length, on: breakpoint)
-  }
-
-  /// Applies positioning styling to the element with multiple edges.
-  ///
-  /// Sets the position type and optional inset values for specified edges, scoped to a breakpoint if provided.
+  /// Sets the position type and optional inset values for specified edges, scoped to modifiers if provided.
   ///
   /// - Parameters:
   ///   - type: Specifies the positioning method (e.g., absolute, fixed).
-  ///   - edges: Array of edges to apply the inset to.
+  ///   - edges: One or more edges to apply the inset to. Defaults to `.all`.
   ///   - length: The distance value for the specified edges (e.g., "0", "4", "auto").
-  ///   - breakpoint: Applies the styles at a specific screen size.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated position classes.
   func position(
     _ type: PositionType,
-    edges: [Edge],
+    edges: Edge...,
     length: Int? = nil,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = ["\(prefix)\(type.rawValue)"]
+    let effectiveEdges = edges.isEmpty ? [Edge.all] : edges
+    var baseClasses: [String] = [type.rawValue]
 
     if let lengthValue = length {
-      for edge in edges {
+      for edge in effectiveEdges {
         let edgePrefix: String
         switch edge {
-          case .all:
-            edgePrefix = "inset"
-          case .top:
-            edgePrefix = "top"
-          case .leading:
-            edgePrefix = "left"
-          case .trailing:
-            edgePrefix = "right"
-          case .bottom:
-            edgePrefix = "bottom"
-          case .horizontal:
-            edgePrefix = "inset-x"
-          case .vertical:
-            edgePrefix = "inset-y"
+          case .all: edgePrefix = "inset"
+          case .top: edgePrefix = "top"
+          case .leading: edgePrefix = "left"
+          case .trailing: edgePrefix = "right"
+          case .bottom: edgePrefix = "bottom"
+          case .horizontal: edgePrefix = "inset-x"
+          case .vertical: edgePrefix = "inset-y"
         }
-        newClasses.append("\(prefix)\(edgePrefix)-\(lengthValue)")
+        baseClasses.append("\(edgePrefix)-\(lengthValue)")
+      }
+    }
+
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      newClasses = baseClasses.flatMap { base in
+        modifiers.map { modifier in
+          "\(modifier.rawValue)\(base)"
+        }
       }
     }
 

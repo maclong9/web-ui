@@ -46,25 +46,33 @@ extension Dimension {
 }
 
 extension Element {
-  /// Sets the width and height of the element with an optional breakpoint.
+  /// Sets the width and height of the element with optional modifiers.
   ///
   /// - Parameters:
   ///   - width: The width dimension.
   ///   - height: The height dimension.
-  ///   - breakpoint: Optional breakpoint prefix
-  /// - Returns: A new `Element` with the updated sizing classes.
-  func frame(width: Dimension? = nil, height: Dimension? = nil, on breakpoint: Breakpoint? = nil) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
+  /// - Returns: A new element with updated sizing classes.
+  func frame(
+    width: Dimension? = nil,
+    height: Dimension? = nil,
+    on modifiers: Modifier...
+  ) -> Element {
+    var baseClasses: [String] = []
+    if let width = width { baseClasses.append("w-\(width.rawValue)") }
+    if let height = height { baseClasses.append("h-\(height.rawValue)") }
 
-    if let width = width {
-      newClasses.append("\(prefix)w-\(width.rawValue)")
+    let newClasses: [String]
+
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      // newClasses = ["\(combinedModifierPrefix)\(baseClasses.map { "\($0)" }.joined(separator: " "))"]
+      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
     }
-    if let height = height {
-      newClasses.append("\(prefix)h-\(height.rawValue)")
-    }
+
     let updatedClasses = (self.classes ?? []) + newClasses
-    print("UPDATED CLASSES: \(self.id ?? ""): \(updatedClasses)")
     return Element(
       tag: self.tag,
       id: self.id,

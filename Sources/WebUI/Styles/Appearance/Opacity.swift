@@ -1,15 +1,25 @@
 extension Element {
-  /// Sets the opacity of the element with an optional breakpoint.
+  /// Sets the opacity of the element with optional modifiers.
   ///
   /// - Parameters:
-  ///   - value: The opacity value.
-  ///   - breakpoint: Optional breakpoint prefix.
-  /// - Returns: A new `Element` with the updated opacity class.
-  func opacity(_ value: Int, on breakpoint: Breakpoint? = nil) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    let className = "\(prefix)opacity-\(value)"
+  ///   - value: The opacity value, typically between 0 and 100.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
+  /// - Returns: A new element with updated opacity classes including applied modifiers.
+  func opacity(
+    _ value: Int,
+    on modifiers: Modifier...
+  ) -> Element {
+    let baseClass = "opacity-\(value)"
+    let newClasses: [String]
 
-    let updatedClasses = (self.classes ?? []) + [className]
+    if modifiers.isEmpty {
+      newClasses = [baseClass]
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      newClasses = ["\(combinedModifierPrefix)\(baseClass)"]
+    }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
       tag: self.tag,
       id: self.id,

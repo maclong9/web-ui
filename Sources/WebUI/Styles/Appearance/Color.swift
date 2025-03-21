@@ -133,20 +133,25 @@ public enum Color {
 extension Element {
   /// Applies a background color to the element.
   ///
-  /// Adds a background color class based on the provided color and optional breakpoint.
+  /// Adds a background color class based on the provided color and optional modifiers.
   ///
   /// - Parameters:
   ///   - color: Sets the background color from the palette or a custom value.
-  ///   - breakpoint: Applies the color at a specific screen size.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated background classes.
   func background(
     color: Color,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+    let baseClass = "bg-\(color.rawValue)"
+    let newClasses: [String]
 
-    newClasses.append("\(prefix)bg-\(color.rawValue)")
+    if modifiers.isEmpty {
+      newClasses = [baseClass]
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      newClasses = ["\(combinedModifierPrefix)\(baseClass)"]
+    }
 
     let updatedClasses = (self.classes ?? []) + newClasses
     return Element(

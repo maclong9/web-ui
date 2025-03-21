@@ -139,7 +139,7 @@ import Testing
   @Test("Element should render with all border edges")
   func shouldRenderWithAllBorderEdges() {
     let element = Element(tag: "div")
-      .border(width: 1, edge: .all, style: .solid)
+      .border(width: 1, edges: .all, style: .solid)
       .render()
     #expect(element == "<div class=\"border-1 border-solid\"></div>")
   }
@@ -149,7 +149,7 @@ import Testing
     let element = Element(tag: "div")
       .border(
         width: 2,
-        edges: [.top, .leading, .trailing, .bottom],
+        edges: .top, .leading, .trailing, .bottom,
         style: .dotted,
         color: .blue(._400)
       )
@@ -165,7 +165,7 @@ import Testing
     let element = Element(tag: "div")
       .border(
         width: 3,
-        edges: [.horizontal, .vertical],
+        edges: .horizontal, .vertical,
         style: .dashed,
         color: .green(._500)
       )
@@ -179,7 +179,7 @@ import Testing
   @Test("Element should render with border divide styling")
   func shouldRenderWithBorderDivideStyling() {
     let element = Element(tag: "div")
-      .border(width: 2, edges: [.horizontal, .vertical], style: .divide)
+      .border(width: 2, edges: .horizontal, .vertical, style: .divide)
       .render()
     #expect(element == "<div class=\"divide-x-2 divide-y-2\"></div>")
   }
@@ -189,7 +189,7 @@ import Testing
     let element = Element(tag: "div")
       .border(
         width: 1,
-        edges: [.top, .bottom],
+        edges: .top, .bottom,
         style: .solid,
         color: .purple(._600),
         on: .md
@@ -206,7 +206,7 @@ import Testing
     let element = Element(tag: "div")
       .border(
         width: 2,
-        edges: [.top, .horizontal],
+        edges: .top, .horizontal,
         radius: (side: .bottomRight, size: .xl),
         style: .double,
         color: .orange(._300)

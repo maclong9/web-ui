@@ -1,63 +1,60 @@
 extension Element {
   /// Applies transformation styling to the element.
   ///
-  /// Adds classes for scaling, rotating, translating, and skewing, optionally scoped to a breakpoint.
+  /// Adds classes for scaling, rotating, translating, and skewing, optionally scoped to modifiers.
   /// Transform values are provided as (x: Int?, y: Int?) tuples for individual axis control.
-  /// A single integer value can be passed and will be interpreted as (x: value, y: nil).
   ///
   /// - Parameters:
   ///   - scale: Sets scale factor(s) as an optional (x: Int?, y: Int?) tuple.
   ///   - rotate: Specifies the rotation angle in degrees.
   ///   - translate: Sets translation distance(s) as an optional (x: Int?, y: Int?) tuple.
   ///   - skew: Sets skew angle(s) as an optional (x: Int?, y: Int?) tuple.
-  ///   - breakpoint: Applies the styles at a specific screen size.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated transform classes.
   func transform(
     scale: (x: Int?, y: Int?)? = nil,
     rotate: Int? = nil,
     translate: (x: Int?, y: Int?)? = nil,
     skew: (x: Int?, y: Int?)? = nil,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = [prefix + "transform"]
+    var baseClasses: [String] = ["transform"]
 
-    // Handle scale tuple
     if let scaleTuple = scale {
-      if let x = scaleTuple.x {
-        newClasses.append("\(prefix)scale-x-\(x)")
-      }
-      if let y = scaleTuple.y {
-        newClasses.append("\(prefix)scale-y-\(y)")
-      }
+      if let x = scaleTuple.x { baseClasses.append("scale-x-\(x)") }
+      if let y = scaleTuple.y { baseClasses.append("scale-y-\(y)") }
     }
 
-    // Handle rotate value
     if let rotate = rotate {
-      if rotate < 0 {
-        newClasses.append("\(prefix)rotate-\(-rotate)")
-      } else {
-        newClasses.append("\(prefix)rotate-\(rotate)")
-      }
+      baseClasses.append(rotate < 0 ? "rotate-\(-rotate)" : "rotate-\(rotate)")
     }
 
-    // Handle translate tuple
     if let translateTuple = translate {
       if let x = translateTuple.x {
-        newClasses.append(x < 0 ? "\(prefix)translate-x-\(-x)" : "\(prefix)translate-x-\(x)")
+        baseClasses.append(x < 0 ? "translate-x-\(-x)" : "translate-x-\(x)")
       }
       if let y = translateTuple.y {
-        newClasses.append(y < 0 ? "\(prefix)translate-y-\(-y)" : "\(prefix)translate-y-\(y)")
+        baseClasses.append(y < 0 ? "translate-y-\(-y)" : "translate-y-\(y)")
       }
     }
 
-    // Handle skew tuple
     if let skewTuple = skew {
       if let x = skewTuple.x {
-        newClasses.append(x < 0 ? "\(prefix)skew-x-\(-x)" : "\(prefix)skew-x-\(x)")
+        baseClasses.append(x < 0 ? "skew-x-\(-x)" : "skew-x-\(x)")
       }
       if let y = skewTuple.y {
-        newClasses.append(y < 0 ? "\(prefix)skew-y-\(-y)" : "\(prefix)skew-y-\(y)")
+        baseClasses.append(y < 0 ? "skew-y-\(-y)" : "skew-y-\(y)")
+      }
+    }
+
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      newClasses = baseClasses.flatMap { base in
+        modifiers.map { modifier in
+          "\(modifier.rawValue)\(base)"
+        }
       }
     }
 

@@ -90,101 +90,62 @@ public enum ShadowSize: String {
 }
 
 extension Element {
-  /// Applies border styling to the element with a single edge.
-  ///
-  /// Adds classes for border width, radius, style, and color on a specific edge,
-  /// optionally scoped to a breakpoint. If radius is specified without a side,
-  /// it applies to all corners.
-  ///
-  /// - Parameters:
-  ///   - width: Sets the border width in pixels.
-  ///   - edge: The edge to apply the border to. Defaults to `.all`.
-  ///   - radius: Specifies the size of the border radius, with an optional side.
-  ///             If side is omitted, applies to all corners.
-  ///   - style: Defines the border style (e.g., solid, dashed).
-  ///   - color: Sets the border color from the color palette.
-  ///   - breakpoint: Applies the styles at a specific screen size.
-  /// - Returns: A new element with updated border classes.
   func border(
     width: Int? = nil,
-    edge: Edge = .all,
+    edges: Edge...,
     radius: (side: RadiusSide?, size: RadiusSize)? = nil,
     style: BorderStyle? = nil,
     color: Color? = nil,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    border(width: width, edges: [edge], radius: radius, style: style, color: color, on: breakpoint)
-  }
-
-  /// Applies border styling to the element with multiple edges.
-  ///
-  /// Adds classes for border width, radius, style, and color on specified edges,
-  /// optionally scoped to a breakpoint. If radius is specified without a side,
-  /// it applies to all corners.
-  ///
-  /// - Parameters:
-  ///   - width: Sets the border width in pixels.
-  ///   - edges: Array of edges to apply the border to.
-  ///   - radius: Specifies the size of the border radius, with an optional side.
-  ///             If side is omitted, applies to all corners.
-  ///   - style: Defines the border style (e.g., solid, dashed).
-  ///   - color: Sets the border color from the color palette.
-  ///   - breakpoint: Applies the styles at a specific screen size.
-  /// - Returns: A new element with updated border classes.
-  func border(
-    width: Int? = nil,
-    edges: [Edge],
-    radius: (side: RadiusSide?, size: RadiusSize)? = nil,
-    style: BorderStyle? = nil,
-    color: Color? = nil,
-    on breakpoint: Breakpoint? = nil
-  ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+    let effectiveEdges = edges.isEmpty ? [Edge.all] : edges
+    var baseClasses: [String] = []
 
     if let widthValue = width {
       if style == .divide {
-        for edge in edges {
+        for edge in effectiveEdges {
           let edgePrefix = edge == .horizontal ? "x" : edge == .vertical ? "y" : ""
           if !edgePrefix.isEmpty {
-            newClasses.append("\(prefix)divide-\(edgePrefix)-\(widthValue)")
+            baseClasses.append("divide-\(edgePrefix)-\(widthValue)")
           }
         }
       } else {
-        for edge in edges {
-          let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
-          newClasses.append("\(prefix)border\(edgePrefix)-\(widthValue)")
-        }
+        baseClasses.append(
+          contentsOf: effectiveEdges.map { edge in
+            let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
+            return "border\(edgePrefix)-\(widthValue)"
+          })
       }
     }
 
     if let (side, size) = radius {
-      let sidePrefix = side?.rawValue ?? ""  // Default to empty string (all sides) if side is nil
+      let sidePrefix = side?.rawValue ?? ""
       let sideClass = sidePrefix.isEmpty ? "" : "-\(sidePrefix)"
-      let sizeSuffix = "-\(size.rawValue)"
-      newClasses.append("\(prefix)rounded\(sideClass)\(sizeSuffix)")
+      baseClasses.append("rounded\(sideClass)-\(size.rawValue)")
     }
 
     if let styleValue = style, style != .divide {
-      if edges.contains(.all) {
-        newClasses.append("\(prefix)border-\(styleValue.rawValue)")
-      } else {
-        for edge in edges {
+      baseClasses.append(
+        contentsOf: effectiveEdges.map { edge in
           let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
-          newClasses.append("\(prefix)border\(edgePrefix)-\(styleValue.rawValue)")
-        }
-      }
+          return "border\(edgePrefix)-\(styleValue.rawValue)"
+        })
     }
 
     if let colorValue = color?.rawValue {
-      if edges.contains(.all) {
-        newClasses.append("\(prefix)border-\(colorValue)")
-      } else {
-        for edge in edges {
+      baseClasses.append(
+        contentsOf: effectiveEdges.map { edge in
           let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
-          newClasses.append("\(prefix)border\(edgePrefix)-\(colorValue)")
-        }
-      }
+          return "border\(edgePrefix)-\(colorValue)"
+        })
+    }
+
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
@@ -197,33 +158,23 @@ extension Element {
     )
   }
 
-  /// Applies outline styling to the element.
-  ///
-  /// Adds classes for outline width, style, and color, optionally scoped to a breakpoint.
-  ///
-  /// - Parameters:
-  ///   - width: Sets the outline width in pixels.
-  ///   - style: Defines the outline style (e.g., solid, dashed).
-  ///   - color: Sets the outline color from the color palette.
-  ///   - breakpoint: Applies the styles at a specific screen size.
-  /// - Returns: A new element with updated outline classes.
   func outline(
     width: Int? = nil,
     style: BorderStyle? = nil,
     color: Color? = nil,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+    var baseClasses: [String] = []
+    if let widthValue = width { baseClasses.append("outline-\(widthValue)") }
+    if let styleValue = style, style != .divide { baseClasses.append("outline-\(styleValue.rawValue)") }
+    if let colorValue = color?.rawValue { baseClasses.append("outline-\(colorValue)") }
 
-    if let widthValue = width {
-      newClasses.append("\(prefix)outline-\(widthValue)")
-    }
-    if let styleValue = style, style != .divide {
-      newClasses.append("\(prefix)outline-\(styleValue.rawValue)")
-    }
-    if let color = color?.rawValue {
-      newClasses.append("\(prefix)outline-\(color)")
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
@@ -236,26 +187,20 @@ extension Element {
     )
   }
 
-  /// Applies box shadow styling to the element.
-  ///
-  /// Adds a shadow class based on size and optional color, scoped to a breakpoint if provided.
-  ///
-  /// - Parameters:
-  ///   - size: Sets the shadow size (e.g., small, large).
-  ///   - color: Applies a shadow color from the color palette.
-  ///   - breakpoint: Applies the styles at a specific screen size.
-  /// - Returns: A new element with updated shadow classes.
   func shadow(
     size: ShadowSize,
     color: Color? = nil,
-    breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+    var baseClasses: [String] = ["shadow-\(size.rawValue)"]
+    if let colorValue = color?.rawValue { baseClasses.append("shadow-\(colorValue)") }
 
-    newClasses.append("\(prefix)shadow-\(size.rawValue)")
-    if let color = color?.rawValue {
-      newClasses.append("\(prefix)shadow-\(color)")
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses
@@ -268,26 +213,20 @@ extension Element {
     )
   }
 
-  /// Applies a ring effect to the element.
-  ///
-  /// Adds a ring class with specified width and optional color, scoped to a breakpoint if provided.
-  ///
-  /// - Parameters:
-  ///   - size: Sets the ring width in pixels (defaults to 1).
-  ///   - color: Applies a ring color from the color palette.
-  ///   - breakpoint: Applies the styles at a specific screen size.
-  /// - Returns: A new element with updated ring classes.
   func ring(
     size: Int = 1,
     color: Color? = nil,
-    on breakpoint: Breakpoint? = nil
+    on modifiers: Modifier...
   ) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    var newClasses: [String] = []
+    var baseClasses: [String] = ["ring-\(size)"]
+    if let colorValue = color?.rawValue { baseClasses.append("ring-\(colorValue)") }
 
-    newClasses.append("\(prefix)ring-\(size)")
-    if let color = color?.rawValue {
-      newClasses.append("\(prefix)ring-\(color)")
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses

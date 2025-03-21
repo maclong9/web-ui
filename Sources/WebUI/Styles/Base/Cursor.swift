@@ -10,17 +10,27 @@ public enum CursorType: String {
 }
 
 extension Element {
-  /// Sets the cursor style of the element with an optional breakpoint.
+  /// Sets the cursor style of the element with optional modifiers.
   ///
   /// - Parameters:
   ///   - type: The cursor type.
-  ///   - breakpoint: Optional breakpoint prefix.
-  /// - Returns: A new `Element` with the updated cursor class.
-  func cursor(_ type: CursorType, on breakpoint: Breakpoint? = nil) -> Element {
-    let prefix = breakpoint?.rawValue ?? ""
-    let className = "\(prefix)cursor-\(type.rawValue)"
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
+  /// - Returns: A new element with updated cursor classes.
+  func cursor(
+    _ type: CursorType,
+    on modifiers: Modifier...
+  ) -> Element {
+    let baseClass = "cursor-\(type.rawValue)"
+    let newClasses: [String]
 
-    let updatedClasses = (self.classes ?? []) + [className]
+    if modifiers.isEmpty {
+      newClasses = [baseClass]
+    } else {
+      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
+      newClasses = ["\(combinedModifierPrefix)\(baseClass)"]
+    }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
       tag: self.tag,
       id: self.id,
