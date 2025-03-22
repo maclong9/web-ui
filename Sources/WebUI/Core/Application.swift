@@ -12,16 +12,28 @@ public struct Application {
     self.routes = routes
   }
 
-  /// Builds the application by rendering routes to a directory.
+  /// Builds the application by rendering routes to a directory and copying public assets.
   ///
-  /// Creates a `.build` directory if it doesn’t exist and writes HTML files for each route.
+  /// Creates a `.output` directory if it doesn’t exist, writes HTML files for each route,
+  /// and copies contents from the public directory to `.output/public`.
   ///
-  /// - Parameter directory: Destination URL for build output, defaults to `.build`.
-  /// - Throws: Errors from directory creation or file writing failures.
-  /// - Complexity: O(n) where n is the number of routes.
-  public func build(to directory: URL = URL(fileURLWithPath: ".output")) throws {
+  /// - Parameter directory: Destination URL for build output, defaults to `.output`.
+  /// - Parameter publicDirectory: Source directory for public assets, defaults to "Public".
+  /// - Throws: Errors from directory creation, file writing, or public asset copying failures.
+  /// - Complexity: O(n + m) where n is the number of routes and m is the size of public directory contents.
+  public func build(
+    to directory: URL = URL(fileURLWithPath: ".output"), publicDirectory: String = "Sources/Public"
+  ) throws {
+    let fileManager = FileManager.default
+
+    // Clear prevous output directory
     do {
-      try FileManager.default.createDirectory(
+      try fileManager.removeItem(at: directory)
+    }
+    
+    // Create output directory
+    do {
+      try fileManager.createDirectory(
         at: directory,
         withIntermediateDirectories: true,
         attributes: nil
@@ -30,17 +42,30 @@ public struct Application {
       throw BuildError.directoryCreationFailed(error)
     }
 
+    // Render routes
     var failedRoutes = [String]()
     for route in routes {
       do {
         let filePath = directory.appendingPathComponent("\(route.path ?? "").html")
         let htmlContent = route.render().data(using: .utf8)
-        guard FileManager.default.createFile(atPath: filePath.path, contents: htmlContent) else {
+        guard fileManager.createFile(atPath: filePath.path, contents: htmlContent) else {
           throw BuildError.fileCreationFailed(route.path ?? "unnamed", nil)
         }
       } catch {
         failedRoutes.append(route.path ?? "unnamed")
         print("Failed to build route '\(route.path ?? "unnamed")': \(error.localizedDescription)")
+      }
+    }
+
+    // Copy public directory contents
+    let publicSourceURL = URL(fileURLWithPath: publicDirectory)
+    let publicDestURL = directory.appendingPathComponent("public")
+
+    if fileManager.fileExists(atPath: publicSourceURL.path) {
+      do {
+        try fileManager.copyItem(at: publicSourceURL, to: publicDestURL)
+      } catch {
+        throw BuildError.publicCopyFailed(error)
       }
     }
 
@@ -55,5 +80,6 @@ public struct Application {
     case directoryCreationFailed(Error)
     case fileCreationFailed(String, Error?)
     case someRoutesFailed([String])
+    case publicCopyFailed(Error)
   }
 }

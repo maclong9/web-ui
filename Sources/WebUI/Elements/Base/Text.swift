@@ -4,7 +4,7 @@ import Foundation
 ///
 /// Paragraphs are for long form content with multiple sentences and
 /// a `<span>` tag is used for a single sentences of text and grouping inline content.
-class Text: Element {
+public class Text: Element {
   /// Creates a new text element.
   ///
   /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
@@ -155,5 +155,50 @@ public class Strong: Element {
     @HTMLBuilder content: @escaping () -> [any HTML]
   ) {
     super.init(tag: "strong", id: id, classes: classes, role: role, content: content)
+  }
+}
+
+/// Generates an HTML time element.
+///
+/// Used to represent a specific date, time, or duration in a machine-readable format.
+/// The datetime attribute provides the machine-readable value while the content
+/// can be a human-friendly representation.
+public class Time: Element {
+  private let datetime: String
+
+  /// Creates a new time element.
+  ///
+  /// - Parameters:
+  ///   - datetime: Machine-readable date/time in ISO 8601 format (e.g., "2025-03-22" or "2025-03-22T14:30:00Z").
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing human-readable time content.
+  public init(
+    datetime: String,
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML]
+  ) {
+    self.datetime = datetime
+    super.init(tag: "time", id: id, classes: classes, role: role, content: content)
+  }
+
+  /// Renders the time element as an HTML string.
+  ///
+  /// - Returns: Complete `<time>` tag string with attributes and content.
+  public override func render() -> String {
+    let attributes = [
+      attribute("id", id),
+      attribute("class", classes?.joined(separator: " ")),
+      attribute("datetime", datetime),
+      attribute("role", role?.rawValue),
+    ]
+    .compactMap { $0 }
+    .joined(separator: " ")
+
+    let contentString = content.map { $0.render() }.joined()
+    return "<\(tag) \(attributes)>\(contentString)</\(tag)>"
   }
 }
