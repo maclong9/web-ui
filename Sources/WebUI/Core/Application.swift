@@ -28,9 +28,11 @@ public struct Application {
 
     // Clear prevous output directory
     do {
-      try fileManager.removeItem(at: directory)
+      if fileManager.fileExists(atPath: directory.path()) {
+        try fileManager.removeItem(at: directory)
+      }
     }
-    
+
     // Create output directory
     do {
       try fileManager.createDirectory(
