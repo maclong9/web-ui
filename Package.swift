@@ -3,7 +3,7 @@
 import PackageDescription
 
 // Roadmap
-// Version 0.0.1
+// Version 0.0.5
 // TODO: Create tutorial for static site generation with blog, ensure usage of SwiftPM Snippets
 // Version 1.0.0
 // TODO: Extend enumerations, such as ContentType, with more options

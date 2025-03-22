@@ -43,6 +43,9 @@ public struct Document {
       .lowercased()
 
     var optionalMetaTags: [String] = []
+    if let image = metadata.image, !image.isEmpty {
+      optionalMetaTags.append("<meta property=\"og:image\" content=\"\(image)\">")
+    }
     if let author = metadata.author, !author.isEmpty {
       optionalMetaTags.append("<meta name=\"author\" content=\"\(author)\">")
     }
