@@ -15,6 +15,7 @@ public struct Metadata {
   var titleSeperator: String
   var pageTitle: String
   var description: String
+  var image: String?
   var author: String?
   var keywords: [String]?
   var twitter: String?
@@ -28,6 +29,7 @@ public struct Metadata {
   ///   - title: Base title template for the page.
   ///   - titleSeperator: Separator between title and site, defaults to "|".
   ///   - description: Brief summary of page content for meta tags.
+  ///   - image: Displayed when the url is shared on social media.
   ///   - author: Author name, optional.
   ///   - keywords: SEO keywords, optional.
   ///   - twitter: Twitter handle without "@", optional.
@@ -38,6 +40,7 @@ public struct Metadata {
     title: String,
     titleSeperator: String = "|",
     description: String,
+    image: String? = nil,
     author: String? = nil,
     keywords: [String]? = nil,
     twitter: String? = nil,
@@ -49,6 +52,7 @@ public struct Metadata {
     self.titleSeperator = titleSeperator
     self.pageTitle = "\(title)\(site.map { " \(titleSeperator) \($0)" } ?? "")"
     self.description = description
+    self.image = image
     self.author = author
     self.keywords = keywords
     self.twitter = twitter
