@@ -19,18 +19,41 @@ public struct Application {
   /// - Parameter directory: Destination URL for build output, defaults to `.build`.
   /// - Throws: Errors from directory creation or file writing failures.
   /// - Complexity: O(n) where n is the number of routes.
-  public func build(to directory: URL = URL(fileURLWithPath: ".build")) throws {
-    try FileManager.default.createDirectory(
-      at: directory,
-      withIntermediateDirectories: true,
-      attributes: nil
-    )
-
-    for route in routes {
-      FileManager.default.createFile(
-        atPath: directory.appendingPathComponent("\(route.path ?? "").html").path,
-        contents: route.render().data(using: .utf8)
+  public func build(to directory: URL = URL(fileURLWithPath: ".output")) throws {
+    do {
+      try FileManager.default.createDirectory(
+        at: directory,
+        withIntermediateDirectories: true,
+        attributes: nil
       )
+    } catch {
+      throw BuildError.directoryCreationFailed(error)
     }
+
+    var failedRoutes = [String]()
+    for route in routes {
+      do {
+        let filePath = directory.appendingPathComponent("\(route.path ?? "").html")
+        let htmlContent = route.render().data(using: .utf8)
+        guard FileManager.default.createFile(atPath: filePath.path, contents: htmlContent) else {
+          throw BuildError.fileCreationFailed(route.path ?? "unnamed", nil)
+        }
+      } catch {
+        failedRoutes.append(route.path ?? "unnamed")
+        print("Failed to build route '\(route.path ?? "unnamed")': \(error.localizedDescription)")
+      }
+    }
+
+    if !failedRoutes.isEmpty {
+      throw BuildError.someRoutesFailed(failedRoutes)
+    }
+
+    print("Build completed successfully.")
+  }
+
+  enum BuildError: Error {
+    case directoryCreationFailed(Error)
+    case fileCreationFailed(String, Error?)
+    case someRoutesFailed([String])
   }
 }

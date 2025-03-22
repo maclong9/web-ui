@@ -75,6 +75,6 @@ public class Element: HTML {
 
     let attributesString = attributes.isEmpty ? "" : " \(attributes)"
     let contentString = content.map { $0.render() }.joined()
-    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
+    return "<\(tag)\(attributesString)>\n\(contentString)\n</\(tag)>"
   }
 }
