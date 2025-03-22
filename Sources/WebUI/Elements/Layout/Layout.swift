@@ -9,7 +9,7 @@ public class Header: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing header content, defaults to empty.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
@@ -30,7 +30,7 @@ public class Navigation: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing navigation content, defaults to empty.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
@@ -51,7 +51,7 @@ public class Aside: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing aside content, defaults to empty.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
@@ -72,7 +72,7 @@ public class Main: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing main content, defaults to empty.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
@@ -93,7 +93,7 @@ public class Footer: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing footer content, defaults to empty.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,

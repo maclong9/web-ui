@@ -33,7 +33,7 @@ public struct Metadata {
   ///   - twitter: Twitter handle without "@", optional.
   ///   - locale: Language setting, defaults to `.en`.
   ///   - type: Open Graph content type, optional.
-  init(
+  public init(
     site: String? = nil,
     title: String,
     titleSeperator: String = "|",

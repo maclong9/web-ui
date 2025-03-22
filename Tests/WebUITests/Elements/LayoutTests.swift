@@ -86,7 +86,8 @@ import Testing
       Footer { "Footer content" }
     }.render()
     #expect(
-      stack == "<div><header>Header content</header><main><article>Article content</article><section>Section content</section></main><footer>Footer content</footer></div>"
+      stack
+        == "<div><header>Header content</header><main><article>Article content</article><section>Section content</section></main><footer>Footer content</footer></div>"
     )
   }
 

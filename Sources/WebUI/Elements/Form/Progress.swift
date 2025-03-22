@@ -13,7 +13,7 @@ public class Progress: Element {
   ///   - id: Unique identifier, optional.
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
-  init(
+  public init(
     value: Double? = nil,
     max: Double? = nil,
     id: String? = nil,
@@ -38,7 +38,7 @@ public class Progress: Element {
     ]
     .compactMap { $0 }
     .joined(separator: " ")
-    
+
     return "<\(tag) \(attributes)>"
   }
 }

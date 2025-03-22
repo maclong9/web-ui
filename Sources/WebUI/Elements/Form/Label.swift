@@ -13,7 +13,7 @@ public class Label: Element {
   ///   - role: Accessibility role, optional.
   ///   - for: ID of the associated input element.
   ///   - content: Closure providing label content, defaults to empty.
-  init(
+  public init(
     tag: String = "label",
     id: String? = nil,
     classes: [String]? = nil,

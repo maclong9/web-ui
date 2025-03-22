@@ -13,7 +13,7 @@ final public class TextArea: Input {
   ///   - value: Initial value, optional.
   ///   - placeholder: Hint text when empty, optional.
   ///   - autofocus: Focuses on page load if true, optional.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,

@@ -34,7 +34,7 @@ public class Form: Element {
   ///   - role: Accessibility role, optional.
   ///   - enctype: Encoding type for form data, optional.
   ///   - content: Closure providing form content.
-  init(
+  public init(
     action: String,
     method: FormMethod = .post,
     id: String? = nil,
