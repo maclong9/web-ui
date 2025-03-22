@@ -2,7 +2,7 @@
 ///
 /// Provides a result builder for creating HTML structures with a SwiftUI-like syntax.
 @resultBuilder
-struct HTMLBuilder {
+public struct HTMLBuilder {
   /// Combines multiple HTML component arrays into a single array.
   ///
   /// Joins variadic HTML component lists into a flat array.
@@ -10,7 +10,7 @@ struct HTMLBuilder {
   /// - Parameters:
   ///   - components: Variadic arrays of HTML components.
   /// - Returns: A flattened array of all provided HTML components.
-  static func buildBlock(_ components: [any HTML]...) -> [any HTML] {
+  public static func buildBlock(_ components: [any HTML]...) -> [any HTML] {
     components.joined().map { $0 }
   }
 
@@ -21,7 +21,7 @@ struct HTMLBuilder {
   /// - Parameters:
   ///   - expression: The HTML entity to include.
   /// - Returns: An array containing the single HTML entity.
-  static func buildExpression(_ expression: any HTML) -> [any HTML] {
+  public static func buildExpression(_ expression: any HTML) -> [any HTML] {
     [expression]
   }
 
@@ -32,7 +32,7 @@ struct HTMLBuilder {
   /// - Parameters:
   ///   - component: An optional array of HTML components.
   /// - Returns: The components or an empty array if nil.
-  static func buildOptional(_ component: [any HTML]?) -> [any HTML] {
+  public static func buildOptional(_ component: [any HTML]?) -> [any HTML] {
     component ?? []
   }
 
@@ -43,7 +43,7 @@ struct HTMLBuilder {
   /// - Parameters:
   ///   - component: The HTML components from the true branch.
   /// - Returns: The components from the first branch.
-  static func buildEither(first component: [any HTML]) -> [any HTML] {
+  public static func buildEither(first component: [any HTML]) -> [any HTML] {
     component
   }
 
@@ -54,7 +54,7 @@ struct HTMLBuilder {
   /// - Parameters:
   ///   - component: The HTML components from the false branch.
   /// - Returns: The components from the second branch.
-  static func buildEither(second component: [any HTML]) -> [any HTML] {
+  public static func buildEither(second component: [any HTML]) -> [any HTML] {
     component
   }
 
@@ -65,7 +65,7 @@ struct HTMLBuilder {
   /// - Parameters:
   ///   - components: An array of HTML component arrays.
   /// - Returns: A flattened array of all HTML components.
-  static func buildArray(_ components: [[any HTML]]) -> [any HTML] {
+  public static func buildArray(_ components: [[any HTML]]) -> [any HTML] {
     components.flatMap { $0 }
   }
 }

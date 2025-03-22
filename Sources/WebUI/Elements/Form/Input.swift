@@ -34,7 +34,7 @@ public class Input: Element {
   ///   - value: Initial value, optional.
   ///   - placeholder: Hint text when empty, optional.
   ///   - autofocus: Focuses on page load if true, optional.
-  init(
+  public init(
     tag: String = "input",
     id: String? = nil,
     classes: [String]? = nil,

@@ -9,7 +9,7 @@ extension Date {
   /// Converts the date into a string representing its year (e.g., "2025").
   ///
   /// - Returns: The year as a string.
-  func formattedYear() -> String {
+  public func formattedYear() -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy"
     return formatter.string(from: self)

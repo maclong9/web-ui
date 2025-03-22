@@ -14,7 +14,7 @@ class Text: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing text content.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
@@ -58,7 +58,7 @@ public class Heading: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing heading content.
-  init(
+  public init(
     level: HeadingLevel,
     id: String? = nil,
     classes: [String]? = nil,
@@ -83,7 +83,7 @@ public class Link: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing link content.
-  init(
+  public init(
     to destination: String,
     newTab: Bool? = nil,
     id: String? = nil,

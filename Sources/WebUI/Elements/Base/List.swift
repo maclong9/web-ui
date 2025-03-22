@@ -18,7 +18,7 @@ public class List: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing list items.
-  init(
+  public init(
     type: ListType = .unordered,
     id: String? = nil,
     classes: [String]? = nil,

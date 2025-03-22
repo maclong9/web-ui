@@ -9,7 +9,7 @@ public class Article: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing article content, defaults to empty.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
@@ -30,7 +30,7 @@ public class Section: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing section content, defaults to empty.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
@@ -51,7 +51,7 @@ public class Stack: Element {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing div content, defaults to empty.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,

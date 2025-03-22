@@ -19,7 +19,7 @@ public class Button: Element {
   ///   - type: Button type, optional.
   ///   - autofocus: Enables autofocus on load, optional.
   ///   - content: Closure providing button content, defaults to empty.
-  init(
+  public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,

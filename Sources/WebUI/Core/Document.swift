@@ -20,7 +20,7 @@ public struct Document {
   ///   - path: URL path for navigating to the document. Required for build, not for server side rendering.
   ///   - metadata: Configuration for the head section.
   ///   - content: Closure building the body’s HTML content.
-  init(
+  public init(
     path: String? = nil,
     metadata: Metadata,
     @HTMLBuilder content: @escaping () -> [any HTML]

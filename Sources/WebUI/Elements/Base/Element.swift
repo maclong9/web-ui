@@ -27,7 +27,7 @@ public class Element: HTML {
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   ///   - content: Closure providing inner HTML, defaults to empty.
-  init(
+  public init(
     tag: String,
     id: String? = nil,
     classes: [String]? = nil,
