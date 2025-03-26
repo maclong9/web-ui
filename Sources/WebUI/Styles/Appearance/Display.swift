@@ -60,7 +60,7 @@ public enum Grow: Int {
 }
 
 extension Element {
-  func flex(
+  public func flex(
     direction: Direction? = nil,
     justify: Justify? = nil,
     align: Align? = nil,
@@ -91,7 +91,7 @@ extension Element {
     )
   }
 
-  func grid(
+  public func grid(
     justify: Justify? = nil,
     align: Align? = nil,
     columns: Int? = nil,
@@ -120,7 +120,7 @@ extension Element {
     )
   }
 
-  func hidden(
+  public func hidden(
     _ isHidden: Bool = true,
     on modifiers: Modifier...
   ) -> Element {

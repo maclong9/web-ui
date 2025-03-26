@@ -139,7 +139,7 @@ extension Element {
   ///   - color: Sets the background color from the palette or a custom value.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated background classes.
-  func background(
+  public func background(
     color: Color,
     on modifiers: Modifier...
   ) -> Element {

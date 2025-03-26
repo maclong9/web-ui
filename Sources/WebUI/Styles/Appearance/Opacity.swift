@@ -5,7 +5,7 @@ extension Element {
   ///   - value: The opacity value, typically between 0 and 100.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated opacity classes including applied modifiers.
-  func opacity(
+  public func opacity(
     _ value: Int,
     on modifiers: Modifier...
   ) -> Element {

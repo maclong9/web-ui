@@ -16,7 +16,7 @@ extension Element {
   ///   - type: The cursor type.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated cursor classes.
-  func cursor(
+  public func cursor(
     _ type: CursorType,
     on modifiers: Modifier...
   ) -> Element {

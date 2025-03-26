@@ -22,7 +22,7 @@ extension Element {
   ///   - axis: Specifies the axis for overflow (defaults to both).
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated overflow classes.
-  func overflow(
+  public func overflow(
     _ type: OverflowType,
     axis: Axis = .both,
     on modifiers: Modifier...

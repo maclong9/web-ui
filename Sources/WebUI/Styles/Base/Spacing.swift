@@ -6,7 +6,7 @@ extension Element {
   ///   - length: The spacing value in `0.25rem` increments.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated margin classes.
-  func margins(
+  public func margins(
     _ edges: Edge...,
     length: Int? = 4,
     on modifiers: Modifier...
@@ -48,7 +48,7 @@ extension Element {
   ///   - length: The spacing value.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated padding classes.
-  func padding(
+  public func padding(
     _ edges: Edge...,
     length: Int? = 4,
     on modifiers: Modifier...

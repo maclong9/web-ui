@@ -53,7 +53,7 @@ extension Element {
   ///   - height: The height dimension.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated sizing classes.
-  func frame(
+  public func frame(
     width: Dimension? = nil,
     height: Dimension? = nil,
     on modifiers: Modifier...

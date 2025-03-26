@@ -11,7 +11,7 @@ extension Element {
   ///   - skew: Sets skew angle(s) as an optional (x: Int?, y: Int?) tuple.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated transform classes.
-  func transform(
+  public func transform(
     scale: (x: Int?, y: Int?)? = nil,
     rotate: Int? = nil,
     translate: (x: Int?, y: Int?)? = nil,

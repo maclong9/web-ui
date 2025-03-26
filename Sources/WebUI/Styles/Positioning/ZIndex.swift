@@ -7,7 +7,7 @@ extension Element {
   ///   - value: Specifies the z-index value as an integer.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated z-index classes.
-  func zIndex(
+  public func zIndex(
     _ value: Int,
     on modifiers: Modifier...
   ) -> Element {

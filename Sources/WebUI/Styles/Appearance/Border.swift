@@ -90,7 +90,7 @@ public enum ShadowSize: String {
 }
 
 extension Element {
-  func border(
+  public func border(
     width: Int? = nil,
     edges: Edge...,
     radius: (side: RadiusSide?, size: RadiusSize)? = nil,
@@ -158,7 +158,7 @@ extension Element {
     )
   }
 
-  func outline(
+  public func outline(
     width: Int? = nil,
     style: BorderStyle? = nil,
     color: Color? = nil,
@@ -187,7 +187,7 @@ extension Element {
     )
   }
 
-  func shadow(
+  public func shadow(
     size: ShadowSize,
     color: Color? = nil,
     on modifiers: Modifier...
@@ -213,7 +213,7 @@ extension Element {
     )
   }
 
-  func ring(
+  public func ring(
     size: Int = 1,
     color: Color? = nil,
     on modifiers: Modifier...
