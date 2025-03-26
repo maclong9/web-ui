@@ -25,7 +25,7 @@ extension Element {
   ///   - length: The distance value for the specified edges (e.g., "0", "4", "auto").
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated position classes.
-  func position(
+  public func position(
     _ type: PositionType,
     edges: Edge...,
     length: Int? = nil,
