@@ -68,7 +68,6 @@ extension Element {
       newClasses = baseClasses
     } else {
       let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      // newClasses = ["\(combinedModifierPrefix)\(baseClasses.map { "\($0)" }.joined(separator: " "))"]
       newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
     }
 
