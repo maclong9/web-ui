@@ -40,7 +40,7 @@ extension Element {
   ///   - delay: Sets the delay before the transition starts in milliseconds.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated transition classes.
-  func transition(
+  public func transition(
     property: TransitionProperty? = nil,
     duration: Int? = nil,
     easing: Easing? = nil,

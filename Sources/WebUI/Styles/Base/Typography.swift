@@ -80,7 +80,7 @@ extension Element {
   ///   - color: The text color.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated font styling classes.
-  func font(
+  public func font(
     size: TextSize? = nil,
     weight: Weight? = nil,
     alignment: Alignment? = nil,
