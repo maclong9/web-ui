@@ -4,7 +4,7 @@ import Foundation
 ///
 /// Paragraphs are for long form content with multiple sentences and
 /// a `<span>` tag is used for a single sentences of text and grouping inline content.
-public class Text: Element {
+public final class Text: Element {
   /// Creates a new text element.
   ///
   /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
@@ -18,7 +18,7 @@ public class Text: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     let renderedContent = content().map { $0.render() }.joined()
     let sentenceCount = renderedContent.components(separatedBy: CharacterSet(charactersIn: ".!?"))
@@ -49,7 +49,7 @@ public enum HeadingLevel: String {
 ///
 /// The level of the heading should descend through the document,
 /// with the main page title being 1 and then section headings being 2.
-public class Heading: Element {
+public final class Heading: Element {
   /// Creates a new heading.
   ///
   /// - Parameters:
@@ -63,14 +63,14 @@ public class Heading: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     super.init(tag: level.rawValue, id: id, classes: classes, role: role, content: content)
   }
 }
 
 /// Generates an HTML anchor element; for linking to other locations.
-public class Link: Element {
+public final class Link: Element {
   private let href: String
   private let newTab: Bool?
 
@@ -89,7 +89,7 @@ public class Link: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.href = destination
     self.newTab = newTab
@@ -119,7 +119,7 @@ public class Link: Element {
 /// Generates an HTML emphasis element.
 ///
 /// To be used to draw attention to text within another body of text.
-public class Emphasis: Element {
+public final class Emphasis: Element {
   /// Creates a new emphasis element.
   ///
   /// - Parameters:
@@ -131,7 +131,7 @@ public class Emphasis: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     super.init(tag: "em", id: id, classes: classes, role: role, content: content)
   }
@@ -140,7 +140,7 @@ public class Emphasis: Element {
 /// Generates an HTML strong importance element.
 ///
 /// To be used for drawing strong attention to text within another body of text.
-public class Strong: Element {
+public final class Strong: Element {
   /// Creates a new strong element.
   ///
   /// - Parameters:
@@ -152,7 +152,7 @@ public class Strong: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     super.init(tag: "strong", id: id, classes: classes, role: role, content: content)
   }
@@ -163,7 +163,7 @@ public class Strong: Element {
 /// Used to represent a specific date, time, or duration in a machine-readable format.
 /// The datetime attribute provides the machine-readable value while the content
 /// can be a human-friendly representation.
-public class Time: Element {
+public final class Time: Element {
   private let datetime: String
 
   /// Creates a new time element.
@@ -179,7 +179,7 @@ public class Time: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.datetime = datetime
     super.init(tag: "time", id: id, classes: classes, role: role, content: content)
@@ -206,7 +206,7 @@ public class Time: Element {
 /// Generates an HTML code block element
 ///
 /// To be used for rendering code examples on a web page
-public class Code: Element {
+public final class Code: Element {
   /// Creates a new strong element.
   ///
   /// - Parameters:
@@ -218,7 +218,7 @@ public class Code: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     super.init(tag: "code", id: id, classes: classes, role: role, content: content)
   }
@@ -227,7 +227,7 @@ public class Code: Element {
 /// Generates an HTML pre element
 ///
 /// To be used for rendering preformatted text such as groups of code elements.
-public class Preformatted: Element {
+public final class Preformatted: Element {
   /// Creates a new strong element.
   ///
   /// - Parameters:
@@ -239,7 +239,7 @@ public class Preformatted: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     super.init(tag: "strong", id: id, classes: classes, role: role, content: content)
   }

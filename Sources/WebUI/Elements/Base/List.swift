@@ -7,7 +7,7 @@ public enum ListType: String {
 ///
 /// List can be rendered as an ordered list when sequence is unimportant,
 /// or as a numbered list with sequenced markings.
-public class List: Element {
+public final class List: Element {
   let type: ListType
 
   /// Creates a new HTML list.
@@ -23,7 +23,7 @@ public class List: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.type = type
     super.init(tag: type.rawValue, id: id, classes: classes, role: role, content: content)
@@ -31,7 +31,7 @@ public class List: Element {
 }
 
 /// Generates an HTML list item element.
-public class Item: Element {
+public final class Item: Element {
   /// Creates a new list item.
   ///
   /// - Parameters:
@@ -43,7 +43,7 @@ public class Item: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     super.init(tag: "li", id: id, classes: classes, role: role, content: content)
   }

@@ -1,5 +1,5 @@
 /// Represents an immutable HTML document with metadata and content.
-public struct Document {
+public struct Document: Sendable {
   /// Navigation path for the document.
   let path: String?
 
@@ -7,7 +7,7 @@ public struct Document {
   var metadata: Metadata
 
   /// Closure generating the document’s HTML content.
-  private let contentBuilder: () -> [any HTML]
+  private let contentBuilder: @Sendable () -> [any HTML]
 
   /// Computed HTML content from the content builder.
   var content: [any HTML] {
@@ -23,7 +23,7 @@ public struct Document {
   public init(
     path: String? = nil,
     metadata: Metadata,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.path = path
     self.metadata = metadata

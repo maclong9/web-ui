@@ -67,7 +67,13 @@ extension Element {
     grow: Grow? = nil,
     on modifiers: Modifier...
   ) -> Element {
-    var baseClasses: [String] = ["flex"]
+    var baseClasses: [String] = []
+
+    // Only add "flex" class if we have direction, justify, or align
+    if direction != nil || justify != nil || align != nil {
+      baseClasses.append("flex")
+    }
+
     if let directionValue = direction?.rawValue { baseClasses.append(directionValue) }
     if let justifyValue = justify?.rawValue { baseClasses.append(justifyValue) }
     if let alignValue = align?.rawValue { baseClasses.append(alignValue) }
@@ -79,62 +85,6 @@ extension Element {
     } else {
       let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
       newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
-    }
-
-    let updatedClasses = (self.classes ?? []) + newClasses
-    return Element(
-      tag: self.tag,
-      id: self.id,
-      classes: updatedClasses,
-      role: self.role,
-      content: self.contentBuilder
-    )
-  }
-
-  public func grid(
-    justify: Justify? = nil,
-    align: Align? = nil,
-    columns: Int? = nil,
-    on modifiers: Modifier...
-  ) -> Element {
-    var baseClasses: [String] = ["grid"]
-    if let justifyValue = justify?.rawValue { baseClasses.append(justifyValue) }
-    if let alignValue = align?.rawValue { baseClasses.append(alignValue) }
-    if let columnsValue = columns { baseClasses.append("grid-cols-\(columnsValue)") }
-
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
-    }
-
-    let updatedClasses = (self.classes ?? []) + newClasses
-    return Element(
-      tag: self.tag,
-      id: self.id,
-      classes: updatedClasses,
-      role: self.role,
-      content: self.contentBuilder
-    )
-  }
-
-  public func hidden(
-    _ isHidden: Bool = true,
-    on modifiers: Modifier...
-  ) -> Element {
-    let baseClass = "hidden"
-    let newClasses: [String]
-    if isHidden {
-      if modifiers.isEmpty {
-        newClasses = [baseClass]
-      } else {
-        let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-        newClasses = ["\(combinedModifierPrefix)\(baseClass)"]
-      }
-    } else {
-      newClasses = []
     }
 
     let updatedClasses = (self.classes ?? []) + newClasses

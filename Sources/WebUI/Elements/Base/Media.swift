@@ -5,7 +5,7 @@ public struct ImageSize {
 }
 
 /// Generates an HTML figure element containing a picture with optional sources and caption.
-public class Figure: Element {
+public final class Figure: Element {
   let picture: Image
   let caption: String?
 
@@ -56,7 +56,7 @@ public class Figure: Element {
 }
 
 /// Generates an HTML picture element with multiple source tags and a fallback image.
-public class Image: Element {
+public final class Image: Element {
   let sourceURLs: [String]
   let description: String
   let size: ImageSize?
@@ -110,7 +110,7 @@ public class Image: Element {
 }
 
 /// Generates an HTML video element with multiple source tags.
-public class Video: Element {
+public final class Video: Element {
   let sourceURLs: [String]
   let controls: Bool?
   let autoplay: Bool?
@@ -138,7 +138,7 @@ public class Video: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.sourceURLs = sources
     self.controls = controls
@@ -173,7 +173,7 @@ public class Video: Element {
 }
 
 /// Generates an HTML audio element with multiple source tags.
-public class Audio: Element {
+public final class Audio: Element {
   let sourceURLs: [String]
   let controls: Bool?
   let autoplay: Bool?
@@ -198,7 +198,7 @@ public class Audio: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.sourceURLs = sources
     self.controls = controls

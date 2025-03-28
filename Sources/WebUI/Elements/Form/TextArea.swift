@@ -1,7 +1,7 @@
 /// Generates an HTML textarea element.
 ///
 /// Provides a multi-line text input for long-form content.
-final public class TextArea: Input {
+public final class TextArea: Input {
   /// Creates a new HTML textarea element.
   ///
   /// - Parameters:

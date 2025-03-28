@@ -9,7 +9,7 @@ public enum FormMethod: String {
 /// Generates an HTML form element.
 ///
 /// Represents a container for collecting user input, typically submitted to a server.
-public class Form: Element {
+public final class Form: Element {
   /// Defines encoding types for form data submission.
   public enum EncodingType: String {
     /// Default. All characters are encoded before sent (spaces are converted to "+" symbols, and special characters are converted to ASCII HEX values)
@@ -41,7 +41,7 @@ public class Form: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     enctype: EncodingType? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.action = action
     self.method = method

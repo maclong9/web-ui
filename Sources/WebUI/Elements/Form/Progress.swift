@@ -1,7 +1,7 @@
 /// Generates an HTML progress element.
 ///
 /// Displays the progress of a task, like a download.
-public class Progress: Element {
+public final class Progress: Element {
   let value: Double?
   let max: Double?
 

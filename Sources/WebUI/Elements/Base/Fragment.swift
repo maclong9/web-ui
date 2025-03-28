@@ -2,8 +2,8 @@
 ///
 /// Groups arbirtray elements together without rendering a parent tag.
 /// Use for rendering components that have no obvious root tag.
-public class Fragment: HTML {
-  let contentBuilder: () -> [any HTML]?
+public final class Fragment: HTML {
+  let contentBuilder: @Sendable () -> [any HTML]?
 
   /// Computed inner HTML content.
   var content: [any HTML] {
@@ -13,7 +13,7 @@ public class Fragment: HTML {
   /// Creates a new HTML fragment.
   ///
   /// - Parameter content: Closure providing fragment content, defaults to empty.
-  public init(@HTMLBuilder content: @escaping () -> [any HTML]) {
+  public init(@HTMLBuilder content: @escaping @Sendable () -> [any HTML]) {
     self.contentBuilder = content
   }
 
