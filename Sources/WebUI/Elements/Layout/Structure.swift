@@ -2,6 +2,9 @@
 ///
 /// Represents a self-contained piece of content like a blog post.
 public class Article: Element {
+  /// Defines the article as long form text content for styling
+  let isProse: Bool
+  
   /// Creates a new HTML article element.
   ///
   /// - Parameters:
@@ -13,8 +16,10 @@ public class Article: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
+    isProse: Bool = false,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
+    self.isProse = isProse
     super.init(tag: "article", id: id, classes: classes, role: role, content: content)
   }
 }

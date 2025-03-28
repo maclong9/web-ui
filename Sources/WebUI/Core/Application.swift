@@ -18,7 +18,7 @@ public struct Application {
   /// and copies contents from the public directory to `.output/public`.
   ///
   /// - Parameter directory: Destination URL for build output, defaults to `.output`.
-  /// - Parameter publicDirectory: Source directory for public assets, defaults to "Public".
+  /// - Parameter publicDirectory: Source directory for public assets, defaults to "Sources/Public".
   /// - Throws: Errors from directory creation, file writing, or public asset copying failures.
   /// - Complexity: O(n + m) where n is the number of routes and m is the size of public directory contents.
   public func build(
