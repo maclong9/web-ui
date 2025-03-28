@@ -14,9 +14,7 @@ import Testing
             Navigation {
               Link(to: "home") { "Home" }
               Link(to: "about") { "About" }
-              Link(to: "https://example.com", newTab: true) {
-                "Other"
-              }
+              Link(to: "https://example.com", newTab: true) { "Other" }
             }
           }
           Main {
@@ -38,7 +36,7 @@ import Testing
       ]
     )
 
-    try app.build()
+    try app.build(to: URL(fileURLWithPath: ".build"))
     #expect(FileManager.default.fileExists(atPath: ".build/index.html"))
     #expect(FileManager.default.fileExists(atPath: ".build/about.html"))
     #expect(

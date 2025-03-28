@@ -202,3 +202,45 @@ public class Time: Element {
     return "<\(tag) \(attributes)>\(contentString)</\(tag)>"
   }
 }
+
+/// Generates an HTML code block element
+///
+/// To be used for rendering code examples on a web page
+public class Code: Element {
+  /// Creates a new strong element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing strong content.
+  init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML]
+  ) {
+    super.init(tag: "code", id: id, classes: classes, role: role, content: content)
+  }
+}
+
+/// Generates an HTML pre element
+///
+/// To be used for rendering preformatted text such as groups of code elements.
+public class Preformatted: Element {
+  /// Creates a new strong element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier, optional.
+  ///   - classes: Class names for styling, optional.
+  ///   - role: Accessibility role, optional.
+  ///   - content: Closure providing strong content.
+  init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML]
+  ) {
+    super.init(tag: "strong", id: id, classes: classes, role: role, content: content)
+  }
+}

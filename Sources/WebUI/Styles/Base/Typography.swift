@@ -113,4 +113,42 @@ extension Element {
       content: self.contentBuilder
     )
   }
+
+  public enum ProseSize: String {
+    case sm, base, lg, xl
+    case xl2 = "2xl"
+
+    public var rawValue: String {
+      "prose-\(self)"
+    }
+  }
+
+  public enum ProseColor: String {
+    case gray, slate, zinc, neutral
+
+    public var rawValue: String {
+      "prose-\(self)"
+    }
+  }
+
+  /// Marks an element as long form context for styling
+  public func prose(size: ProseSize? = nil, color: ProseColor? = nil, on modifiers: Modifier...) -> Element {
+    var baseClasses: [String] = ["prose"]
+    if let size = size { baseClasses.append(size.rawValue) }
+    if let color = color { baseClasses.append(color.rawValue) }
+
+    let newClasses =
+      modifiers.isEmpty
+      ? baseClasses
+      : baseClasses.flatMap { base in modifiers.map { "\($0.rawValue)\(base)" } }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
+    return Element(
+      tag: self.tag,
+      id: self.id,
+      classes: updatedClasses,
+      role: self.role,
+      content: self.contentBuilder
+    )
+  }
 }
