@@ -1,7 +1,7 @@
 /// Generates an HTML header element.
 ///
 /// Contains introductory content or navigation links.
-public class Header: Element {
+public final class Header: Element {
   /// Creates a new HTML header element.
   ///
   /// - Parameters:
@@ -13,7 +13,7 @@ public class Header: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "header", id: id, classes: classes, role: role, content: content)
   }
@@ -22,7 +22,7 @@ public class Header: Element {
 /// Generates an HTML navigation element.
 ///
 /// Provides a set of navigational links.
-public class Navigation: Element {
+public final class Navigation: Element {
   /// Creates a new HTML navigation element.
   ///
   /// - Parameters:
@@ -34,7 +34,7 @@ public class Navigation: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "nav", id: id, classes: classes, role: role, content: content)
   }
@@ -43,7 +43,7 @@ public class Navigation: Element {
 /// Generates an HTML aside element.
 ///
 /// Holds content tangentially related to the main content.
-public class Aside: Element {
+public final class Aside: Element {
   /// Creates a new HTML aside element.
   ///
   /// - Parameters:
@@ -55,7 +55,7 @@ public class Aside: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "aside", id: id, classes: classes, role: role, content: content)
   }
@@ -64,7 +64,7 @@ public class Aside: Element {
 /// Generates an HTML main element.
 ///
 /// Contains the primary, unique content of a page.
-public class Main: Element {
+public final class Main: Element {
   /// Creates a new HTML main element.
   ///
   /// - Parameters:
@@ -76,7 +76,7 @@ public class Main: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "main", id: id, classes: classes, role: role, content: content)
   }
@@ -85,7 +85,7 @@ public class Main: Element {
 /// Generates an HTML footer element.
 ///
 /// Holds author info, copyright, or related links.
-public class Footer: Element {
+public final class Footer: Element {
   /// Creates a new HTML footer element.
   ///
   /// - Parameters:
@@ -97,7 +97,7 @@ public class Footer: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "footer", id: id, classes: classes, role: role, content: content)
   }

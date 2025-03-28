@@ -82,4 +82,49 @@ extension Element {
       content: self.contentBuilder
     )
   }
+
+  /// Applies spacing between child elements horizontally and/or vertically.
+  ///
+  /// - Parameters:
+  ///   - direction: The direction(s) to apply spacing (`horizontal`, `vertical`, or both).
+  ///   - length: The spacing value in `0.25rem` increments.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
+  /// - Returns: A new element with updated spacing classes.
+  public func spacing(
+    _ direction: Axis = .both,
+    length: Int? = 4,
+    on modifiers: Modifier...
+  ) -> Element {
+    let baseClasses: [String] =
+      length.map { lengthValue in
+        switch direction {
+          case .x:
+            return ["space-x-\(lengthValue)"]
+          case .y:
+            return ["space-y-\(lengthValue)"]
+          case .both:
+            return ["space-x-\(lengthValue)", "space-y-\(lengthValue)"]
+        }
+      } ?? []
+
+    let newClasses: [String]
+    if modifiers.isEmpty {
+      newClasses = baseClasses
+    } else {
+      newClasses = baseClasses.flatMap { base in
+        modifiers.map { modifier in
+          "\(modifier.rawValue)\(base)"
+        }
+      }
+    }
+
+    let updatedClasses = (self.classes ?? []) + newClasses
+    return Element(
+      tag: self.tag,
+      id: self.id,
+      classes: updatedClasses,
+      role: self.role,
+      content: self.contentBuilder
+    )
+  }
 }

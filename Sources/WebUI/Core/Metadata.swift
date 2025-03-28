@@ -1,15 +1,15 @@
 /// Defines supported Open Graph content types for a document.
-public enum ContentType: String {
+public enum ContentType: String, Sendable {
   case website, article, video, profile
 }
 
 /// Defines supported language locales for a document.
-public enum Locale: String {
+public enum Locale: String, Sendable {
   case en, sp, fr, de, ja
 }
 
 /// Stores metadata configuration for a document’s head section.
-public struct Metadata {
+public struct Metadata: Sendable {
   var site: String?
   var title: String
   var titleSeperator: String

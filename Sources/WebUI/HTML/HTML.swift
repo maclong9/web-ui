@@ -1,7 +1,7 @@
 /// Defines requirements for generating HTML content.
 ///
 /// Requires entities to provide a method for rendering HTML as a string.
-public protocol HTML {
+public protocol HTML: Sendable {
   /// Renders the entity as an HTML string.
   ///
   /// Converts the conforming type into its HTML representation.

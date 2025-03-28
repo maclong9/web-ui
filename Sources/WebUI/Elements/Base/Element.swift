@@ -1,5 +1,5 @@
 /// Defines ARIA roles for accessibility.
-public enum AriaRole: String {
+public enum AriaRole: String, Sendable {
   /// Indicates a search functionality area.
   case search
   /// Provides metadata about the document.
@@ -7,12 +7,12 @@ public enum AriaRole: String {
 }
 
 /// Base class for creating HTML elements.
-public class Element: HTML {
+public class Element: HTML, @unchecked Sendable {
   let tag: String
   let id: String?
   let classes: [String]?
   let role: AriaRole?
-  let contentBuilder: () -> [any HTML]?
+  let contentBuilder: @Sendable () -> [any HTML]?
 
   /// Computed inner HTML content.
   var content: [any HTML] {
@@ -32,7 +32,7 @@ public class Element: HTML {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML]? = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]? = { [] }
   ) {
     self.tag = tag
     self.id = id

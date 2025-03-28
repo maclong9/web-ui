@@ -1,12 +1,12 @@
 /// Defines types of HTML button elements.
-public enum ButtonType: String {
+public enum ButtonType: String, Sendable {
   case submit, reset
 }
 
 /// Creates HTML button elements.
 ///
 /// Represents a clickable element that triggers an action or event.
-public class Button: Element {
+public final class Button: Element {
   let type: ButtonType?
   let autofocus: Bool?
 
@@ -25,7 +25,7 @@ public class Button: Element {
     role: AriaRole? = nil,
     type: ButtonType? = nil,
     autofocus: Bool? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.type = type
     self.autofocus = autofocus

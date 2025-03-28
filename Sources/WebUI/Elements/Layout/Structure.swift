@@ -1,7 +1,7 @@
 /// Generates an HTML article element.
 ///
 /// Represents a self-contained piece of content like a blog post.
-public class Article: Element {
+public final class Article: Element {
   /// Defines the article as long form text content for styling
   let isProse: Bool
   
@@ -17,7 +17,7 @@ public class Article: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     isProse: Bool = false,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.isProse = isProse
     super.init(tag: "article", id: id, classes: classes, role: role, content: content)
@@ -27,7 +27,7 @@ public class Article: Element {
 /// Generates an HTML section element.
 ///
 /// Defines a thematic grouping of content, like a chapter.
-public class Section: Element {
+public final class Section: Element {
   /// Creates a new HTML section element.
   ///
   /// - Parameters:
@@ -39,7 +39,7 @@ public class Section: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "section", id: id, classes: classes, role: role, content: content)
   }
@@ -48,7 +48,7 @@ public class Section: Element {
 /// Generates an HTML div element.
 ///
 /// Groups elements for styling or layout without specific meaning.
-public class Stack: Element {
+public final class Stack: Element {
   /// Creates a new HTML div element.
   ///
   /// - Parameters:
@@ -60,7 +60,7 @@ public class Stack: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "div", id: id, classes: classes, role: role, content: content)
   }

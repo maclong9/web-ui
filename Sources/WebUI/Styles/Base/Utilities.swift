@@ -26,10 +26,12 @@ public enum Modifier: String {
   case active
   /// Applies the style to a placeholder state (e.g., `placeholder:`).
   case placeholder
+  /// Applies styles only on dark mode
+  case dark
 
   public var rawValue: String {
     switch self {
-      case .xs, .sm, .md, .lg, .xl, .hover, .focus, .active, .placeholder:
+      case .xs, .sm, .md, .lg, .xl, .hover, .focus, .active, .placeholder, .dark:
         return "\(self):"
       case .xl2:
         return "2xl:"

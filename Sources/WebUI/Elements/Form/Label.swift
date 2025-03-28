@@ -1,7 +1,7 @@
 /// Generates an HTML label element.
 ///
 /// Associates descriptive text with a form field for accessibility.
-public class Label: Element {
+public final class Label: Element {
   let `for`: String
 
   /// Creates a new HTML label element.
@@ -19,7 +19,7 @@ public class Label: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     `for`: String,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.for = `for`
     super.init(tag: tag, id: id, classes: classes, role: role, content: content)

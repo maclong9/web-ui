@@ -55,12 +55,20 @@ extension Element {
   /// - Returns: A new element with updated sizing classes.
   public func frame(
     width: Dimension? = nil,
+    minWidth: Dimension? = nil,
+    maxWidth: Dimension? = nil,
     height: Dimension? = nil,
+    minHeight: Dimension? = nil,
+    maxHeight: Dimension? = nil,
     on modifiers: Modifier...
   ) -> Element {
     var baseClasses: [String] = []
     if let width = width { baseClasses.append("w-\(width.rawValue)") }
+    if let minWidth = minWidth { baseClasses.append("min-w-\(minWidth.rawValue)") }
+    if let maxWidth = maxWidth { baseClasses.append("max-w-\(maxWidth.rawValue)") }
     if let height = height { baseClasses.append("h-\(height.rawValue)") }
+    if let minHeight = minHeight { baseClasses.append("min-h-\(minHeight.rawValue)") }
+    if let maxHeight = maxHeight { baseClasses.append("max-h-\(maxHeight.rawValue)") }
 
     let newClasses: [String]
 
