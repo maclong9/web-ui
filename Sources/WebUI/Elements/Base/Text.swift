@@ -70,7 +70,7 @@ public final class Heading: Element {
 }
 
 /// Generates an HTML anchor element; for linking to other locations.
-public final class Link: Element {
+public final class Anchor: Element {
   private let href: String
   private let newTab: Bool?
 
