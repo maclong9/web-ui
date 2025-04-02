@@ -1,7 +1,7 @@
 import Foundation
 
 /// Defines DOM manipulation tasks for scripting.
-enum Task {
+public enum Task {
   /// Logs the targeted element to the console.
   case log
   /// Adds a class or attribute to the targeted element.
@@ -19,39 +19,54 @@ extension Element {
   /// - Parameters:
   ///   - task: The DOM manipulation task to perform.
   ///   - select: CSS selector or ID targeting the element, defaults to current element.
+  ///   - target: CSS selector or ID of the element to be manipulated, defaults to self.
+  ///   - trigger: CSS selector or ID of the element triggering the action, defaults to self.
   ///   - className: Class name to manipulate, if applicable.
   ///   - attribute: Attribute name to manipulate, if applicable.
   ///   - value: Value to apply in manipulation, if required.
   ///   - action: Event triggering the manipulation, nil for immediate execution.
   /// - Returns: New element with the script appended.
-  func script(
+  public func script(
     _ task: Task,
     select: String? = nil,
+    target: String? = nil,
+    trigger: String? = nil,
     className: String? = nil,
     attribute: AttributeName? = nil,
     value: String? = nil,
     on action: Action? = nil
   ) -> Element {
+    // Ensure task validity
     guard isValidTask(task, className: className, attribute: attribute, value: value) else { return self }
 
+    // Determine element IDs
     let elementId = self.id ?? "gen\(UUID().uuidString.dropFirst(28).replacingOccurrences(of: "-", with: ""))"
-    let selector = select?.prefixedSelector ?? "#\(elementId)"
-    let elementRef = "document.querySelector('\(selector)')"
 
+    // Determine selectors
+    let triggerSelector = (trigger?.prefixedSelector ?? select?.prefixedSelector ?? "#\(elementId)")
+    let targetSelector = (target?.prefixedSelector ?? select?.prefixedSelector ?? "#\(elementId)")
+
+    // Create element references
+    let triggerRef = "document.querySelector('\(triggerSelector)')"
+    let targetRef = "document.querySelector('\(targetSelector)')"
+
+    // Build manipulation
     let manipulation = buildManipulation(
       task: task,
-      elementRef: elementRef,
+      elementRef: targetRef,
       className: className,
       attribute: attribute,
       value: value,
       elementId: elementId
     )
 
+    // Construct JavaScript code
     let jsCode =
       action.map { event in
         """
-        let el = \(elementRef);
-        el.addEventListener('\(event.rawValue)', () => { \(manipulation) });
+        let triggerEl = \(triggerRef);
+        let targetEl = \(targetRef);
+        triggerEl.addEventListener('\(event.rawValue)', () => { \(manipulation) });
         """
       } ?? manipulation
 
@@ -169,10 +184,12 @@ extension Element {
 }
 
 private extension String {
-  /// CSS selector with ensured prefix.
+  /// CSS selector with optional prefix.
   ///
   /// Ensures the selector starts with '#' or '.' if not already present.
+  /// If no prefix exists and the selector doesn't look like an ID or class,
+  /// it returns the original selector.
   var prefixedSelector: String {
-    hasPrefix("#") || hasPrefix(".") ? self : "#\(self)"
+    hasPrefix("#") || hasPrefix(".") ? self : self
   }
 }

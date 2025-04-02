@@ -23,13 +23,13 @@ public final class Figure: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    sources: [String],
+    source: String,
     description: String,
     caption: String? = nil,
     size: ImageSize? = nil
   ) {
     self.picture = Image(
-      sources: sources,
+      source: source,
       description: description,
       size: size
     )
@@ -55,57 +55,52 @@ public final class Figure: Element {
   }
 }
 
-/// Generates an HTML picture element with multiple source tags and a fallback image.
+/// Generates an HTML image element.
 public final class Image: Element {
-  let sourceURLs: [String]
+  let source: String
   let description: String
   let size: ImageSize?
 
-  /// Creates a new HTML picture element with embedded sources.
+  /// Creates a new HTML image element.
   ///
   /// - Parameters:
-  ///   - sources: Array of URLs or paths to image files (first valid source is used by browser).
-  ///   - description: Alt text for accessibility on the fallback image.
+  ///   - url: URL or path to the image file.
+  ///   - description: Alt text for accessibility.
   ///   - size: Image size dimensions, optional.
   ///   - id: Unique identifier, optional.
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
   public init(
-    sources: [String],
+    source: String,
     description: String,
     size: ImageSize? = nil,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil
   ) {
-    self.sourceURLs = sources
+    self.source = source
     self.description = description
     self.size = size
-    super.init(tag: "picture", id: id, classes: classes, role: role)
+    super.init(tag: "img", id: id, classes: classes, role: role)
   }
 
-  /// Renders a `<picture>` HTML string with source tags and fallback image.
+  /// Renders an `<img>` HTML string.
   ///
-  /// - Returns: A string containing the full `<picture>` tag.
+  /// - Returns: A string containing the full `<img>` tag.
   public override func render() -> String {
     let attributes = [
+      attribute("src", source),
+      attribute("alt", description),
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
       attribute("role", role?.rawValue),
+      size?.width != nil ? "width=\"\(size!.width!)\"" : nil,
+      size?.height != nil ? "height=\"\(size!.height!)\"" : nil,
     ]
     .compactMap { $0 }
     .joined(separator: " ")
 
-    let sourceTags = sourceURLs.dropLast()
-      .map { "<source src=\"\($0)\">" }
-      .joined()
-
-    let fallbackImage =
-      "<img src=\"\(sourceURLs.last ?? "")\" alt=\"\(description)\""
-      + (size?.width != nil ? " width=\"\(size!.width!)\"" : "")
-      + (size?.height != nil ? " height=\"\(size!.height!)\"" : "") + ">"
-
-    return "<\(tag)\(attributes)>\(sourceTags)\(fallbackImage)</\(tag)>"
+    return "<\(tag) \(attributes)>"
   }
 }
 

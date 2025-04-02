@@ -33,6 +33,17 @@ import Testing
       ))
   }
 
+  @Test("Element should render correctly with body attribute toggle")
+  func shouldRenderCorrectlyWithBodyAttributeToggle() {
+    let html = Button { "🍎" }
+      .border(radius: (side: .all, size: .lg))
+      .script(.toggle, select: "body", attribute: .custom("data-theme"), value: "dark", on: .click)
+      .render()
+
+    print(html)
+    #expect("<button>🍎</button>".contains(where: html.contains))
+  }
+
   @Test("Element should toggle class on focus")
   func shouldToggleClassOnFocus() {
     let el = Element(tag: "input", id: "test-focus") { "" }
