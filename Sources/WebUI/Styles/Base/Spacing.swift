@@ -9,16 +9,25 @@ extension Element {
   public func margins(
     _ edges: Edge...,
     length: Int? = 4,
+    auto: Bool = false,
     on modifiers: Modifier...
   ) -> Element {
     let effectiveEdges = edges.isEmpty ? [Edge.all] : edges
-    let baseClasses: [String] =
-      length.map { lengthValue in
-        effectiveEdges.map { edge in
-          let edgeValue = edge.rawValue
-          return "m\(edgeValue)-\(lengthValue)"
-        }
-      } ?? []
+    let baseClasses: [String]
+    if auto {
+      baseClasses = effectiveEdges.map { edge in
+        let edgeValue = edge.rawValue
+        return "m\(edgeValue)-auto"
+      }
+    } else {
+      baseClasses =
+        length.map { lengthValue in
+          effectiveEdges.map { edge in
+            let edgeValue = edge.rawValue
+            return "m\(edgeValue)-\(lengthValue)"
+          }
+        } ?? []
+    }
 
     let newClasses: [String]
     if modifiers.isEmpty {

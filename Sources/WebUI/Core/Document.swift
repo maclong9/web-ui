@@ -1,10 +1,10 @@
 /// Represents an immutable HTML document with metadata and content.
 public struct Document: Sendable {
   /// Navigation path for the document.
-  let path: String?
+  public let path: String?
 
   /// Metadata configuration for the document’s head section.
-  var metadata: Metadata
+  public var metadata: Metadata
 
   /// Closure generating the document’s HTML content.
   private let contentBuilder: @Sendable () -> [any HTML]

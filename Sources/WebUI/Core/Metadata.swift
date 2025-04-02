@@ -10,17 +10,17 @@ public enum Locale: String, Sendable {
 
 /// Stores metadata configuration for a document’s head section.
 public struct Metadata: Sendable {
-  var site: String?
-  var title: String
-  var titleSeperator: String
-  var pageTitle: String
-  var description: String
-  var image: String?
-  var author: String?
-  var keywords: [String]?
-  var twitter: String?
-  var locale: Locale
-  var type: ContentType?
+  public var site: String?
+  public var title: String
+  public var titleSeperator: String
+  public var pageTitle: String
+  public var description: String
+  public var image: String?
+  public var author: String?
+  public var keywords: [String]?
+  public var twitter: String?
+  public var locale: Locale
+  public var type: ContentType?
 
   /// Creates metadata for a document’s head section.
   ///

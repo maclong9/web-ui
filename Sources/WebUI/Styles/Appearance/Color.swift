@@ -1,53 +1,53 @@
 /// Represents a color value for styling utilities.
 ///
-/// Defines a palette of colors with shades and a custom option for arbitrary values.
+/// Defines a palette of colors with shades, opacity, and a custom option for arbitrary values.
 public enum Color {
-  /// A slate gray color with varying intensity shades.
-  case slate(Shade)
-  /// A neutral gray color with varying intensity shades.
-  case gray(Shade)
-  /// A cool-toned gray color with varying intensity shades.
-  case zinc(Shade)
-  /// A balanced neutral color with varying intensity shades.
-  case neutral(Shade)
-  /// A warm-toned stone color with varying intensity shades.
-  case stone(Shade)
-  /// A vibrant red color with varying intensity shades.
-  case red(Shade)
-  /// A bright orange color with varying intensity shades.
-  case orange(Shade)
-  /// A rich amber color with varying intensity shades.
-  case amber(Shade)
-  /// A sunny yellow color with varying intensity shades.
-  case yellow(Shade)
-  /// A fresh lime color with varying intensity shades.
-  case lime(Shade)
-  /// A lush green color with varying intensity shades.
-  case green(Shade)
-  /// A deep emerald color with varying intensity shades.
-  case emerald(Shade)
-  /// A teal blue-green color with varying intensity shades.
-  case teal(Shade)
-  /// A bright cyan color with varying intensity shades.
-  case cyan(Shade)
-  /// A soft sky blue color with varying intensity shades.
-  case sky(Shade)
-  /// A classic blue color with varying intensity shades.
-  case blue(Shade)
-  /// A rich indigo color with varying intensity shades.
-  case indigo(Shade)
-  /// A vibrant violet color with varying intensity shades.
-  case violet(Shade)
-  /// A deep purple color with varying intensity shades.
-  case purple(Shade)
-  /// A bold fuchsia color with varying intensity shades.
-  case fuchsia(Shade)
-  /// A soft pink color with varying intensity shades.
-  case pink(Shade)
-  /// A warm rose color with varying intensity shades.
-  case rose(Shade)
-  /// A custom color defined by a raw CSS value
-  case custom(String)
+  /// A slate gray color with varying intensity shades and optional opacity.
+  case slate(Shade, opacity: Double? = nil)
+  /// A neutral gray color with varying intensity shades and optional opacity.
+  case gray(Shade, opacity: Double? = nil)
+  /// A cool-toned gray color with varying intensity shades and optional opacity.
+  case zinc(Shade, opacity: Double? = nil)
+  /// A balanced neutral color with varying intensity shades and optional opacity.
+  case neutral(Shade, opacity: Double? = nil)
+  /// A warm-toned stone color with varying intensity shades and optional opacity.
+  case stone(Shade, opacity: Double? = nil)
+  /// A vibrant red color with varying intensity shades and optional opacity.
+  case red(Shade, opacity: Double? = nil)
+  /// A bright orange color with varying intensity shades and optional opacity.
+  case orange(Shade, opacity: Double? = nil)
+  /// A rich amber color with varying intensity shades and optional opacity.
+  case amber(Shade, opacity: Double? = nil)
+  /// A sunny yellow color with varying intensity shades and optional opacity.
+  case yellow(Shade, opacity: Double? = nil)
+  /// A fresh lime color with varying intensity shades and optional opacity.
+  case lime(Shade, opacity: Double? = nil)
+  /// A lush green color with varying intensity shades and optional opacity.
+  case green(Shade, opacity: Double? = nil)
+  /// A deep emerald color with varying intensity shades and optional opacity.
+  case emerald(Shade, opacity: Double? = nil)
+  /// A teal blue-green color with varying intensity shades and optional opacity.
+  case teal(Shade, opacity: Double? = nil)
+  /// A bright cyan color with varying intensity shades and optional opacity.
+  case cyan(Shade, opacity: Double? = nil)
+  /// A soft sky blue color with varying intensity shades and optional opacity.
+  case sky(Shade, opacity: Double? = nil)
+  /// A classic blue color with varying intensity shades and optional opacity.
+  case blue(Shade, opacity: Double? = nil)
+  /// A rich indigo color with varying intensity shades and optional opacity.
+  case indigo(Shade, opacity: Double? = nil)
+  /// A vibrant violet color with varying intensity shades and optional opacity.
+  case violet(Shade, opacity: Double? = nil)
+  /// A deep purple color with varying intensity shades and optional opacity.
+  case purple(Shade, opacity: Double? = nil)
+  /// A bold fuchsia color with varying intensity shades and optional opacity.
+  case fuchsia(Shade, opacity: Double? = nil)
+  /// A soft pink color with varying intensity shades and optional opacity.
+  case pink(Shade, opacity: Double? = nil)
+  /// A warm rose color with varying intensity shades and optional opacity.
+  case rose(Shade, opacity: Double? = nil)
+  /// A custom color defined by a raw CSS value with optional opacity
+  case custom(String, opacity: Double? = nil)
 
   /// Defines shade intensity for colors.
   ///
@@ -77,55 +77,61 @@ public enum Color {
     case _950 = 950
   }
 
-  /// Provides the raw CSS class value for the color.
+  /// Provides the raw CSS class value for the color and opacity.
   public var rawValue: String {
+    func formatOpacity(_ opacity: Double?) -> String {
+      guard let opacity = opacity, (0...1).contains(opacity) else { return "" }
+      return "/\(Int(opacity * 100))"
+    }
+
     switch self {
-      case .slate(let shade):
-        return "slate-\(shade.rawValue)"
-      case .gray(let shade):
-        return "gray-\(shade.rawValue)"
-      case .zinc(let shade):
-        return "zinc-\(shade.rawValue)"
-      case .neutral(let shade):
-        return "neutral-\(shade.rawValue)"
-      case .stone(let shade):
-        return "stone-\(shade.rawValue)"
-      case .red(let shade):
-        return "red-\(shade.rawValue)"
-      case .orange(let shade):
-        return "orange-\(shade.rawValue)"
-      case .amber(let shade):
-        return "amber-\(shade.rawValue)"
-      case .yellow(let shade):
-        return "yellow-\(shade.rawValue)"
-      case .lime(let shade):
-        return "lime-\(shade.rawValue)"
-      case .green(let shade):
-        return "green-\(shade.rawValue)"
-      case .emerald(let shade):
-        return "emerald-\(shade.rawValue)"
-      case .teal(let shade):
-        return "teal-\(shade.rawValue)"
-      case .cyan(let shade):
-        return "cyan-\(shade.rawValue)"
-      case .sky(let shade):
-        return "sky-\(shade.rawValue)"
-      case .blue(let shade):
-        return "blue-\(shade.rawValue)"
-      case .indigo(let shade):
-        return "indigo-\(shade.rawValue)"
-      case .violet(let shade):
-        return "violet-\(shade.rawValue)"
-      case .purple(let shade):
-        return "purple-\(shade.rawValue)"
-      case .fuchsia(let shade):
-        return "fuchsia-\(shade.rawValue)"
-      case .pink(let shade):
-        return "pink-\(shade.rawValue)"
-      case .rose(let shade):
-        return "rose-\(shade.rawValue)"
-      case .custom(let value):
-        return "[\(value)]"
+      case .slate(let shade, let opacity):
+        return "slate-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .gray(let shade, let opacity):
+        return "gray-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .zinc(let shade, let opacity):
+        return "zinc-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .neutral(let shade, let opacity):
+        return "neutral-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .stone(let shade, let opacity):
+        return "stone-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .red(let shade, let opacity):
+        return "red-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .orange(let shade, let opacity):
+        return "orange-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .amber(let shade, let opacity):
+        return "amber-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .yellow(let shade, let opacity):
+        return "yellow-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .lime(let shade, let opacity):
+        return "lime-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .green(let shade, let opacity):
+        return "green-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .emerald(let shade, let opacity):
+        return "emerald-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .teal(let shade, let opacity):
+        return "teal-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .cyan(let shade, let opacity):
+        return "cyan-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .sky(let shade, let opacity):
+        return "sky-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .blue(let shade, let opacity):
+        return "blue-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .indigo(let shade, let opacity):
+        return "indigo-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .violet(let shade, let opacity):
+        return "violet-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .purple(let shade, let opacity):
+        return "purple-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .fuchsia(let shade, let opacity):
+        return "fuchsia-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .pink(let shade, let opacity):
+        return "pink-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .rose(let shade, let opacity):
+        return "rose-\(shade.rawValue)\(formatOpacity(opacity))"
+      case .custom(let value, let opacity):
+        let opacityStr = formatOpacity(opacity)
+        return "[\(value)]\(opacityStr)"
     }
   }
 }

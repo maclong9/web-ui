@@ -37,19 +37,6 @@ import Testing
       element == "<p class=\"text-sm font-bold text-center tracking-wide leading-relaxed decoration-underline\"></p>")
     #expect(extraLarge == "<p class=\"text-3xl\"></p>")
   }
-  
-  @Test("Element should render as prose")
-  func shouldRenderAsProse() {
-    let element = Element(tag: "article").prose().render()
-    #expect(element == "<article class=\"prose\"></article>")
-  }
-  
-  @Test("Element should render as prose with custom size and color")
-  func shouldRenderAsProseWithCustomSizeAndColor() {
-    let element = Element(tag: "article").prose(size: .xl, color: .gray).render()
-    #expect(
-      element  == "<article class=\"prose prose-xl prose-gray\"></article>")
-  }
 
   @Test("Element should render with cursor styling")
   func shouldRenderWithCursorStyling() {

@@ -16,11 +16,11 @@ public enum Dimension {
   case maxContent
   /// Fit content size.
   case fitContent
+  /// Character width (e.g., 60ch)
+  case character(Int)
   /// Arbitrary custom value.
   case custom(String)
-}
 
-extension Dimension {
   public var rawValue: String {
     switch self {
       case .fixed(let value):
@@ -39,6 +39,8 @@ extension Dimension {
         return "max"
       case .fitContent:
         return "fit"
+      case .character(let value):
+        return "[\(value)ch]"
       case .custom(let value):
         return "[\(value)]"
     }
