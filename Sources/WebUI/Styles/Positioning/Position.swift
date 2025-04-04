@@ -26,13 +26,13 @@ extension Element {
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated position classes.
   public func position(
-    _ type: PositionType,
+    _ type: PositionType? = nil,
     edges: Edge...,
     length: Int? = nil,
     on modifiers: Modifier...
   ) -> Element {
     let effectiveEdges = edges.isEmpty ? [Edge.all] : edges
-    var baseClasses: [String] = [type.rawValue]
+    var baseClasses: [String] = [type?.rawValue ?? ""]
 
     if let lengthValue = length {
       for edge in effectiveEdges {
@@ -46,7 +46,7 @@ extension Element {
           case .horizontal: edgePrefix = "inset-x"
           case .vertical: edgePrefix = "inset-y"
         }
-        baseClasses.append("\(edgePrefix)-\(lengthValue)")
+        baseClasses.append("\(length != nil && length! > 0 ? "" : "-")\(edgePrefix)-\(lengthValue)")
       }
     }
 
