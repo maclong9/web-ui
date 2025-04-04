@@ -1,3 +1,5 @@
+import Foundation
+
 /// Defines supported Open Graph content types for a document.
 public enum ContentType: String, Sendable {
   case website, article, video, profile
@@ -15,6 +17,7 @@ public struct Metadata: Sendable {
   public var titleSeperator: String
   public var pageTitle: String
   public var description: String
+  public var date: Date?
   public var image: String?
   public var author: String?
   public var keywords: [String]?
@@ -40,6 +43,7 @@ public struct Metadata: Sendable {
     title: String,
     titleSeperator: String = "|",
     description: String,
+    date: Date? = nil,
     image: String? = nil,
     author: String? = nil,
     keywords: [String]? = nil,
