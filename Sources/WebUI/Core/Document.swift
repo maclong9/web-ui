@@ -86,7 +86,7 @@ public struct Document: Sendable {
       <html lang="\(metadata.locale.rawValue)">
       \(headSection)
       <body>
-          \(content.map { $0.render() }.joined())
+        \(content.map { $0.render() }.joined())
       </body>
       </html>
       """
