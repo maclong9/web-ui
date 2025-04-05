@@ -67,6 +67,12 @@ public enum Decoration: String {
   var className: String { "decoration-\(rawValue)" }
 }
 
+/// Text wrapping options
+public enum Wrapping: String {
+  case balance, pretty, wrap, nowrap
+  var className: String { "text-\(rawValue)" }
+}
+
 extension Element {
   /// Applies font styling to the element with optional modifiers.
   ///
@@ -87,6 +93,7 @@ extension Element {
     tracking: Tracking? = nil,
     leading: Leading? = nil,
     decoration: Decoration? = nil,
+    wrapping: Wrapping? = nil,
     color: Color? = nil,
     on modifiers: Modifier...
   ) -> Element {
@@ -97,6 +104,7 @@ extension Element {
     if let tracking = tracking { baseClasses.append(tracking.className) }
     if let leading = leading { baseClasses.append(leading.className) }
     if let decoration = decoration { baseClasses.append(decoration.className) }
+    if let wrapping = wrapping { baseClasses.append(wrapping.className) }
     if let color = color { baseClasses.append("text-\(color.rawValue)") }
 
     let newClasses =
