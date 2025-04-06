@@ -64,7 +64,7 @@ public final class Image: Element {
   /// Creates a new HTML image element.
   ///
   /// - Parameters:
-  ///   - url: URL or path to the image file.
+  ///   - source: URL or path to the image file.
   ///   - description: Alt text for accessibility.
   ///   - size: Image size dimensions, optional.
   ///   - id: Unique identifier, optional.
