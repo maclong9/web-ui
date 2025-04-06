@@ -69,7 +69,6 @@ public struct Document: Sendable {
           <meta property="og:description" content="\(metadata.description)">
           <meta name="twitter:card" content="summary_large_image">
           \(optionalMetaTags.joined(separator: "\n"))
-          <link rel="stylesheet" href="/\(cssFilename).css">
           <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
           <style type="text/tailwindcss">
               @theme {
