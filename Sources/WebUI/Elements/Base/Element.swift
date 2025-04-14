@@ -99,7 +99,7 @@ public class Element: HTML, @unchecked Sendable {
       attribute("id", config.id),
       attribute("class", config.classes?.joined(separator: " ")),
       attribute("role", config.role?.rawValue),
-      attribute("label", config.label),
+      attribute("aria-label", config.label),
     ]
     .compactMap { $0 }
 
