@@ -6,9 +6,10 @@ public final class Style: Element {
   ///
   /// - Parameters:
   ///   - config: Configuration for element attributes, defaults to empty.
-  public init(
-    config: ElementConfig = .init()
+  init(
+    config: ElementConfig = .init(),
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
-    super.init(tag: "style", config: config)
+    super.init(tag: "style", config: config, content: content)
   }
 }
