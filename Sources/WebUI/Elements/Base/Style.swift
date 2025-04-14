@@ -6,7 +6,7 @@ public final class Style: Element {
   ///
   /// - Parameters:
   ///   - config: Configuration for element attributes, defaults to empty.
-  init(
+  public init(
     config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
