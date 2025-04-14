@@ -12,6 +12,7 @@ public class Element: HTML, @unchecked Sendable {
   let id: String?
   let classes: [String]?
   let role: AriaRole?
+  let label: String?
   let contentBuilder: @Sendable () -> [any HTML]?
 
   /// Computed inner HTML content.
@@ -26,18 +27,21 @@ public class Element: HTML, @unchecked Sendable {
   ///   - id: Unique identifier, optional.
   ///   - classes: Class names for styling, optional.
   ///   - role: Accessibility role, optional.
+  ///   - label: Accessibility label, optional.
   ///   - content: Closure providing inner HTML, defaults to empty.
   public init(
     tag: String,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]? = { [] }
   ) {
     self.tag = tag
     self.id = id
     self.classes = classes
     self.role = role
+    self.label = label
     self.contentBuilder = content
   }
 
@@ -69,6 +73,7 @@ public class Element: HTML, @unchecked Sendable {
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
       attribute("role", role?.rawValue),
+      attribute("label", label)
     ]
     .compactMap { $0 }
     .joined(separator: " ")
