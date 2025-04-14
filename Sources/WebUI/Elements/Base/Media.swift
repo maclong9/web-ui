@@ -12,17 +12,13 @@ public final class Figure: Element {
   /// Creates a new HTML figure element wrapping a picture with multiple sources.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
-  ///   - sources: Array of URLs or paths to image files (first valid source is used by browser).
+  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - source: URL or path to the image file.
   ///   - description: Alt text for accessibility on the fallback image.
   ///   - caption: Text for the optional `<figcaption>`, nil if omitted.
   ///   - size: Image size dimensions, optional.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     source: String,
     description: String,
     caption: String? = nil,
@@ -31,27 +27,17 @@ public final class Figure: Element {
     self.picture = Image(
       source: source,
       description: description,
-      size: size
+      size: size,
+      config: config
     )
     self.caption = caption
-    super.init(tag: "figure", id: id, classes: classes, role: role)
+    super.init(tag: "figure", config: config)
   }
 
-  /// Renders the figure as an HTML string with picture and optional caption.
-  ///
-  /// - Returns: Complete `<figure>` tag string containing a `<picture>` and optional `<figcaption>`.
-  public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
-      attribute("role", role?.rawValue),
-    ]
-    .compactMap { $0 }
-    .joined(separator: " ")
-
-    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
+  /// Provides custom content for the figure (image and optional caption).
+  public override func customContent() -> String? {
     let captionString = caption.map { "<figcaption>\($0)</figcaption>" } ?? ""
-    return "<\(tag)\(attributesString)>\(picture.render())\(captionString)</\(tag)>"
+    return picture.render() + captionString
   }
 }
 
@@ -67,40 +53,28 @@ public final class Image: Element {
   ///   - source: URL or path to the image file.
   ///   - description: Alt text for accessibility.
   ///   - size: Image size dimensions, optional.
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   public init(
     source: String,
     description: String,
     size: ImageSize? = nil,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil
+    config: ElementConfig = .init()
   ) {
     self.source = source
     self.description = description
     self.size = size
-    super.init(tag: "img", id: id, classes: classes, role: role)
+    super.init(tag: "img", config: config, isSelfClosing: true)
   }
 
-  /// Renders an `<img>` HTML string.
-  ///
-  /// - Returns: A string containing the full `<img>` tag.
-  public override func render() -> String {
-    let attributes = [
+  /// Provides image-specific attributes.
+  public override func additionalAttributes() -> [String] {
+    [
       attribute("src", source),
       attribute("alt", description),
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
-      attribute("role", role?.rawValue),
       size?.width != nil ? "width=\"\(size!.width!)\"" : nil,
       size?.height != nil ? "height=\"\(size!.height!)\"" : nil,
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
-
-    return "<\(tag) \(attributes)>"
   }
 }
 
@@ -120,9 +94,7 @@ public final class Video: Element {
   ///   - autoplay: Automatically starts playback if true, optional.
   ///   - loop: Repeats video playback if true, optional.
   ///   - size: Video size dimensions, optional.
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing fallback content, defaults to empty.
   public init(
     sources: [String],
@@ -130,9 +102,7 @@ public final class Video: Element {
     autoplay: Bool? = nil,
     loop: Bool? = nil,
     size: ImageSize? = nil,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.sourceURLs = sources
@@ -140,30 +110,24 @@ public final class Video: Element {
     self.autoplay = autoplay
     self.loop = loop
     self.size = size
-    super.init(tag: "video", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "video", config: config, content: content)
   }
 
-  /// Renders the video as an HTML string with multiple source tags.
-  ///
-  /// - Returns: Complete `<video>` tag string including `<source>` tags and optional fallback content.
-  public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
+  /// Provides video-specific attributes.
+  public override func additionalAttributes() -> [String] {
+    [
       booleanAttribute("controls", controls),
       booleanAttribute("autoplay", autoplay),
       booleanAttribute("loop", loop),
       attribute("width", size?.width.map { String($0) }),
       attribute("height", size?.height.map { String($0) }),
-      attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
+  }
 
-    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
-    let sourceTags = sourceURLs.map { "<source src=\"\($0)\">" }.joined()
-    let contentString = content.map { $0.render() }.joined()
-    return "<\(tag)\(attributesString)>\(sourceTags)\(contentString)</\(tag)>"
+  /// Provides custom content for source tags.
+  public override func customContent() -> String? {
+    sourceURLs.map { "<source src=\"\($0)\">" }.joined()
   }
 }
 
@@ -181,46 +145,35 @@ public final class Audio: Element {
   ///   - controls: Displays playback controls if true, optional.
   ///   - autoplay: Automatically starts playback if true, optional.
   ///   - loop: Repeats audio playback if true, optional.
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing fallback content, defaults to empty.
   public init(
     sources: [String],
     controls: Bool? = nil,
     autoplay: Bool? = nil,
     loop: Bool? = nil,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.sourceURLs = sources
     self.controls = controls
     self.autoplay = autoplay
     self.loop = loop
-    super.init(tag: "audio", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "audio", config: config, content: content)
   }
 
-  /// Renders the audio as an HTML string with multiple source tags.
-  ///
-  /// - Returns: Complete `<audio>` tag string including `<source>` tags and optional fallback content.
-  /// - Complexity: O(n + m) where n is the number of attributes and m is the number of child elements plus sources.
-  public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
+  /// Provides audio-specific attributes.
+  public override func additionalAttributes() -> [String] {
+    [
       booleanAttribute("controls", controls),
       booleanAttribute("autoplay", autoplay),
       booleanAttribute("loop", loop),
-      attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
+  }
 
-    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
-    let sourceTags = sourceURLs.map { "<source src=\"\($0)\">" }.joined()
-    let contentString = content.map { $0.render() }.joined()
-    return "<\(tag)\(attributesString)>\(sourceTags)\(contentString)</\(tag)>"
+  /// Provides custom content for source tags.
+  public override func customContent() -> String? {
+    sourceURLs.map { "<source src=\"\($0)\">" }.joined()
   }
 }

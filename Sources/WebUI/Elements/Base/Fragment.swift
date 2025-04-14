@@ -1,6 +1,6 @@
 /// Generates a generic HTML fragment.
 ///
-/// Groups arbirtray elements together without rendering a parent tag.
+/// Groups arbitrary elements together without rendering a parent tag.
 /// Use for rendering components that have no obvious root tag.
 public final class Fragment: HTML {
   let contentBuilder: @Sendable () -> [any HTML]?

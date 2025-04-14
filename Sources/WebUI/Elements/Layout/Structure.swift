@@ -8,19 +8,24 @@ public final class Article: Element {
   /// Creates a new HTML article element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - isProse: Indicates if the article is long-form text, adding a "prose" class if true.
   ///   - content: Closure providing article content, defaults to empty.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     isProse: Bool = false,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.isProse = isProse
-    super.init(tag: "article", id: id, classes: classes, role: role, content: content)
+    // Combine existing classes with "prose" if isProse is true
+    let updatedClasses = (config.classes ?? []) + (isProse ? ["prose"] : [])
+    let updatedConfig = ElementConfig(
+      id: config.id,
+      classes: updatedClasses.isEmpty ? nil : updatedClasses,
+      role: config.role,
+      label: config.label
+    )
+    super.init(tag: "article", config: updatedConfig, isSelfClosing: false, content: content)
   }
 }
 
@@ -31,17 +36,13 @@ public final class Section: Element {
   /// Creates a new HTML section element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing section content, defaults to empty.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "section", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "section", config: config, isSelfClosing: false, content: content)
   }
 }
 
@@ -52,16 +53,12 @@ public final class Stack: Element {
   /// Creates a new HTML div element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing div content, defaults to empty.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "div", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "div", config: config, isSelfClosing: false, content: content)
   }
 }

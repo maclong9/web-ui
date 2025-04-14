@@ -6,8 +6,10 @@ import Testing
   @Test("Article should render correctly")
   func shouldRenderArticleCorrectly() {
     let article = Article(
-      id: "article-id",
-      classes: ["article-class"]
+      config: ElementConfig(
+        id: "article-id",
+        classes: ["article-class"]
+      )
     ) { "This is an article" }.render()
     #expect(article == "<article id=\"article-id\" class=\"article-class\">This is an article</article>")
   }
@@ -15,8 +17,10 @@ import Testing
   @Test("Section should render correctly")
   func shouldRenderSectionCorrectly() {
     let section = Section(
-      id: "section-id",
-      classes: ["section-class"]
+      config: ElementConfig(
+        id: "section-id",
+        classes: ["section-class"]
+      )
     ) { "This is a section" }.render()
     #expect(section == "<section id=\"section-id\" class=\"section-class\">This is a section</section>")
   }
@@ -24,8 +28,11 @@ import Testing
   @Test("Stack should render correctly")
   func shouldRenderStackCorrectly() {
     let stack = Stack(
-      id: "stack-id",
-      classes: ["stack-class"]
+      config: ElementConfig(
+
+        id: "stack-id",
+        classes: ["stack-class"]
+      )
     ) { "This is a stack" }.render()
     #expect(stack == "<div id=\"stack-id\" class=\"stack-class\">This is a stack</div>")
   }
@@ -33,8 +40,11 @@ import Testing
   @Test("Header should render correctly")
   func shouldRenderHeaderCorrectly() {
     let header = Header(
-      id: "header-id",
-      classes: ["header-class"]
+      config: ElementConfig(
+
+        id: "header-id",
+        classes: ["header-class"]
+      )
     ) { "This is a header" }.render()
     #expect(header == "<header id=\"header-id\" class=\"header-class\">This is a header</header>")
   }
@@ -42,8 +52,11 @@ import Testing
   @Test("Navigation should render correctly")
   func shouldRenderNavigationCorrectly() {
     let navigation = Navigation(
-      id: "nav-id",
-      classes: ["nav-class"]
+      config: ElementConfig(
+
+        id: "nav-id",
+        classes: ["nav-class"]
+      )
     ) { "This is navigation" }.render()
     #expect(navigation == "<nav id=\"nav-id\" class=\"nav-class\">This is navigation</nav>")
   }
@@ -51,8 +64,11 @@ import Testing
   @Test("Aside should render correctly")
   func shouldRenderAsideCorrectly() {
     let aside = Aside(
-      id: "aside-id",
-      classes: ["aside-class"]
+      config: ElementConfig(
+
+        id: "aside-id",
+        classes: ["aside-class"]
+      )
     ) { "This is an aside" }.render()
     #expect(aside == "<aside id=\"aside-id\" class=\"aside-class\">This is an aside</aside>")
   }
@@ -60,8 +76,11 @@ import Testing
   @Test("Main should render correctly")
   func shouldRenderMainCorrectly() {
     let main = Main(
-      id: "main-id",
-      classes: ["main-class"]
+      config: ElementConfig(
+
+        id: "main-id",
+        classes: ["main-class"]
+      )
     ) { "This is the main content" }.render()
     #expect(main == "<main id=\"main-id\" class=\"main-class\">This is the main content</main>")
   }
@@ -69,8 +88,10 @@ import Testing
   @Test("Footer should render correctly")
   func shouldRenderFooterCorrectly() {
     let footer = Footer(
-      id: "footer-id",
-      classes: ["footer-class"]
+      config: ElementConfig(
+        id: "footer-id",
+        classes: ["footer-class"]
+      )
     ) { "This is a footer" }.render()
     #expect(footer == "<footer id=\"footer-id\" class=\"footer-class\">This is a footer</footer>")
   }

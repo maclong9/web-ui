@@ -29,42 +29,29 @@ public final class Form: Element {
   /// - Parameters:
   ///   - action: URL for form data submission.
   ///   - method: HTTP method for submission, defaults to `.post`.
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - enctype: Encoding type for form data, optional.
   ///   - content: Closure providing form content.
   public init(
     action: String,
     method: FormMethod = .post,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     enctype: EncodingType? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.action = action
     self.method = method
     self.enctype = enctype
-    super.init(tag: "form", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "form", config: config, content: content)
   }
 
-  /// Renders the form as an HTML string.
-  ///
-  /// - Returns: Complete `<form>` tag string with attributes and content.
-  public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
+  /// Provides form-specific attributes.
+  public override func additionalAttributes() -> [String] {
+    [
       attribute("action", action),
       attribute("method", method.rawValue),
       attribute("enctype", enctype?.rawValue),
-      attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
-
-    let contentString = content.map { $0.render() }.joined()
-    return "<\(tag) \(attributes)>\(contentString)</\(tag)>"
   }
 }

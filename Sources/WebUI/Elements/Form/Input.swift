@@ -26,9 +26,7 @@ public class Input: Element {
   ///
   /// - Parameters:
   ///   - tag: HTML tag, defaults to "input".
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - name: Name for form submission.
   ///   - type: Input type, optional.
   ///   - value: Initial value, optional.
@@ -36,9 +34,7 @@ public class Input: Element {
   ///   - autofocus: Focuses on page load if true, optional.
   public init(
     tag: String = "input",
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     name: String,
     type: InputType? = nil,
     value: String? = nil,
@@ -50,16 +46,12 @@ public class Input: Element {
     self.value = value
     self.placeholder = placeholder
     self.autofocus = autofocus
-    super.init(tag: tag, id: id, classes: classes, role: role)
+    super.init(tag: tag, config: config, isSelfClosing: true)
   }
 
-  /// Renders the input as an HTML string.
-  ///
-  /// - Returns: Complete self-closing `<input>` tag string.
-  public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
+  /// Provides input-specific attributes.
+  public override func additionalAttributes() -> [String] {
+    [
       attribute("name", name),
       attribute("type", type?.rawValue),
       attribute("value", value),
@@ -67,7 +59,5 @@ public class Input: Element {
       booleanAttribute("autofocus", autofocus),
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
-    return "<\(tag) \(attributes)>"
   }
 }

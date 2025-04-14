@@ -81,12 +81,15 @@ extension Element {
       newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
     }
 
-    let updatedClasses = (self.classes ?? []) + newClasses
     return Element(
       tag: self.tag,
-      id: self.id,
-      classes: updatedClasses,
-      role: self.role,
+      config: ElementConfig(
+        id: self.config.id,
+        classes: (self.config.classes ?? []) + newClasses,
+        role: self.config.role,
+        label: self.config.label
+      ),
+      isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )
   }

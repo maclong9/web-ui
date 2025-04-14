@@ -14,19 +14,15 @@ public final class List: Element {
   ///
   /// - Parameters:
   ///   - type: List type (ordered or unordered).
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing list items.
   public init(
     type: ListType = .unordered,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.type = type
-    super.init(tag: type.rawValue, id: id, classes: classes, role: role, content: content)
+    super.init(tag: type.rawValue, config: config, content: content)
   }
 }
 
@@ -35,16 +31,12 @@ public final class Item: Element {
   /// Creates a new list item.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing item content.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
-    super.init(tag: "li", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "li", config: config, content: content)
   }
 }
