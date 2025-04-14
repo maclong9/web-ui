@@ -8,36 +8,24 @@ public final class Label: Element {
   ///
   /// - Parameters:
   ///   - tag: HTML tag, defaults to "label".
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - for: ID of the associated input element.
   ///   - content: Closure providing label content, defaults to empty.
   public init(
     tag: String = "label",
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     `for`: String,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.for = `for`
-    super.init(tag: tag, id: id, classes: classes, role: role, content: content)
+    super.init(tag: tag, config: config, content: content)
   }
 
-  /// Renders the label as an HTML string.
-  ///
-  /// - Returns: Complete `<label>` tag string with attributes and content.
-  public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
-      attribute("for", `for`),
+  /// Provides label-specific attributes.
+  public override func additionalAttributes() -> [String] {
+    [
+      attribute("for", `for`)
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
-
-    let contentString = content.map { $0.render() }.joined()
-    return "<\(tag) \(attributes)>\(contentString)</\(tag)>"
   }
 }

@@ -3,21 +3,17 @@ import Foundation
 /// Generates HTML text elements as `<p>` or `<span>` based on content.
 ///
 /// Paragraphs are for long form content with multiple sentences and
-/// a `<span>` tag is used for a single sentences of text and grouping inline content.
+/// a `<span>` tag is used for a single sentence of text and grouping inline content.
 public final class Text: Element {
   /// Creates a new text element.
   ///
   /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing text content.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     let renderedContent = content().map { $0.render() }.joined()
@@ -25,7 +21,7 @@ public final class Text: Element {
       .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
       .count
     let tag = sentenceCount > 1 ? "p" : "span"
-    super.init(tag: tag, id: id, classes: classes, role: role, content: content)
+    super.init(tag: tag, config: config, content: content)
   }
 }
 
@@ -45,7 +41,7 @@ public enum HeadingLevel: String {
   case six = "h6"
 }
 
-/// Generates a HTML heading elements from `<h1>` to `<h6>`.
+/// Generates HTML heading elements from `<h1>` to `<h6>`.
 ///
 /// The level of the heading should descend through the document,
 /// with the main page title being 1 and then section headings being 2.
@@ -54,18 +50,14 @@ public final class Heading: Element {
   ///
   /// - Parameters:
   ///   - level: Heading level (h1 to h6).
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing heading content.
   public init(
     level: HeadingLevel,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
-    super.init(tag: level.rawValue, id: id, classes: classes, role: role, content: content)
+    super.init(tag: level.rawValue, config: config, content: content)
   }
 }
 
@@ -79,40 +71,27 @@ public final class Anchor: Element {
   /// - Parameters:
   ///   - destination: URL or path the link points to.
   ///   - newTab: Opens in a new tab if true, optional.
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing link content.
   public init(
     to destination: String,
     newTab: Bool? = nil,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.href = destination
     self.newTab = newTab
-    super.init(tag: "a", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "a", config: config, content: content)
   }
 
-  /// Renders the anchor as an HTML string.
-  ///
-  /// - Returns: Complete `<a>` tag string with attributes and content.
-  public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
+  /// Provides anchor-specific attributes.
+  public override func additionalAttributes() -> [String] {
+    [
       attribute("href", href),
       attribute("target", newTab == true ? "_blank" : nil),
       attribute("rel", newTab == true ? "noreferrer" : nil),
-      attribute("role", role?.rawValue),
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
-
-    let contentString = content.map { $0.render() }.joined()
-    return "<\(tag) \(attributes)>\(contentString)</\(tag)>"
   }
 }
 
@@ -123,17 +102,13 @@ public final class Emphasis: Element {
   /// Creates a new emphasis element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing emphasized content.
   init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
-    super.init(tag: "em", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "em", config: config, content: content)
   }
 }
 
@@ -144,17 +119,13 @@ public final class Strong: Element {
   /// Creates a new strong element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing strong content.
   init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
-    super.init(tag: "strong", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "strong", config: config, content: content)
   }
 }
 
@@ -170,36 +141,23 @@ public final class Time: Element {
   ///
   /// - Parameters:
   ///   - datetime: Machine-readable date/time in ISO 8601 format (e.g., "2025-03-22" or "2025-03-22T14:30:00Z").
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing human-readable time content.
   public init(
     datetime: String,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.datetime = datetime
-    super.init(tag: "time", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "time", config: config, content: content)
   }
 
-  /// Renders the time element as an HTML string.
-  ///
-  /// - Returns: Complete `<time>` tag string with attributes and content.
-  public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
-      attribute("datetime", datetime),
-      attribute("role", role?.rawValue),
+  /// Provides time-specific attributes.
+  public override func additionalAttributes() -> [String] {
+    [
+      attribute("datetime", datetime)
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
-
-    let contentString = content.map { $0.render() }.joined()
-    return "<\(tag) \(attributes)>\(contentString)</\(tag)>"
   }
 }
 
@@ -207,20 +165,16 @@ public final class Time: Element {
 ///
 /// To be used for rendering code examples on a web page
 public final class Code: Element {
-  /// Creates a new strong element.
+  /// Creates a new code element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
-  ///   - content: Closure providing strong content.
+  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - content: Closure providing code content.
   init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
-    super.init(tag: "code", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "code", config: config, content: content)
   }
 }
 
@@ -228,19 +182,15 @@ public final class Code: Element {
 ///
 /// To be used for rendering preformatted text such as groups of code elements.
 public final class Preformatted: Element {
-  /// Creates a new strong element.
+  /// Creates a new preformatted element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
-  ///   - content: Closure providing strong content.
+  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - content: Closure providing preformatted content.
   init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
-    super.init(tag: "strong", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "pre", config: config, content: content)
   }
 }

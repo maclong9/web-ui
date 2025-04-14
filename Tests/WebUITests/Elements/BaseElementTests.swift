@@ -8,9 +8,11 @@ import Testing
   func shouldRenderCorrectly() {
     let el = Element(
       tag: "div",
-      id: "test-id",
-      classes: ["test-class"],
-      role: .contentinfo
+      config: ElementConfig(
+        id: "test-id",
+        classes: ["test-class"],
+        role: .contentinfo
+      )
     ) { "Hello, world!" }.render()
     #expect(el == "<div id=\"test-id\" class=\"test-class\" role=\"contentinfo\">Hello, world!</div>")
   }
@@ -36,60 +38,16 @@ import Testing
     #expect(focusedButton == "<button type=\"submit\" autofocus>Click me</button>")
   }
 
-  @Test("Images should render correctly with single source")
+  @Test("Images should render correctly")
   func shouldRenderImageCorrectly() {
     let picture = Image(
-      sources: ["hello.png"],
+      source: "hello.png",
       description: "Hello, world!",
       size: ImageSize(width: 100, height: 100)
     ).render()
-    #expect(picture == "<picture><img src=\"hello.png\" alt=\"Hello, world!\" width=\"100\" height=\"100\"></picture>")
+    #expect(picture == "<img src=\"hello.png\" alt=\"Hello, world!\" width=\"100\" height=\"100\">")
   }
 
-  @Test("Images should render correctly with multiple sources")
-  func shouldRenderImageWithMultipleSources() {
-    let picture = Image(
-      sources: ["hello.webp", "hello.png"],
-      description: "Hello, world!"
-    ).render()
-    #expect(picture == "<picture><source src=\"hello.webp\"><img src=\"hello.png\" alt=\"Hello, world!\"></picture>")
-  }
-
-  @Test("Images should render with a figure")
-  func shouldRenderImageWithFigure() {
-    let figure = Figure(
-      id: "hello",
-      sources: ["hello.png"],
-      description: "A simple image"
-    ).render()
-    #expect(figure == "<figure id=\"hello\"><picture><img src=\"hello.png\" alt=\"A simple image\"></picture></figure>")
-  }
-
-  @Test("Image should render with a figure and a caption")
-  func shouldRenderImageWithFigureAndCaption() {
-    let figure = Figure(
-      sources: ["hello.png"],
-      description: "A simple image",
-      caption: "Hello, world!"
-    ).render()
-    #expect(
-      figure
-        == "<figure><picture><img src=\"hello.png\" alt=\"A simple image\"></picture><figcaption>Hello, world!</figcaption></figure>"
-    )
-  }
-
-  @Test("Image should render with a figure and multiple sources")
-  func shouldRenderImageWithFigureAndMultipleSources() {
-    let figure = Figure(
-      sources: ["hello.webp", "hello.png"],
-      description: "A simple image",
-      caption: "Hello, world!"
-    ).render()
-    #expect(
-      figure
-        == "<figure><picture><source src=\"hello.webp\"><img src=\"hello.png\" alt=\"A simple image\"></picture><figcaption>Hello, world!</figcaption></figure>"
-    )
-  }
   @Test("Videos should render correctly with single source")
   func shouldRenderVideoCorrectlyWithSingleSource() {
     let video = Video(
@@ -166,7 +124,7 @@ import Testing
 
   @Test("Links should render correctly")
   func shouldRenderLinksCorrectly() {
-    let link = Link(to: "https://example.com", newTab: true) { "Hello, world!" }.render()
+    let link = Anchor(to: "https://example.com", newTab: true) { "Hello, world!" }.render()
     #expect(link == "<a href=\"https://example.com\" target=\"_blank\" rel=\"noreferrer\">Hello, world!</a>")
   }
 

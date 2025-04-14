@@ -12,9 +12,9 @@ import Testing
           Header {
             Text { "Logo" }
             Navigation {
-              Link(to: "home") { "Home" }
-              Link(to: "about") { "About" }
-              Link(to: "https://example.com", newTab: true) { "Other" }
+              Anchor(to: "home") { "Home" }
+              Anchor(to: "about") { "About" }
+              Anchor(to: "https://example.com", newTab: true) { "Other" }
             }
           }
           Main {
@@ -36,16 +36,17 @@ import Testing
       ]
     )
 
-    try app.build(to: URL(fileURLWithPath: ".build"))
-    #expect(FileManager.default.fileExists(atPath: ".build/index.html"))
-    #expect(FileManager.default.fileExists(atPath: ".build/about.html"))
+    try app.build(to: URL(fileURLWithPath: ".output"))
+    #expect(FileManager.default.fileExists(atPath: ".output/index.html"))
+    #expect(FileManager.default.fileExists(atPath: ".output/about.html"))
+    print(try String(contentsOfFile: ".output/index.html", encoding: .utf8))
     #expect(
       try String(
-        contentsOfFile: ".build/index.html",
+        contentsOfFile: ".output/index.html",
         encoding: .utf8
       ).contains(
         """
-        <header><span>Logo</span><nav><a href="home">Home</a><a href="about">About</a><a href="https://example.com" target="_blank" rel="noreferrer">Other</a></nav></header><main><div><h1>Tagline</h1><span>Lorem ipsum dolor sit amet.</span></div></main><footer><span>Logo</span></footer>
+        <header><span>Logo</span><nav><a href=home>Home</a><a href=about>About</a><a href=https://example.com target=_blank rel=noreferrer>Other</a></nav></header><main><div><h1>Tagline</h1><span>Lorem ipsum dolor sit amet.</span></div></main><footer><span>Logo</span></footer>
         """)
     )
     #expect(

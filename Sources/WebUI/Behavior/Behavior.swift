@@ -12,10 +12,29 @@ public enum Task {
   case toggle
 }
 
-extension Element {
-  /// Creates a `<script>` element for DOM manipulation.
+/// Represents an HTML script element.
+///
+/// Embeds JavaScript code within the page.
+public final class Script: Element {
+  /// Creates a new HTML script element.
   ///
-  /// Appends a JavaScript script to manipulate the DOM either immediately or on an event.
+  /// - Parameters:
+  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - code: JavaScript code to embed.
+  public init(
+    config: ElementConfig = .init(),
+    code: String
+  ) {
+    super.init(tag: "script", config: config, isSelfClosing: false) {
+      code
+    }
+  }
+}
+
+extension Element {
+  /// Creates a new element with an appended `<script>` for DOM manipulation.
+  ///
+  /// Generates JavaScript to manipulate the DOM either immediately or on an event.
   /// - Parameters:
   ///   - task: The DOM manipulation task to perform.
   ///   - select: CSS selector or ID targeting the element, defaults to current element.
@@ -40,7 +59,7 @@ extension Element {
     guard isValidTask(task, className: className, attribute: attribute, value: value) else { return self }
 
     // Determine element IDs
-    let elementId = self.id ?? "gen\(UUID().uuidString.dropFirst(28).replacingOccurrences(of: "-", with: ""))"
+    let elementId = self.config.id ?? "gen\(UUID().uuidString.dropFirst(28).replacingOccurrences(of: "-", with: ""))"
 
     // Determine selectors
     let triggerSelector = (trigger?.prefixedSelector ?? select?.prefixedSelector ?? "#\(elementId)")
@@ -168,7 +187,7 @@ extension Element {
     return ""
   }
 
-  /// Creates a new element with embedded JavaScript.
+  /// Creates a new element with an embedded JavaScript script.
   ///
   /// Constructs an element retaining original content and adding a script.
   /// - Parameters:
@@ -176,10 +195,25 @@ extension Element {
   ///   - elementId: ID for the new element.
   /// - Returns: New element with script included.
   private func makeElement(with jsCode: String, elementId: String) -> Element {
-    Element(tag: self.tag, id: elementId, classes: self.classes, role: self.role) {
-      if let content = self.contentBuilder() { for item in content { item } }
-      "<script>\(jsCode)</script>"
-    }
+    let updatedConfig = ElementConfig(
+      id: elementId,
+      classes: self.config.classes,
+      role: self.config.role,
+      label: self.config.label
+    )
+    return Element(
+      tag: self.tag,
+      config: updatedConfig,
+      isSelfClosing: self.isSelfClosing,
+      content: {
+        if let content = self.contentBuilder() {
+          for item in content {
+            item
+          }
+        }
+        Script(code: jsCode)
+      }
+    )
   }
 }
 

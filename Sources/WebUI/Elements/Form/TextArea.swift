@@ -5,18 +5,14 @@ public final class TextArea: Input {
   /// Creates a new HTML textarea element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - name: Name for form submission.
   ///   - type: Input type, optional.
   ///   - value: Initial value, optional.
   ///   - placeholder: Hint text when empty, optional.
   ///   - autofocus: Focuses on page load if true, optional.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     name: String,
     type: InputType? = nil,
     value: String? = nil,
@@ -25,9 +21,7 @@ public final class TextArea: Input {
   ) {
     super.init(
       tag: "textarea",
-      id: id,
-      classes: classes,
-      role: role,
+      config: config,
       name: name,
       type: type,
       value: value,
@@ -40,17 +34,17 @@ public final class TextArea: Input {
   ///
   /// - Returns: Complete `<textarea>` tag string with attributes and content.
   public override func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
-      attribute("placeholder", placeholder),
-      attribute("name", name),
-      attribute("role", role?.rawValue),
-      booleanAttribute("autofocus", autofocus),
+    let baseAttributes = [
+      attribute("id", config.id),
+      attribute("class", config.classes?.joined(separator: " ")),
+      attribute("role", config.role?.rawValue),
+      attribute("label", config.label),
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
 
-    return "<\(tag) \(attributes)>\(value ?? "")</\(tag)>"
+    let allAttributes = baseAttributes + additionalAttributes()
+    let attributesString = allAttributes.isEmpty ? "" : " \(allAttributes.joined(separator: " "))"
+    let contentString = value ?? ""
+    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
   }
 }

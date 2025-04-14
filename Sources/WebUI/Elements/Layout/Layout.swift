@@ -5,17 +5,13 @@ public final class Header: Element {
   /// Creates a new HTML header element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing header content, defaults to empty.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "header", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "header", config: config, isSelfClosing: false, content: content)
   }
 }
 
@@ -26,17 +22,13 @@ public final class Navigation: Element {
   /// Creates a new HTML navigation element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing navigation content, defaults to empty.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "nav", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "nav", config: config, isSelfClosing: false, content: content)
   }
 }
 
@@ -47,17 +39,13 @@ public final class Aside: Element {
   /// Creates a new HTML aside element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing aside content, defaults to empty.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "aside", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "aside", config: config, isSelfClosing: false, content: content)
   }
 }
 
@@ -68,17 +56,13 @@ public final class Main: Element {
   /// Creates a new HTML main element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing main content, defaults to empty.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "main", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "main", config: config, isSelfClosing: false, content: content)
   }
 }
 
@@ -89,16 +73,12 @@ public final class Footer: Element {
   /// Creates a new HTML footer element.
   ///
   /// - Parameters:
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing footer content, defaults to empty.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "footer", id: id, classes: classes, role: role, content: content)
+    super.init(tag: "footer", config: config, isSelfClosing: false, content: content)
   }
 }

@@ -6,42 +6,54 @@ public enum AriaRole: String, Sendable {
   case contentinfo
 }
 
+/// Configuration for HTML element attributes.
+public struct ElementConfig {
+  var id: String?
+  var classes: [String]?
+  var role: AriaRole?
+  var label: String?
+
+  public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil
+  ) {
+    self.id = id
+    self.classes = classes
+    self.role = role
+    self.label = label
+  }
+}
+
 /// Base class for creating HTML elements.
 public class Element: HTML, @unchecked Sendable {
   let tag: String
-  let id: String?
-  let classes: [String]?
-  let role: AriaRole?
-  let label: String?
+  let config: ElementConfig
   let contentBuilder: @Sendable () -> [any HTML]?
+  let isSelfClosing: Bool
 
   /// Computed inner HTML content.
   var content: [any HTML] {
-    contentBuilder() ?? { [] }()
+    contentBuilder() ?? []
   }
 
   /// Creates a new HTML element.
   ///
   /// - Parameters:
   ///   - tag: HTML tag name.
-  ///   - id: Unique identifier, optional.
-  ///   - classes: Class names for styling, optional.
-  ///   - role: Accessibility role, optional.
-  ///   - label: Accessibility label, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - isSelfClosing: Indicates if the tag is self-closing (e.g., <input>, <img>).
   ///   - content: Closure providing inner HTML, defaults to empty.
   public init(
     tag: String,
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    label: String? = nil,
+    config: ElementConfig = .init(),
+    isSelfClosing: Bool = false,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]? = { [] }
   ) {
     self.tag = tag
-    self.id = id
-    self.classes = classes
-    self.role = role
-    self.label = label
+    self.config = config
+    self.isSelfClosing = isSelfClosing
     self.contentBuilder = content
   }
 
@@ -65,21 +77,41 @@ public class Element: HTML, @unchecked Sendable {
     enabled == true ? name : nil
   }
 
+  /// Provides additional attributes specific to subclasses.
+  ///
+  /// - Returns: Array of attribute strings, or empty if none.
+  open func additionalAttributes() -> [String] {
+    []
+  }
+
+  /// Provides custom content to prepend to the standard content.
+  ///
+  /// - Returns: Optional string to include before contentBuilder output.
+  open func customContent() -> String? {
+    nil
+  }
+
   /// Renders the element as an HTML string.
   ///
   /// - Returns: Complete HTML element string with attributes and content.
   public func render() -> String {
-    let attributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
-      attribute("role", role?.rawValue),
-      attribute("label", label)
+    let baseAttributes = [
+      attribute("id", config.id),
+      attribute("class", config.classes?.joined(separator: " ")),
+      attribute("role", config.role?.rawValue),
+      attribute("label", config.label),
     ]
     .compactMap { $0 }
-    .joined(separator: " ")
 
-    let attributesString = attributes.isEmpty ? "" : " \(attributes)"
+    let allAttributes = baseAttributes + additionalAttributes()
+    let attributesString = allAttributes.isEmpty ? "" : " \(allAttributes.joined(separator: " "))"
+
+    if isSelfClosing {
+      return "<\(tag)\(attributesString)>"
+    }
+
+    let customContentString = customContent() ?? ""
     let contentString = content.map { $0.render() }.joined()
-    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
+    return "<\(tag)\(attributesString)>\(customContentString)\(contentString)</\(tag)>"
   }
 }
