@@ -4,7 +4,7 @@
 public final class Article: Element {
   /// Defines the article as long form text content for styling
   let isProse: Bool
-  
+
   /// Creates a new HTML article element.
   ///
   /// - Parameters:
