@@ -170,7 +170,7 @@ public final class Code: Element {
   /// - Parameters:
   ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing code content.
-  init(
+  public init(
     config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
@@ -187,7 +187,7 @@ public final class Preformatted: Element {
   /// - Parameters:
   ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing preformatted content.
-  init(
+  public init(
     config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
