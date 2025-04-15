@@ -117,8 +117,8 @@ public struct Application {
         let filePath = currentPath.appendingPathComponent("\(fileName).html")
 
         let renderedHTML = route.render()
-        let minifiedHTML = minifyHTML(renderedHTML)
-        let htmlContent = minifiedHTML.data(using: .utf8)
+//        let minifiedHTML = minifyHTML(renderedHTML)
+        let htmlContent = renderedHTML.data(using: .utf8)
 
         guard fileManager.createFile(atPath: filePath.path, contents: htmlContent) else {
           throw BuildError.fileCreationFailed(route.path ?? "unnamed", nil)
