@@ -6,6 +6,9 @@ public struct Document: Sendable {
   /// Metadata configuration for the document’s head section.
   public var metadata: Metadata
 
+  /// Optional raw HTML string to append to the head section.
+  public let head: String?
+
   /// Closure generating the document’s HTML content.
   private let contentBuilder: @Sendable () -> [any HTML]
 
@@ -14,30 +17,33 @@ public struct Document: Sendable {
     contentBuilder()
   }
 
-  /// Creates a new HTML document with metadata and content.
+  /// Creates a new HTML document with metadata, optional head content, and body content.
   ///
   /// - Parameters:
   ///   - path: URL path for navigating to the document. Required for build, not for server side rendering.
   ///   - metadata: Configuration for the head section.
+  ///   - head: Optional raw HTML string to append to the head section (e.g., scripts, styles).
   ///   - content: Closure building the body’s HTML content.
   public init(
     path: String? = nil,
     metadata: Metadata,
+    head: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.path = path
     self.metadata = metadata
+    self.head = head
     self.contentBuilder = content
   }
 
   /// Renders the document as a complete HTML string.
   ///
-  /// Generates HTML with a head section (metadata) and body (content).
+  /// Generates HTML with a head section (metadata and optional head content) and body (content).
   ///
   /// - Returns: Complete HTML document string.
   /// - Complexity: O(n) where n is the number of content elements.
   func render() -> String {
-    let cssFilename = metadata.pageTitle
+    let _cssFilename = metadata.pageTitle
       .split(separator: " \(metadata.titleSeperator)")[0]
       .replacingOccurrences(of: " ", with: "-")
       .lowercased()
@@ -77,6 +83,7 @@ public struct Document: Sendable {
                   --breakpoint-4xl: 160rem;
               }
           </style>
+          \(head ?? "")
       </head>
       """
 
