@@ -42,7 +42,7 @@ public struct Document: Sendable {
   ///
   /// - Returns: Complete HTML document string.
   /// - Complexity: O(n) where n is the number of content elements.
-  func render() -> String {
+  public func render() -> String {
     let _cssFilename = metadata.pageTitle
       .split(separator: " \(metadata.titleSeperator)")[0]
       .replacingOccurrences(of: " ", with: "-")
