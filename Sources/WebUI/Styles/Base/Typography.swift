@@ -83,7 +83,9 @@ extension Element {
   ///   - tracking: The letter spacing.
   ///   - leading: The line height.
   ///   - decoration: The text decoration.
+  ///   - wrapping: The text wrapping.
   ///   - color: The text color.
+  ///   - family: The font family (e.g., "sans", "serif", "mono").
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated font styling classes.
   public func font(
@@ -95,6 +97,7 @@ extension Element {
     decoration: Decoration? = nil,
     wrapping: Wrapping? = nil,
     color: Color? = nil,
+    family: String? = nil,
     on modifiers: Modifier...
   ) -> Element {
     var baseClasses: [String] = []
@@ -106,6 +109,7 @@ extension Element {
     if let decoration = decoration { baseClasses.append(decoration.className) }
     if let wrapping = wrapping { baseClasses.append(wrapping.className) }
     if let color = color { baseClasses.append("text-\(color.rawValue)") }
+    if let family = family { baseClasses.append("font-\(family)") }
 
     let newClasses =
       modifiers.isEmpty
