@@ -109,7 +109,7 @@ extension Element {
     if let decoration = decoration { baseClasses.append(decoration.className) }
     if let wrapping = wrapping { baseClasses.append(wrapping.className) }
     if let color = color { baseClasses.append("text-\(color.rawValue)") }
-    if let family = family { baseClasses.append("font-\(family)") }
+    if let family = family { baseClasses.append("font-[\(family)]") }
 
     let newClasses =
       modifiers.isEmpty
