@@ -6,7 +6,7 @@ No need to worry if you are not an HTML expert, this library contains extensive 
 
 ## Guides
 
-- [Static Site Generation with WebUI](./)
+- [Static Site Generation with WebUI](https://maclong9.github.io/portfolio/articles/introduction-to-webui)
 - [Using WebUI with Hummingbird](./)
 - [Scaling a Hummingbird Application with Cloudflare](./)
 
