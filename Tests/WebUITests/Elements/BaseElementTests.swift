@@ -124,7 +124,7 @@ import Testing
 
   @Test("Links should render correctly")
   func shouldRenderLinksCorrectly() {
-    let link = Anchor(to: "https://example.com", newTab: true) { "Hello, world!" }.render()
+    let link = Link(to: "https://example.com", newTab: true) { "Hello, world!" }.render()
     #expect(link == "<a href=\"https://example.com\" target=\"_blank\" rel=\"noreferrer\">Hello, world!</a>")
   }
 
