@@ -41,6 +41,7 @@ public class Input: Element {
     placeholder: String? = nil,
     autofocus: Bool? = nil,
     required: Bool? = nil,
+    checked: Bool? = nil,
     config: ElementConfig = .init()
   ) {
     self.name = name
