@@ -20,7 +20,7 @@ public final class Form: Element {
     case textPlain = "text/plain"
   }
 
-  let action: String
+  let action: String?
   let method: FormMethod
   let enctype: EncodingType?
 
@@ -33,7 +33,7 @@ public final class Form: Element {
   ///   - enctype: Encoding type for form data, optional.
   ///   - content: Closure providing form content.
   public init(
-    action: String,
+    action: String? = nil,
     method: FormMethod = .post,
     config: ElementConfig = .init(),
     enctype: EncodingType? = nil,
