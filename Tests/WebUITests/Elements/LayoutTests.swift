@@ -132,4 +132,25 @@ import Testing
     #expect(main == "<main>Simple main</main>")
     #expect(footer == "<footer>Simple footer</footer>")
   }
+
+  @Test("Dialog should render correctly")
+  func dialogShouldRenderCorrectly() async throws {
+    let dialogExample = Dialog(
+      config: ElementConfig(id: "my-dialog", classes: ["modal"], label: "Sample Dialog"),
+      trigger: {
+        Text { "Open Dialog" }
+      },
+      content: {
+        Heading(level: .two) { "Dialog Title" }
+        Text {
+          "This is the dialog content. It can include any HTML elements."
+        }
+        Text {
+          "You can add more content here."
+        }
+      }
+    )
+
+    print(dialogExample.render())
+  }
 }
