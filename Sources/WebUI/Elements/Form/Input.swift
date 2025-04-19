@@ -34,7 +34,6 @@ public class Input: Element {
   ///   - placeholder: Hint text when empty, optional.
   ///   - autofocus: Focuses on page load if true, optional.
   public init(
-    tag: String = "input",
     config: ElementConfig = .init(),
     name: String,
     type: InputType? = nil,
@@ -49,7 +48,7 @@ public class Input: Element {
     self.placeholder = placeholder
     self.autofocus = autofocus
     self.required = required
-    super.init(tag: tag, config: config, isSelfClosing: true)
+    super.init(tag: "input", config: config, isSelfClosing: true)
   }
 
   /// Provides input-specific attributes.
