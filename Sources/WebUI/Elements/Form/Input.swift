@@ -21,6 +21,7 @@ public class Input: Element {
   let value: String?
   let placeholder: String?
   let autofocus: Bool?
+  let required: Bool?
 
   /// Creates a new HTML input element.
   ///
@@ -39,13 +40,15 @@ public class Input: Element {
     type: InputType? = nil,
     value: String? = nil,
     placeholder: String? = nil,
-    autofocus: Bool? = nil
+    autofocus: Bool? = nil,
+    required: Bool? = nil
   ) {
     self.name = name
     self.type = type
     self.value = value
     self.placeholder = placeholder
     self.autofocus = autofocus
+    self.required = required
     super.init(tag: tag, config: config, isSelfClosing: true)
   }
 
@@ -57,6 +60,7 @@ public class Input: Element {
       attribute("value", value),
       attribute("placeholder", placeholder),
       booleanAttribute("autofocus", autofocus),
+      booleanAttribute("required", required)
     ]
     .compactMap { $0 }
   }
