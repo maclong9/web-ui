@@ -35,8 +35,8 @@ public final class Form: Element {
   public init(
     action: String? = nil,
     method: FormMethod = .post,
-    config: ElementConfig = .init(),
     enctype: EncodingType? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.action = action

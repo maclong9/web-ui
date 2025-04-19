@@ -34,21 +34,22 @@ public class Input: Element {
   ///   - placeholder: Hint text when empty, optional.
   ///   - autofocus: Focuses on page load if true, optional.
   public init(
-    config: ElementConfig = .init(),
     name: String,
     type: InputType? = nil,
     value: String? = nil,
     placeholder: String? = nil,
     autofocus: Bool? = nil,
-    required: Bool? = nil
+    required: Bool? = nil,
+    config: ElementConfig = .init(),
   ) {
+    let tag = "input"
     self.name = name
     self.type = type
     self.value = value
     self.placeholder = placeholder
     self.autofocus = autofocus
     self.required = required
-    super.init(tag: "input", config: config, isSelfClosing: true)
+    super.init(tag: tag, config: config, isSelfClosing: true)
   }
 
   /// Provides input-specific attributes.
@@ -59,7 +60,7 @@ public class Input: Element {
       attribute("value", value),
       attribute("placeholder", placeholder),
       booleanAttribute("autofocus", autofocus),
-      booleanAttribute("required", required)
+      booleanAttribute("required", required),
     ]
     .compactMap { $0 }
   }

@@ -1,7 +1,14 @@
 /// Generates an HTML textarea element.
 ///
 /// Provides a multi-line text input for long-form content.
-public final class TextArea: Input {
+public final class TextArea: Element {
+  let name: String
+  let type: InputType?
+  let value: String?
+  let placeholder: String?
+  let autofocus: Bool?
+  let required: Bool?
+
   /// Creates a new HTML textarea element.
   ///
   /// - Parameters:
@@ -17,16 +24,19 @@ public final class TextArea: Input {
     type: InputType? = nil,
     value: String? = nil,
     placeholder: String? = nil,
-    autofocus: Bool? = nil
+    autofocus: Bool? = nil,
+    required: Bool? = nil
   ) {
+    self.name = name
+    self.type = type
+    self.value = value
+    self.placeholder = placeholder
+    self.autofocus = autofocus
+    self.required = required
+
     super.init(
       tag: "textarea",
       config: config,
-      name: name,
-      type: type,
-      value: value,
-      placeholder: placeholder,
-      autofocus: autofocus
     )
   }
 

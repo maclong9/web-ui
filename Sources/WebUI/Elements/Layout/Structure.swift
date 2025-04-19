@@ -2,9 +2,6 @@
 ///
 /// Represents a self-contained piece of content like a blog post.
 public final class Article: Element {
-  /// Defines the article as long form text content for styling
-  let isProse: Bool
-
   /// Creates a new HTML article element.
   ///
   /// - Parameters:
@@ -13,19 +10,9 @@ public final class Article: Element {
   ///   - content: Closure providing article content, defaults to empty.
   public init(
     config: ElementConfig = .init(),
-    isProse: Bool = false,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    self.isProse = isProse
-    // Combine existing classes with "prose" if isProse is true
-    let updatedClasses = (config.classes ?? []) + (isProse ? ["prose"] : [])
-    let updatedConfig = ElementConfig(
-      id: config.id,
-      classes: updatedClasses.isEmpty ? nil : updatedClasses,
-      role: config.role,
-      label: config.label
-    )
-    super.init(tag: "article", config: updatedConfig, isSelfClosing: false, content: content)
+    super.init(tag: "article", config: config, isSelfClosing: false, content: content)
   }
 }
 
