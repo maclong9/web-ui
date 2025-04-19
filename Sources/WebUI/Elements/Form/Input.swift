@@ -8,6 +8,8 @@ public enum InputType: String {
   case email
   /// Numeric input field.
   case number
+  /// Checkbox input.
+  case checkbox
   /// Submit button input.
   case submit
 }
