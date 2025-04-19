@@ -18,11 +18,11 @@ public final class Figure: Element {
   ///   - caption: Text for the optional `<figcaption>`, nil if omitted.
   ///   - size: Image size dimensions, optional.
   public init(
-    config: ElementConfig = .init(),
     source: String,
     description: String,
     caption: String? = nil,
-    size: ImageSize? = nil
+    size: ImageSize? = nil,
+    config: ElementConfig = .init(),
   ) {
     self.picture = Image(
       source: source,

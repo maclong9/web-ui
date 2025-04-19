@@ -18,9 +18,9 @@ public final class Button: Element {
   ///   - autofocus: Enables autofocus on load, optional.
   ///   - content: Closure providing button content, defaults to empty.
   public init(
-    config: ElementConfig = .init(),
     type: ButtonType? = nil,
     autofocus: Bool? = nil,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.type = type

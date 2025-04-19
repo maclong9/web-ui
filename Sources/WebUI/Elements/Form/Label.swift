@@ -13,8 +13,8 @@ public final class Label: Element {
   ///   - content: Closure providing label content, defaults to empty.
   public init(
     tag: String = "label",
-    config: ElementConfig = .init(),
     `for`: String,
+    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.for = `for`
