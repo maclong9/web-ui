@@ -14,27 +14,26 @@ public enum InputType: String {
   case submit
 }
 
-/// Generates an HTML input element.
-///
-/// Collects user input like text or numbers.
+/// Generates an HTML input element for collecting user input, such as text or numbers.
 public class Input: Element {
-  let name: String
-  let type: InputType?
-  let value: String?
-  let placeholder: String?
-  let autofocus: Bool?
-  let required: Bool?
+  private let name: String
+  private let type: InputType?
+  private let value: String?
+  private let placeholder: String?
+  private let autofocus: Bool?
+  private let required: Bool?
+  private var checked: Bool?
 
   /// Creates a new HTML input element.
   ///
   /// - Parameters:
-  ///   - tag: HTML tag, defaults to "input".
-  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - name: Name for form submission.
   ///   - type: Input type, optional.
   ///   - value: Initial value, optional.
-  ///   - placeholder: Hint text when empty, optional.
-  ///   - autofocus: Focuses on page load if true, optional.
+  ///   - placeholder: Hint text displayed when the field is empty, optional.
+  ///   - autofocus: Automatically focuses the input on page load if true, optional.
+  ///   - required: Indicates the input is required for form submission, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
   public init(
     name: String,
     type: InputType? = nil,
@@ -42,19 +41,40 @@ public class Input: Element {
     placeholder: String? = nil,
     autofocus: Bool? = nil,
     required: Bool? = nil,
-    config: ElementConfig = .init(),
+    config: ElementConfig = .init()
   ) {
-    let tag = "input"
     self.name = name
     self.type = type
     self.value = value
     self.placeholder = placeholder
     self.autofocus = autofocus
     self.required = required
-    super.init(tag: tag, config: config, isSelfClosing: true)
+    self.checked = nil  // checked is not supported in this initializer
+    super.init(tag: "input", config: config, isSelfClosing: true)
   }
 
-  /// Provides input-specific attributes.
+  /// Creates a checkbox input element.
+  ///
+  /// - Parameters:
+  ///   - name: Name for form submission.
+  ///   - checked: Indicates if the checkbox is checked, optional.
+  ///   - config: Configuration for element attributes, defaults to empty.
+  /// - Returns: An `Input` element with type set to `checkbox`.
+  public static func checkbox(
+    name: String,
+    checked: Bool? = nil,
+    config: ElementConfig = .init()
+  ) -> Input {
+    var input = Input(
+      name: name,
+      type: .checkbox,
+      config: config
+    )
+    input.checked = checked
+    return input
+  }
+
+  /// Provides input-specific attributes for the HTML element.
   public override func additionalAttributes() -> [String] {
     [
       attribute("name", name),
@@ -63,7 +83,7 @@ public class Input: Element {
       attribute("placeholder", placeholder),
       booleanAttribute("autofocus", autofocus),
       booleanAttribute("required", required),
-    ]
-    .compactMap { $0 }
+      booleanAttribute("checked", checked),
+    ].compactMap { $0 }
   }
 }
