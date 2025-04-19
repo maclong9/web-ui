@@ -16,18 +16,29 @@ public enum Task {
 ///
 /// Embeds JavaScript code within the page.
 public final class Script: Element {
+  let src: String?
+
   /// Creates a new HTML script element.
   ///
   /// - Parameters:
   ///   - config: Configuration for element attributes, defaults to empty.
   ///   - code: JavaScript code to embed.
   public init(
-    config: ElementConfig = .init(),
-    code: String
+    src: String? = nil,
+    code: String? = nil,
+    config: ElementConfig = .init()
   ) {
+    self.src = src
+    
     super.init(tag: "script", config: config, isSelfClosing: false) {
-      code
+      code ?? ""
     }
+  }
+
+  public override func additionalAttributes() -> [String] {
+    [
+      attribute("src", src)
+    ].compactMap { $0 }
   }
 }
 
