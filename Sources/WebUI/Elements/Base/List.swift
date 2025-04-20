@@ -19,7 +19,7 @@ public final class List: Element {
   public init(
     type: ListType = .unordered,
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.type = type
     super.init(tag: type.rawValue, config: config, content: content)
@@ -35,7 +35,7 @@ public final class Item: Element {
   ///   - content: Closure providing item content.
   public init(
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "li", config: config, content: content)
   }

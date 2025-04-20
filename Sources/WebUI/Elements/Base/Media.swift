@@ -33,12 +33,6 @@ public final class Figure: Element {
     self.caption = caption
     super.init(tag: "figure", config: config)
   }
-
-  /// Provides custom content for the figure (image and optional caption).
-  public override func customContent() -> String? {
-    let captionString = caption.map { "<figcaption>\($0)</figcaption>" } ?? ""
-    return picture.render() + captionString
-  }
 }
 
 /// Generates an HTML image element.
@@ -124,11 +118,6 @@ public final class Video: Element {
     ]
     .compactMap { $0 }
   }
-
-  /// Provides custom content for source tags.
-  public override func customContent() -> String? {
-    sourceURLs.map { "<source src=\"\($0)\">" }.joined()
-  }
 }
 
 /// Generates an HTML audio element with multiple source tags.
@@ -170,10 +159,5 @@ public final class Audio: Element {
       booleanAttribute("loop", loop),
     ]
     .compactMap { $0 }
-  }
-
-  /// Provides custom content for source tags.
-  public override func customContent() -> String? {
-    sourceURLs.map { "<source src=\"\($0)\">" }.joined()
   }
 }

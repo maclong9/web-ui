@@ -29,7 +29,7 @@ public final class Script: Element {
     config: ElementConfig = .init()
   ) {
     self.src = src
-    
+
     super.init(tag: "script", config: config, isSelfClosing: false) {
       code ?? ""
     }

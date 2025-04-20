@@ -84,13 +84,6 @@ public class Element: HTML, @unchecked Sendable {
     []
   }
 
-  /// Provides custom content to prepend to the standard content.
-  ///
-  /// - Returns: Optional string to include before contentBuilder output.
-  open func customContent() -> String? {
-    nil
-  }
-
   /// Renders the element as an HTML string.
   ///
   /// - Returns: Complete HTML element string with attributes and content.
@@ -110,8 +103,7 @@ public class Element: HTML, @unchecked Sendable {
       return "<\(tag)\(attributesString)>"
     }
 
-    let customContentString = customContent() ?? ""
     let contentString = content.map { $0.render() }.joined()
-    return "<\(tag)\(attributesString)>\(customContentString)\(contentString)</\(tag)>"
+    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
   }
 }

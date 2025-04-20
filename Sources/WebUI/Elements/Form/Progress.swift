@@ -18,7 +18,7 @@ public final class Progress: Element {
   ) {
     self.value = value
     self.max = max
-    super.init(tag: "progress", config: config, isSelfClosing: true)
+    super.init(tag: "progress", config: config)
   }
 
   /// Provides progress-specific attributes.

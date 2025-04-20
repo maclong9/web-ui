@@ -15,7 +15,7 @@ public enum InputType: String {
 }
 
 /// Generates an HTML input element for collecting user input, such as text or numbers.
-public class Input: Element {
+final public class Input: Element {
   private let name: String
   private let type: InputType?
   private let value: String?

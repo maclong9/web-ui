@@ -19,13 +19,13 @@ public final class TextArea: Element {
   ///   - placeholder: Hint text when empty, optional.
   ///   - autofocus: Focuses on page load if true, optional.
   public init(
-    config: ElementConfig = .init(),
     name: String,
     type: InputType? = nil,
     value: String? = nil,
     placeholder: String? = nil,
     autofocus: Bool? = nil,
-    required: Bool? = nil
+    required: Bool? = nil,
+    config: ElementConfig = .init(),
   ) {
     self.name = name
     self.type = type
@@ -40,21 +40,16 @@ public final class TextArea: Element {
     )
   }
 
-  /// Renders the textarea as an HTML string.
-  ///
-  /// - Returns: Complete `<textarea>` tag string with attributes and content.
-  public override func render() -> String {
-    let baseAttributes = [
-      attribute("id", config.id),
-      attribute("class", config.classes?.joined(separator: " ")),
-      attribute("role", config.role?.rawValue),
-      attribute("label", config.label),
+  /// Provides textarea-specific attributes.
+  public override func additionalAttributes() -> [String] {
+    [
+      attribute("name", name),
+      attribute("type", type?.rawValue),
+      attribute("value", value),
+      attribute("placeholder", placeholder),
+      booleanAttribute("autofocus", autofocus),
+      booleanAttribute("required", required),
     ]
     .compactMap { $0 }
-
-    let allAttributes = baseAttributes + additionalAttributes()
-    let attributesString = allAttributes.isEmpty ? "" : " \(allAttributes.joined(separator: " "))"
-    let contentString = value ?? ""
-    return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
   }
 }

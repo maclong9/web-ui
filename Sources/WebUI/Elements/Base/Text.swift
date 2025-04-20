@@ -55,7 +55,7 @@ public final class Heading: Element {
   public init(
     level: HeadingLevel,
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: level.rawValue, config: config, content: content)
   }
@@ -77,7 +77,7 @@ public final class Link: Element {
     to destination: String,
     newTab: Bool? = nil,
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.href = destination
     self.newTab = newTab
@@ -104,9 +104,9 @@ public final class Emphasis: Element {
   /// - Parameters:
   ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing emphasized content.
-  init(
+  public init(
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "em", config: config, content: content)
   }
@@ -121,9 +121,9 @@ public final class Strong: Element {
   /// - Parameters:
   ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing strong content.
-  init(
+  public init(
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "strong", config: config, content: content)
   }
@@ -146,7 +146,7 @@ public final class Time: Element {
   public init(
     datetime: String,
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.datetime = datetime
     super.init(tag: "time", config: config, content: content)
@@ -172,7 +172,7 @@ public final class Code: Element {
   ///   - content: Closure providing code content.
   public init(
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "code", config: config, content: content)
   }
@@ -189,7 +189,7 @@ public final class Preformatted: Element {
   ///   - content: Closure providing preformatted content.
   public init(
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "pre", config: config, content: content)
   }

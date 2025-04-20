@@ -10,19 +10,8 @@ public enum FormMethod: String {
 ///
 /// Represents a container for collecting user input, typically submitted to a server.
 public final class Form: Element {
-  /// Defines encoding types for form data submission.
-  public enum EncodingType: String {
-    /// Default. All characters are encoded before sent (spaces are converted to "+" symbols, and special characters are converted to ASCII HEX values)
-    case applicationXWWWFormUrlencoded = "application/x-www-form-urlencoded"
-    /// This value is necessary if the user will upload a file through the form
-    case multipartFormData = "multipart/form-data"
-    /// Sends data without any encoding at all. Not recommended
-    case textPlain = "text/plain"
-  }
-
   let action: String?
   let method: FormMethod
-  let enctype: EncodingType?
 
   /// Creates a new HTML form element.
   ///
@@ -35,13 +24,11 @@ public final class Form: Element {
   public init(
     action: String? = nil,
     method: FormMethod = .post,
-    enctype: EncodingType? = nil,
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.action = action
     self.method = method
-    self.enctype = enctype
     super.init(tag: "form", config: config, content: content)
   }
 
@@ -50,7 +37,6 @@ public final class Form: Element {
     [
       attribute("action", action),
       attribute("method", method.rawValue),
-      attribute("enctype", enctype?.rawValue),
     ]
     .compactMap { $0 }
   }
