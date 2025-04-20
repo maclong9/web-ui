@@ -8,7 +8,7 @@ public final class Style: Element {
   ///   - config: Configuration for element attributes, defaults to empty.
   public init(
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: "style", config: config, content: content)
   }

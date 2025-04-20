@@ -13,7 +13,7 @@ public final class Fragment: HTML {
   /// Creates a new HTML fragment.
   ///
   /// - Parameter content: Closure providing fragment content, defaults to empty.
-  public init(@HTMLBuilder content: @escaping @Sendable () -> [any HTML]) {
+  public init(@HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }) {
     self.contentBuilder = content
   }
 

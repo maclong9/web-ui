@@ -7,76 +7,9 @@ public struct Application {
     self.routes = routes
   }
 
-  private func minifyHTML(_ html: String) -> String {
-    var minified = html
-
-    // Remove unnecessary whitespace
-    minified = minified.replacingOccurrences(
-      of: "\\s+",
-      with: " ",
-      options: .regularExpression
-    )
-
-    // Remove whitespace between tags
-    minified = minified.replacingOccurrences(
-      of: ">\\s+<",
-      with: "><",
-      options: .regularExpression
-    )
-
-    // Additional minification steps:
-
-    // Remove space after DOCTYPE
-    minified = minified.replacingOccurrences(
-      of: "<!DOCTYPE\\s+html>",
-      with: "<!doctype html>",
-      options: .regularExpression
-    )
-
-    // Remove quotes around attributes with simple values (no spaces or special chars)
-    minified = minified.replacingOccurrences(
-      of: "=\\\"([^\\s>]+)\\\"",
-      with: "=$1",
-      options: .regularExpression
-    )
-
-    // Remove optional closing tags for certain elements
-    minified = minified.replacingOccurrences(
-      of: "</li>",
-      with: "",
-      options: .regularExpression
-    )
-
-    // Minimize attribute spacing
-    minified = minified.replacingOccurrences(
-      of: "\\s+([a-zA-Z:]+)=([\"'])",
-      with: " $1=$2",
-      options: .regularExpression
-    )
-
-    // Remove space between attributes when followed by another attribute
-    minified = minified.replacingOccurrences(
-      of: "(\\w+)=\"([^\"]*)\"\\s+(\\w+=)",
-      with: "$1=\"$2\"$3",
-      options: .regularExpression
-    )
-
-    // Remove space before self-closing tags
-    minified = minified.replacingOccurrences(
-      of: "\\s+/>",
-      with: "/>",
-      options: .regularExpression
-    )
-
-    // Trim leading and trailing whitespace
-    minified = minified.trimmingCharacters(in: .whitespacesAndNewlines)
-
-    return minified
-  }
-
   public func build(
     to directory: URL = URL(fileURLWithPath: ".output"),
-    publicDirectory: String = "Sources/Public"
+    assets: String = "Sources/Public"
   ) throws {
     let fileManager = FileManager.default
 
@@ -117,7 +50,6 @@ public struct Application {
         let filePath = currentPath.appendingPathComponent("\(fileName).html")
 
         let renderedHTML = route.render()
-        //        let minifiedHTML = minifyHTML(renderedHTML)
         let htmlContent = renderedHTML.data(using: .utf8)
 
         guard fileManager.createFile(atPath: filePath.path, contents: htmlContent) else {
@@ -129,7 +61,7 @@ public struct Application {
       }
     }
 
-    let publicSourceURL = URL(fileURLWithPath: publicDirectory)
+    let publicSourceURL = URL(fileURLWithPath: assets)
     let publicDestURL = directory.appendingPathComponent("public")
 
     if fileManager.fileExists(atPath: publicSourceURL.path) {
