@@ -7,18 +7,23 @@ public final class Label: Element {
   /// Creates a new HTML label element.
   ///
   /// - Parameters:
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - tag: HTML tag, defaults to "label".
-  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - for: ID of the associated input element.
   ///   - content: Closure providing label content, defaults to empty.
   public init(
-    tag: String = "label",
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     `for`: String,
-    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.for = `for`
-    super.init(tag: tag, config: config, content: content)
+    super.init(tag: "label", id: id, classes: classes, role: role, label: label, content: content)
   }
 
   /// Provides label-specific attributes.

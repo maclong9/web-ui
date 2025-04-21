@@ -2,6 +2,7 @@
 ///
 /// Groups arbitrary elements together without rendering a parent tag.
 /// Use for rendering components that have no obvious root tag.
+/// Also very usful for wrapping conditionals.
 public final class Fragment: HTML {
   let contentBuilder: @Sendable () -> [any HTML]?
 

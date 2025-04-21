@@ -5,13 +5,19 @@ public final class Header: Element {
   /// Creates a new HTML header element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - content: Closure providing header content, defaults to empty.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "header", config: config, isSelfClosing: false, content: content)
+    super.init(tag: "header", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -22,13 +28,19 @@ public final class Navigation: Element {
   /// Creates a new HTML navigation element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - content: Closure providing navigation content, defaults to empty.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "nav", config: config, isSelfClosing: false, content: content)
+    super.init(tag: "nav", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -39,13 +51,19 @@ public final class Aside: Element {
   /// Creates a new HTML aside element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - content: Closure providing aside content, defaults to empty.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "aside", config: config, isSelfClosing: false, content: content)
+    super.init(tag: "aside", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -56,13 +74,19 @@ public final class Main: Element {
   /// Creates a new HTML main element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - content: Closure providing main content, defaults to empty.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "main", config: config, isSelfClosing: false, content: content)
+    super.init(tag: "main", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -73,12 +97,18 @@ public final class Footer: Element {
   /// Creates a new HTML footer element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - content: Closure providing footer content, defaults to empty.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "footer", config: config, isSelfClosing: false, content: content)
+    super.init(tag: "footer", id: id, classes: classes, role: role, label: label, content: content)
   }
 }

@@ -10,10 +10,17 @@ public final class Text: Element {
   /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - type: Button type, optional.
   ///   - content: Closure providing text content.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     let renderedContent = content().map { $0.render() }.joined()
@@ -21,7 +28,7 @@ public final class Text: Element {
       .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
       .count
     let tag = sentenceCount > 1 ? "p" : "span"
-    super.init(tag: tag, config: config, content: content)
+    super.init(tag: tag, id: id, classes: classes, role: role, label: label)
   }
 }
 
@@ -49,15 +56,21 @@ public final class Heading: Element {
   /// Creates a new heading.
   ///
   /// - Parameters:
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - level: Heading level (h1 to h6).
-  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing heading content.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     level: HeadingLevel,
-    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: level.rawValue, config: config, content: content)
+    super.init(tag: level.rawValue, id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -69,19 +82,26 @@ public final class Link: Element {
   /// Creates a new anchor link.
   ///
   /// - Parameters:
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - level: Heading level (h1 to h6).
   ///   - destination: URL or path the link points to.
   ///   - newTab: Opens in a new tab if true, optional.
-  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing link content.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     to destination: String,
     newTab: Bool? = nil,
-    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.href = destination
     self.newTab = newTab
-    super.init(tag: "a", config: config, content: content)
+    super.init(tag: "a", id: id, classes: classes, role: role, label: label)
   }
 
   /// Provides anchor-specific attributes.
@@ -102,13 +122,20 @@ public final class Emphasis: Element {
   /// Creates a new emphasis element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - level: Heading level (h1 to h6).
   ///   - content: Closure providing emphasized content.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "em", config: config, content: content)
+    super.init(tag: "em", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -119,13 +146,20 @@ public final class Strong: Element {
   /// Creates a new strong element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - level: Heading level (h1 to h6).
   ///   - content: Closure providing strong content.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "strong", config: config, content: content)
+    super.init(tag: "strong", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -140,16 +174,23 @@ public final class Time: Element {
   /// Creates a new time element.
   ///
   /// - Parameters:
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - level: Heading level (h1 to h6).
   ///   - datetime: Machine-readable date/time in ISO 8601 format (e.g., "2025-03-22" or "2025-03-22T14:30:00Z").
-  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing human-readable time content.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     datetime: String,
-    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.datetime = datetime
-    super.init(tag: "time", config: config, content: content)
+    super.init(tag: "time", id: id, classes: classes, role: role, label: label, content: content)
   }
 
   /// Provides time-specific attributes.
@@ -168,13 +209,20 @@ public final class Code: Element {
   /// Creates a new code element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - level: Heading level (h1 to h6).
   ///   - content: Closure providing code content.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "code", config: config, content: content)
+    super.init(tag: "code", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -185,12 +233,18 @@ public final class Preformatted: Element {
   /// Creates a new preformatted element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - content: Closure providing preformatted content.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "pre", config: config, content: content)
+    super.init(tag: "pre", id: id, classes: classes, role: role, label: label, content: content)
   }
 }

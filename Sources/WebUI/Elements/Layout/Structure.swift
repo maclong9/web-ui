@@ -5,14 +5,20 @@ public final class Article: Element {
   /// Creates a new HTML article element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - isProse: Indicates if the article is long-form text, adding a "prose" class if true.
   ///   - content: Closure providing article content, defaults to empty.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "article", config: config, isSelfClosing: false, content: content)
+    super.init(tag: "article", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -23,13 +29,19 @@ public final class Section: Element {
   /// Creates a new HTML section element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - content: Closure providing section content, defaults to empty.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "section", config: config, isSelfClosing: false, content: content)
+    super.init(tag: "section", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -40,12 +52,18 @@ public final class Stack: Element {
   /// Creates a new HTML div element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - content: Closure providing div content, defaults to empty.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "div", config: config, isSelfClosing: false, content: content)
+    super.init(tag: "div", id: id, classes: classes, role: role, label: label, content: content)
   }
 }
