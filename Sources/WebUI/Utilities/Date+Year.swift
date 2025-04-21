@@ -1,8 +1,5 @@
 import Foundation
 
-/// Extends Date with year formatting functionality.
-///
-/// Provides a method to format dates as four-digit years.
 extension Date {
   /// Formats the date as a four-digit year.
   ///

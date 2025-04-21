@@ -17,6 +17,6 @@ public final class Style: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "style", id: id, classes: classes, role: role, label: label)
+    super.init(tag: "style", id: id, classes: classes, role: role, label: label, content: content)
   }
 }

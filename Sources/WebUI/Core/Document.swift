@@ -5,6 +5,12 @@ public struct Document: Sendable {
 
   /// Metadata configuration for the document’s head section.
   public var metadata: Metadata
+  
+  /// Optional array of scripts to append to the head section.
+  public var scripts: [String]?
+  
+  /// Optional array of stylesheets to append to the head section.
+  public var stylesheets: [String]?
 
   /// Optional raw HTML string to append to the head section.
   public let head: String?
@@ -22,16 +28,22 @@ public struct Document: Sendable {
   /// - Parameters:
   ///   - path: URL path for navigating to the document. Required for build, not for server side rendering.
   ///   - metadata: Configuration for the head section.
+  ///   - scripts: Optional array of strings that contain script sources to append to the head section.
+  ///   - stylesheets: Optional array of strings that contain stylesheet sources to append to the head section.
   ///   - head: Optional raw HTML string to append to the head section (e.g., scripts, styles).
   ///   - content: Closure building the body’s HTML content.
   public init(
     path: String? = nil,
     metadata: Metadata,
+    scripts: [String]? = nil,
+    stylesheets: [String]? = nil,
     head: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     self.path = path
     self.metadata = metadata
+    self.scripts = scripts
+    self.stylesheets = stylesheets
     self.head = head
     self.contentBuilder = content
   }
@@ -58,6 +70,16 @@ public struct Document: Sendable {
     }
     if let keywords = metadata.keywords, !keywords.isEmpty {
       optionalMetaTags.append("<meta name=\"keywords\" content=\"\(keywords.joined(separator: ", "))\">")
+    }
+    if let scripts = scripts {
+      for script in scripts {
+        optionalMetaTags.append("<script src=\"\(script)\"></script>")
+      }
+    }
+    if let stylesheets = stylesheets {
+      for stylesheet in stylesheets {
+        optionalMetaTags.append("<link rel=\"stylesheet\" href=\"\(stylesheet)\">")
+      }
     }
 
     let headSection = """
