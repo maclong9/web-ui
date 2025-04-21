@@ -158,6 +158,68 @@ import Testing
     #expect(rendered.contains("class=\"transform scale-x-90 rotate-30 translate-x-5 skew-y-10\""))
   }
 
+  // MARK: - Scroll Tests
+
+  @Test("Scroll with behavior only")
+  func testScrollWithBehaviorOnly() async throws {
+    let element = Element(tag: "div").scroll(behavior: .smooth)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"scroll-smooth\""))
+  }
+
+  @Test("Scroll with margin and specific edges")
+  func testScrollWithMarginAndEdges() async throws {
+    let element = Element(tag: "div").scroll(margin: (value: 4, edges: [.top, .bottom]))
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"scroll-mt-4 scroll-mb-4\""))
+  }
+
+  @Test("Scroll with padding and all edges")
+  func testScrollWithPaddingAndAllEdges() async throws {
+    let element = Element(tag: "div").scroll(padding: (value: 8, edges: []))
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"scroll-p-8\""))
+  }
+
+  @Test("Scroll with snap properties")
+  func testScrollWithSnapProperties() async throws {
+    let element = Element(tag: "div").scroll(
+      snapAlign: .center,
+      snapStop: .always,
+      snapType: .x
+    )
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"snap-center snap-always snap-x\""))
+  }
+
+  @Test("Scroll with modifier")
+  func testScrollWithModifier() async throws {
+    let element = Element(tag: "div").scroll(
+      behavior: .auto,
+      snapType: .mandatory,
+      on: .hover
+    )
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"hover:scroll-auto hover:snap-mandatory\""))
+  }
+
+  @Test("Scroll with multiple properties")
+  func testScrollWithMultipleProperties() async throws {
+    let element = Element(tag: "div").scroll(
+      behavior: .smooth,
+      margin: (value: 2, edges: [.horizontal]),
+      padding: (value: 6, edges: [.vertical]),
+      snapAlign: .start,
+      snapStop: .normal,
+      snapType: .both
+    )
+    let rendered = element.render()
+    #expect(
+      rendered.contains(
+        "class=\"scroll-smooth scroll-mx-2 scroll-py-6 snap-start snap-normal snap-both\""
+      ))
+  }
+
   // MARK: - Complex Positioning Tests
 
   @Test("Combined positioning styles")
