@@ -20,7 +20,7 @@ public final class Text: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping  () -> [any HTML]
   ) {
     let renderedContent = content().map { $0.render() }.joined()
     let sentenceCount = renderedContent.components(
@@ -71,7 +71,7 @@ public final class Heading: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: level.rawValue, id: id, classes: classes, role: role, label: label,
@@ -102,7 +102,7 @@ public final class Link: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     self.href = destination
     self.newTab = newTab
@@ -139,7 +139,7 @@ public final class Emphasis: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "em", id: id, classes: classes, role: role, label: label,
@@ -164,7 +164,7 @@ public final class Strong: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "strong", id: id, classes: classes, role: role, label: label,
@@ -195,7 +195,7 @@ public final class Time: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     self.datetime = datetime
     super.init(
@@ -229,7 +229,7 @@ public final class Code: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "code", id: id, classes: classes, role: role, label: label,
@@ -254,7 +254,7 @@ public final class Preformatted: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "pre", id: id, classes: classes, role: role, label: label,

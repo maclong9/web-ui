@@ -14,7 +14,7 @@ public final class Style: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "style", id: id, classes: classes, role: role, label: label,
