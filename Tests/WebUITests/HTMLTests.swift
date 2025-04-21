@@ -112,7 +112,7 @@ struct HTMLTests {
 
     let nestedArrays: [[any HTML]] = [
       [TestHTML(content: "<p>One</p>")],
-      [TestHTML(content: "<p>Two</p>"), TestHTML(content: "<p>Three</p>")]
+      [TestHTML(content: "<p>Two</p>"), TestHTML(content: "<p>Three</p>")],
     ]
 
     let components = HTMLBuilder.buildArray(nestedArrays)

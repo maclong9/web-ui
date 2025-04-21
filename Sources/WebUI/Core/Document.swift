@@ -38,7 +38,7 @@ public struct Document {
     scripts: [String]? = nil,
     stylesheets: [String]? = nil,
     head: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
+    @HTMLBuilder content: @escaping () -> [any HTML]
   ) {
     self.path = path
     self.metadata = metadata

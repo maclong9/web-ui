@@ -19,7 +19,7 @@ public final class Label: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     self.for = `for`
     super.init(

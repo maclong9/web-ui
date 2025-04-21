@@ -21,7 +21,7 @@ public final class ElementName: Element {
     specificParam2: Type? = nil,
     // Common parameters last
     config: ElementConfig = .init(),
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     // 3. Set element-specific properties
     self.propertyOne = specificParam1

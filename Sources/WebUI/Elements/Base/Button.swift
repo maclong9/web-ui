@@ -1,5 +1,5 @@
 /// Defines types of HTML button elements.
-public enum ButtonType: String, Sendable {
+public enum ButtonType: String {
   case submit, reset
 }
 
@@ -27,7 +27,7 @@ public final class Button: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.type = type
     self.autofocus = autofocus

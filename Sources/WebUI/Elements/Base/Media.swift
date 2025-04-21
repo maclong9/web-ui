@@ -78,7 +78,7 @@ public final class Video: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     self.sourceURLs = sources
     self.controls = controls
@@ -131,7 +131,7 @@ public final class Audio: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     self.sourceURLs = sources
     self.controls = controls

@@ -15,7 +15,7 @@ public final class Header: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "header", id: id, classes: classes, role: role, label: label,
@@ -40,7 +40,7 @@ public final class Navigation: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "nav", id: id, classes: classes, role: role, label: label,
@@ -65,7 +65,7 @@ public final class Aside: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "aside", id: id, classes: classes, role: role, label: label,
@@ -90,7 +90,7 @@ public final class Main: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "main", id: id, classes: classes, role: role, label: label,
@@ -115,7 +115,7 @@ public final class Footer: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "footer", id: id, classes: classes, role: role, label: label,

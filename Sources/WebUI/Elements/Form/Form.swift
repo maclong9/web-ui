@@ -30,7 +30,7 @@ public final class Form: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     self.action = action
     self.method = method

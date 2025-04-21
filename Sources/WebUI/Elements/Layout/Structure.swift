@@ -16,7 +16,7 @@ public final class Article: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "article", id: id, classes: classes, role: role, label: label,
@@ -41,7 +41,7 @@ public final class Section: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "section", id: id, classes: classes, role: role, label: label,
@@ -66,7 +66,7 @@ public final class Stack: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
   ) {
     super.init(
       tag: "div", id: id, classes: classes, role: role, label: label,
