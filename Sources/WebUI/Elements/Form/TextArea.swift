@@ -12,20 +12,26 @@ public final class TextArea: Element {
   /// Creates a new HTML textarea element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - name: Name for form submission.
   ///   - type: Input type, optional.
   ///   - value: Initial value, optional.
   ///   - placeholder: Hint text when empty, optional.
   ///   - autofocus: Focuses on page load if true, optional.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     name: String,
     type: InputType? = nil,
     value: String? = nil,
     placeholder: String? = nil,
     autofocus: Bool? = nil,
     required: Bool? = nil,
-    config: ElementConfig = .init(),
   ) {
     self.name = name
     self.type = type
@@ -34,10 +40,7 @@ public final class TextArea: Element {
     self.autofocus = autofocus
     self.required = required
 
-    super.init(
-      tag: "textarea",
-      config: config,
-    )
+    super.init(tag: "textarea", id: id, classes: classes, role: role, label: label)
   }
 
   /// Provides textarea-specific attributes.

@@ -4,37 +4,6 @@ public struct ImageSize {
   let height: Int?
 }
 
-/// Generates an HTML figure element containing a picture with optional sources and caption.
-public final class Figure: Element {
-  let picture: Image
-  let caption: String?
-
-  /// Creates a new HTML figure element wrapping a picture with multiple sources.
-  ///
-  /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
-  ///   - source: URL or path to the image file.
-  ///   - description: Alt text for accessibility on the fallback image.
-  ///   - caption: Text for the optional `<figcaption>`, nil if omitted.
-  ///   - size: Image size dimensions, optional.
-  public init(
-    source: String,
-    description: String,
-    caption: String? = nil,
-    size: ImageSize? = nil,
-    config: ElementConfig = .init(),
-  ) {
-    self.picture = Image(
-      source: source,
-      description: description,
-      size: size,
-      config: config
-    )
-    self.caption = caption
-    super.init(tag: "figure", config: config)
-  }
-}
-
 /// Generates an HTML image element.
 public final class Image: Element {
   let source: String
@@ -44,20 +13,27 @@ public final class Image: Element {
   /// Creates a new HTML image element.
   ///
   /// - Parameters:
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - type: Button type, optional.
   ///   - source: URL or path to the image file.
   ///   - description: Alt text for accessibility.
   ///   - size: Image size dimensions, optional.
-  ///   - config: Configuration for element attributes, defaults to empty.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     source: String,
     description: String,
     size: ImageSize? = nil,
-    config: ElementConfig = .init()
   ) {
     self.source = source
     self.description = description
     self.size = size
-    super.init(tag: "img", config: config, isSelfClosing: true)
+    super.init(tag: "img", id: id, classes: classes, role: role, label: label)
   }
 
   /// Provides image-specific attributes.
@@ -83,20 +59,27 @@ public final class Video: Element {
   /// Creates a new HTML video element with embedded sources.
   ///
   /// - Parameters:
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - type: Button type, optional.
   ///   - sources: Array of URLs or paths to video files (first valid source is used by browser).
   ///   - controls: Displays playback controls if true, optional.
   ///   - autoplay: Automatically starts playback if true, optional.
   ///   - loop: Repeats video playback if true, optional.
   ///   - size: Video size dimensions, optional.
-  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing fallback content, defaults to empty.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     sources: [String],
     controls: Bool? = nil,
     autoplay: Bool? = nil,
     loop: Bool? = nil,
     size: ImageSize? = nil,
-    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.sourceURLs = sources
@@ -104,7 +87,7 @@ public final class Video: Element {
     self.autoplay = autoplay
     self.loop = loop
     self.size = size
-    super.init(tag: "video", config: config, content: content)
+    super.init(tag: "video", id: id, classes: classes, role: role, label: label, content: content)
   }
 
   /// Provides video-specific attributes.
@@ -130,25 +113,32 @@ public final class Audio: Element {
   /// Creates a new HTML audio element with embedded sources.
   ///
   /// - Parameters:
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - type: Button type, optional.
   ///   - sources: Array of URLs or paths to audio files (first valid source is used by browser).
   ///   - controls: Displays playback controls if true, optional.
   ///   - autoplay: Automatically starts playback if true, optional.
   ///   - loop: Repeats audio playback if true, optional.
-  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing fallback content, defaults to empty.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     sources: [String],
     controls: Bool? = nil,
     autoplay: Bool? = nil,
     loop: Bool? = nil,
-    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.sourceURLs = sources
     self.controls = controls
     self.autoplay = autoplay
     self.loop = loop
-    super.init(tag: "audio", config: config, content: content)
+    super.init(tag: "audio", id: id, classes: classes, role: role, label: label, content: content)
   }
 
   /// Provides audio-specific attributes.

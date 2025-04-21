@@ -89,12 +89,10 @@ extension Element {
 
     return Element(
       tag: self.tag,
-      config: ElementConfig(
-        id: self.config.id,
-        classes: (self.config.classes ?? []) + newClasses,
-        role: self.config.role,
-        label: self.config.label
-      ),
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )
@@ -121,12 +119,10 @@ extension Element {
 
     return Element(
       tag: self.tag,
-      config: ElementConfig(
-        id: self.config.id,
-        classes: (self.config.classes ?? []) + newClasses,
-        role: self.config.role,
-        label: self.config.label
-      ),
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )
@@ -151,12 +147,10 @@ extension Element {
 
     return Element(
       tag: self.tag,
-      config: ElementConfig(
-        id: self.config.id,
-        classes: (self.config.classes ?? []) + newClasses,
-        role: self.config.role,
-        label: self.config.label
-      ),
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )

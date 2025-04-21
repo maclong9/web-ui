@@ -13,16 +13,22 @@ public final class List: Element {
   /// Creates a new HTML list.
   ///
   /// - Parameters:
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - type: List type (ordered or unordered).
-  ///   - config: Configuration for element attributes, defaults to empty.
   ///   - content: Closure providing list items.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     type: ListType = .unordered,
-    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.type = type
-    super.init(tag: type.rawValue, config: config, content: content)
+    super.init(tag: type.rawValue, id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -31,12 +37,19 @@ public final class Item: Element {
   /// Creates a new list item.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - type: Button type, optional.
   ///   - content: Closure providing item content.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "li", config: config, content: content)
+    super.init(tag: "li", id: id, classes: classes, role: role, label: label, content: content)
   }
 }

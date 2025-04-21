@@ -5,11 +5,18 @@ public final class Style: Element {
   /// Creates a new style element.
   ///
   /// - Parameters:
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - type: Button type, optional.
   public init(
-    config: ElementConfig = .init(),
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "style", config: config, content: content)
+    super.init(tag: "style", id: id, classes: classes, role: role, label: label)
   }
 }

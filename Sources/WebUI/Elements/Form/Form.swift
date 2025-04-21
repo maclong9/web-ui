@@ -18,18 +18,24 @@ public final class Form: Element {
   /// - Parameters:
   ///   - action: URL for form data submission.
   ///   - method: HTTP method for submission, defaults to `.post`.
-  ///   - config: Configuration for element attributes, defaults to empty.
-  ///   - enctype: Encoding type for form data, optional.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - type: Button type, optional.
   ///   - content: Closure providing form content.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     action: String? = nil,
     method: FormMethod = .post,
-    config: ElementConfig = .init(),
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.action = action
     self.method = method
-    super.init(tag: "form", config: config, content: content)
+    super.init(tag: "form", id: id, classes: classes, role: role, label: label, content: content)
   }
 
   /// Provides form-specific attributes.

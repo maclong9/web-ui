@@ -43,11 +43,6 @@ public struct Document: Sendable {
   /// - Returns: Complete HTML document string.
   /// - Complexity: O(n) where n is the number of content elements.
   public func render() -> String {
-    let _cssFilename = metadata.pageTitle
-      .split(separator: " \(metadata.titleSeperator)")[0]
-      .replacingOccurrences(of: " ", with: "-")
-      .lowercased()
-
     var optionalMetaTags: [String] = []
     if let image = metadata.image, !image.isEmpty {
       optionalMetaTags.append("<meta property=\"og:image\" content=\"\(image)\">")

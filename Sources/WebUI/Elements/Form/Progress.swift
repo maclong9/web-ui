@@ -8,17 +8,23 @@ public final class Progress: Element {
   /// Creates a new HTML progress element.
   ///
   /// - Parameters:
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   ///   - value: Current progress value, optional.
   ///   - max: Maximum progress value, optional.
-  ///   - config: Configuration for element attributes, defaults to empty.
   public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
     value: Double? = nil,
-    max: Double? = nil,
-    config: ElementConfig = .init()
+    max: Double? = nil
   ) {
     self.value = value
     self.max = max
-    super.init(tag: "progress", config: config)
+    super.init(tag: "progress", id: id, classes: classes, role: role, label: label)
   }
 
   /// Provides progress-specific attributes.
