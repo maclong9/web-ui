@@ -13,20 +13,20 @@ public final class Button: Element {
   /// Creates a new HTML button.
   ///
   /// - Parameters:
+  ///   - type: Button type, optional.
+  ///   - autofocus: Enables autofocus on load, optional.
+  ///   - content: Closure providing button content, defaults to empty.
   ///   - id: Uniquie identifier for the html element.
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - type: Button type, optional.
-  ///   - autofocus: Enables autofocus on load, optional.
-  ///   - content: Closure providing button content, defaults to empty.
   public init(
+    type: ButtonType? = nil,
+    autofocus: Bool? = nil,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    type: ButtonType? = nil,
-    autofocus: Bool? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.type = type

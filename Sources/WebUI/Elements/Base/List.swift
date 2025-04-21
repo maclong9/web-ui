@@ -13,18 +13,18 @@ public final class List: Element {
   /// Creates a new HTML list.
   ///
   /// - Parameters:
+  ///   - type: List type (ordered or unordered).
   ///   - id: Uniquie identifier for the html element.
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - type: List type (ordered or unordered).
   ///   - content: Closure providing list items.
   public init(
+    type: ListType = .unordered,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    type: ListType = .unordered,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.type = type
@@ -41,8 +41,6 @@ public final class Item: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - type: Button type, optional.
-  ///   - content: Closure providing item content.
   public init(
     id: String? = nil,
     classes: [String]? = nil,

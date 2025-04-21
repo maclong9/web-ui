@@ -23,7 +23,7 @@ public final class Header: Element {
 
 /// Generates an HTML navigation element.
 ///
-/// Provides a set of navigational links.
+/// Contains a set of navigational links.
 public final class Navigation: Element {
   /// Creates a new HTML navigation element.
   ///
