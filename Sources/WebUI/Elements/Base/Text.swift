@@ -28,7 +28,7 @@ public final class Text: Element {
       .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
       .count
     let tag = sentenceCount > 1 ? "p" : "span"
-    super.init(tag: tag, id: id, classes: classes, role: role, label: label)
+    super.init(tag: tag, id: id, classes: classes, role: role, label: label, content: content)
   }
 }
 
@@ -101,7 +101,7 @@ public final class Link: Element {
   ) {
     self.href = destination
     self.newTab = newTab
-    super.init(tag: "a", id: id, classes: classes, role: role, label: label)
+    super.init(tag: "a", id: id, classes: classes, role: role, label: label, content: content)
   }
 
   /// Provides anchor-specific attributes.
