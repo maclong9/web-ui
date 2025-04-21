@@ -48,28 +48,20 @@ extension Element {
     on modifiers: Modifier...
   ) -> Element {
     var baseClasses: [String] = []
-    baseClasses.append(property != nil ? "transition-\(property!.rawValue)" : "transition")
+    baseClasses.append(
+      property != nil ? "transition-\(property!.rawValue)" : "transition")
     if let duration = duration { baseClasses.append("duration-\(duration)") }
     if let easing = easing { baseClasses.append("ease-\(easing.rawValue)") }
     if let delay = delay { baseClasses.append("delay-\(delay)") }
 
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      newClasses = baseClasses.flatMap { base in
-        modifiers.map { modifier in
-          "\(modifier.rawValue)\(base)"
-        }
-      }
-    }
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
-        id: self.id,
-        classes: (self.classes ?? []) + newClasses,
-        role: self.role,
-        label: self.label,
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )

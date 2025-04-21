@@ -29,23 +29,14 @@ extension Element {
         } ?? []
     }
 
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      newClasses = baseClasses.flatMap { base in
-        modifiers.map { modifier in
-          "\(modifier.rawValue)\(base)"
-        }
-      }
-    }
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
-        id: self.id,
-        classes: (self.classes ?? []) + newClasses,
-        role: self.role,
-        label: self.label,
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )
@@ -72,23 +63,14 @@ extension Element {
         }
       } ?? []
 
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      newClasses = baseClasses.flatMap { base in
-        modifiers.map { modifier in
-          "\(modifier.rawValue)\(base)"
-        }
-      }
-    }
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
-        id: self.id,
-        classes: (self.classes ?? []) + newClasses,
-        role: self.role,
-        label: self.label,
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )
@@ -118,23 +100,14 @@ extension Element {
         }
       } ?? []
 
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      newClasses = baseClasses.flatMap { base in
-        modifiers.map { modifier in
-          "\(modifier.rawValue)\(base)"
-        }
-      }
-    }
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
-        id: self.id,
-        classes: (self.classes ?? []) + newClasses,
-        role: self.role,
-        label: self.label,
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )

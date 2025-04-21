@@ -85,7 +85,9 @@ public final class Video: Element {
     self.autoplay = autoplay
     self.loop = loop
     self.size = size
-    super.init(tag: "video", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "video", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 
   /// Provides video-specific attributes.
@@ -135,7 +137,9 @@ public final class Audio: Element {
     self.controls = controls
     self.autoplay = autoplay
     self.loop = loop
-    super.init(tag: "audio", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "audio", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 
   /// Provides audio-specific attributes.

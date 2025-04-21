@@ -46,27 +46,20 @@ extension Element {
           case .horizontal: edgePrefix = "inset-x"
           case .vertical: edgePrefix = "inset-y"
         }
-        baseClasses.append("\(length != nil && length! >= 0 ? "" : "-")\(edgePrefix)-\(lengthValue)")
+        baseClasses.append(
+          "\(length != nil && length! >= 0 ? "" : "-")\(edgePrefix)-\(abs(lengthValue))"
+        )
       }
     }
 
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      newClasses = baseClasses.flatMap { base in
-        modifiers.map { modifier in
-          "\(modifier.rawValue)\(base)"
-        }
-      }
-    }
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
-        id: self.id,
-        classes: (self.classes ?? []) + newClasses,
-        role: self.role,
-        label: self.label,
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )

@@ -1,6 +1,7 @@
 /// Defines types of HTML list elements.
 public enum ListType: String {
-  case ordered = "ol", unordered = "ul"
+  case ordered = "ol"
+  case unordered = "ul"
 }
 
 /// Generates HTML list elements.
@@ -28,7 +29,9 @@ public final class List: Element {
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.type = type
-    super.init(tag: type.rawValue, id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: type.rawValue, id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -48,6 +51,8 @@ public final class Item: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "li", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "li", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }

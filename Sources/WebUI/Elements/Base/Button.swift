@@ -31,7 +31,9 @@ public final class Button: Element {
   ) {
     self.type = type
     self.autofocus = autofocus
-    super.init(tag: "button", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "button", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 
   /// Provides button-specific attributes.

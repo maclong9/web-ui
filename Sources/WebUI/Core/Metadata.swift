@@ -7,7 +7,7 @@ public enum ContentType: String, Sendable {
 
 /// Defines supported language locales for a document.
 public enum Locale: String, Sendable {
-  case en, sp, fr, de, ja
+  case en, sp, fr, de, ja, ru
 }
 
 /// Stores metadata configuration for a document’s head section.
@@ -56,6 +56,7 @@ public struct Metadata: Sendable {
     self.titleSeperator = titleSeperator
     self.pageTitle = "\(title)\(site.map { " \(titleSeperator) \($0)" } ?? "")"
     self.description = description
+    self.date = date
     self.image = image
     self.author = author
     self.keywords = keywords

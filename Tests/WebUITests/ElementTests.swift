@@ -186,7 +186,8 @@ func testVideoElement() async throws {
   #expect(rendered.contains("loop"))
   #expect(rendered.contains("width=\"800\""))
   #expect(rendered.contains("height=\"450\""))
-  #expect(rendered.contains(">Your browser does not support video playback.</video>"))
+  #expect(
+    rendered.contains(">Your browser does not support video playback.</video>"))
 }
 
 @Test("Audio element")
@@ -207,7 +208,8 @@ func testAudioElement() async throws {
   #expect(rendered.contains("controls"))
   #expect(!rendered.contains("autoplay"))
   #expect(!rendered.contains("loop"))
-  #expect(rendered.contains(">Your browser does not support audio playback.</audio>"))
+  #expect(
+    rendered.contains(">Your browser does not support audio playback.</audio>"))
 }
 
 // MARK: - Style Tests
@@ -577,16 +579,28 @@ func testComplexForm() async throws {
   }
 
   let rendered = contactForm.render()
-  #expect(rendered.contains("<form id=\"contact\" action=\"/submit\" method=\"post\">"))
+  #expect(
+    rendered.contains(
+      "<form id=\"contact\" action=\"/submit\" method=\"post\">"))
   #expect(rendered.contains("<div class=\"form-group\">"))
   #expect(rendered.contains("<label for=\"name\">Name:</label>"))
-  #expect(rendered.contains("<input id=\"name\" name=\"name\" type=\"text\" required>"))
+  #expect(
+    rendered.contains(
+      "<input id=\"name\" name=\"name\" type=\"text\" required>"))
   #expect(rendered.contains("<label for=\"email\">Email:</label>"))
-  #expect(rendered.contains("<input id=\"email\" name=\"email\" type=\"email\" required>"))
+  #expect(
+    rendered.contains(
+      "<input id=\"email\" name=\"email\" type=\"email\" required>"))
   #expect(rendered.contains("<label for=\"message\">Message:</label>"))
-  #expect(rendered.contains("<textarea id=\"message\" name=\"message\" required></textarea>"))
-  #expect(rendered.contains("<input id=\"subscribe\" name=\"subscribe\" type=\"checkbox\">"))
-  #expect(rendered.contains("<label for=\"subscribe\">Subscribe to newsletter</label>"))
+  #expect(
+    rendered.contains(
+      "<textarea id=\"message\" name=\"message\" required></textarea>"))
+  #expect(
+    rendered.contains(
+      "<input id=\"subscribe\" name=\"subscribe\" type=\"checkbox\">"))
+  #expect(
+    rendered.contains(
+      "<label for=\"subscribe\">Subscribe to newsletter</label>"))
   #expect(rendered.contains("<button type=\"submit\">Send Message</button>"))
   #expect(rendered.contains("</form>"))
 }
@@ -687,5 +701,8 @@ func testDeeplyNestedElements() async throws {
   }
 
   let rendered = nested.render()
-  #expect(rendered.contains("<div><div><div><div><div><span>Deeply nested</span></div></div></div></div></div>"))
+  #expect(
+    rendered.contains(
+      "<div><div><div><div><div><span>Deeply nested</span></div></div></div></div></div>"
+    ))
 }

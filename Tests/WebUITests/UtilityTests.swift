@@ -49,14 +49,14 @@ import Testing
     let alphanumeric = "Test123String"
     #expect(alphanumeric.pathFormatted() == "test123string")
   }
-  
+
   @Test("Formatted year returns correctly")
   func testFormattedYear() throws {
     // Test with given date
-    let date = Date(timeIntervalSince1970: 1677657600)  // Feb 28, 2023
+    let date = Date(timeIntervalSince1970: 1_677_657_600)  // Feb 28, 2023
     let year = date.formattedYear()
     #expect(year == "2023")
-      
+
     // Test with current date
     let currentYear = Date().formattedYear()
     let formatter = DateFormatter()

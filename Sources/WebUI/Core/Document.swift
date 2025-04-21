@@ -5,10 +5,10 @@ public struct Document {
 
   /// Metadata configuration for the document’s head section.
   public var metadata: Metadata
-  
+
   /// Optional array of scripts to append to the head section.
   public var scripts: [String]?
-  
+
   /// Optional array of stylesheets to append to the head section.
   public var stylesheets: [String]?
 
@@ -57,19 +57,24 @@ public struct Document {
   public func render() -> String {
     var optionalMetaTags: [String] = []
     if let image = metadata.image, !image.isEmpty {
-      optionalMetaTags.append("<meta property=\"og:image\" content=\"\(image)\">")
+      optionalMetaTags.append(
+        "<meta property=\"og:image\" content=\"\(image)\">")
     }
     if let author = metadata.author, !author.isEmpty {
       optionalMetaTags.append("<meta name=\"author\" content=\"\(author)\">")
     }
     if let type = metadata.type {
-      optionalMetaTags.append("<meta property=\"og:type\" content=\"\(type.rawValue)\">")
+      optionalMetaTags.append(
+        "<meta property=\"og:type\" content=\"\(type.rawValue)\">")
     }
     if let twitter = metadata.twitter, !twitter.isEmpty {
-      optionalMetaTags.append("<meta name=\"twitter:creator\" content=\"@\(twitter)\">")
+      optionalMetaTags.append(
+        "<meta name=\"twitter:creator\" content=\"@\(twitter)\">")
     }
     if let keywords = metadata.keywords, !keywords.isEmpty {
-      optionalMetaTags.append("<meta name=\"keywords\" content=\"\(keywords.joined(separator: ", "))\">")
+      optionalMetaTags.append(
+        "<meta name=\"keywords\" content=\"\(keywords.joined(separator: ", "))\">"
+      )
     }
     if let scripts = scripts {
       for script in scripts {
@@ -78,7 +83,8 @@ public struct Document {
     }
     if let stylesheets = stylesheets {
       for stylesheet in stylesheets {
-        optionalMetaTags.append("<link rel=\"stylesheet\" href=\"\(stylesheet)\">")
+        optionalMetaTags.append(
+          "<link rel=\"stylesheet\" href=\"\(stylesheet)\">")
       }
     }
 

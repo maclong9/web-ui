@@ -12,22 +12,14 @@ extension Element {
     on modifiers: Modifier...
   ) -> Element {
     let baseClass = "z-\(value)"
-
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = [baseClass]
-    } else {
-      newClasses = modifiers.map { modifier in
-        "\(modifier.rawValue)\(baseClass)"
-      }
-    }
+    let newClasses = combineClasses([baseClass], withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
-        id: self.id,
-        classes: (self.classes ?? []) + newClasses,
-        role: self.role,
-        label: self.label,
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )
