@@ -145,38 +145,74 @@ func testOrderedList() async throws {
 
 // MARK: - Media Tests
 
-@Test("Image element")
-func testImageElement() async throws {
-  let image = Image(
-    source: "/path/to/image.jpg",
+@Test("Picture element with multiple sources")
+func testPictureElement() async throws {
+  let picture = Picture(
+    sources: [
+      (src: "/image.jpg", type: .jpeg),
+      (src: "/image.webp", type: .webp),
+    ],
     description: "Profile picture",
-    size: ImageSize(width: 300, height: 200),
+    size: MediaSize(width: 300, height: 200),
     id: "profile-pic",
-    classes: ["rounded"],
+    classes: ["rounded"]
   )
 
-  let rendered = image.render()
-  #expect(rendered.contains("<img"))
+  let rendered = picture.render()
+  #expect(rendered.contains("<picture"))
   #expect(rendered.contains("id=\"profile-pic\""))
   #expect(rendered.contains("class=\"rounded\""))
-  #expect(rendered.contains("src=\"/path/to/image.jpg\""))
+  #expect(rendered.contains("<source src=\"/image.jpg\" type=\"image/jpeg\">"))
+  #expect(rendered.contains("<source src=\"/image.webp\" type=\"image/webp\">"))
+  #expect(rendered.contains("<img"))
   #expect(rendered.contains("alt=\"Profile picture\""))
   #expect(rendered.contains("width=\"300\""))
   #expect(rendered.contains("height=\"200\""))
+  #expect(rendered.contains("</picture>"))
+}
+
+@Test("Figure element with picture and figcaption")
+func testFigureElement() async throws {
+  let figure = Figure(
+    sources: [
+      (src: "/large.jpg", type: .jpeg),
+      (src: "/small.webp", type: .webp),
+    ],
+    description: "A scenic mountain view",
+    size: MediaSize(width: 800, height: 600),
+    id: "mountain-fig",
+    classes: ["image-figure"]
+  )
+
+  let rendered = figure.render()
+  #expect(rendered.contains("<figure"))
+  #expect(rendered.contains("id=\"mountain-fig\""))
+  #expect(rendered.contains("class=\"image-figure\""))
+  #expect(rendered.contains("<picture"))
+  #expect(rendered.contains("<source src=\"/large.jpg\" type=\"image/jpeg\">"))
+  #expect(rendered.contains("<source src=\"/small.webp\" type=\"image/webp\">"))
+  #expect(rendered.contains("<img"))
+  #expect(rendered.contains("alt=\"A scenic mountain view\""))
+  #expect(rendered.contains("width=\"800\""))
+  #expect(rendered.contains("height=\"600\""))
+  #expect(rendered.contains("</picture>"))
+  #expect(rendered.contains("<figcaption>A scenic mountain view</figcaption>"))
+  #expect(rendered.contains("</figure>"))
 }
 
 @Test("Video element")
 func testVideoElement() async throws {
   let video = Video(
-    sources: ["/video/intro.mp4", "/video/intro.webm"],
+    sources: [
+      (src: "/video/intro.mp4", type: .mp4),
+      (src: "/video/intro.webm", type: .webm),
+    ],
     controls: true,
     autoplay: false,
     loop: true,
-    size: ImageSize(width: 800, height: 450),
-    id: "intro-video",
-  ) {
-    "Your browser does not support video playback."
-  }
+    size: MediaSize(width: 800, height: 450),
+    id: "intro-video"
+  )
 
   let rendered = video.render()
   #expect(rendered.contains("<video"))
@@ -186,21 +222,23 @@ func testVideoElement() async throws {
   #expect(rendered.contains("loop"))
   #expect(rendered.contains("width=\"800\""))
   #expect(rendered.contains("height=\"450\""))
-  #expect(
-    rendered.contains(">Your browser does not support video playback.</video>"))
+  #expect(rendered.contains("<source src=\"/video/intro.mp4\" type=\"video/mp4\">"))
+  #expect(rendered.contains("<source src=\"/video/intro.webm\" type=\"video/webm\">"))
+  #expect(rendered.contains(">Your browser does not support the video tag.</video>"))
 }
 
 @Test("Audio element")
 func testAudioElement() async throws {
   let audio = Audio(
-    sources: ["/audio/podcast.mp3", "/audio/podcast.ogg"],
+    sources: [
+      (src: "/audio/podcast.mp3", type: .mp3),
+      (src: "/audio/podcast.ogg", type: .ogg),
+    ],
     controls: true,
     autoplay: false,
     loop: false,
-    id: "podcast",
-  ) {
-    "Your browser does not support audio playback."
-  }
+    id: "podcast"
+  )
 
   let rendered = audio.render()
   #expect(rendered.contains("<audio"))
@@ -208,8 +246,9 @@ func testAudioElement() async throws {
   #expect(rendered.contains("controls"))
   #expect(!rendered.contains("autoplay"))
   #expect(!rendered.contains("loop"))
-  #expect(
-    rendered.contains(">Your browser does not support audio playback.</audio>"))
+  #expect(rendered.contains("<source src=\"/audio/podcast.mp3\" type=\"audio/mpeg\">"))
+  #expect(rendered.contains("<source src=\"/audio/podcast.ogg\" type=\"audio/ogg\">"))
+  #expect(rendered.contains(">Your browser does not support the audio element.</audio>"))
 }
 
 // MARK: - Style Tests
