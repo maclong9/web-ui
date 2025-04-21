@@ -23,11 +23,15 @@ public final class Text: Element {
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML]
   ) {
     let renderedContent = content().map { $0.render() }.joined()
-    let sentenceCount = renderedContent.components(separatedBy: CharacterSet(charactersIn: ".!?"))
-      .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
-      .count
+    let sentenceCount = renderedContent.components(
+      separatedBy: CharacterSet(charactersIn: ".!?")
+    )
+    .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+    .count
     let tag = sentenceCount > 1 ? "p" : "span"
-    super.init(tag: tag, id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: tag, id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -69,7 +73,9 @@ public final class Heading: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: level.rawValue, id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: level.rawValue, id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -100,7 +106,9 @@ public final class Link: Element {
   ) {
     self.href = destination
     self.newTab = newTab
-    super.init(tag: "a", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "a", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 
   /// Provides anchor-specific attributes.
@@ -133,7 +141,9 @@ public final class Emphasis: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "em", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "em", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -156,7 +166,9 @@ public final class Strong: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "strong", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "strong", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -186,7 +198,9 @@ public final class Time: Element {
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.datetime = datetime
-    super.init(tag: "time", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "time", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 
   /// Provides time-specific attributes.
@@ -217,7 +231,9 @@ public final class Code: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "code", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "code", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -240,6 +256,8 @@ public final class Preformatted: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "pre", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "pre", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }

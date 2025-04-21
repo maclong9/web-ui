@@ -150,14 +150,7 @@ extension Element {
     on modifiers: Modifier...
   ) -> Element {
     let baseClass = "bg-\(color.rawValue)"
-    let newClasses: [String]
-
-    if modifiers.isEmpty {
-      newClasses = [baseClass]
-    } else {
-      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      newClasses = ["\(combinedModifierPrefix)\(baseClass)"]
-    }
+    let newClasses = combineClasses([baseClass], withModifiers: modifiers)
 
     return Element(
       tag: self.tag,

@@ -22,7 +22,9 @@ public final class Label: Element {
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.for = `for`
-    super.init(tag: "label", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "label", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 
   /// Provides label-specific attributes.

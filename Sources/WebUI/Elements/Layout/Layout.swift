@@ -17,7 +17,9 @@ public final class Header: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "header", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "header", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -40,7 +42,9 @@ public final class Navigation: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "nav", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "nav", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -63,7 +67,9 @@ public final class Aside: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "aside", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "aside", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -86,7 +92,9 @@ public final class Main: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "main", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "main", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }
 
@@ -109,6 +117,8 @@ public final class Footer: Element {
     label: String? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "footer", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "footer", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 }

@@ -89,7 +89,8 @@ public class Element: HTML {
     .compactMap { $0 }
 
     let allAttributes = baseAttributes + additionalAttributes()
-    let attributesString = allAttributes.isEmpty ? "" : " \(allAttributes.joined(separator: " "))"
+    let attributesString =
+      allAttributes.isEmpty ? "" : " \(allAttributes.joined(separator: " "))"
 
     if isSelfClosing {
       return "<\(tag)\(attributesString)>"

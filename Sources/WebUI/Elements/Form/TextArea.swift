@@ -41,7 +41,8 @@ public final class TextArea: Element {
     self.autofocus = autofocus
     self.required = required
 
-    super.init(tag: "textarea", id: id, classes: classes, role: role, label: label)
+    super.init(
+      tag: "textarea", id: id, classes: classes, role: role, label: label)
   }
 
   /// Provides textarea-specific attributes.

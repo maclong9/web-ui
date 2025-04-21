@@ -44,7 +44,6 @@ public enum RadiusSize: String {
   case xl3 = "3xl"
   /// Full radius (9999px, circular)
   case full = "full"
-
 }
 
 /// Defines styles for borders and outlines.
@@ -104,7 +103,8 @@ extension Element {
     if let widthValue = width {
       if style == .divide {
         for edge in effectiveEdges {
-          let edgePrefix = edge == .horizontal ? "x" : edge == .vertical ? "y" : ""
+          let edgePrefix =
+            edge == .horizontal ? "x" : edge == .vertical ? "y" : ""
           if !edgePrefix.isEmpty {
             baseClasses.append("divide-\(edgePrefix)-\(widthValue)")
           }
@@ -140,13 +140,7 @@ extension Element {
         })
     }
 
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
-    }
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
@@ -167,16 +161,14 @@ extension Element {
   ) -> Element {
     var baseClasses: [String] = []
     if let widthValue = width { baseClasses.append("outline-\(widthValue)") }
-    if let styleValue = style, style != .divide { baseClasses.append("outline-\(styleValue.rawValue)") }
-    if let colorValue = color?.rawValue { baseClasses.append("outline-\(colorValue)") }
-
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
+    if let styleValue = style, style != .divide {
+      baseClasses.append("outline-\(styleValue.rawValue)")
     }
+    if let colorValue = color?.rawValue {
+      baseClasses.append("outline-\(colorValue)")
+    }
+
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
@@ -195,15 +187,11 @@ extension Element {
     on modifiers: Modifier...
   ) -> Element {
     var baseClasses: [String] = ["shadow-\(size.rawValue)"]
-    if let colorValue = color?.rawValue { baseClasses.append("shadow-\(colorValue)") }
-
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
+    if let colorValue = color?.rawValue {
+      baseClasses.append("shadow-\(colorValue)")
     }
+
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
@@ -222,15 +210,11 @@ extension Element {
     on modifiers: Modifier...
   ) -> Element {
     var baseClasses: [String] = ["ring-\(size)"]
-    if let colorValue = color?.rawValue { baseClasses.append("ring-\(colorValue)") }
-
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
+    if let colorValue = color?.rawValue {
+      baseClasses.append("ring-\(colorValue)")
     }
+
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,

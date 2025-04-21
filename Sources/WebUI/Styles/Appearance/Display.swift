@@ -74,18 +74,14 @@ extension Element {
       baseClasses.append("flex")
     }
 
-    if let directionValue = direction?.rawValue { baseClasses.append(directionValue) }
+    if let directionValue = direction?.rawValue {
+      baseClasses.append(directionValue)
+    }
     if let justifyValue = justify?.rawValue { baseClasses.append(justifyValue) }
     if let alignValue = align?.rawValue { baseClasses.append(alignValue) }
     if let growValue = grow { baseClasses.append("flex-\(growValue.rawValue)") }
 
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
-    }
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
@@ -107,15 +103,11 @@ extension Element {
     var baseClasses: [String] = ["grid"]
     if let justifyValue = justify?.rawValue { baseClasses.append(justifyValue) }
     if let alignValue = align?.rawValue { baseClasses.append(alignValue) }
-    if let columnsValue = columns { baseClasses.append("grid-cols-\(columnsValue)") }
-
-    let newClasses: [String]
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
+    if let columnsValue = columns {
+      baseClasses.append("grid-cols-\(columnsValue)")
     }
+
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
@@ -135,12 +127,7 @@ extension Element {
     let baseClass = "hidden"
     let newClasses: [String]
     if isHidden {
-      if modifiers.isEmpty {
-        newClasses = [baseClass]
-      } else {
-        let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-        newClasses = ["\(combinedModifierPrefix)\(baseClass)"]
-      }
+      newClasses = combineClasses([baseClass], withModifiers: modifiers)
     } else {
       newClasses = []
     }

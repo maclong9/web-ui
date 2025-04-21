@@ -70,3 +70,20 @@ public enum Axis: String {
   /// Applies to both horizontal and vertical axes.
   case both = ""
 }
+
+/// Generates CSS classes with combined modifiers.
+///
+/// Combines a list of base classes with modifiers (e.g., `.hover`, `.xl`) to produce
+/// classes like `hover:xl:class`. If no modifiers are provided, returns the base classes unchanged.
+///
+/// - Parameters:
+///   - baseClasses: The base CSS classes (e.g., `["overflow-x-hidden"]`).
+///   - modifiers: Zero or more modifiers to apply (e.g., `[.hover, .xl]`).
+/// - Returns: An array of CSS classes with modifiers applied (e.g., `["hover:xl:overflow-x-hidden"]`).
+public func combineClasses(_ baseClasses: [String], withModifiers modifiers: [Modifier]) -> [String] {
+  if modifiers.isEmpty {
+    return baseClasses
+  }
+  let modifierPrefix = modifiers.map { $0.rawValue }.joined()
+  return baseClasses.map { "\(modifierPrefix)\($0)" }
+}

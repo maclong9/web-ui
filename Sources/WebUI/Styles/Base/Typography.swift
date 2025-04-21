@@ -111,17 +111,14 @@ extension Element {
     if let color = color { baseClasses.append("text-\(color.rawValue)") }
     if let family = family { baseClasses.append("font-[\(family)]") }
 
-    let newClasses =
-      modifiers.isEmpty
-      ? baseClasses
-      : baseClasses.flatMap { base in modifiers.map { "\($0.rawValue)\(base)" } }
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,
-        id: self.id,
-        classes: (self.classes ?? []) + newClasses,
-        role: self.role,
-        label: self.label,
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
       isSelfClosing: self.isSelfClosing,
       content: self.contentBuilder
     )

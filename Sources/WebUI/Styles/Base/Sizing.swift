@@ -66,20 +66,21 @@ extension Element {
   ) -> Element {
     var baseClasses: [String] = []
     if let width = width { baseClasses.append("w-\(width.rawValue)") }
-    if let minWidth = minWidth { baseClasses.append("min-w-\(minWidth.rawValue)") }
-    if let maxWidth = maxWidth { baseClasses.append("max-w-\(maxWidth.rawValue)") }
-    if let height = height { baseClasses.append("h-\(height.rawValue)") }
-    if let minHeight = minHeight { baseClasses.append("min-h-\(minHeight.rawValue)") }
-    if let maxHeight = maxHeight { baseClasses.append("max-h-\(maxHeight.rawValue)") }
-
-    let newClasses: [String]
-
-    if modifiers.isEmpty {
-      newClasses = baseClasses
-    } else {
-      let combinedModifierPrefix = modifiers.map { $0.rawValue }.joined()
-      newClasses = baseClasses.map { "\(combinedModifierPrefix)\($0)" }
+    if let minWidth = minWidth {
+      baseClasses.append("min-w-\(minWidth.rawValue)")
     }
+    if let maxWidth = maxWidth {
+      baseClasses.append("max-w-\(maxWidth.rawValue)")
+    }
+    if let height = height { baseClasses.append("h-\(height.rawValue)") }
+    if let minHeight = minHeight {
+      baseClasses.append("min-h-\(minHeight.rawValue)")
+    }
+    if let maxHeight = maxHeight {
+      baseClasses.append("max-h-\(maxHeight.rawValue)")
+    }
+
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
       tag: self.tag,

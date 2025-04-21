@@ -34,7 +34,9 @@ public final class Form: Element {
   ) {
     self.action = action
     self.method = method
-    super.init(tag: "form", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(
+      tag: "form", id: id, classes: classes, role: role, label: label,
+      content: content)
   }
 
   /// Provides form-specific attributes.
