@@ -16,21 +16,20 @@ public final class Form: Element {
   /// Creates a new HTML form element.
   ///
   /// - Parameters:
-  ///   - action: URL for form data submission.
+  ///   - action: Optional URL for form data submission.
   ///   - method: HTTP method for submission, defaults to `.post`.
   ///   - id: Uniquie identifier for the html element.
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - type: Button type, optional.
   ///   - content: Closure providing form content.
   public init(
+    action: String? = nil,
+    method: FormMethod = .post,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    action: String? = nil,
-    method: FormMethod = .post,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.action = action

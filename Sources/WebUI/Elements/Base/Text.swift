@@ -14,7 +14,6 @@ public final class Text: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - type: Button type, optional.
   ///   - content: Closure providing text content.
   public init(
     id: String? = nil,
@@ -56,18 +55,18 @@ public final class Heading: Element {
   /// Creates a new heading.
   ///
   /// - Parameters:
+  ///   - level: Heading level (h1 to h6).
   ///   - id: Uniquie identifier for the html element.
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - level: Heading level (h1 to h6).
   ///   - content: Closure providing heading content.
   public init(
+    level: HeadingLevel,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    level: HeadingLevel,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     super.init(tag: level.rawValue, id: id, classes: classes, role: role, label: label, content: content)
@@ -82,21 +81,21 @@ public final class Link: Element {
   /// Creates a new anchor link.
   ///
   /// - Parameters:
+  ///   - destination: URL or path the link points to.
+  ///   - newTab: Opens in a new tab if true, optional.
   ///   - id: Uniquie identifier for the html element.
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
   ///   - level: Heading level (h1 to h6).
-  ///   - destination: URL or path the link points to.
-  ///   - newTab: Opens in a new tab if true, optional.
   ///   - content: Closure providing link content.
   public init(
+    to destination: String,
+    newTab: Bool? = nil,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    to destination: String,
-    newTab: Bool? = nil,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.href = destination
@@ -126,7 +125,6 @@ public final class Emphasis: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - level: Heading level (h1 to h6).
   ///   - content: Closure providing emphasized content.
   public init(
     id: String? = nil,
@@ -150,7 +148,6 @@ public final class Strong: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - level: Heading level (h1 to h6).
   ///   - content: Closure providing strong content.
   public init(
     id: String? = nil,
@@ -174,19 +171,18 @@ public final class Time: Element {
   /// Creates a new time element.
   ///
   /// - Parameters:
+  ///   - datetime: Machine-readable date/time in ISO 8601 format (e.g., "2025-03-22" or "2025-03-22T14:30:00Z").
   ///   - id: Uniquie identifier for the html element.
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - level: Heading level (h1 to h6).
-  ///   - datetime: Machine-readable date/time in ISO 8601 format (e.g., "2025-03-22" or "2025-03-22T14:30:00Z").
   ///   - content: Closure providing human-readable time content.
   public init(
+    datetime: String,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    datetime: String,
     @HTMLBuilder content: @escaping @Sendable () -> [any HTML] = { [] }
   ) {
     self.datetime = datetime
@@ -213,7 +209,6 @@ public final class Code: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - level: Heading level (h1 to h6).
   ///   - content: Closure providing code content.
   public init(
     id: String? = nil,

@@ -9,7 +9,6 @@ public final class Style: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: Arial role of the element for accessibility.
   ///   - label: Aria label to describe the element.
-  ///   - type: Button type, optional.
   public init(
     id: String? = nil,
     classes: [String]? = nil,

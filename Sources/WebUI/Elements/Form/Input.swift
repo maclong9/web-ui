@@ -16,13 +16,13 @@ public enum InputType: String {
 
 /// Generates an HTML input element for collecting user input, such as text or numbers.
 final public class Input: Element {
-  private let name: String
-  private let type: InputType?
-  private let value: String?
-  private let placeholder: String?
-  private let autofocus: Bool?
-  private let required: Bool?
-  private var checked: Bool?
+  let name: String
+  let type: InputType?
+  let value: String?
+  let placeholder: String?
+  let autofocus: Bool?
+  let required: Bool?
+  var checked: Bool?
 
   /// Creates a new HTML input element.
   ///
@@ -33,12 +33,12 @@ final public class Input: Element {
   ///   - placeholder: Hint text displayed when the field is empty, optional.
   ///   - autofocus: Automatically focuses the input on page load if true, optional.
   ///   - required: Indicates the input is required for form submission, optional.
-  ///   - config: Configuration for element attributes, defaults to empty.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
+  ///   - content: Closure providing text content.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    label: String? = nil,
     name: String,
     type: InputType? = nil,
     value: String? = nil,
@@ -46,6 +46,10 @@ final public class Input: Element {
     autofocus: Bool? = nil,
     required: Bool? = nil,
     checked: Bool? = nil,
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
   ) {
     self.name = name
     self.type = type

@@ -12,26 +12,27 @@ public final class TextArea: Element {
   /// Creates a new HTML textarea element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
-  ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
   ///   - name: Name for form submission.
   ///   - type: Input type, optional.
   ///   - value: Initial value, optional.
   ///   - placeholder: Hint text when empty, optional.
   ///   - autofocus: Focuses on page load if true, optional.
+  ///   - required: Indicates the input is required for form submission.
+  ///   - id: Uniquie identifier for the html element.
+  ///   - classes: An array of CSS classnames.
+  ///   - role: Arial role of the element for accessibility.
+  ///   - label: Aria label to describe the element.
   public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    label: String? = nil,
     name: String,
     type: InputType? = nil,
     value: String? = nil,
     placeholder: String? = nil,
     autofocus: Bool? = nil,
     required: Bool? = nil,
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
   ) {
     self.name = name
     self.type = type
