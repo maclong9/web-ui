@@ -31,16 +31,14 @@ public final class Button: Element {
   ) {
     self.type = type
     self.autofocus = autofocus
-    super.init(
-      tag: "button", id: id, classes: classes, role: role, label: label,
-      content: content)
+    super.init(tag: "button", id: id, classes: classes, role: role, label: label, content: content)
   }
 
   /// Provides button-specific attributes.
   public override func additionalAttributes() -> [String] {
     [
       attribute("type", type?.rawValue),
-      booleanAttribute("autofocus", autofocus),
+      booleanAttribute("autofocus", autofocus)
     ]
     .compactMap { $0 }
   }

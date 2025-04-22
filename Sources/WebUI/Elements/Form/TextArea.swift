@@ -32,7 +32,7 @@ public final class TextArea: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    label: String? = nil,
+    label: String? = nil
   ) {
     self.name = name
     self.type = type
@@ -41,8 +41,7 @@ public final class TextArea: Element {
     self.autofocus = autofocus
     self.required = required
 
-    super.init(
-      tag: "textarea", id: id, classes: classes, role: role, label: label)
+    super.init(tag: "textarea", id: id, classes: classes, role: role, label: label)
   }
 
   /// Provides textarea-specific attributes.
@@ -53,7 +52,7 @@ public final class TextArea: Element {
       attribute("value", value),
       attribute("placeholder", placeholder),
       booleanAttribute("autofocus", autofocus),
-      booleanAttribute("required", required),
+      booleanAttribute("required", required)
     ]
     .compactMap { $0 }
   }

@@ -48,7 +48,7 @@ public final class Source: Element {
   public override func additionalAttributes() -> [String] {
     [
       attribute("src", src),
-      attribute("type", type),
+      attribute("type", type)
     ].compactMap { $0 }
   }
 }
@@ -74,7 +74,7 @@ public final class Image: Element {
     [
       attribute("alt", description),
       attribute("width", size?.width.map { String($0) }),
-      attribute("height", size?.height.map { String($0) }),
+      attribute("height", size?.height.map { String($0) })
     ].compactMap { $0 }
   }
 }
@@ -231,7 +231,7 @@ public final class Video: Element {
         booleanAttribute("autoplay", autoplay),
         booleanAttribute("loop", loop),
         attribute("width", size?.width.map { String($0) }),
-        attribute("height", size?.height.map { String($0) }),
+        attribute("height", size?.height.map { String($0) })
       ].compactMap { $0 }
     }
     return []
@@ -291,7 +291,7 @@ public final class Audio: Element {
       return [
         booleanAttribute("controls", controls),
         booleanAttribute("autoplay", autoplay),
-        booleanAttribute("loop", loop),
+        booleanAttribute("loop", loop)
       ].compactMap { $0 }
     }
     return []

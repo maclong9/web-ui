@@ -19,12 +19,10 @@ public final class Label: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.for = `for`
-    super.init(
-      tag: "label", id: id, classes: classes, role: role, label: label,
-      content: content)
+    super.init(tag: "label", id: id, classes: classes, role: role, label: label, content: content)
   }
 
   /// Provides label-specific attributes.

@@ -30,20 +30,18 @@ public final class Form: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
-    @HTMLBuilder content: @escaping  () -> [any HTML] = { [] }
+    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.action = action
     self.method = method
-    super.init(
-      tag: "form", id: id, classes: classes, role: role, label: label,
-      content: content)
+    super.init(tag: "form", id: id, classes: classes, role: role, label: label, content: content)
   }
 
   /// Provides form-specific attributes.
   public override func additionalAttributes() -> [String] {
     [
       attribute("action", action),
-      attribute("method", method.rawValue),
+      attribute("method", method.rawValue)
     ]
     .compactMap { $0 }
   }

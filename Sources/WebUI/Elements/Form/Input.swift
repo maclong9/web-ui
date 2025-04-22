@@ -58,9 +58,7 @@ final public class Input: Element {
     self.autofocus = autofocus
     self.required = required
     self.checked = checked
-    super.init(
-      tag: "input", id: id, classes: classes, role: role, label: label,
-      isSelfClosing: true)
+    super.init(tag: "input", id: id, classes: classes, role: role, label: label, isSelfClosing: true)
   }
 
   /// Provides input-specific attributes for the HTML element.
@@ -72,7 +70,7 @@ final public class Input: Element {
       attribute("placeholder", placeholder),
       booleanAttribute("autofocus", autofocus),
       booleanAttribute("required", required),
-      booleanAttribute("checked", checked),
+      booleanAttribute("checked", checked)
     ].compactMap { $0 }
   }
 }

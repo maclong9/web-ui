@@ -84,7 +84,7 @@ public class Element: HTML {
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
       attribute("role", role?.rawValue),
-      attribute("aria-label", label),
+      attribute("aria-label", label)
     ]
     .compactMap { $0 }
 
