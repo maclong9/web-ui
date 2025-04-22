@@ -16,12 +16,12 @@ public final class Form: Element {
   /// Creates a new HTML form element.
   ///
   /// - Parameters:
-  ///   - action: Optional URL for form data submission.
+  ///   - action: Optional URL for form data submission.
   ///   - method: HTTP method for submission, defaults to `.post`.
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing form content.
   public init(
     action: String? = nil,
@@ -34,15 +34,22 @@ public final class Form: Element {
   ) {
     self.action = action
     self.method = method
-    super.init(tag: "form", id: id, classes: classes, role: role, label: label, content: content)
-  }
-
-  /// Provides form-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("action", action),
-      attribute("method", method.rawValue)
-    ]
-    .compactMap { $0 }
+    var customAttributes: [String] = []
+    if let action = action, !action.isEmpty {
+      customAttributes.append("action=\"\(action)\"")
+    }
+    let methodValue = method.rawValue
+    if !methodValue.isEmpty {
+      customAttributes.append("method=\"\(methodValue)\"")
+    }
+    super.init(
+      tag: "form",
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes,
+      content: content
+    )
   }
 }

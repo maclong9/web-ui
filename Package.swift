@@ -16,6 +16,6 @@ let package = Package(
       name: "WebUI",
       dependencies: [.product(name: "Logging", package: "swift-log")]
     ),
-    .testTarget(name: "WebUITests", dependencies: ["WebUI"])
+    .testTarget(name: "WebUITests", dependencies: ["WebUI"]),
   ]
 )

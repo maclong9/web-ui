@@ -15,10 +15,10 @@ public final class List: Element {
   ///
   /// - Parameters:
   ///   - type: List type (ordered or unordered).
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing list items.
   public init(
     type: ListType = .unordered,
@@ -38,10 +38,10 @@ public final class Item: Element {
   /// Creates a new list item.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   public init(
     id: String? = nil,
     classes: [String]? = nil,

@@ -79,38 +79,40 @@ extension Element {
     // Scroll Margin
     if let (value, edges) = margin {
       let effectiveEdges = edges.isEmpty ? [Edge.all] : edges
-      baseClasses.append(contentsOf: effectiveEdges.map { edge in
-        let edgePrefix: String
-        switch edge {
-        case .all: edgePrefix = ""
-        case .top: edgePrefix = "t"
-        case .bottom: edgePrefix = "b"
-        case .leading: edgePrefix = "s"
-        case .trailing: edgePrefix = "e"
-        case .horizontal: edgePrefix = "x"
-        case .vertical: edgePrefix = "y"
-        }
-        
-        return "scroll-m\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)"
-      })
+      baseClasses.append(
+        contentsOf: effectiveEdges.map { edge in
+          let edgePrefix: String
+          switch edge {
+            case .all: edgePrefix = ""
+            case .top: edgePrefix = "t"
+            case .bottom: edgePrefix = "b"
+            case .leading: edgePrefix = "s"
+            case .trailing: edgePrefix = "e"
+            case .horizontal: edgePrefix = "x"
+            case .vertical: edgePrefix = "y"
+          }
+
+          return "scroll-m\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)"
+        })
     }
 
     // Scroll Padding
     if let (value, edges) = padding {
       let effectiveEdges = edges.isEmpty ? [Edge.all] : edges
-      baseClasses.append(contentsOf: effectiveEdges.map { edge in
-        let edgePrefix: String
-        switch edge {
-        case .all: edgePrefix = ""
-        case .top: edgePrefix = "t"
-        case .bottom: edgePrefix = "b"
-        case .leading: edgePrefix = "s"
-        case .trailing: edgePrefix = "e"
-        case .horizontal: edgePrefix = "x"
-        case .vertical: edgePrefix = "y"
-        }
-        return "scroll-p\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)"
-      })
+      baseClasses.append(
+        contentsOf: effectiveEdges.map { edge in
+          let edgePrefix: String
+          switch edge {
+            case .all: edgePrefix = ""
+            case .top: edgePrefix = "t"
+            case .bottom: edgePrefix = "b"
+            case .leading: edgePrefix = "s"
+            case .trailing: edgePrefix = "e"
+            case .horizontal: edgePrefix = "x"
+            case .vertical: edgePrefix = "y"
+          }
+          return "scroll-p\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)"
+        })
     }
 
     // Scroll Snap Align
@@ -137,6 +139,7 @@ extension Element {
       role: self.role,
       label: self.label,
       isSelfClosing: self.isSelfClosing,
+      customAttributes: self.customAttributes,
       content: self.contentBuilder
     )
   }

@@ -41,15 +41,18 @@ public final class Source: Element {
   public init(src: String, type: String? = nil) {
     self.src = src
     self.type = type
-    super.init(tag: "source", isSelfClosing: true)
-  }
-
-  /// Provides source-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("src", src),
-      attribute("type", type)
-    ].compactMap { $0 }
+    var customAttributes: [String] = []
+    if !src.isEmpty {
+      customAttributes.append("src=\"\(src)\"")
+    }
+    if let typeValue = type, !typeValue.isEmpty {
+      customAttributes.append("type=\"\(typeValue)\"")
+    }
+    super.init(
+      tag: "source",
+      isSelfClosing: true,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes
+    )
   }
 }
 
@@ -66,16 +69,21 @@ public final class Image: Element {
   public init(description: String, size: MediaSize? = nil) {
     self.description = description
     self.size = size
-    super.init(tag: "img", isSelfClosing: true)
-  }
-
-  /// Provides img-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("alt", description),
-      attribute("width", size?.width.map { String($0) }),
-      attribute("height", size?.height.map { String($0) })
-    ].compactMap { $0 }
+    var customAttributes: [String] = []
+    if !description.isEmpty {
+      customAttributes.append("alt=\"\(description)\"")
+    }
+    if let width = size?.width {
+      customAttributes.append("width=\"\(width)\"")
+    }
+    if let height = size?.height {
+      customAttributes.append("height=\"\(height)\"")
+    }
+    super.init(
+      tag: "img",
+      isSelfClosing: true,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes
+    )
   }
 }
 
@@ -208,12 +216,29 @@ public final class Video: Element {
     self.autoplay = autoplay
     self.loop = loop
     self.size = size
+    var customAttributes: [String] = []
+    if controls == true {
+      customAttributes.append("controls")
+    }
+    if autoplay == true {
+      customAttributes.append("autoplay")
+    }
+    if loop == true {
+      customAttributes.append("loop")
+    }
+    if let width = size?.width {
+      customAttributes.append("width=\"\(width)\"")
+    }
+    if let height = size?.height {
+      customAttributes.append("height=\"\(height)\"")
+    }
     super.init(
       tag: "video",
       id: id,
       classes: classes,
       role: role,
       label: label,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes,
       content: {
         for source in sources {
           Source(src: source.src, type: source.type?.rawValue)
@@ -221,20 +246,6 @@ public final class Video: Element {
         "Your browser does not support the video tag."
       }
     )
-  }
-
-  /// Provides video-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    if tag == "video" {
-      return [
-        booleanAttribute("controls", controls),
-        booleanAttribute("autoplay", autoplay),
-        booleanAttribute("loop", loop),
-        attribute("width", size?.width.map { String($0) }),
-        attribute("height", size?.height.map { String($0) })
-      ].compactMap { $0 }
-    }
-    return []
   }
 }
 
@@ -270,12 +281,23 @@ public final class Audio: Element {
     self.controls = controls
     self.autoplay = autoplay
     self.loop = loop
+    var customAttributes: [String] = []
+    if controls == true {
+      customAttributes.append("controls")
+    }
+    if autoplay == true {
+      customAttributes.append("autoplay")
+    }
+    if loop == true {
+      customAttributes.append("loop")
+    }
     super.init(
       tag: "audio",
       id: id,
       classes: classes,
       role: role,
       label: label,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes,
       content: {
         for source in sources {
           Source(src: source.src, type: source.type?.rawValue)
@@ -283,17 +305,5 @@ public final class Audio: Element {
         "Your browser does not support the audio element."
       }
     )
-  }
-
-  /// Provides audio-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    if tag == "audio" {
-      return [
-        booleanAttribute("controls", controls),
-        booleanAttribute("autoplay", autoplay),
-        booleanAttribute("loop", loop)
-      ].compactMap { $0 }
-    }
-    return []
   }
 }

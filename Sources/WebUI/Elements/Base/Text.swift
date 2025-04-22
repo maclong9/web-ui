@@ -10,10 +10,10 @@ public final class Text: Element {
   /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing text content.
   public init(
     id: String? = nil,
@@ -58,10 +58,10 @@ public final class Heading: Element {
   ///
   /// - Parameters:
   ///   - level: Heading level (h1 to h6).
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing heading content.
   public init(
     level: HeadingLevel,
@@ -85,11 +85,10 @@ public final class Link: Element {
   /// - Parameters:
   ///   - destination: URL or path the link points to.
   ///   - newTab: Opens in a new tab if true, optional.
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
-  ///   - level: Heading level (h1 to h6).
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing link content.
   public init(
     to destination: String,
@@ -102,17 +101,23 @@ public final class Link: Element {
   ) {
     self.href = destination
     self.newTab = newTab
-    super.init(tag: "a", id: id, classes: classes, role: role, label: label, content: content)
-  }
-
-  /// Provides anchor-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("href", href),
-      attribute("target", newTab == true ? "_blank" : nil),
-      attribute("rel", newTab == true ? "noreferrer" : nil),
-    ]
-    .compactMap { $0 }
+    var customAttributes: [String] = []
+    if !destination.isEmpty {
+      customAttributes.append("href=\"\(destination)\"")
+    }
+    if newTab == true {
+      customAttributes.append("target=\"_blank\"")
+      customAttributes.append("rel=\"noreferrer\"")
+    }
+    super.init(
+      tag: "a",
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes,
+      content: content
+    )
   }
 }
 
@@ -123,10 +128,10 @@ public final class Emphasis: Element {
   /// Creates a new emphasis element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing emphasized content.
   public init(
     id: String? = nil,
@@ -146,10 +151,10 @@ public final class Strong: Element {
   /// Creates a new strong element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing strong content.
   public init(
     id: String? = nil,
@@ -174,10 +179,10 @@ public final class Time: Element {
   ///
   /// - Parameters:
   ///   - datetime: Machine-readable date/time in ISO 8601 format (e.g., "2025-03-22" or "2025-03-22T14:30:00Z").
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing human-readable time content.
   public init(
     datetime: String,
@@ -188,15 +193,19 @@ public final class Time: Element {
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.datetime = datetime
-    super.init(tag: "time", id: id, classes: classes, role: role, label: label, content: content)
-  }
-
-  /// Provides time-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("datetime", datetime)
-    ]
-    .compactMap { $0 }
+    var customAttributes: [String] = []
+    if !datetime.isEmpty {
+      customAttributes.append("datetime=\"\(datetime)\"")
+    }
+    super.init(
+      tag: "time",
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes,
+      content: content
+    )
   }
 }
 
@@ -207,10 +216,10 @@ public final class Code: Element {
   /// Creates a new code element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing code content.
   public init(
     id: String? = nil,
@@ -230,10 +239,10 @@ public final class Preformatted: Element {
   /// Creates a new preformatted element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing preformatted content.
   public init(
     id: String? = nil,

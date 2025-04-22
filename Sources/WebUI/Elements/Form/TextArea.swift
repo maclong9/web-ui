@@ -18,10 +18,10 @@ public final class TextArea: Element {
   ///   - placeholder: Hint text when empty, optional.
   ///   - autofocus: Focuses on page load if true, optional.
   ///   - required: Indicates the input is required for form submission.
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   public init(
     name: String,
     type: InputType? = nil,
@@ -40,20 +40,32 @@ public final class TextArea: Element {
     self.placeholder = placeholder
     self.autofocus = autofocus
     self.required = required
-
-    super.init(tag: "textarea", id: id, classes: classes, role: role, label: label)
-  }
-
-  /// Provides textarea-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("name", name),
-      attribute("type", type?.rawValue),
-      attribute("value", value),
-      attribute("placeholder", placeholder),
-      booleanAttribute("autofocus", autofocus),
-      booleanAttribute("required", required)
-    ]
-    .compactMap { $0 }
+    var customAttributes: [String] = []
+    if !name.isEmpty {
+      customAttributes.append("name=\"\(name)\"")
+    }
+    if let typeValue = type?.rawValue, !typeValue.isEmpty {
+      customAttributes.append("type=\"\(typeValue)\"")
+    }
+    if let value = value, !value.isEmpty {
+      customAttributes.append("value=\"\(value)\"")
+    }
+    if let placeholder = placeholder, !placeholder.isEmpty {
+      customAttributes.append("placeholder=\"\(placeholder)\"")
+    }
+    if autofocus == true {
+      customAttributes.append("autofocus")
+    }
+    if required == true {
+      customAttributes.append("required")
+    }
+    super.init(
+      tag: "textarea",
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes
+    )
   }
 }

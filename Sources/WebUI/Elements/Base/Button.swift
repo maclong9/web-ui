@@ -16,10 +16,10 @@ public final class Button: Element {
   ///   - type: Button type, optional.
   ///   - autofocus: Enables autofocus on load, optional.
   ///   - content: Closure providing button content, defaults to empty.
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   public init(
     type: ButtonType? = nil,
     autofocus: Bool? = nil,
@@ -31,15 +31,21 @@ public final class Button: Element {
   ) {
     self.type = type
     self.autofocus = autofocus
-    super.init(tag: "button", id: id, classes: classes, role: role, label: label, content: content)
-  }
-
-  /// Provides button-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("type", type?.rawValue),
-      booleanAttribute("autofocus", autofocus)
-    ]
-    .compactMap { $0 }
+    var customAttributes: [String] = []
+    if let typeValue = type?.rawValue, !typeValue.isEmpty {
+      customAttributes.append("type=\"\(typeValue)\"")
+    }
+    if autofocus == true {
+      customAttributes.append("autofocus")
+    }
+    super.init(
+      tag: "button",
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes,
+      content: content
+    )
   }
 }

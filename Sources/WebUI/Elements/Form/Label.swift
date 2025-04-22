@@ -8,10 +8,10 @@ public final class Label: Element {
   ///
   /// - Parameters:
   ///   - for: ID of the associated input element.
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing label content, defaults to empty.
   public init(
     `for`: String,
@@ -22,14 +22,18 @@ public final class Label: Element {
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.for = `for`
-    super.init(tag: "label", id: id, classes: classes, role: role, label: label, content: content)
-  }
-
-  /// Provides label-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("for", `for`)
-    ]
-    .compactMap { $0 }
+    var customAttributes: [String] = []
+    if !`for`.isEmpty {
+      customAttributes.append("for=\"\(`for`)\"")
+    }
+    super.init(
+      tag: "label",
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes,
+      content: content
+    )
   }
 }

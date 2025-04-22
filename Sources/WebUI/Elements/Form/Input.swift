@@ -33,11 +33,10 @@ final public class Input: Element {
   ///   - placeholder: Hint text displayed when the field is empty, optional.
   ///   - autofocus: Automatically focuses the input on page load if true, optional.
   ///   - required: Indicates the input is required for form submission, optional.
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
-  ///   - content: Closure providing text content.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   public init(
     name: String,
     type: InputType? = nil,
@@ -58,19 +57,36 @@ final public class Input: Element {
     self.autofocus = autofocus
     self.required = required
     self.checked = checked
-    super.init(tag: "input", id: id, classes: classes, role: role, label: label, isSelfClosing: true)
-  }
-
-  /// Provides input-specific attributes for the HTML element.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("name", name),
-      attribute("type", type?.rawValue),
-      attribute("value", value),
-      attribute("placeholder", placeholder),
-      booleanAttribute("autofocus", autofocus),
-      booleanAttribute("required", required),
-      booleanAttribute("checked", checked)
-    ].compactMap { $0 }
+    var customAttributes: [String] = []
+    if !name.isEmpty {
+      customAttributes.append("name=\"\(name)\"")
+    }
+    if let typeValue = type?.rawValue, !typeValue.isEmpty {
+      customAttributes.append("type=\"\(typeValue)\"")
+    }
+    if let value = value, !value.isEmpty {
+      customAttributes.append("value=\"\(value)\"")
+    }
+    if let placeholder = placeholder, !placeholder.isEmpty {
+      customAttributes.append("placeholder=\"\(placeholder)\"")
+    }
+    if autofocus == true {
+      customAttributes.append("autofocus")
+    }
+    if required == true {
+      customAttributes.append("required")
+    }
+    if checked == true {
+      customAttributes.append("checked")
+    }
+    super.init(
+      tag: "input",
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      isSelfClosing: true,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes
+    )
   }
 }
