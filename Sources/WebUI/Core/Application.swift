@@ -1,7 +1,11 @@
 import Foundation
+import Logging
 
 /// A structure that manages and builds a collection of routes into HTML files.
 public struct Application {
+  /// The logger instance for the Application
+  private let logger = Logger(label: "com.webui.application")
+
   /// The collection of routes to be built.
   public let routes: [Document]
 
@@ -9,6 +13,7 @@ public struct Application {
   /// - Parameter routes: The routes to be built into HTML files.
   public init(routes: [Document]) {
     self.routes = routes
+    logger.info("Application initialized with \(routes.count) routes")
   }
 
   /// Builds the application by generating HTML files for each route in the specified directory.
@@ -21,15 +26,21 @@ public struct Application {
     to outputDirectory: URL = URL(fileURLWithPath: ".output"),
     assetsPath: String = "Sources/Public"
   ) throws {
+    logger.info("Starting build process to \(outputDirectory.path)")
+    logger.debug("Using assets path: \(assetsPath)")
+
     let fileManager = FileManager.default
 
     // Remove existing output directory if it exists
+    logger.debug("Checking for existing output directory")
     try removeExistingDirectory(at: outputDirectory, using: fileManager)
 
     // Create output directory
+    logger.debug("Creating output directory")
     try createDirectory(at: outputDirectory, using: fileManager)
 
     // Build each route
+    logger.info("Building \(routes.count) routes")
     var failedRoutes: [String] = []
     try buildRoutes(
       routes,
@@ -39,6 +50,7 @@ public struct Application {
     )
 
     // Copy assets
+    logger.info("Copying assets from \(assetsPath) to output")
     try copyAssets(
       from: URL(fileURLWithPath: assetsPath),
       to: outputDirectory.appendingPathComponent("public"),
@@ -47,10 +59,11 @@ public struct Application {
 
     // Throw error if any routes failed
     if !failedRoutes.isEmpty {
+      logger.error("Build completed with \(failedRoutes.count) failed routes")
       throw BuildError.failedRoutes(failedRoutes)
     }
 
-    print("Build completed successfully with minified HTML.")
+    logger.notice("Build completed successfully.")
   }
 
   /// Removes an existing directory if it exists.
@@ -63,11 +76,16 @@ public struct Application {
     using fileManager: FileManager
   ) throws {
     if fileManager.fileExists(atPath: url.path()) {
+      logger.debug("Removing existing directory at \(url.path())")
       do {
         try fileManager.removeItem(at: url)
+        logger.debug("Successfully removed existing directory")
       } catch {
+        logger.error("Failed to remove existing directory: \(error.localizedDescription)")
         throw BuildError.directoryCreationFailed(error)
       }
+    } else {
+      logger.debug("No existing directory found at \(url.path())")
     }
   }
 
@@ -80,12 +98,15 @@ public struct Application {
     at url: URL,
     using fileManager: FileManager
   ) throws {
+    logger.debug("Creating directory at \(url.path())")
     do {
       try fileManager.createDirectory(
         at: url,
         withIntermediateDirectories: true
       )
+      logger.debug("Successfully created directory")
     } catch {
+      logger.error("Failed to create directory: \(error.localizedDescription)")
       throw BuildError.directoryCreationFailed(error)
     }
   }
@@ -103,10 +124,15 @@ public struct Application {
     trackingFailuresIn failedRoutes: inout [String],
     using fileManager: FileManager
   ) throws {
-    for route in routes {
+    for (index, route) in routes.enumerated() {
+      let routePath = route.path ?? "unnamed"
+      logger.debug("Building route [\(index+1)/\(routes.count)]: \(routePath)")
+
       do {
         let pathComponents = route.path?.split(separator: "/") ?? [""]
         let fileName = pathComponents.last.map(String.init) ?? "index"
+
+        logger.trace("Creating path for route with components: \(pathComponents), filename: \(fileName)")
         let filePath = try createPath(
           for: pathComponents,
           in: outputDirectory,
@@ -114,24 +140,36 @@ public struct Application {
           using: fileManager
         )
 
+        logger.debug("Rendering HTML for route: \(routePath)")
         let htmlContent = route.render().data(using: .utf8)
+
+        logger.debug("Creating file at: \(filePath.path)")
         guard
           fileManager.createFile(
             atPath: filePath.path,
             contents: htmlContent
           )
         else {
+          logger.error("Failed to create file for route: \(routePath)")
           throw BuildError.fileCreationFailed(
-            route.path ?? "unnamed",
+            routePath,
             nil
           )
         }
+
+        logger.debug("Successfully built route: \(routePath)")
       } catch {
-        let routePath = route.path ?? "unnamed"
+        logger.error("Failed to build route '\(routePath)': \(error.localizedDescription)")
         failedRoutes.append(routePath)
         print(
           "Failed to build route '\(routePath)': \(error.localizedDescription)")
       }
+    }
+
+    if failedRoutes.isEmpty {
+      logger.info("All routes built successfully")
+    } else {
+      logger.warning("\(failedRoutes.count) routes failed to build")
     }
   }
 
@@ -154,11 +192,14 @@ public struct Application {
     if components.count > 1 {
       for component in components.dropLast() {
         currentPath = currentPath.appendingPathComponent(String(component))
+        logger.trace("Creating directory for path component: \(component)")
         try createDirectory(at: currentPath, using: fileManager)
       }
     }
 
-    return currentPath.appendingPathComponent("\(fileName).html")
+    let finalPath = currentPath.appendingPathComponent("\(fileName).html")
+    logger.trace("Final file path created: \(finalPath.path)")
+    return finalPath
   }
 
   /// Copies assets from the source to the destination directory.
@@ -173,11 +214,17 @@ public struct Application {
     using fileManager: FileManager
   ) throws {
     if fileManager.fileExists(atPath: sourceURL.path) {
+      logger.debug("Assets directory exists at: \(sourceURL.path)")
       do {
+        logger.debug("Copying assets to: \(destinationURL.path)")
         try fileManager.copyItem(at: sourceURL, to: destinationURL)
+        logger.debug("Successfully copied assets")
       } catch {
+        logger.error("Failed to copy assets: \(error.localizedDescription)")
         throw BuildError.publicCopyFailed(error)
       }
+    } else {
+      logger.warning("Assets directory not found at: \(sourceURL.path)")
     }
   }
 

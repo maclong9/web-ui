@@ -8,8 +8,14 @@ let package = Package(
   products: [
     .library(name: "WebUI", targets: ["WebUI"])
   ],
+  dependencies: [
+    .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0")
+  ],
   targets: [
-    .target(name: "WebUI"),
+    .target(
+      name: "WebUI",
+      dependencies: [.product(name: "Logging", package: "swift-log")]
+    ),
     .testTarget(name: "WebUITests", dependencies: ["WebUI"]),
   ]
 )
