@@ -49,7 +49,7 @@ final public class Input: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    label: String? = nil,
+    label: String? = nil
   ) {
     self.name = name
     self.type = type
