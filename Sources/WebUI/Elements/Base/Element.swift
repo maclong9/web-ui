@@ -13,8 +13,9 @@ public class Element: HTML {
   let classes: [String]?
   let role: AriaRole?
   let label: String?
-  let contentBuilder:  () -> [any HTML]?
+  let contentBuilder: () -> [any HTML]?
   let isSelfClosing: Bool
+  let customAttributes: [String]?
 
   /// Computed inner HTML content.
   var content: [any HTML] {
@@ -25,11 +26,12 @@ public class Element: HTML {
   ///
   /// - Parameters:
   ///   - tag: HTML tag name.
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - isSelfClosing: Indicates if the tag is self-closing (e.g., <input>, <img>).
+  ///   - customAttributes: Custom attributes specific to this element.
   ///   - content: Closure providing inner HTML, defaults to empty.
   public init(
     tag: String,
@@ -38,7 +40,8 @@ public class Element: HTML {
     role: AriaRole? = nil,
     label: String? = nil,
     isSelfClosing: Bool = false,
-    @HTMLBuilder content: @escaping  () -> [any HTML]? = { [] }
+    customAttributes: [String]? = nil,
+    @HTMLBuilder content: @escaping () -> [any HTML]? = { [] }
   ) {
     self.tag = tag
     self.id = id
@@ -46,6 +49,7 @@ public class Element: HTML {
     self.role = role
     self.label = label
     self.isSelfClosing = isSelfClosing
+    self.customAttributes = customAttributes
     self.contentBuilder = content
   }
 
@@ -69,13 +73,6 @@ public class Element: HTML {
     enabled == true ? name : nil
   }
 
-  /// Provides additional attributes specific to subclasses.
-  ///
-  /// - Returns: Array of attribute strings, or empty if none.
-  open func additionalAttributes() -> [String] {
-    []
-  }
-
   /// Renders the element as an HTML string.
   ///
   /// - Returns: Complete HTML element string with attributes and content.
@@ -84,11 +81,10 @@ public class Element: HTML {
       attribute("id", id),
       attribute("class", classes?.joined(separator: " ")),
       attribute("role", role?.rawValue),
-      attribute("aria-label", label)
-    ]
-    .compactMap { $0 }
+      attribute("aria-label", label),
+    ].compactMap { $0 }
 
-    let allAttributes = baseAttributes + additionalAttributes()
+    let allAttributes = baseAttributes + (customAttributes ?? [])
     let attributesString =
       allAttributes.isEmpty ? "" : " \(allAttributes.joined(separator: " "))"
 

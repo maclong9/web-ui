@@ -10,10 +10,10 @@ public final class Progress: Element {
   /// - Parameters:
   ///   - value: Current progress value, optional.
   ///   - max: Maximum progress value, optional.
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   public init(
     value: Double? = nil,
     max: Double? = nil,
@@ -24,15 +24,20 @@ public final class Progress: Element {
   ) {
     self.value = value
     self.max = max
-    super.init(tag: "progress", id: id, classes: classes, role: role, label: label)
-  }
-
-  /// Provides progress-specific attributes.
-  public override func additionalAttributes() -> [String] {
-    [
-      attribute("value", value?.description),
-      attribute("max", max?.description),
-    ]
-    .compactMap { $0 }
+    var customAttributes: [String] = []
+    if let value = value {
+      customAttributes.append("value=\"\(value.description)\"")
+    }
+    if let max = max {
+      customAttributes.append("max=\"\(max.description)\"")
+    }
+    super.init(
+      tag: "progress",
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      customAttributes: customAttributes.isEmpty ? nil : customAttributes
+    )
   }
 }

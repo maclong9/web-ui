@@ -5,11 +5,10 @@ public final class Article: Element {
   /// Creates a new HTML article element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
-  ///   - isProse: Indicates if the article is long-form text, adding a "prose" class if true.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing article content, defaults to empty.
   public init(
     id: String? = nil,
@@ -29,10 +28,10 @@ public final class Section: Element {
   /// Creates a new HTML section element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing section content, defaults to empty.
   public init(
     id: String? = nil,
@@ -52,10 +51,10 @@ public final class Stack: Element {
   /// Creates a new HTML div element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing div content, defaults to empty.
   public init(
     id: String? = nil,

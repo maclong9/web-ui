@@ -26,7 +26,7 @@ public struct Document {
 
   /// Computed HTML content from the content builder.
   var content: [any HTML] {
-    return contentBuilder()
+    contentBuilder()
   }
 
   /// Creates a new HTML document with metadata, optional head content, and body content.

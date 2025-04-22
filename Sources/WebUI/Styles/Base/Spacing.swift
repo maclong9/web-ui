@@ -38,6 +38,7 @@ extension Element {
       role: self.role,
       label: self.label,
       isSelfClosing: self.isSelfClosing,
+      customAttributes: self.customAttributes,
       content: self.contentBuilder
     )
   }
@@ -72,6 +73,7 @@ extension Element {
       role: self.role,
       label: self.label,
       isSelfClosing: self.isSelfClosing,
+      customAttributes: self.customAttributes,
       content: self.contentBuilder
     )
   }
@@ -109,6 +111,7 @@ extension Element {
       role: self.role,
       label: self.label,
       isSelfClosing: self.isSelfClosing,
+      customAttributes: self.customAttributes,
       content: self.contentBuilder
     )
   }

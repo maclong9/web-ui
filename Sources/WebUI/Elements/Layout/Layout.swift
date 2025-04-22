@@ -5,10 +5,10 @@ public final class Header: Element {
   /// Creates a new HTML header element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing header content, defaults to empty.
   public init(
     id: String? = nil,
@@ -28,10 +28,10 @@ public final class Navigation: Element {
   /// Creates a new HTML navigation element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing navigation content, defaults to empty.
   public init(
     id: String? = nil,
@@ -51,10 +51,10 @@ public final class Aside: Element {
   /// Creates a new HTML aside element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing aside content, defaults to empty.
   public init(
     id: String? = nil,
@@ -74,10 +74,10 @@ public final class Main: Element {
   /// Creates a new HTML main element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing main content, defaults to empty.
   public init(
     id: String? = nil,
@@ -97,10 +97,10 @@ public final class Footer: Element {
   /// Creates a new HTML footer element.
   ///
   /// - Parameters:
-  ///   - id: Uniquie identifier for the html element.
+  ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
-  ///   - role: Arial role of the element for accessibility.
-  ///   - label: Aria label to describe the element.
+  ///   - role: ARIA role of the element for accessibility.
+  ///   - label: ARIA label to describe the element.
   ///   - content: Closure providing footer content, defaults to empty.
   public init(
     id: String? = nil,
