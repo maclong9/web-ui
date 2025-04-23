@@ -9,13 +9,16 @@ public final class Style: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///   - content: Closure providing style content.
   public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "style", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(tag: "style", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }

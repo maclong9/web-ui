@@ -14,12 +14,14 @@ public final class Text: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing text content.
   public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML]
   ) {
     let renderedContent = content().map { $0.render() }.joined()
@@ -29,7 +31,7 @@ public final class Text: Element {
     .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
     .count
     let tag = sentenceCount > 1 ? "p" : "span"
-    super.init(tag: tag, id: id, classes: classes, role: role, label: label, content: content)
+    super.init(tag: tag, id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -62,6 +64,7 @@ public final class Heading: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing heading content.
   public init(
     level: HeadingLevel,
@@ -69,9 +72,10 @@ public final class Heading: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: level.rawValue, id: id, classes: classes, role: role, label: label, content: content)
+    super.init(tag: level.rawValue, id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -89,6 +93,7 @@ public final class Link: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing link content.
   public init(
     to destination: String,
@@ -97,6 +102,7 @@ public final class Link: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.href = destination
@@ -115,6 +121,7 @@ public final class Link: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes,
       content: content
     )
@@ -132,15 +139,17 @@ public final class Emphasis: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing emphasized content.
   public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "em", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(tag: "em", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -155,15 +164,17 @@ public final class Strong: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing strong content.
   public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "strong", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(tag: "strong", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -183,6 +194,7 @@ public final class Time: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing human-readable time content.
   public init(
     datetime: String,
@@ -190,6 +202,7 @@ public final class Time: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.datetime = datetime
@@ -203,6 +216,7 @@ public final class Time: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes,
       content: content
     )
@@ -220,15 +234,17 @@ public final class Code: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing code content.
   public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "code", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(tag: "code", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -243,14 +259,16 @@ public final class Preformatted: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing preformatted content.
   public init(
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "pre", id: id, classes: classes, role: role, label: label, content: content)
+    super.init(tag: "pre", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }

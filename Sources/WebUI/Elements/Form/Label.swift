@@ -12,6 +12,7 @@ public final class Label: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing label content, defaults to empty.
   public init(
     `for`: String,
@@ -19,6 +20,7 @@ public final class Label: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.for = `for`
@@ -32,6 +34,7 @@ public final class Label: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes,
       content: content
     )
