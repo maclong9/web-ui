@@ -22,6 +22,7 @@ public final class TextArea: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   public init(
     name: String,
     type: InputType? = nil,
@@ -32,7 +33,8 @@ public final class TextArea: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    label: String? = nil
+    label: String? = nil,
+    data: [String: String]? = nil
   ) {
     self.name = name
     self.type = type
@@ -65,6 +67,7 @@ public final class TextArea: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes
     )
   }

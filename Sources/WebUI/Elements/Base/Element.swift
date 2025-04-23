@@ -13,6 +13,7 @@ public class Element: HTML {
   let classes: [String]?
   let role: AriaRole?
   let label: String?
+  let data: [String: String]?
   let contentBuilder: () -> [any HTML]?
   let isSelfClosing: Bool
   let customAttributes: [String]?
@@ -30,6 +31,7 @@ public class Element: HTML {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - isSelfClosing: Indicates if the tag is self-closing (e.g., <input>, <img>).
   ///   - customAttributes: Custom attributes specific to this element.
   ///   - content: Closure providing inner HTML, defaults to empty.
@@ -39,6 +41,7 @@ public class Element: HTML {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     isSelfClosing: Bool = false,
     customAttributes: [String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML]? = { [] }
@@ -48,6 +51,7 @@ public class Element: HTML {
     self.classes = classes
     self.role = role
     self.label = label
+    self.data = data
     self.isSelfClosing = isSelfClosing
     self.customAttributes = customAttributes
     self.contentBuilder = content
@@ -77,16 +81,19 @@ public class Element: HTML {
   ///
   /// - Returns: Complete HTML element string with attributes and content.
   public func render() -> String {
-    let baseAttributes = [
-      attribute("id", id),
-      attribute("class", classes?.joined(separator: " ")),
-      attribute("role", role?.rawValue),
-      attribute("aria-label", label),
-    ].compactMap { $0 }
+    let baseAttributes: [String] =
+      [
+        attribute("id", id),
+        attribute("class", classes?.joined(separator: " ")),
+        attribute("role", role?.rawValue),
+        attribute("aria-label", label),
+      ].compactMap { $0 }
+      + (data?.map { entry in
+        attribute("data-\(entry.key)", entry.value)
+      }.compactMap { $0 } ?? [])
 
     let allAttributes = baseAttributes + (customAttributes ?? [])
-    let attributesString =
-      allAttributes.isEmpty ? "" : " \(allAttributes.joined(separator: " "))"
+    let attributesString = allAttributes.isEmpty ? "" : " \(allAttributes.joined(separator: " "))"
 
     if isSelfClosing {
       return "<\(tag)\(attributesString)>"

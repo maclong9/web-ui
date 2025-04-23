@@ -15,11 +15,12 @@ public final class Button: Element {
   /// - Parameters:
   ///   - type: Button type, optional.
   ///   - autofocus: Enables autofocus on load, optional.
-  ///   - content: Closure providing button content, defaults to empty.
   ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///   - content: Closure providing button content, defaults to empty.
   public init(
     type: ButtonType? = nil,
     autofocus: Bool? = nil,
@@ -27,6 +28,7 @@ public final class Button: Element {
     classes: [String]? = nil,
     role: AriaRole? = nil,
     label: String? = nil,
+    data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.type = type
@@ -44,6 +46,7 @@ public final class Button: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes,
       content: content
     )

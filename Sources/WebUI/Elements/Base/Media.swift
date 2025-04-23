@@ -38,7 +38,12 @@ public final class Source: Element {
   /// - Parameters:
   ///   - src: Source URL.
   ///   - type: MIME type, optional.
-  public init(src: String, type: String? = nil) {
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  public init(
+    src: String,
+    type: String? = nil,
+    data: [String: String]? = nil
+  ) {
     self.src = src
     self.type = type
     var customAttributes: [String] = []
@@ -50,6 +55,7 @@ public final class Source: Element {
     }
     super.init(
       tag: "source",
+      data: data,
       isSelfClosing: true,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes
     )
@@ -66,7 +72,12 @@ public final class Image: Element {
   /// - Parameters:
   ///   - description: Alt text for accessibility.
   ///   - size: Image size dimensions, optional.
-  public init(description: String, size: MediaSize? = nil) {
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  public init(
+    description: String,
+    size: MediaSize? = nil,
+    data: [String: String]? = nil
+  ) {
     self.description = description
     self.size = size
     var customAttributes: [String] = []
@@ -81,6 +92,7 @@ public final class Image: Element {
     }
     super.init(
       tag: "img",
+      data: data,
       isSelfClosing: true,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes
     )
@@ -103,6 +115,7 @@ public final class Picture: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   public init(
     sources: [(src: String, type: ImageType?)],
     description: String,
@@ -110,7 +123,8 @@ public final class Picture: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    label: String? = nil
+    label: String? = nil,
+    data: [String: String]? = nil
   ) {
     self.sources = sources
     self.description = description
@@ -121,6 +135,7 @@ public final class Picture: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       content: {
         for source in sources {
           Source(src: source.src, type: source.type?.rawValue)
@@ -147,6 +162,7 @@ public final class Figure: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   public init(
     sources: [(src: String, type: ImageType?)],
     description: String,
@@ -154,7 +170,8 @@ public final class Figure: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    label: String? = nil
+    label: String? = nil,
+    data: [String: String]? = nil
   ) {
     self.sources = sources
     self.description = description
@@ -165,6 +182,7 @@ public final class Figure: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       content: {
         Picture(
           sources: sources,
@@ -200,6 +218,7 @@ public final class Video: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   public init(
     sources: [(src: String, type: VideoType?)],
     controls: Bool? = nil,
@@ -209,7 +228,8 @@ public final class Video: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    label: String? = nil
+    label: String? = nil,
+    data: [String: String]? = nil
   ) {
     self.sources = sources
     self.controls = controls
@@ -238,6 +258,7 @@ public final class Video: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes,
       content: {
         for source in sources {
@@ -267,6 +288,7 @@ public final class Audio: Element {
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   public init(
     sources: [(src: String, type: AudioType?)],
     controls: Bool? = nil,
@@ -275,7 +297,8 @@ public final class Audio: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    label: String? = nil
+    label: String? = nil,
+    data: [String: String]? = nil
   ) {
     self.sources = sources
     self.controls = controls
@@ -297,6 +320,7 @@ public final class Audio: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes,
       content: {
         for source in sources {

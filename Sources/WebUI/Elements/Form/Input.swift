@@ -33,10 +33,12 @@ final public class Input: Element {
   ///   - placeholder: Hint text displayed when the field is empty, optional.
   ///   - autofocus: Automatically focuses the input on page load if true, optional.
   ///   - required: Indicates the input is required for form submission, optional.
+  ///   - checked: Indicates if the checkbox is checked, optional.
   ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
+  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   public init(
     name: String,
     type: InputType? = nil,
@@ -48,7 +50,9 @@ final public class Input: Element {
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,
-    label: String? = nil
+    label: String? = nil,
+    data: [String: String]? = nil,
+    on: String? = nil,
   ) {
     self.name = name
     self.type = type
@@ -85,6 +89,7 @@ final public class Input: Element {
       classes: classes,
       role: role,
       label: label,
+      data: data,
       isSelfClosing: true,
       customAttributes: customAttributes.isEmpty ? nil : customAttributes
     )
