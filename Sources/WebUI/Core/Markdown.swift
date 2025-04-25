@@ -8,13 +8,7 @@ import Markdown
 public struct MarkdownParser {
   /// A structure representing a parsed Markdown document, containing front matter and HTML content.
   public struct ParsedMarkdown {
-    /// A dictionary containing the parsed front matter key-value pairs.
-    ///
-    /// The keys are typically strings, and the values can be strings, dates, or other types depending
-    /// on the parsing logic.
     public let frontMatter: [String: Any]
-
-    /// The HTML content generated from the Markdown body.
     public let htmlContent: String
 
     /// Initializes a `ParsedMarkdown` instance with front matter and HTML content.
@@ -36,7 +30,6 @@ public struct MarkdownParser {
   /// - Parameter content: The raw Markdown string to parse.
   /// - Returns: A `ParsedMarkdown` instance containing the parsed front matter and HTML content.
   public static func parseMarkdown(_ content: String) -> ParsedMarkdown {
-    // Extract front matter and markdown content
     let (frontMatter, markdownContent) = extractFrontMatter(from: content)
 
     // Parse the markdown content to HTML
@@ -171,9 +164,12 @@ public struct HtmlRenderer: MarkupWalker {
   ///
   /// - Parameter link: The link node to process.
   public mutating func visitLink(_ link: Markdown.Link) {
-    html += "<a href=\"\(link.destination ?? "")\">"
-    descendInto(link)
-    html += "</a>"
+      let destination = link.destination ?? ""
+      let isExternal = destination.hasPrefix("http://") || destination.hasPrefix("https://")
+      let targetAttr = isExternal ? " target=\"_blank\" rel=\"noopener noreferrer\"" : ""
+      html += "<a href=\"\(destination)\"\(targetAttr)>"
+      descendInto(link)
+      html += "</a>"
   }
 
   /// Visits an emphasis node and generates corresponding HTML.
