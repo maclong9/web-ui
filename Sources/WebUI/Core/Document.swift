@@ -115,8 +115,8 @@ public struct Document {
                   --breakpoint-xs: 30rem;
                   --breakpoint-3xl: 120rem;
                   --breakpoint-4xl: 160rem;
+                  \(theme?.generateCSS() ?? "")
               }
-              \(theme?.generateCSS() ?? "")
           </style>
           \(head ?? "")
       </head>
