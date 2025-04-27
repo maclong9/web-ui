@@ -1,3 +1,5 @@
+import Logging
+
 public struct ThemeConfig {
   let fonts: [String: String]
   let colors: [String: String]
@@ -60,110 +62,141 @@ public struct ThemeConfig {
 }
 
 public struct Theme {
+  private let logger = Logger(label: "com.webui.theme")
   let config: ThemeConfig
 
   public init(config: ThemeConfig = ThemeConfig()) {
     self.config = config
+    let nonEmptyCount =
+      [
+        config.fonts, config.colors, config.spacing, config.breakpoints, config.container,
+        config.textSizes, config.fontWeights, config.tracking, config.leading, config.radius,
+        config.shadows, config.insetShadows, config.dropShadows, config.blur, config.perspective,
+        config.aspect, config.ease,
+      ].filter { !$0.isEmpty }.count + (config.custom.isEmpty ? 0 : 1)
+    logger.debug("Theme initialized with \(nonEmptyCount) non-empty config properties")
   }
 
   // MARK: - CSS Generation
 
   /// Generates a CSS snippet with custom properties for the theme
   public func generateCSS() -> String {
+    logger.debug("Generating CSS for theme")
+
+    // Check if all configuration dictionaries are empty
     guard
       !(config.fonts.isEmpty && config.colors.isEmpty && config.spacing.isEmpty && config.breakpoints.isEmpty && config.container.isEmpty
         && config.textSizes.isEmpty && config.fontWeights.isEmpty && config.tracking.isEmpty && config.leading.isEmpty
         && config.radius.isEmpty && config.shadows.isEmpty && config.insetShadows.isEmpty && config.dropShadows.isEmpty
         && config.blur.isEmpty && config.perspective.isEmpty && config.aspect.isEmpty && config.ease.isEmpty && config.custom.isEmpty)
     else {
+      logger.trace("No CSS generated due to empty config")
       return ""
     }
 
     var css = "@theme {\n"
+    var propertyCount = 0
 
     // Fonts
     for (key, value) in config.fonts {
       css += "  --font-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Colors
     for (key, value) in config.colors {
       css += "  --color-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Spacing
     for (key, value) in config.spacing {
       css += "  --spacing-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Breakpoints
     for (key, value) in config.breakpoints {
       css += "  --breakpoint-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Container
     for (key, value) in config.container {
       css += "  --container-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Text Sizes
     for (key, value) in config.textSizes {
       css += "  --text-size-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Font Weights
     for (key, value) in config.fontWeights {
       css += "  --font-weight-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Tracking (Letter Spacing)
     for (key, value) in config.tracking {
       css += "  --tracking-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Leading (Line Height)
     for (key, value) in config.leading {
       css += "  --leading-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Radius (Border Radius)
     for (key, value) in config.radius {
       css += "  --border-radius-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Shadows (Box Shadow)
     for (key, value) in config.shadows {
       css += "  --shadow-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Inset Shadows
     for (key, value) in config.insetShadows {
       css += "  --inset-shadow-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Drop Shadows
     for (key, value) in config.dropShadows {
       css += "  --drop-shadow-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Blur
     for (key, value) in config.blur {
       css += "  --blur-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Perspective
     for (key, value) in config.perspective {
       css += "  --perspective-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Aspect Ratio
     for (key, value) in config.aspect {
       css += "  --aspect-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Ease (Transition Timing Function)
     for (key, value) in config.ease {
       css += "  --ease-\(key.sanitizedForCSS()): \(value);\n"
+      propertyCount += 1
     }
 
     // Custom Categories
@@ -172,11 +205,13 @@ public struct Theme {
         css += "\n  /* \(category.capitalized) */\n"
         for (key, value) in values {
           css += "  --\(category.sanitizedForCSS())-\(key.sanitizedForCSS()): \(value);\n"
+          propertyCount += 1
         }
       }
     }
 
     css += "}"
+    logger.debug("CSS generation completed with \(propertyCount) properties")
     return css
   }
 }
