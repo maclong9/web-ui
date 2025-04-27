@@ -3,10 +3,7 @@ import Logging
 
 /// A structure that manages and builds a collection of routes into HTML files.
 public struct Application {
-  /// The logger instance for the Application
   private let logger = Logger(label: "com.webui.application")
-
-  /// The collection of routes to be built.
   public let routes: [Document]
 
   /// Initializes an application with a collection of routes.
