@@ -1,7 +1,15 @@
-extension String {
+/// Utility string extensions
+extension String: HTML {
+  /// Renders the string as HTML content.
+  public func render() -> String { self }
+
+  /// Sanitizes strings for use in CSS variable names
+  public func sanitizedForCSS() -> String {
+    self.replacingOccurrences(of: "[^a-zA-Z0-9-]", with: "-", options: .regularExpression)
+      .lowercased()
+  }
+
   /// Converts the string to a lowercase, hyphen-separated path representation.
-  ///
-  /// - Returns: The string as in lowercase with hyphens for spaces.
   public func pathFormatted() -> String {
     lowercased()
       .replacingOccurrences(of: "[^a-z0-9 ]", with: "", options: .regularExpression)

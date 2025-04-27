@@ -8,13 +8,7 @@ import Markdown
 public struct MarkdownParser {
   /// A structure representing a parsed Markdown document, containing front matter and HTML content.
   public struct ParsedMarkdown {
-    /// A dictionary containing the parsed front matter key-value pairs.
-    ///
-    /// The keys are typically strings, and the values can be strings, dates, or other types depending
-    /// on the parsing logic.
     public let frontMatter: [String: Any]
-
-    /// The HTML content generated from the Markdown body.
     public let htmlContent: String
 
     /// Initializes a `ParsedMarkdown` instance with front matter and HTML content.
@@ -125,11 +119,7 @@ public struct MarkdownParser {
 
 /// A renderer that converts a Markdown AST into HTML.
 public struct HtmlRenderer: MarkupWalker {
-  /// The accumulated HTML output.
   public var html = ""
-
-  /// Initializes an `HtmlRenderer` instance.
-  public init() {}
 
   /// Renders a Markdown document into HTML.
   ///

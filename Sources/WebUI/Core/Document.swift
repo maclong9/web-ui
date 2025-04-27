@@ -3,25 +3,12 @@ import Logging
 
 /// Represents an immutable HTML document with metadata and content.
 public struct Document {
-  /// Logger instance for the Document
   private let logger = Logger(label: "com.webui.document")
-
-  /// Navigation path for the document.
   public let path: String?
-
-  /// Metadata configuration for the document's head section.
   public var metadata: Metadata
-
-  /// Optional array of scripts to append to the head section.
   public var scripts: [String]?
-
-  /// Optional array of stylesheets to append to the head section.
   public var stylesheets: [String]?
-
-  /// Optional raw HTML string to append to the head section.
   public let head: String?
-
-  /// Closure generating the document's HTML content.
   private let contentBuilder: () -> [any HTML]
 
   /// Computed HTML content from the content builder.
