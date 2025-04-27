@@ -139,7 +139,9 @@ import Testing
     #expect(parsed.frontMatter["published"] as? Date == expectedDate)
     #expect(parsed.htmlContent.contains("<h1>Heading</h1>"))
     #expect(
-      parsed.htmlContent.contains("<p>This is a <strong>bold</strong> paragraph with <a href=\"https://example.com\">a link</a>.</p>"))
+      parsed.htmlContent.contains(
+        #"p>This is a <strong>bold</strong> paragraph with <a href="https://example.com" target="_blank" rel="noopener noreferrer">a link</a>"#
+      ))
   }
 
   @Test("Parse markdown without front matter")
@@ -179,7 +181,7 @@ import Testing
 
     #expect(parsed.htmlContent.contains("<h1>Heading</h1>"))
     #expect(parsed.htmlContent.contains("<p>This is a <strong>bold</strong> and <em>italic</em> paragraph."))
-    #expect(parsed.htmlContent.contains("<a href=\"https://example.com\">Link</a>"))
+    #expect(parsed.htmlContent.contains(#"<a href="https://example.com" target="_blank" rel="noopener noreferrer">Link</a>"#))
     #expect(parsed.htmlContent.contains("</p>"))
   }
 
