@@ -8,6 +8,7 @@ public struct Document {
   public var metadata: Metadata
   public var scripts: [String]?
   public var stylesheets: [String]?
+  public var theme: Theme?
   public let head: String?
   private let contentBuilder: () -> [any HTML]
 
@@ -23,6 +24,7 @@ public struct Document {
   ///   - metadata: Configuration for the head section.
   ///   - scripts: Optional array of strings that contain script sources to append to the head section.
   ///   - stylesheets: Optional array of strings that contain stylesheet sources to append to the head section.
+  ///   - theme: Optionally extend the default theme with custom values.
   ///   - head: Optional raw HTML string to append to the head section (e.g., scripts, styles).
   ///   - content: Closure building the body's HTML content.
   public init(
@@ -30,6 +32,7 @@ public struct Document {
     metadata: Metadata,
     scripts: [String]? = nil,
     stylesheets: [String]? = nil,
+    theme: Theme? = nil,
     head: String? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML]
   ) {
@@ -37,6 +40,7 @@ public struct Document {
     self.metadata = metadata
     self.scripts = scripts
     self.stylesheets = stylesheets
+    self.theme = theme
     self.head = head
     self.contentBuilder = content
 
@@ -112,6 +116,7 @@ public struct Document {
                   --breakpoint-3xl: 120rem;
                   --breakpoint-4xl: 160rem;
               }
+              \(theme?.generateCSS() ?? "")
           </style>
           \(head ?? "")
       </head>
