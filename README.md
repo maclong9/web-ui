@@ -12,7 +12,7 @@ A library for generating Web User Interfaces in a simple, type-safe, and consist
 
 ### Versioning
 
-Version bumps are triggered automatically via commit messages, push the change with one of the following conventional commit message prefixes:
+Version bumps are triggered automatically via commit messages, push the change with one of the following commit message prefixes:
 
 - `feat!:` - denotes a major version, usually used when breaking changes are introduced. 
 - `feat:` - minor version increment, use for new features.
