@@ -5,8 +5,8 @@ on:
       - main
       - development
 permissions:
-  contents: write 
-  actions: read   
+  contents: write
+  actions: read
 jobs:
   check-commit:
     runs-on: ubuntu-latest
@@ -37,19 +37,16 @@ jobs:
     if: needs.check-commit.outputs.should_release == 'true'
     runs-on: macos-latest
     steps:
-      # Checkout the repository with full commit history
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Full history needed for tag inspection
 
-      # Set up Swift environment
       - name: Setup Swift
         uses: swift-actions/setup-swift@v2
         with:
           swift-version: "6.1"
 
-      # Cache SwiftPM dependencies
       - name: Cache SwiftPM dependencies
         uses: actions/cache@v3
         with:
@@ -58,22 +55,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-swiftpm-
 
-      # Resolve Swift package dependencies
       - name: Resolve dependencies
         run: swift package resolve
 
-      # Run tests to validate the package
       - name: Run tests
         run: swift test
         continue-on-error: false
 
-      # Install GitHub CLI for release creation
       - name: Setup GitHub CLI
         run: |
           brew install gh
           echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
-      # Bump version, create tag, and release
       - name: Bump version and create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -81,8 +74,13 @@ jobs:
           #!/bin/bash
           set -e
 
-          # Get the current version from VERSION file (default to 0.0.0 if not exists)
-          CURRENT_VERSION=$(cat VERSION 2>/dev/null || echo "0.0.0")
+          # Get the latest version tag (default to 0.0.0 if no tags exist)
+          LATEST_TAG=$(git tag -l 'v*' --sort=-v:refname | head -n 1)
+          if [ -z "$LATEST_TAG" ]; then
+            CURRENT_VERSION="0.0.0"
+          else
+            CURRENT_VERSION="${LATEST_TAG#v}"  # Remove 'v' prefix (e.g., v0.0.0 -> 0.0.0)
+          fi
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
           # Get the latest commit message
@@ -110,14 +108,9 @@ jobs:
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
 
-          # Update VERSION file
-          echo "$NEW_VERSION" > VERSION
-
-          # Commit version changes
+          # Configure git
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add VERSION
-          git commit -m "chore(release): bump version to $NEW_VERSION [skip ci]" || echo "No changes to commit"
           
           # Configure git to use GitHub token
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/maclong9/web-ui.git
@@ -132,10 +125,6 @@ jobs:
             git push origin main
           fi
           
-          # Create and push tag
-          git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
-          git push origin "v$NEW_VERSION"
-
           # Create and push tag
           git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
           git push origin "v$NEW_VERSION"
