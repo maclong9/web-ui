@@ -10,6 +10,22 @@ public enum Locale: String {
   case en, sp, fr, de, ja, ru
 }
 
+/// Represents theme colors for light and dark modes.
+public struct ThemeColor {
+  public let light: String
+  public let dark: String
+
+  /// Creates a theme color with light and dark mode values.
+  ///
+  /// - Parameters:
+  ///   - light: Hex color code for light mode (e.g., "#FFFFFF").
+  ///   - dark: Hex color code for dark mode (e.g., "#000000").
+  public init(light: String, dark: String) {
+    self.light = light
+    self.dark = dark
+  }
+}
+
 /// Stores metadata configuration for a document’s head section.
 public struct Metadata {
   public var site: String?
@@ -24,6 +40,7 @@ public struct Metadata {
   public var twitter: String?
   public var locale: Locale
   public var type: ContentType?
+  public var themeColor: ThemeColor?
 
   /// Creates metadata for a document’s head section.
   ///
@@ -38,6 +55,7 @@ public struct Metadata {
   ///   - twitter: Twitter handle without "@", optional.
   ///   - locale: Language setting, defaults to `.en`.
   ///   - type: Open Graph content type, optional.
+  ///   - themeColor: Theme colors for light and dark modes, optional.
   public init(
     site: String? = nil,
     title: String,
@@ -49,7 +67,8 @@ public struct Metadata {
     keywords: [String]? = nil,
     twitter: String? = nil,
     locale: Locale = .en,
-    type: ContentType? = nil
+    type: ContentType? = nil,
+    themeColor: ThemeColor? = nil
   ) {
     self.site = site
     self.title = title
@@ -63,5 +82,6 @@ public struct Metadata {
     self.twitter = twitter
     self.locale = locale
     self.type = type
+    self.themeColor = themeColor
   }
 }

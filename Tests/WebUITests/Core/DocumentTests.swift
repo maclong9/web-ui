@@ -42,7 +42,8 @@ import Testing
         keywords: ["test", "swift", "html"],
         twitter: "testhandle",
         locale: .ru,
-        type: .article
+        type: .article,
+        themeColor: .init(light: "#0099ff", dark: "#1c1c1c"),
       )
     ) {
       "Content"
@@ -54,6 +55,7 @@ import Testing
     #expect(rendered.contains("<meta property=\"og:type\" content=\"article\">"))
     #expect(rendered.contains("<meta name=\"twitter:creator\" content=\"@testhandle\">"))
     #expect(rendered.contains("<meta name=\"keywords\" content=\"test, swift, html\">"))
+    #expect(rendered.contains("<meta name=\"theme-color\" content=\"#0099ff\" media=\"(prefers-color-scheme: light)\">"))
     #expect(rendered.contains("<html lang=\"ru\">"))
   }
 

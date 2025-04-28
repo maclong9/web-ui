@@ -8,38 +8,37 @@ import Testing
 struct MetadataTests {
   /// Tests that basic metadata is correctly initialized.
   @Test func testBasicMetadataInitialization() throws {
-    // Act
     let metadata = Metadata(
       site: "Test Site",
       title: "Test Title",
-      description: "Test description"
+      description: "Test description",
+      themeColor: .init(light: "#0099ff", dark: "#1c1c1c")
     )
 
     // Assert
     #expect(metadata.site == "Test Site")
     #expect(metadata.title == "Test Title")
     #expect(metadata.description == "Test description")
-    #expect(metadata.titleSeperator == "|")  // Default value
+    #expect(metadata.titleSeperator == "|")
     #expect(metadata.pageTitle == "Test Title | Test Site")
-    #expect(metadata.locale == .en)  // Default value
+    #expect(metadata.locale == .en)
+    #expect(metadata.themeColor?.light == "#0099ff")
+    #expect(metadata.themeColor?.dark == "#1c1c1c")
   }
 
   /// Tests that metadata handles null site correctly.
   @Test func testNoSiteMetadata() throws {
-    // Act
     let metadata = Metadata(
       title: "Just Title",
       description: "No site metadata"
     )
 
-    // Assert
     #expect(metadata.site == nil)
     #expect(metadata.pageTitle == "Just Title")
   }
 
   /// Tests that metadata uses custom separator correctly.
   @Test func testCustomSeparator() throws {
-    // Act
     let metadata = Metadata(
       site: "My Site",
       title: "My Title",
@@ -47,18 +46,15 @@ struct MetadataTests {
       description: "Custom separator test"
     )
 
-    // Assert
     #expect(metadata.titleSeperator == "-")
     #expect(metadata.pageTitle == "My Title - My Site")
   }
 
   /// Tests that all optional metadata fields are correctly initialized.
   @Test func testFullMetadata() throws {
-    // Arrange
     let testDate = Date()
     let keywords = ["swift", "testing", "metadata"]
 
-    // Act
     let metadata = Metadata(
       site: "Full Site",
       title: "Full Title",
@@ -73,7 +69,6 @@ struct MetadataTests {
       type: .profile
     )
 
-    // Assert
     #expect(metadata.date == testDate)
     #expect(metadata.image == "/images/test.jpg")
     #expect(metadata.author == "Test Author")
