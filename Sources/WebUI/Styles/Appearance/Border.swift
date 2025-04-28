@@ -100,11 +100,11 @@ extension Element {
     let effectiveEdges = edges.isEmpty ? [Edge.all] : edges
     var baseClasses: [String] = []
 
+    // Handle width
     if let width = width {
       if style == .divide {
         for edge in effectiveEdges {
-          let edgePrefix =
-            edge == .horizontal ? "x" : edge == .vertical ? "y" : ""
+          let edgePrefix = edge == .horizontal ? "x" : edge == .vertical ? "y" : ""
           if !edgePrefix.isEmpty {
             baseClasses.append("divide-\(edgePrefix)-\(width)")
           }
@@ -118,12 +118,23 @@ extension Element {
       }
     }
 
+    // Add edge-specific border classes when color is specified and width is nil
+    if color != nil && width == nil {
+      baseClasses.append(
+        contentsOf: effectiveEdges.map { edge in
+          let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
+          return "border\(edgePrefix)"
+        })
+    }
+
+    // Handle radius
     if let (side, size) = radius {
       let sidePrefix = side?.rawValue ?? ""
       let sideClass = sidePrefix.isEmpty ? "" : "-\(sidePrefix)"
       baseClasses.append("rounded\(sideClass)-\(size.rawValue)")
     }
 
+    // Handle style
     if let styleValue = style, style != .divide {
       baseClasses.append(
         contentsOf: effectiveEdges.map { edge in
@@ -132,12 +143,9 @@ extension Element {
         })
     }
 
+    // Handle color
     if let colorValue = color?.rawValue {
-      baseClasses.append(
-        contentsOf: effectiveEdges.map { edge in
-          let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
-          return "border\(edgePrefix)-\(colorValue)"
-        })
+      baseClasses.append("border-\(colorValue)")
     }
 
     let newClasses = combineClasses(baseClasses, withModifiers: modifiers)

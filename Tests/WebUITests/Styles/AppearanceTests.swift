@@ -76,7 +76,7 @@ import Testing
   func testBorderWithEdgeAndColor() async throws {
     let element = Element(tag: "div").border(edges: .top, color: .blue(._500))
     let rendered = element.render()
-    #expect(rendered.contains("class=\"border-t-blue-500\""))
+    #expect(rendered.contains("class=\"border-t border-blue-500\""))
   }
 
   @Test("Border with divide style")
@@ -226,6 +226,13 @@ import Testing
     let element = Element(tag: "div").border(width: 2)
     let rendered = element.render()
     #expect(rendered.contains("class=\"border-2\""))
+  }
+
+  @Test("Border with No Width")
+  func testBorderWithNoWidth() async throws {
+    let element = Element(tag: "div").border(edges: .bottom, color: .neutral(._800, opacity: 0.5))
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"border-b border-neutral-800/50\""))
   }
 
   @Test("Invalid opacity value")
