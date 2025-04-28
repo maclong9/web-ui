@@ -75,11 +75,11 @@ jobs:
           set -e
 
           # Get the latest version tag (default to 0.0.0 if no tags exist)
-          LATEST_TAG=$(git tag -l 'v*' --sort=-v:refname | head -n 1)
+          LATEST_TAG=$(git tag -l '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)
           if [ -z "$LATEST_TAG" ]; then
             CURRENT_VERSION="0.0.0"
           else
-            CURRENT_VERSION="${LATEST_TAG#v}"  # Remove 'v' prefix (e.g., v0.0.0 -> 0.0.0)
+            CURRENT_VERSION="$LATEST_TAG"  # Use tag as is (e.g., 0.0.0)
           fi
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
@@ -130,7 +130,7 @@ jobs:
           git push origin "$NEW_VERSION"
 
           # Generate release notes from commit message
-          RELEASE_NOTES="Automated release for v$NEW_VERSION
+          RELEASE_NOTES="Automated release for $NEW_VERSION
           
           Changes:
           - $COMMIT_MESSAGE"
@@ -138,14 +138,14 @@ jobs:
           # Create GitHub release
           if [ "$IS_PRERELEASE" = "true" ]; then
             # Create pre-release for development branch
-            gh release create "v$NEW_VERSION" \
-              --title "Pre-release v$NEW_VERSION" \
+            gh release create "$NEW_VERSION" \
+              --title "Pre-release $NEW_VERSION" \
               --notes "$RELEASE_NOTES" \
               --prerelease
           else
             # Create regular release for main branch
-            gh release create "v$NEW_VERSION" \
-              --title "v$NEW_VERSION" \
+            gh release create "$NEW_VERSION" \
+              --title "$NEW_VERSION" \
               --notes "$RELEASE_NOTES" \
               --latest
           fi
