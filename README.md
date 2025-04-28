@@ -1,6 +1,6 @@
 # WebUI
 
-A library for generating Web User Interfaces in a simple, type-safe, and consistent manner.
+A library for generating Web User Interfaces in a simple, type-safe, and consistent manner. Built in pure Swift.
 
 ## Guides
 
