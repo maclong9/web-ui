@@ -8,6 +8,17 @@ A library for generating Web User Interfaces in a simple, type-safe, and consist
 - [🚧: Using WebUI with Hummingbird](./)
 - [🚧: Scaling a Hummingbird Application with Cloudflare](./)
 
+## Development
+
+### Versioning
+
+Version bumps are triggered automatically via commit messages, work on a feature or fix and then push the change with one of the following conventional commit message prefixes:
+
+- `feat!:`: denotes a major version, usually used when breaking changes are introduced. 
+- `feat:`: minor version increment, use for new features.
+- `fix:`: patch version increment, use for bug fixes.
+
+
 ## Inspirations & Sources
 
 - [Apple Developer](https://developer.apple.com/videos/play/wwdc2021/10253/)
