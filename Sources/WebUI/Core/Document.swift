@@ -84,6 +84,13 @@ public struct Document {
         "<meta name=\"keywords\" content=\"\(keywords.joined(separator: ", "))\">"
       )
     }
+    if let themeColor = metadata.themeColor {
+      logger.trace("Adding theme-color meta tags")
+      optionalMetaTags.append(
+        "<meta name=\"theme-color\" content=\"\(themeColor.light)\" media=\"(prefers-color-scheme: light)\">")
+      optionalMetaTags.append(
+        "<meta name=\"theme-color\" content=\"\(themeColor.dark)\" media=\"(prefers-color-scheme: dark)\">")
+    }
     if let scripts = scripts {
       logger.trace("Adding \(scripts.count) script tags")
       for script in scripts {
