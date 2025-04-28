@@ -116,6 +116,9 @@ jobs:
           git add VERSION
           git commit -m "chore(release): bump version to $NEW_VERSION [skip ci]" || echo "No changes to commit"
           
+          # Configure git to use GitHub token
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/maclong9/web-ui.git
+          
           # Determine if this is a pre-release (development branch)
           IS_PRERELEASE="false"
           BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
@@ -125,6 +128,10 @@ jobs:
           else
             git push origin main
           fi
+          
+          # Create and push tag
+          git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
+          git push origin "v$NEW_VERSION"
 
           # Create and push tag
           git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
