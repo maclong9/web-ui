@@ -1,6 +1,7 @@
 # WebUI
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmaclong9%2Fweb-ui%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/maclong9/web-ui)
+[![Automated Release](https://github.com/maclong9/web-ui/actions/workflows/release.yml/badge.svg)](https://github.com/maclong9/web-ui/actions/workflows/release.yml)
 
 A library for generating Web User Interfaces in a simple, type-safe, and consistent manner.
 
