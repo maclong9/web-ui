@@ -1,12 +1,3 @@
-name: Automated Release
-on:
-  push:
-    branches:
-      - main
-      - development
-permissions:
-  contents: write
-  actions: read
 jobs:
   check-commit:
     runs-on: ubuntu-latest
@@ -15,16 +6,15 @@ jobs:
       commit_message: ${{ steps.check.outputs.commit_message }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@4
+        uses: actions/checkout@v4  # Changed from @4 to @v4
         with:
           fetch-depth: 1
-      
+
       - name: Check commit message
         id: check
         run: |
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
-          
           if [[ $COMMIT_MESSAGE =~ ^feat!.* ]] || [[ $COMMIT_MESSAGE =~ ^feat:.* ]] || [[ $COMMIT_MESSAGE =~ ^fix:.* ]]; then
             echo "should_release=true" >> $GITHUB_OUTPUT
           else
@@ -38,114 +28,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@4
+        uses: actions/checkout@v4  # Changed from @4 to @v4
         with:
-          fetch-depth: 0 
+          fetch-depth: 0
 
       - name: Setup Swift
-        uses: swift-actions/setup-swift@2
-        with:
-          swift-version: "6.1"
-
-      - name: Cache SwiftPM dependencies
-        uses: actions/cache@3
-        with:
-          path: .build
-          key: ${{ runner.os }}-swiftpm-${{ hashFiles('**/Package.resolved') }}
-          restore-keys: |
-            ${{ runner.os }}-swiftpm-
-
-      - name: Resolve dependencies
-        run: swift package resolve
-
-      - name: Run tests
-        run: swift test
-        continue-on-error: false
-
-      - name: Setup GitHub CLI
-        run: |
-          brew install gh
-          echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-
-      - name: Bump version and create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          #!/bin/bash
-          set -e
-
-          # Get the latest version tag (default to 0.0.0 if no tags exist)
-          LATEST_TAG=$(git tag -l '*' --sort=-v:refname | head -n 1)
-          if [ -z "$LATEST_TAG" ]; then
-            CURRENT_VERSION="0.0.0"
-          else
-            CURRENT_VERSION="$LATEST_TAG"  # No 'v' prefix to remove
-          fi
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
-
-          # Get the latest commit message
-          COMMIT_MESSAGE="${{ needs.check-commit.outputs.commit_message }}"
-
-          # Determine version bump based on conventional commits
-          if [[ $COMMIT_MESSAGE =~ ^feat!.* ]]; then
-            # Major bump for breaking changes
-            MAJOR=$((MAJOR + 1))
-            MINOR=0
-            PATCH=0
-          elif [[ $COMMIT_MESSAGE =~ ^feat:.* ]]; then
-            # Minor bump for features
-            MINOR=$((MINOR + 1))
-            PATCH=0
-          elif [[ $COMMIT_MESSAGE =~ ^fix:.* ]]; then
-            # Patch bump for fixes
-            PATCH=$((PATCH + 1))
-          else
-            echo "No version bump needed (commit: $COMMIT_MESSAGE)"
-            exit 0
-          fi
-
-          # Form the new version
-          NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-          echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
-
-          # Configure git
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          
-          # Configure git to use GitHub token
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/maclong9/web-ui.git
-          
-          # Determine if this is a pre-release (development branch)
-          IS_PRERELEASE="false"
-          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-          if [ "$BRANCH_NAME" = "development" ]; then
-            IS_PRERELEASE="true"
-            git push origin development
-          else
-            git push origin main
-          fi
-          
-          # Create and push tag
-          git tag -a "$NEW_VERSION" -m "$NEW_VERSION"
-          git push origin "$NEW_VERSION"
-
-          # Generate release notes from commit message
-          RELEASE_NOTES="Automated release for $NEW_VERSION
-          
-          Changes:
-          - $COMMIT_MESSAGE"
-
-          # Create GitHub release
-          if [ "$IS_PRERELEASE" = "true" ]; then
-            # Create pre-release for development branch
-            gh release create "$NEW_VERSION" \
-              --title "Pre-release $NEW_VERSION" \
-              --notes "$RELEASE_NOTES" \
-              --prerelease
-          else
-            # Create regular release for main branch
-            gh release create "$NEW_VERSION" \
-              --title "$NEW_VERSION" \
-              --notes "$RELEASE_NOTES" \
-              --latest
-          fi
+        uses: swift \
