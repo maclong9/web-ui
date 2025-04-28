@@ -123,6 +123,7 @@ public struct Document {
                   --breakpoint-3xl: 120rem;
                   --breakpoint-4xl: 160rem;
                   \(theme?.generateCSS() ?? "")
+                  @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
               }
           </style>
           \(head ?? "")
