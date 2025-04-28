@@ -14,9 +14,9 @@ A library for generating Web User Interfaces in a simple, type-safe, and consist
 
 Version bumps are triggered automatically via commit messages, work on a feature or fix and then push the change with one of the following conventional commit message prefixes:
 
-- `feat!:`: denotes a major version, usually used when breaking changes are introduced. 
-- `feat:`: minor version increment, use for new features.
-- `fix:`: patch version increment, use for bug fixes.
+- `feat!:` - denotes a major version, usually used when breaking changes are introduced. 
+- `feat:` - minor version increment, use for new features.
+- `fix:` - patch version increment, use for bug fixes.
 
 
 ## Inspirations & Sources
