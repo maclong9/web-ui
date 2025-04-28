@@ -145,7 +145,7 @@ jobs:
           else
             # Create regular release for main branch
             gh release create "v$NEW_VERSION" \
-              --title "Release v$NEW_VERSION" \
+              --title "v$NEW_VERSION" \
               --notes "$RELEASE_NOTES" \
               --latest
           fi
