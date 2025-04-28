@@ -126,7 +126,7 @@ jobs:
           fi
           
           # Create and push tag
-          git tag -a "v$NEW_VERSION" -m "v$NEW_VERSION"
+          git tag -a "v$NEW_VERSION" -m "$NEW_VERSION"
           git push origin "v$NEW_VERSION"
 
           # Generate release notes from commit message
