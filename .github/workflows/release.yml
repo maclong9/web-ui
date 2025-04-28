@@ -40,7 +40,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Full history needed for tag inspection
+          fetch-depth: 0 
 
       - name: Setup Swift
         uses: swift-actions/setup-swift@v2
@@ -126,11 +126,14 @@ jobs:
           fi
           
           # Create and push tag
-          git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
+          git tag -a "v$NEW_VERSION" -m "v$NEW_VERSION"
           git push origin "v$NEW_VERSION"
 
           # Generate release notes from commit message
-          RELEASE_NOTES="Automated release for v$NEW_VERSION\n\nChanges:\n- $COMMIT_MESSAGE"
+          RELEASE_NOTES="Automated release for v$NEW_VERSION
+          
+          Changes:
+          - $COMMIT_MESSAGE"
 
           # Create GitHub release
           if [ "$IS_PRERELEASE" = "true" ]; then
