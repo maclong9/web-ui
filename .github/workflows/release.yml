@@ -3,8 +3,35 @@ on:
   push:
     branches:
       - main
+      - development
 jobs:
+  check-commit:
+    runs-on: ubuntu-latest
+    outputs:
+      should_release: ${{ steps.check.outputs.should_release }}
+      commit_message: ${{ steps.check.outputs.commit_message }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      
+      - name: Check commit message
+        id: check
+        run: |
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
+          
+          if [[ $COMMIT_MESSAGE =~ ^feat!.* ]] || [[ $COMMIT_MESSAGE =~ ^feat:.* ]] || [[ $COMMIT_MESSAGE =~ ^fix:.* ]]; then
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_release=false" >> $GITHUB_OUTPUT
+            echo "No version bump needed (commit: $COMMIT_MESSAGE)"
+          fi
+
   release:
+    needs: check-commit
+    if: needs.check-commit.outputs.should_release == 'true'
     runs-on: macos-latest
     steps:
       # Checkout the repository with full commit history
@@ -18,6 +45,15 @@ jobs:
         uses: swift-actions/setup-swift@v2
         with:
           swift-version: "6.1"
+
+      # Cache SwiftPM dependencies
+      - name: Cache SwiftPM dependencies
+        uses: actions/cache@v3
+        with:
+          path: .build
+          key: ${{ runner.os }}-swiftpm-${{ hashFiles('**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-swiftpm-
 
       # Resolve Swift package dependencies
       - name: Resolve dependencies
@@ -47,7 +83,7 @@ jobs:
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
           # Get the latest commit message
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          COMMIT_MESSAGE="${{ needs.check-commit.outputs.commit_message }}"
 
           # Determine version bump based on conventional commits
           if [[ $COMMIT_MESSAGE =~ ^feat!.* ]]; then
@@ -79,7 +115,16 @@ jobs:
           git config user.email "actions@github.com"
           git add VERSION
           git commit -m "chore(release): bump version to $NEW_VERSION [skip ci]" || echo "No changes to commit"
-          git push origin main
+          
+          # Determine if this is a pre-release (development branch)
+          IS_PRERELEASE="false"
+          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+          if [ "$BRANCH_NAME" = "development" ]; then
+            IS_PRERELEASE="true"
+            git push origin development
+          else
+            git push origin main
+          fi
 
           # Create and push tag
           git tag -a "v$NEW_VERSION" -m "Release v$NEW_VERSION"
@@ -89,7 +134,16 @@ jobs:
           RELEASE_NOTES="Automated release for v$NEW_VERSION\n\nChanges:\n- $COMMIT_MESSAGE"
 
           # Create GitHub release
-          gh release create "v$NEW_VERSION" \
-            --title "Release v$NEW_VERSION" \
-            --notes "$RELEASE_NOTES" \
-            --latest
+          if [ "$IS_PRERELEASE" = "true" ]; then
+            # Create pre-release for development branch
+            gh release create "v$NEW_VERSION" \
+              --title "Pre-release v$NEW_VERSION" \
+              --notes "$RELEASE_NOTES" \
+              --prerelease
+          else
+            # Create regular release for main branch
+            gh release create "v$NEW_VERSION" \
+              --title "Release v$NEW_VERSION" \
+              --notes "$RELEASE_NOTES" \
+              --latest
+          fi
