@@ -100,20 +100,20 @@ extension Element {
     let effectiveEdges = edges.isEmpty ? [Edge.all] : edges
     var baseClasses: [String] = []
 
-    if let widthValue = width {
+    if let width = width {
       if style == .divide {
         for edge in effectiveEdges {
           let edgePrefix =
             edge == .horizontal ? "x" : edge == .vertical ? "y" : ""
           if !edgePrefix.isEmpty {
-            baseClasses.append("divide-\(edgePrefix)-\(widthValue)")
+            baseClasses.append("divide-\(edgePrefix)-\(width)")
           }
         }
       } else {
         baseClasses.append(
           contentsOf: effectiveEdges.map { edge in
             let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
-            return "border\(edgePrefix)-\(widthValue)"
+            return "border\(edgePrefix)\(width != 0 ? "-\(width)" : "")"
           })
       }
     }
