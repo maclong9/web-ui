@@ -31,7 +31,8 @@ public final class Text: Element {
     .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
     .count
     let tag = sentenceCount > 1 ? "p" : "span"
-    super.init(tag: tag, id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: tag, id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -75,7 +76,9 @@ public final class Heading: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: level.rawValue, id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: level.rawValue, id: id, classes: classes, role: role, label: label, data: data,
+      content: content)
   }
 }
 
@@ -149,7 +152,8 @@ public final class Emphasis: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "em", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "em", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -174,7 +178,9 @@ public final class Strong: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "strong", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "strong", id: id, classes: classes, role: role, label: label, data: data,
+      content: content)
   }
 }
 
@@ -244,7 +250,8 @@ public final class Code: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "code", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "code", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -269,6 +276,7 @@ public final class Preformatted: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "pre", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "pre", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }

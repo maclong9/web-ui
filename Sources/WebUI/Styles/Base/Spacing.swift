@@ -93,12 +93,12 @@ extension Element {
     let baseClasses: [String] =
       length.map { lengthValue in
         switch direction {
-          case .x:
-            return ["space-x-\(lengthValue)"]
-          case .y:
-            return ["space-y-\(lengthValue)"]
-          case .both:
-            return ["space-x-\(lengthValue)", "space-y-\(lengthValue)"]
+        case .x:
+          return ["space-x-\(lengthValue)"]
+        case .y:
+          return ["space-y-\(lengthValue)"]
+        case .both:
+          return ["space-x-\(lengthValue)", "space-y-\(lengthValue)"]
         }
       } ?? []
 

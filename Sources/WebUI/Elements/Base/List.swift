@@ -31,7 +31,9 @@ public final class List: Element {
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.type = type
-    super.init(tag: type.rawValue, id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: type.rawValue, id: id, classes: classes, role: role, label: label, data: data,
+      content: content)
   }
 }
 
@@ -54,6 +56,7 @@ public final class Item: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "li", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "li", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }

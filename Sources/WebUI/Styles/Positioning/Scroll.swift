@@ -83,13 +83,13 @@ extension Element {
         contentsOf: effectiveEdges.map { edge in
           let edgePrefix: String
           switch edge {
-            case .all: edgePrefix = ""
-            case .top: edgePrefix = "t"
-            case .bottom: edgePrefix = "b"
-            case .leading: edgePrefix = "s"
-            case .trailing: edgePrefix = "e"
-            case .horizontal: edgePrefix = "x"
-            case .vertical: edgePrefix = "y"
+          case .all: edgePrefix = ""
+          case .top: edgePrefix = "t"
+          case .bottom: edgePrefix = "b"
+          case .leading: edgePrefix = "s"
+          case .trailing: edgePrefix = "e"
+          case .horizontal: edgePrefix = "x"
+          case .vertical: edgePrefix = "y"
           }
 
           return "scroll-m\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)"
@@ -103,13 +103,13 @@ extension Element {
         contentsOf: effectiveEdges.map { edge in
           let edgePrefix: String
           switch edge {
-            case .all: edgePrefix = ""
-            case .top: edgePrefix = "t"
-            case .bottom: edgePrefix = "b"
-            case .leading: edgePrefix = "s"
-            case .trailing: edgePrefix = "e"
-            case .horizontal: edgePrefix = "x"
-            case .vertical: edgePrefix = "y"
+          case .all: edgePrefix = ""
+          case .top: edgePrefix = "t"
+          case .bottom: edgePrefix = "b"
+          case .leading: edgePrefix = "s"
+          case .trailing: edgePrefix = "e"
+          case .horizontal: edgePrefix = "x"
+          case .vertical: edgePrefix = "y"
           }
           return "scroll-p\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)"
         })

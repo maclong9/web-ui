@@ -216,7 +216,8 @@ import Testing
     let rendered = element.render()
     #expect(
       rendered.contains(
-        "class=\"bg-blue-600 border-1 border-solid border-blue-800 shadow-md hover:opacity-90 flex flex-row justify-center\""))
+        "class=\"bg-blue-600 border-1 border-solid border-blue-800 shadow-md hover:opacity-90 flex flex-row justify-center\""
+      ))
   }
 
   // MARK: - Edge Cases

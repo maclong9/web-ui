@@ -180,8 +180,12 @@ import Testing
     let parsed = MarkdownParser.parseMarkdown(content)
 
     #expect(parsed.htmlContent.contains("<h1>Heading</h1>"))
-    #expect(parsed.htmlContent.contains("<p>This is a <strong>bold</strong> and <em>italic</em> paragraph."))
-    #expect(parsed.htmlContent.contains(#"<a href="https://example.com" target="_blank" rel="noopener noreferrer">Link</a>"#))
+    #expect(
+      parsed.htmlContent.contains(
+        "<p>This is a <strong>bold</strong> and <em>italic</em> paragraph."))
+    #expect(
+      parsed.htmlContent.contains(
+        #"<a href="https://example.com" target="_blank" rel="noopener noreferrer">Link</a>"#))
     #expect(parsed.htmlContent.contains("</p>"))
   }
 
@@ -212,7 +216,9 @@ import Testing
     let parsed = MarkdownParser.parseMarkdown(content)
 
     #expect(parsed.htmlContent.contains("<ul><li><p>Item 1</p></li><li><p>Item 2</p></li></ul>"))
-    #expect(parsed.htmlContent.contains("<ol><li><p>Ordered Item 1</p></li><li><p>Ordered Item 2</p></li></ol>"))
+    #expect(
+      parsed.htmlContent.contains(
+        "<ol><li><p>Ordered Item 1</p></li><li><p>Ordered Item 2</p></li></ol>"))
   }
 
   @Test("Render table")
@@ -226,7 +232,8 @@ import Testing
     let parsed = MarkdownParser.parseMarkdown(content)
 
     #expect(parsed.htmlContent.contains("<table>"))
-    #expect(parsed.htmlContent.contains("<thead><tr><th>Header 1</th><th>Header 2</th></tr></thead>"))
+    #expect(
+      parsed.htmlContent.contains("<thead><tr><th>Header 1</th><th>Header 2</th></tr></thead>"))
     #expect(parsed.htmlContent.contains("<tbody><tr><td>Cell 1</td><td>Cell 2</td></tr></tbody>"))
     #expect(parsed.htmlContent.contains("</table>"))
   }
@@ -284,7 +291,9 @@ import Testing
       """
     let parsed = MarkdownParser.parseMarkdown(content)
     #expect(parsed.frontMatter.isEmpty)
-    #expect(parsed.htmlContent.contains(#"<h1>Heading</h1><p>Special &amp; characters &lt; &gt; “ ’ in content.</p>"#))
+    #expect(
+      parsed.htmlContent.contains(
+        #"<h1>Heading</h1><p>Special &amp; characters &lt; &gt; “ ’ in content.</p>"#))
   }
 
   @Test("Parse markdown with malformed Markdown syntax")
