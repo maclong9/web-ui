@@ -29,7 +29,7 @@ public struct ThemeColor {
 /// Stores metadata configuration for a document’s head section.
 public struct Metadata {
   public var site: String?
-  public var title: String
+  public var title: String?
   public var titleSeperator: String
   public var pageTitle: String
   public var description: String
@@ -58,7 +58,7 @@ public struct Metadata {
   ///   - themeColor: Theme colors for light and dark modes, optional.
   public init(
     site: String? = nil,
-    title: String,
+    title: String? = nil,
     titleSeperator: String = "|",
     description: String,
     date: Date? = nil,

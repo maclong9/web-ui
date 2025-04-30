@@ -38,13 +38,13 @@ extension Element {
       for edge in effectiveEdges {
         let edgePrefix: String
         switch edge {
-          case .all: edgePrefix = "inset"
-          case .top: edgePrefix = "top"
-          case .leading: edgePrefix = "left"
-          case .trailing: edgePrefix = "right"
-          case .bottom: edgePrefix = "bottom"
-          case .horizontal: edgePrefix = "inset-x"
-          case .vertical: edgePrefix = "inset-y"
+        case .all: edgePrefix = "inset"
+        case .top: edgePrefix = "top"
+        case .leading: edgePrefix = "left"
+        case .trailing: edgePrefix = "right"
+        case .bottom: edgePrefix = "bottom"
+        case .horizontal: edgePrefix = "inset-x"
+        case .vertical: edgePrefix = "inset-y"
         }
         baseClasses.append(
           "\(length != nil && length! >= 0 ? "" : "-")\(edgePrefix)-\(abs(lengthValue))"

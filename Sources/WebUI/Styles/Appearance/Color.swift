@@ -85,53 +85,53 @@ public enum Color {
     }
 
     switch self {
-      case .slate(let shade, let opacity):
-        return "slate-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .gray(let shade, let opacity):
-        return "gray-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .zinc(let shade, let opacity):
-        return "zinc-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .neutral(let shade, let opacity):
-        return "neutral-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .stone(let shade, let opacity):
-        return "stone-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .red(let shade, let opacity):
-        return "red-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .orange(let shade, let opacity):
-        return "orange-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .amber(let shade, let opacity):
-        return "amber-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .yellow(let shade, let opacity):
-        return "yellow-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .lime(let shade, let opacity):
-        return "lime-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .green(let shade, let opacity):
-        return "green-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .emerald(let shade, let opacity):
-        return "emerald-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .teal(let shade, let opacity):
-        return "teal-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .cyan(let shade, let opacity):
-        return "cyan-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .sky(let shade, let opacity):
-        return "sky-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .blue(let shade, let opacity):
-        return "blue-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .indigo(let shade, let opacity):
-        return "indigo-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .violet(let shade, let opacity):
-        return "violet-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .purple(let shade, let opacity):
-        return "purple-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .fuchsia(let shade, let opacity):
-        return "fuchsia-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .pink(let shade, let opacity):
-        return "pink-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .rose(let shade, let opacity):
-        return "rose-\(shade.rawValue)\(formatOpacity(opacity))"
-      case .custom(let value, let opacity):
-        let opacityStr = formatOpacity(opacity)
-        return "[\(value)]\(opacityStr)"
+    case .slate(let shade, let opacity):
+      return "slate-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .gray(let shade, let opacity):
+      return "gray-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .zinc(let shade, let opacity):
+      return "zinc-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .neutral(let shade, let opacity):
+      return "neutral-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .stone(let shade, let opacity):
+      return "stone-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .red(let shade, let opacity):
+      return "red-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .orange(let shade, let opacity):
+      return "orange-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .amber(let shade, let opacity):
+      return "amber-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .yellow(let shade, let opacity):
+      return "yellow-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .lime(let shade, let opacity):
+      return "lime-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .green(let shade, let opacity):
+      return "green-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .emerald(let shade, let opacity):
+      return "emerald-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .teal(let shade, let opacity):
+      return "teal-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .cyan(let shade, let opacity):
+      return "cyan-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .sky(let shade, let opacity):
+      return "sky-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .blue(let shade, let opacity):
+      return "blue-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .indigo(let shade, let opacity):
+      return "indigo-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .violet(let shade, let opacity):
+      return "violet-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .purple(let shade, let opacity):
+      return "purple-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .fuchsia(let shade, let opacity):
+      return "fuchsia-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .pink(let shade, let opacity):
+      return "pink-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .rose(let shade, let opacity):
+      return "rose-\(shade.rawValue)\(formatOpacity(opacity))"
+    case .custom(let value, let opacity):
+      let opacityStr = formatOpacity(opacity)
+      return "[\(value)]\(opacityStr)"
     }
   }
 }

@@ -16,7 +16,8 @@ struct HTMLTests {
 
     let html = SimpleHTML(content: "<p>Test Content</p>")
     let rendered = html.render()
-    #expect(rendered == "<p>Test Content</p>", "HTML protocol render should return the provided content")
+    #expect(
+      rendered == "<p>Test Content</p>", "HTML protocol render should return the provided content")
   }
 
   // MARK: - HTMLBuilder Tests
@@ -50,7 +51,9 @@ struct HTMLTests {
     let components = HTMLBuilder.buildExpression(expression)
 
     #expect(components.count == 1, "buildExpression should return a single-item array")
-    #expect(components.first?.render() == "<span>Test</span>", "buildExpression should wrap the HTML entity correctly")
+    #expect(
+      components.first?.render() == "<span>Test</span>",
+      "buildExpression should wrap the HTML entity correctly")
   }
 
   @Test("HTMLBuilder buildOptional with present components")
@@ -64,7 +67,9 @@ struct HTMLTests {
     let components = HTMLBuilder.buildOptional(optionalComponents)
 
     #expect(components.count == 1, "buildOptional should return the provided components")
-    #expect(components.first?.render() == "<p>Optional</p>", "buildOptional should preserve the components")
+    #expect(
+      components.first?.render() == "<p>Optional</p>",
+      "buildOptional should preserve the components")
   }
 
   @Test("HTMLBuilder buildOptional with nil components")
@@ -86,7 +91,9 @@ struct HTMLTests {
     let components = HTMLBuilder.buildEither(first: firstComponents)
 
     #expect(components.count == 1, "buildEither(first:) should return the first branch components")
-    #expect(components.first?.render() == "<div>First</div>", "buildEither(first:) should preserve the first branch")
+    #expect(
+      components.first?.render() == "<div>First</div>",
+      "buildEither(first:) should preserve the first branch")
   }
 
   @Test("HTMLBuilder buildEither with second branch")
@@ -99,8 +106,11 @@ struct HTMLTests {
     let secondComponents = [TestHTML(content: "<div>Second</div>")]
     let components = HTMLBuilder.buildEither(second: secondComponents)
 
-    #expect(components.count == 1, "buildEither(second:) should return the second branch components")
-    #expect(components.first?.render() == "<div>Second</div>", "buildEither(second:) should preserve the second branch")
+    #expect(
+      components.count == 1, "buildEither(second:) should return the second branch components")
+    #expect(
+      components.first?.render() == "<div>Second</div>",
+      "buildEither(second:) should preserve the second branch")
   }
 
   @Test("HTMLBuilder buildArray with nested arrays")
@@ -143,9 +153,13 @@ struct HTMLTests {
 
     let components = buildComplexHTML(condition: true, items: ["Item1", "Item2"])
 
-    #expect(components.count == 4, "Complex composition should include header, conditional, and loop items")
+    #expect(
+      components.count == 4,
+      "Complex composition should include header, conditional, and loop items")
     #expect(components[0].render() == "<header>Header</header>", "Header should be first")
-    #expect(components[1].render() == "<div>Conditional Content</div>", "Conditional content should be included")
+    #expect(
+      components[1].render() == "<div>Conditional Content</div>",
+      "Conditional content should be included")
     #expect(components[2].render() == "<p>Item1</p>", "First loop item should be correct")
     #expect(components[3].render() == "<p>Item2</p>", "Second loop item should be correct")
   }

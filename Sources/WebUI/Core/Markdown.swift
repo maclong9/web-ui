@@ -104,7 +104,9 @@ public struct MarkdownParser {
       let valueString = components[1].trimmingCharacters(in: .whitespaces)
 
       // Attempt to parse the value as a date if the key suggests it
-      if key.contains("date") || key == "published", let date = dateFormatter.date(from: valueString) {
+      if key.contains("date") || key == "published",
+        let date = dateFormatter.date(from: valueString)
+      {
         frontMatter[key] = date
       } else {
         // Store as string by default
@@ -160,12 +162,12 @@ public struct HtmlRenderer: MarkupWalker {
   ///
   /// - Parameter link: The link node to process.
   public mutating func visitLink(_ link: Markdown.Link) {
-      let destination = link.destination ?? ""
-      let isExternal = destination.hasPrefix("http://") || destination.hasPrefix("https://")
-      let targetAttr = isExternal ? " target=\"_blank\" rel=\"noopener noreferrer\"" : ""
-      html += "<a href=\"\(destination)\"\(targetAttr)>"
-      descendInto(link)
-      html += "</a>"
+    let destination = link.destination ?? ""
+    let isExternal = destination.hasPrefix("http://") || destination.hasPrefix("https://")
+    let targetAttr = isExternal ? " target=\"_blank\" rel=\"noopener noreferrer\"" : ""
+    html += "<a href=\"\(destination)\"\(targetAttr)>"
+    descendInto(link)
+    html += "</a>"
   }
 
   /// Visits an emphasis node and generates corresponding HTML.

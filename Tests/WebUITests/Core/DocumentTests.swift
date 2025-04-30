@@ -20,9 +20,15 @@ import Testing
     #expect(
       rendered.contains("<title>Hello World | Test Site</title>"),
       "Title not set correctly")
-    #expect(rendered.contains("<meta property=\"og:title\" content=\"Hello World | Test Site\">"), "OG title not set correctly")
-    #expect(rendered.contains("<meta name=\"description\" content=\"A test description\">"), "Meta description not set correctly")
-    #expect(rendered.contains("<meta property=\"og:description\" content=\"A test description\">"), "OG description not set correctly")
+    #expect(
+      rendered.contains("<meta property=\"og:title\" content=\"Hello World | Test Site\">"),
+      "OG title not set correctly")
+    #expect(
+      rendered.contains("<meta name=\"description\" content=\"A test description\">"),
+      "Meta description not set correctly")
+    #expect(
+      rendered.contains("<meta property=\"og:description\" content=\"A test description\">"),
+      "OG description not set correctly")
     #expect(rendered.contains("Hello, world!"), "Content not rendered correctly")
     #expect(rendered.contains("<html lang=\"en\">"), "Default locale not set correctly")
   }
@@ -50,12 +56,15 @@ import Testing
     }.render()
 
     #expect(rendered.contains("<title>Full Test - Test Site</title>"))
-    #expect(rendered.contains("<meta property=\"og:image\" content=\"https://example.com/image.png\">"))
+    #expect(
+      rendered.contains("<meta property=\"og:image\" content=\"https://example.com/image.png\">"))
     #expect(rendered.contains("<meta name=\"author\" content=\"Test Author\">"))
     #expect(rendered.contains("<meta property=\"og:type\" content=\"article\">"))
     #expect(rendered.contains("<meta name=\"twitter:creator\" content=\"@testhandle\">"))
     #expect(rendered.contains("<meta name=\"keywords\" content=\"test, swift, html\">"))
-    #expect(rendered.contains("<meta name=\"theme-color\" content=\"#0099ff\" media=\"(prefers-color-scheme: light)\">"))
+    #expect(
+      rendered.contains(
+        "<meta name=\"theme-color\" content=\"#0099ff\" media=\"(prefers-color-scheme: light)\">"))
     #expect(rendered.contains("<html lang=\"ru\">"))
   }
 
@@ -97,7 +106,8 @@ import Testing
       "Stylesheet Test"
     }.render()
 
-    #expect(rendered.contains("<link rel=\"stylesheet\" href=\"https://cdn.example.com/style1.css\">"))
+    #expect(
+      rendered.contains("<link rel=\"stylesheet\" href=\"https://cdn.example.com/style1.css\">"))
     #expect(rendered.contains("<link rel=\"stylesheet\" href=\"/public/style2.css\">"))
   }
 

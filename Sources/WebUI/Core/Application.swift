@@ -129,7 +129,8 @@ public struct Application {
         let pathComponents = route.path?.split(separator: "/") ?? [""]
         let fileName = pathComponents.last.map(String.init) ?? "index"
 
-        logger.trace("Creating path for route with components: \(pathComponents), filename: \(fileName)")
+        logger.trace(
+          "Creating path for route with components: \(pathComponents), filename: \(fileName)")
         let filePath = try createPath(
           for: pathComponents,
           in: outputDirectory,

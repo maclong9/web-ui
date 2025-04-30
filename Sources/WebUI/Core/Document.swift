@@ -45,7 +45,8 @@ public struct Document {
     self.contentBuilder = content
 
     logger.debug("Document initialized with path: \(path ?? "index"), title: \(metadata.pageTitle)")
-    logger.trace("Document has \(scripts?.count ?? 0) scripts, \(stylesheets?.count ?? 0) stylesheets")
+    logger.trace(
+      "Document has \(scripts?.count ?? 0) scripts, \(stylesheets?.count ?? 0) stylesheets")
   }
 
   /// Renders the document as a complete HTML string.
@@ -87,9 +88,11 @@ public struct Document {
     if let themeColor = metadata.themeColor {
       logger.trace("Adding theme-color meta tags")
       optionalMetaTags.append(
-        "<meta name=\"theme-color\" content=\"\(themeColor.light)\" media=\"(prefers-color-scheme: light)\">")
+        "<meta name=\"theme-color\" content=\"\(themeColor.light)\" media=\"(prefers-color-scheme: light)\">"
+      )
       optionalMetaTags.append(
-        "<meta name=\"theme-color\" content=\"\(themeColor.dark)\" media=\"(prefers-color-scheme: dark)\">")
+        "<meta name=\"theme-color\" content=\"\(themeColor.dark)\" media=\"(prefers-color-scheme: dark)\">"
+      )
     }
     if let scripts = scripts {
       logger.trace("Adding \(scripts.count) script tags")

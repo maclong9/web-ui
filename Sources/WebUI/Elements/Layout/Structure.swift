@@ -19,7 +19,9 @@ public final class Article: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "article", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "article", id: id, classes: classes, role: role, label: label, data: data,
+      content: content)
   }
 }
 
@@ -44,7 +46,9 @@ public final class Section: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "section", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "section", id: id, classes: classes, role: role, label: label, data: data,
+      content: content)
   }
 }
 
@@ -69,6 +73,7 @@ public final class Stack: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "div", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "div", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }

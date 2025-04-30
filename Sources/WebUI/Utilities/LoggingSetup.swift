@@ -8,13 +8,13 @@ public struct LoggingSetup {
   public static func bootstrap(logLevelString: String = "info") {
     let logLevel: Logger.Level
     switch logLevelString.lowercased() {
-      case "trace": logLevel = .trace
-      case "debug": logLevel = .debug
-      case "notice": logLevel = .notice
-      case "warning", "warn": logLevel = .warning
-      case "error": logLevel = .error
-      case "critical": logLevel = .critical
-      default: logLevel = .info
+    case "trace": logLevel = .trace
+    case "debug": logLevel = .debug
+    case "notice": logLevel = .notice
+    case "warning", "warn": logLevel = .warning
+    case "error": logLevel = .error
+    case "critical": logLevel = .critical
+    default: logLevel = .info
     }
 
     LoggingSystem.bootstrap { label in

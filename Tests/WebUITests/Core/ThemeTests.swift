@@ -17,7 +17,7 @@ struct ThemeTests {
   func testThemeWithColors() {
     let theme = Theme(colors: ["primary": "red", "secondary": "#10b981"])
     let css = theme.generateCSS()
-    
+
     #expect(css.contains("--color-primary: red;"))
     #expect(css.contains("--color-secondary: #10b981;"))
   }

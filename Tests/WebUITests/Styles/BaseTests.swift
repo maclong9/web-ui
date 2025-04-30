@@ -189,7 +189,9 @@ import Testing
       .spacing(.both, length: 4)
     let rendered = element.render()
     #expect(
-      rendered.contains("class=\"w-full h-screen text-xl font-semibold text-gray-700 cursor-pointer mx-auto p-6 space-x-4 space-y-4\""))
+      rendered.contains(
+        "class=\"w-full h-screen text-xl font-semibold text-gray-700 cursor-pointer mx-auto p-6 space-x-4 space-y-4\""
+      ))
   }
 
   // MARK: - Edge Cases

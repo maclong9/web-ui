@@ -19,7 +19,9 @@ public final class Header: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "header", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "header", id: id, classes: classes, role: role, label: label, data: data,
+      content: content)
   }
 }
 
@@ -44,7 +46,8 @@ public final class Navigation: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "nav", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "nav", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -69,7 +72,9 @@ public final class Aside: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "aside", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "aside", id: id, classes: classes, role: role, label: label, data: data, content: content
+    )
   }
 }
 
@@ -94,7 +99,8 @@ public final class Main: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "main", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "main", id: id, classes: classes, role: role, label: label, data: data, content: content)
   }
 }
 
@@ -119,6 +125,8 @@ public final class Footer: Element {
     data: [String: String]? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
-    super.init(tag: "footer", id: id, classes: classes, role: role, label: label, data: data, content: content)
+    super.init(
+      tag: "footer", id: id, classes: classes, role: role, label: label, data: data,
+      content: content)
   }
 }

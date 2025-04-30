@@ -31,10 +31,10 @@ public enum Modifier: String {
 
   public var rawValue: String {
     switch self {
-      case .xs, .sm, .md, .lg, .xl, .hover, .focus, .active, .placeholder, .dark:
-        return "\(self):"
-      case .xl2:
-        return "2xl:"
+    case .xs, .sm, .md, .lg, .xl, .hover, .focus, .active, .placeholder, .dark:
+      return "\(self):"
+    case .xl2:
+      return "2xl:"
     }
   }
 }
@@ -80,7 +80,8 @@ public enum Axis: String {
 ///   - baseClasses: The base CSS classes (e.g., `["overflow-x-hidden"]`).
 ///   - modifiers: Zero or more modifiers to apply (e.g., `[.hover, .xl]`).
 /// - Returns: An array of CSS classes with modifiers applied (e.g., `["hover:xl:overflow-x-hidden"]`).
-public func combineClasses(_ baseClasses: [String], withModifiers modifiers: [Modifier]) -> [String] {
+public func combineClasses(_ baseClasses: [String], withModifiers modifiers: [Modifier]) -> [String]
+{
   if modifiers.isEmpty {
     return baseClasses
   }

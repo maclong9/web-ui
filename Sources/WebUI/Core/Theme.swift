@@ -78,7 +78,8 @@ public struct Theme {
 
     // Check if all configuration dictionaries are empty
     guard
-      !(fonts.isEmpty && colors.isEmpty && spacing.isEmpty && breakpoints.isEmpty && container.isEmpty
+      !(fonts.isEmpty && colors.isEmpty && spacing.isEmpty && breakpoints.isEmpty
+        && container.isEmpty
         && textSizes.isEmpty && fontWeights.isEmpty && tracking.isEmpty && leading.isEmpty
         && radius.isEmpty && shadows.isEmpty && insetShadows.isEmpty && dropShadows.isEmpty
         && blur.isEmpty && perspective.isEmpty && aspect.isEmpty && ease.isEmpty && custom.isEmpty)

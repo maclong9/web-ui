@@ -23,26 +23,26 @@ public enum Dimension {
 
   public var rawValue: String {
     switch self {
-      case .fixed(let value):
-        return "\(value)"
-      case .fraction(let numerator, let denominator):
-        return "\(numerator)/\(denominator)"
-      case .full:
-        return "full"
-      case .screen:
-        return "screen"
-      case .auto:
-        return "auto"
-      case .minContent:
-        return "min"
-      case .maxContent:
-        return "max"
-      case .fitContent:
-        return "fit"
-      case .character(let value):
-        return "[\(value)ch]"
-      case .custom(let value):
-        return "[\(value)]"
+    case .fixed(let value):
+      return "\(value)"
+    case .fraction(let numerator, let denominator):
+      return "\(numerator)/\(denominator)"
+    case .full:
+      return "full"
+    case .screen:
+      return "screen"
+    case .auto:
+      return "auto"
+    case .minContent:
+      return "min"
+    case .maxContent:
+      return "max"
+    case .fitContent:
+      return "fit"
+    case .character(let value):
+      return "[\(value)ch]"
+    case .custom(let value):
+      return "[\(value)]"
     }
   }
 }
