@@ -129,8 +129,6 @@ Contributions are what make the open-source community such an amazing place to
 learn, inspire, and create. Any contributions you make will benefit everybody
 else and are greatly appreciated.
 
-Please adhere to this project's [code of conduct](CODE_OF_CONDUCT.md).
-
 ## Support
 
 Reach out to the maintainer at one of the following places:
@@ -140,7 +138,7 @@ Reach out to the maintainer at one of the following places:
 
 ## License
 
-This project is licensed under the **MIT license**. See [LICENSE](LICENSE) for
+This project is licensed under the **Apache 2.0 license**. See [LICENSE](LICENSE) for
 more information.
 
 ## Acknowledgements
