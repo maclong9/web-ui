@@ -63,7 +63,7 @@ To use WebUI, ensure you have the following installed:
 ### Usage
 
 Refer to the
-[Static Site Generation with WebUI](https://maclong.netlify.app/articles/introduction-to-webui)
+[Static Site Generation with WebUI](https://maclong.uk/articles/introduction-to-webui)
 guide for detailed instructions on how to get started.
 
 ### Adding WebUI to a Swift Package Manager (SPM) project
