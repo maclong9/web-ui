@@ -64,7 +64,6 @@ dynamic web applications.
 To use WebUI, ensure you have the following installed:
 
 - Swift 6.1 or later
-- macOS 13 or later
 
 ### Usage
 
