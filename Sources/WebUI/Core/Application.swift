@@ -72,8 +72,8 @@ public struct Application {
     at url: URL,
     using fileManager: FileManager
   ) throws {
-    if fileManager.fileExists(atPath: url.path()) {
-      logger.debug("Removing existing directory at \(url.path())")
+    if fileManager.fileExists(atPath: url.path) {
+      logger.debug("Removing existing directory at \(url.path)")
       do {
         try fileManager.removeItem(at: url)
         logger.debug("Successfully removed existing directory")
@@ -82,7 +82,7 @@ public struct Application {
         throw BuildError.directoryCreationFailed(error)
       }
     } else {
-      logger.debug("No existing directory found at \(url.path())")
+      logger.debug("No existing directory found at \(url.path)")
     }
   }
 
@@ -95,7 +95,7 @@ public struct Application {
     at url: URL,
     using fileManager: FileManager
   ) throws {
-    logger.debug("Creating directory at \(url.path())")
+    logger.debug("Creating directory at \(url.path)")
     do {
       try fileManager.createDirectory(
         at: url,
