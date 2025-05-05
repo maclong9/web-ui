@@ -73,7 +73,7 @@ public struct Metadata {
     self.site = site
     self.title = title
     self.titleSeperator = titleSeperator
-    self.pageTitle = "\(title)\(site.map { " \(titleSeperator) \($0)" } ?? "")"
+    self.pageTitle = "\(title ?? "")\(site.map { " \(titleSeperator) \($0)" } ?? "")"
     self.description = description
     self.date = date
     self.image = image
