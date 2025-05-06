@@ -69,3 +69,6 @@ public struct HTMLBuilder {
     components.flatMap { $0 }
   }
 }
+
+/// Type alias for a closure that builds HTML content.
+public typealias HTMLContentBuilder = () -> [any HTML]
