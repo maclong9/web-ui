@@ -1,12 +1,19 @@
 import Foundation
 import Logging
 
+public enum ScriptAttribute: String {
+  /// Defers downloading of the script to during page pare
+  case `defer`
+  /// Causes the script to run as soon as it's available
+  case async
+}
+
 /// Represents an immutable HTML document with metadata and content.
 public struct Document {
   private let logger = Logger(label: "com.webui.document")
   public let path: String?
   public var metadata: Metadata
-  public var scripts: [String]?
+  public var scripts: [String: ScriptAttribute?]?
   public var stylesheets: [String]?
   public var theme: Theme?
   public let head: String?
@@ -30,7 +37,7 @@ public struct Document {
   public init(
     path: String? = nil,
     metadata: Metadata,
-    scripts: [String]? = nil,
+    scripts: [String: ScriptAttribute?]? = nil,
     stylesheets: [String]? = nil,
     theme: Theme? = nil,
     head: String? = nil,
@@ -44,9 +51,12 @@ public struct Document {
     self.head = head
     self.contentBuilder = content
 
-    logger.debug("Document initialized with path: \(path ?? "index"), title: \(metadata.pageTitle)")
+    logger.debug(
+      "Document initialized with path: \(path ?? "index"), title: \(metadata.pageTitle)"
+    )
     logger.trace(
-      "Document has \(scripts?.count ?? 0) scripts, \(stylesheets?.count ?? 0) stylesheets")
+      "Document has \(scripts?.count ?? 0) scripts, \(stylesheets?.count ?? 0) stylesheets"
+    )
   }
 
   /// Renders the document as a complete HTML string.
@@ -63,7 +73,8 @@ public struct Document {
     if let image = metadata.image, !image.isEmpty {
       logger.trace("Adding og:image meta tag: \(image)")
       optionalMetaTags.append(
-        "<meta property=\"og:image\" content=\"\(image)\">")
+        "<meta property=\"og:image\" content=\"\(image)\">"
+      )
     }
     if let author = metadata.author, !author.isEmpty {
       logger.trace("Adding author meta tag: \(author)")
@@ -72,12 +83,14 @@ public struct Document {
     if let type = metadata.type {
       logger.trace("Adding og:type meta tag: \(type.rawValue)")
       optionalMetaTags.append(
-        "<meta property=\"og:type\" content=\"\(type.rawValue)\">")
+        "<meta property=\"og:type\" content=\"\(type.rawValue)\">"
+      )
     }
     if let twitter = metadata.twitter, !twitter.isEmpty {
       logger.trace("Adding twitter meta tag: \(twitter)")
       optionalMetaTags.append(
-        "<meta name=\"twitter:creator\" content=\"@\(twitter)\">")
+        "<meta name=\"twitter:creator\" content=\"@\(twitter)\">"
+      )
     }
     if let keywords = metadata.keywords, !keywords.isEmpty {
       logger.trace("Adding keywords meta tag with \(keywords.count) keywords")
@@ -97,14 +110,17 @@ public struct Document {
     if let scripts = scripts {
       logger.trace("Adding \(scripts.count) script tags")
       for script in scripts {
-        optionalMetaTags.append("<script src=\"\(script)\"></script>")
+        optionalMetaTags.append(
+          "<script \(script.value?.rawValue ?? "") src=\"\(script.key)\"></script>"
+        )
       }
     }
     if let stylesheets = stylesheets {
       logger.trace("Adding \(stylesheets.count) stylesheet links")
       for stylesheet in stylesheets {
         optionalMetaTags.append(
-          "<link rel=\"stylesheet\" href=\"\(stylesheet)\">")
+          "<link rel=\"stylesheet\" href=\"\(stylesheet)\">"
+        )
       }
     }
 
