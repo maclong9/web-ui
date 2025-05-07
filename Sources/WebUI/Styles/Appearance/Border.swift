@@ -92,7 +92,6 @@ extension Element {
   public func border(
     width: Int? = nil,
     edges: Edge...,
-    radius: (side: RadiusSide?, size: RadiusSize)? = nil,
     style: BorderStyle? = nil,
     color: Color? = nil,
     on modifiers: Modifier...
@@ -104,7 +103,8 @@ extension Element {
     if let width = width {
       if style == .divide {
         for edge in effectiveEdges {
-          let edgePrefix = edge == .horizontal ? "x" : edge == .vertical ? "y" : ""
+          let edgePrefix =
+            edge == .horizontal ? "x" : edge == .vertical ? "y" : ""
           if !edgePrefix.isEmpty {
             baseClasses.append("divide-\(edgePrefix)-\(width)")
           }
@@ -114,7 +114,8 @@ extension Element {
           contentsOf: effectiveEdges.map { edge in
             let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
             return "border\(edgePrefix)\(width != 0 ? "-\(width)" : "")"
-          })
+          }
+        )
       }
     }
 
@@ -124,14 +125,8 @@ extension Element {
         contentsOf: effectiveEdges.map { edge in
           let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
           return "border\(edgePrefix)"
-        })
-    }
-
-    // Handle radius
-    if let (side, size) = radius {
-      let sidePrefix = side?.rawValue ?? ""
-      let sideClass = sidePrefix.isEmpty ? "" : "-\(sidePrefix)"
-      baseClasses.append("rounded\(sideClass)-\(size.rawValue)")
+        }
+      )
     }
 
     // Handle style
@@ -140,7 +135,8 @@ extension Element {
         contentsOf: effectiveEdges.map { edge in
           let edgePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
           return "border\(edgePrefix)-\(styleValue.rawValue)"
-        })
+        }
+      )
     }
 
     // Handle color
@@ -148,6 +144,27 @@ extension Element {
       baseClasses.append("border-\(colorValue)")
     }
 
+    let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
+
+    return Element(
+      tag: self.tag,
+      id: self.id,
+      classes: (self.classes ?? []) + newClasses,
+      role: self.role,
+      label: self.label,
+      isSelfClosing: self.isSelfClosing,
+      customAttributes: self.customAttributes,
+      content: self.contentBuilder
+    )
+  }
+
+  public func rounded(
+    _ size: RadiusSize,
+    _ edge: RadiusSide = .all,
+    on modifiers: Modifier...
+  ) -> Element {
+    let sidePrefix = edge.rawValue.isEmpty ? "" : "-\(edge.rawValue)"
+    let baseClasses = ["rounded\(sidePrefix)-\(size.rawValue)"]
     let newClasses = combineClasses(baseClasses, withModifiers: modifiers)
 
     return Element(
