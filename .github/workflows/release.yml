@@ -2,17 +2,17 @@ name: Automated Release
 on:
   push:
     branches:
-      - main
-      - development
+      - next
+
 permissions:
   contents: write
   actions: read
+
 jobs:
   check-commit:
     runs-on: ubuntu-latest
     outputs:
       should_release: ${{ steps.check.outputs.should_release }}
-      commit_message: ${{ steps.check.outputs.commit_message }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,8 +23,7 @@ jobs:
         id: check
         run: |
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          echo "commit_message=$COMMIT_MESSAGE" >> $GITHUB_OUTPUT
-          
+
           if [[ $COMMIT_MESSAGE =~ ^feat!.* ]] || [[ $COMMIT_MESSAGE =~ ^feat:.* ]] || [[ $COMMIT_MESSAGE =~ ^fix:.* ]]; then
             echo "should_release=true" >> $GITHUB_OUTPUT
           else
@@ -71,81 +70,57 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          #!/bin/bash
           set -e
 
-          # Get the latest version tag (default to 0.0.0 if no tags exist)
+          # Get the latest version tag (default to 0.0.0 if none)
           LATEST_TAG=$(git tag -l '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)
           if [ -z "$LATEST_TAG" ]; then
             CURRENT_VERSION="0.0.0"
           else
-            CURRENT_VERSION="$LATEST_TAG"  # Use tag as is (e.g., 0.0.0)
+            CURRENT_VERSION="$LATEST_TAG"
           fi
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
 
-          # Get the latest commit message
-          COMMIT_MESSAGE="${{ needs.check-commit.outputs.commit_message }}"
+          # Get last commit message
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
-          # Determine version bump based on conventional commits
+          # Determine version bump
           if [[ $COMMIT_MESSAGE =~ ^feat!.* ]]; then
-            # Major bump for breaking changes
             MAJOR=$((MAJOR + 1))
             MINOR=0
             PATCH=0
           elif [[ $COMMIT_MESSAGE =~ ^feat:.* ]]; then
-            # Minor bump for features
             MINOR=$((MINOR + 1))
             PATCH=0
           elif [[ $COMMIT_MESSAGE =~ ^fix:.* ]]; then
-            # Patch bump for fixes
             PATCH=$((PATCH + 1))
           else
             echo "No version bump needed (commit: $COMMIT_MESSAGE)"
             exit 0
           fi
 
-          # Form the new version
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
 
-          # Configure git
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          
-          # Configure git to use GitHub token
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-          
-          # Determine if this is a pre-release (development branch)
-          IS_PRERELEASE="false"
-          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
-          if [ "$BRANCH_NAME" = "development" ]; then
-            IS_PRERELEASE="true"
-            git push origin development
-          else
-            git push origin main
-          fi
-          
-          # Create and push tag
+          git push origin next
+
           git tag -a "$NEW_VERSION" -m "$NEW_VERSION"
           git push origin "$NEW_VERSION"
 
-          # Generate release notes from commit message
-          RELEASE_NOTES="Automated release for $NEW_VERSION
-          
-          Changes:
-          - $COMMIT_MESSAGE"
-
-          # Create GitHub release
-          if [ "$IS_PRERELEASE" = "true" ]; then
-            # Create pre-release for development branch
-            gh release create "$NEW_VERSION" \
-              --title "Pre-release $NEW_VERSION" \
-              --notes "$RELEASE_NOTES" \
-              --prerelease
+          # Generate release notes from commits since last tag
+          if [ -z "$LATEST_TAG" ]; then
+            RELEASE_NOTES=$(git log --pretty=format:"- %s")
           else
-            # Create regular release for main branch
-            gh release create "$NEW_VERSION" \
-              --title "$NEW_VERSION" \
-              --notes "$RELEASE_NOTES" \
-              --latest
+            RELEASE_NOTES=$(git log "$LATEST_TAG"..HEAD --pretty=format:"- %s")
           fi
+
+          echo "Release notes:"
+          echo "$RELEASE_NOTES"
+
+          gh release create "$NEW_VERSION" \
+            --title "Pre-release $NEW_VERSION" \
+            --notes "$RELEASE_NOTES" \
+            --prerelease
