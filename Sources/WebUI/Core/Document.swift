@@ -43,8 +43,8 @@ public struct Document {
     head: String? = nil,
     @HTMLBuilder content: @escaping () -> [any HTML]
   ) {
-    self.path = path
     self.metadata = metadata
+    self.path = path ?? metadata.title?.pathFormatted()
     self.scripts = scripts
     self.stylesheets = stylesheets
     self.theme = theme
@@ -79,12 +79,6 @@ public struct Document {
     if let author = metadata.author, !author.isEmpty {
       logger.trace("Adding author meta tag: \(author)")
       optionalMetaTags.append("<meta name=\"author\" content=\"\(author)\">")
-    }
-    if let type = metadata.type {
-      logger.trace("Adding og:type meta tag: \(type.rawValue)")
-      optionalMetaTags.append(
-        "<meta property=\"og:type\" content=\"\(type.rawValue)\">"
-      )
     }
     if let twitter = metadata.twitter, !twitter.isEmpty {
       logger.trace("Adding twitter meta tag: \(twitter)")
@@ -133,6 +127,7 @@ public struct Document {
           <meta property="og:title" content="\(metadata.pageTitle)">
           <meta name="description" content="\(metadata.description)">
           <meta property="og:description" content="\(metadata.description)">
+          "<meta property=\"og:type\" content=\"\(metadata.type.rawValue)\">"
           <meta name="twitter:card" content="summary_large_image">
           \(optionalMetaTags.joined(separator: "\n"))
           <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
