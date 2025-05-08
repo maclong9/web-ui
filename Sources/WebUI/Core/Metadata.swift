@@ -39,7 +39,7 @@ public struct Metadata {
   public var keywords: [String]?
   public var twitter: String?
   public var locale: Locale
-  public var type: ContentType?
+  public var type: ContentType
   public var themeColor: ThemeColor?
 
   /// Creates metadata for a document’s head section.
@@ -54,7 +54,7 @@ public struct Metadata {
   ///   - keywords: SEO keywords, optional.
   ///   - twitter: Twitter handle without "@", optional.
   ///   - locale: Language setting, defaults to `.en`.
-  ///   - type: Open Graph content type, optional.
+  ///   - type: Open Graph content type, defaults to `.website`.
   ///   - themeColor: Theme colors for light and dark modes, optional.
   public init(
     site: String? = nil,
@@ -67,7 +67,7 @@ public struct Metadata {
     keywords: [String]? = nil,
     twitter: String? = nil,
     locale: Locale = .en,
-    type: ContentType? = nil,
+    type: ContentType = .website,
     themeColor: ThemeColor? = nil
   ) {
     self.site = site
@@ -105,7 +105,7 @@ extension Metadata {
   ///   - type: Optional content type, default is the same as `base`.
   ///   - themeColor: Optional theme color, default is the same as `base`.
   public init(
-    base: Metadata,
+    from base: Metadata,
     site: String? = nil,
     title: String? = nil,
     titleSeperator: String? = nil,

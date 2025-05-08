@@ -67,9 +67,16 @@ import Testing
 
   @Test("Border with radius")
   func testBorderWithRadius() async throws {
-    let element = Element(tag: "div").border(radius: (.all, .md))
+    let element = Element(tag: "div").rounded(.md)
     let rendered = element.render()
     #expect(rendered.contains("class=\"rounded-md\""))
+  }
+  
+  @Test("Border with radius on just one side")
+  func testBorderWithOneSidedRadius() async throws {
+    let element = Element(tag: "div").rounded(.full, .topLeft)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"rounded-tl-full\""))
   }
 
   @Test("Border with specific edge and color")
