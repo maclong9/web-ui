@@ -2,7 +2,7 @@ import Foundation
 import Logging
 
 /// A structure that manages and builds a collection of routes into HTML files.
-public struct Application {
+public struct StaticSite {
   private let logger = Logger(label: "com.webui.application")
   public let routes: [Document]
 

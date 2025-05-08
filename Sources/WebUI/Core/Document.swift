@@ -103,15 +103,6 @@ public struct Document {
           <title>\(metadata.pageTitle)</title>
           \(optionalTags.joined(separator: "\n"))
           <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-          <style type="text/tailwindcss">
-              @theme {
-                  --breakpoint-xs: 30rem;
-                  --breakpoint-3xl: 120rem;
-                  --breakpoint-4xl: 160rem;
-                  \(theme?.generateCSS() ?? "")
-                  @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-              }
-          </style>
           \(head ?? "")
       </head> 
       <body>
