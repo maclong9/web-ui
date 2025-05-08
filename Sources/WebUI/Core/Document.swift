@@ -8,6 +8,11 @@ public enum ScriptAttribute: String {
   case async
 }
 
+public struct Script {
+  let src: String
+  let attribute: ScriptAttribute?
+}
+
 /// Represents an immutable HTML document with metadata and content.
 public struct Document {
   private let logger = Logger(label: "com.webui.document")
@@ -69,42 +74,11 @@ public struct Document {
     logger.debug("Rendering document: \(path ?? "index")")
     logger.trace("Starting metadata rendering")
 
-    var optionalMetaTags: [String] = []
-    if let image = metadata.image, !image.isEmpty {
-      logger.trace("Adding og:image meta tag: \(image)")
-      optionalMetaTags.append(
-        "<meta property=\"og:image\" content=\"\(image)\">"
-      )
-    }
-    if let author = metadata.author, !author.isEmpty {
-      logger.trace("Adding author meta tag: \(author)")
-      optionalMetaTags.append("<meta name=\"author\" content=\"\(author)\">")
-    }
-    if let twitter = metadata.twitter, !twitter.isEmpty {
-      logger.trace("Adding twitter meta tag: \(twitter)")
-      optionalMetaTags.append(
-        "<meta name=\"twitter:creator\" content=\"@\(twitter)\">"
-      )
-    }
-    if let keywords = metadata.keywords, !keywords.isEmpty {
-      logger.trace("Adding keywords meta tag with \(keywords.count) keywords")
-      optionalMetaTags.append(
-        "<meta name=\"keywords\" content=\"\(keywords.joined(separator: ", "))\">"
-      )
-    }
-    if let themeColor = metadata.themeColor {
-      logger.trace("Adding theme-color meta tags")
-      optionalMetaTags.append(
-        "<meta name=\"theme-color\" content=\"\(themeColor.light)\" media=\"(prefers-color-scheme: light)\">"
-      )
-      optionalMetaTags.append(
-        "<meta name=\"theme-color\" content=\"\(themeColor.dark)\" media=\"(prefers-color-scheme: dark)\">"
-      )
-    }
+    var optionalTags: [String] = metadata.tags + []
     if let scripts = scripts {
       logger.trace("Adding \(scripts.count) script tags")
       for script in scripts {
-        optionalMetaTags.append(
+        optionalTags.append(
           "<script \(script.value?.rawValue ?? "") src=\"\(script.key)\"></script>"
         )
       }
@@ -112,24 +86,22 @@ public struct Document {
     if let stylesheets = stylesheets {
       logger.trace("Adding \(stylesheets.count) stylesheet links")
       for stylesheet in stylesheets {
-        optionalMetaTags.append(
+        optionalTags.append(
           "<link rel=\"stylesheet\" href=\"\(stylesheet)\">"
         )
       }
     }
 
-    logger.trace("Building head section")
-    let headSection = """
+    logger.debug("Document rendered successfully: \(metadata.pageTitle)")
+
+    return """
+      <!DOCTYPE html>
+      <html lang="\(metadata.locale.rawValue)">
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>\(metadata.pageTitle)</title>
-          <meta property="og:title" content="\(metadata.pageTitle)">
-          <meta name="description" content="\(metadata.description)">
-          <meta property="og:description" content="\(metadata.description)">
-          "<meta property=\"og:type\" content=\"\(metadata.type.rawValue)\">"
-          <meta name="twitter:card" content="summary_large_image">
-          \(optionalMetaTags.joined(separator: "\n"))
+          \(optionalTags.joined(separator: "\n"))
           <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
           <style type="text/tailwindcss">
               @theme {
@@ -141,19 +113,9 @@ public struct Document {
               }
           </style>
           \(head ?? "")
-      </head>
-      """
-
-    logger.trace("Rendering content elements")
-    let contentElements = content.map { $0.render() }.joined()
-    logger.debug("Document rendered successfully: \(metadata.pageTitle)")
-
-    return """
-      <!DOCTYPE html>
-      <html lang="\(metadata.locale.rawValue)">
-      \(headSection)
+      </head> 
       <body>
-        \(contentElements)
+        \(content.map { $0.render() }.joined())
       </body>
       </html>
       """
