@@ -40,7 +40,7 @@ public struct Metadata {
   public init(
     site: String? = nil,
     title: String? = nil,
-    titleSeperator: String? = " | ",
+    titleSeperator: String? = " ",
     description: String,
     date: Date? = nil,
     image: String? = nil,
@@ -121,9 +121,9 @@ public struct Metadata {
       baseTags.append(
         "<meta name=\"theme-color\" content=\"\(themeColor.light)\" \(themeColor.dark != nil ? "media=\"(prefers-color-scheme: light)\"" : "")>"
       )
-      if themeColor.dark != nil {
+      if let themeDark = themeColor.dark {
         baseTags.append(
-          "<meta name=\"theme-color\" content=\"\(themeColor.dark)\" media=\"(prefers-color-scheme: dark)\">"
+          "<meta name=\"theme-color\" content=\"\(themeDark)\" media=\"(prefers-color-scheme: dark)\">"
         )
       }
     }
