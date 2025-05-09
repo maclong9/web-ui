@@ -36,8 +36,10 @@ jobs:
           LATEST_TAG=$(git tag -l '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1 || true)
           LATEST_TAG=$(echo "$LATEST_TAG" | tr -d '[:space:]')
           CURRENT_VERSION="${LATEST_TAG:-0.0.0}"
-
-          IFS='.'; set -- "$CURRENT_VERSION"; MAJOR=$1; MINOR=$2; PATCH=$3
+          
+          IFS='.' read -r MAJOR MINOR PATCH <<EOF
+          $CURRENT_VERSION
+          EOF
 
           case "$COMMIT_MESSAGE" in
             feat!*) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
