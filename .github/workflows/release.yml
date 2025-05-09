@@ -27,7 +27,7 @@ jobs:
           set -e
 
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          if ! echo "$COMMIT_MESSAGE" | grep -E '^(feat!|feat:|fix:)' >/dev/null; then
+          if ! echo "$COMMIT_MESSAGE" | grep -E '^(feat!|feat:|fix:|fix!:)' >/dev/null; then
             echo "No release needed"
             exit 0
           fi
