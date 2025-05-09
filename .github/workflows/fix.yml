@@ -15,19 +15,27 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Install latest GitHub CLI
+        run: |
+          brew install gh
+
       - name: Create and merge PRs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           TITLE="chore: auto-approved quick fix"
           BODY="This PR was auto-generated from a fix on main to keep branches in sync."
 
+          # Create PR to next branch
           PR_NEXT_URL=$(gh pr create --base next --head main --title "$TITLE" --body "$BODY")
           PR_NEXT_NUMBER=$(echo "$PR_NEXT_URL" | grep -o '[0-9]\+$')
-          gh pr review "$PR_NEXT_NUMBER" --approve --body "auto-approved quick fix"
+
+          # Merge the PR to next branch
           gh pr merge "$PR_NEXT_NUMBER" --auto --merge
 
+          # Create PR to development branch
           PR_DEV_URL=$(gh pr create --base development --head main --title "$TITLE" --body "$BODY")
           PR_DEV_NUMBER=$(echo "$PR_DEV_URL" | grep -o '[0-9]\+$')
-          gh pr review "$PR_DEV_NUMBER" --approve --body "auto-approved quick fix"
+
+          # Merge the PR to development branch
           gh pr merge "$PR_DEV_NUMBER" --auto --merge
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
