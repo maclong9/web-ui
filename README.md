@@ -131,8 +131,10 @@ prefixes:
 
 For urgent fixes that need to be pushed to `main` right away, create a PR with the title and merge message including `fix!:` 
 once this is approved and merged, an action will automatically create PRs for `next` and `development` as well.
-This ensures that all of the branches remain up in sync when quick changes are required in the main branch. Just
-make sure that you remember to approve and merge them.
+This ensures that all of the branches remain in sync when quick changes are required in the main branch. 
+
+> [!NOTE]
+> Ensure the auto-generated PRs are approved and merged.
 
 ###
 
