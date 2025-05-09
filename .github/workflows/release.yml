@@ -24,17 +24,18 @@ jobs:
         with:
           fetch-depth: 1
       
-      - name: Check commit message
+      - name: Check commit message and branch
         id: check
         run: |
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          BRANCH_NAME=${{ github.ref_name }}
 
           if [[ $COMMIT_MESSAGE =~ ^feat!.* ]] || [[ $COMMIT_MESSAGE =~ ^feat:.* ]] || [[ $COMMIT_MESSAGE =~ ^fix:.* ]]; then
             echo "should_release=true" >> $GITHUB_OUTPUT
           else
             echo "should_release=false" >> $GITHUB_OUTPUT
             echo "No version bump needed (commit: $COMMIT_MESSAGE)"
-          fi
+          fi /
 
   release:
     needs: check-commit
@@ -105,16 +106,28 @@ jobs:
           fi
 
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-          PRE_RELEASE_TAG="$NEW_VERSION-pre"
-          echo "Bumping version from $CURRENT_VERSION to $PRE_RELEASE_TAG"
+          BRANCH_NAME=${{ github.ref_name }}
+
+          # Determine tag and release type based on branch
+          if [ "$BRANCH_NAME" = "main" ]; then
+            RELEASE_TAG="$NEW_VERSION"
+            RELEASE_TITLE="Release $NEW_VERSION"
+            IS_PRERELEASE=false
+          else
+            RELEASE_TAG="next-$NEW_VERSION"
+            RELEASE_TITLE="Pre-release next-$NEW_VERSION"
+            IS_PRERELEASE=true
+          fi
+
+          echo "Bumping version from $CURRENT_VERSION to $RELEASE_TAG"
 
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-          git push origin ${{ github.ref_name }}
+          git push origin "$BRANCH_NAME"
 
-          git tag -a "$PRE_RELEASE_TAG" -m "$PRE_RELEASE_TAG"
-          git push origin "$PRE_RELEASE_TAG"
+          git tag -a "$RELEASE_TAG" -m "$RELEASE_TAG"
+          git push origin "$RELEASE_TAG"
 
           # Generate release notes from commits since last tag
           if [ -z "$LATEST_TAG" ]; then
@@ -126,7 +139,7 @@ jobs:
           echo "Release notes:"
           echo "$RELEASE_NOTES"
 
-          gh release create "$PRE_RELEASE_TAG" \
-            --title "Pre-release $PRE_RELEASE_TAG" \
+          gh release create "$RELEASE_TAG" \
+            --title "$RELEASE_TITLE" \
             --notes "$RELEASE_NOTES" \
-            --prerelease
+            --prerelease=$IS_PRERELEASE
