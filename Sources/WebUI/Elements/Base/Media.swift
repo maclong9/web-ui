@@ -64,23 +64,30 @@ public final class Source: Element {
 
 /// Generates an HTML img element.
 public final class Image: Element {
+  let source: String
   let description: String
   let size: MediaSize?
 
   /// Creates a new HTML img element.
   ///
   /// - Parameters:
+  ///   - source: Where the image is located.
   ///   - description: Alt text for accessibility.
   ///   - size: Image size dimensions, optional.
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   public init(
+    source: String,
     description: String,
     size: MediaSize? = nil,
     data: [String: String]? = nil
   ) {
+    self.source = source
     self.description = description
     self.size = size
     var customAttributes: [String] = []
+    if !source.isEmpty {
+      customAttributes.append("src=\"\(source)\"")
+    }
     if !description.isEmpty {
       customAttributes.append("alt=\"\(description)\"")
     }
@@ -140,7 +147,7 @@ public final class Picture: Element {
         for source in sources {
           Source(src: source.src, type: source.type?.rawValue)
         }
-        Image(description: description, size: size)
+        Image(source: sources[0].src, description: description, size: size)
       }
     )
   }

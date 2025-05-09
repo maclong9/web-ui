@@ -208,4 +208,16 @@ public struct Theme {
     logger.debug("CSS generation completed with \(propertyCount) properties")
     return css
   }
+
+  public func generateFile() -> String {
+    """
+    @theme {
+      --breakpoint-xs: 30rem;
+      --breakpoint-3xl: 120rem;
+      --breakpoint-4xl: 160rem;
+      \(self.generateCSS())
+      @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+    }
+    """
+  }
 }

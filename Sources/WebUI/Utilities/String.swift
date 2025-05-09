@@ -11,7 +11,7 @@ extension String: HTML {
 
   /// Converts the string to a lowercase, hyphen-separated path representation.
   public func pathFormatted() -> String {
-    lowercased()
+    self.lowercased()
       .replacingOccurrences(of: "[^a-z0-9 ]", with: "", options: .regularExpression)
       .split(separator: " ")
       .filter { !$0.isEmpty }

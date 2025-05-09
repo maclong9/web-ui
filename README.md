@@ -1,5 +1,3 @@
-# WebUI
-
 <h2 align="center">
   <a href="https://github.com/dec0dOS/amazing-github-template">
     <img src="https://github.com/user-attachments/assets/657945a9-5540-4abb-a107-4f6547e4a77e" alt="Logo" width="300">
@@ -7,7 +5,7 @@
 </h2>
 
 <div align="center">
-  A library for generating Web User Interfaces in a simple, type-safe, and consistent manner.
+  A library for generating websites in a simple, type-safe, and consistent manner.
   <br />
   <br />
   <a href="https://github.com/maclong9/web-ui/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
@@ -20,9 +18,11 @@
 <div align="center">
 <br />
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmaclong9%2Fweb-ui%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/maclong9/web-ui)
 [![license](https://img.shields.io/github/license/maclong9/web-ui.svg)](LICENSE)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/maclong9/web-ui/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 [![Automated Release](https://github.com/maclong9/web-ui/actions/workflows/release.yml/badge.svg)](https://github.com/maclong9/web-ui/actions/workflows/release.yml)
+[![Run Tests](https://github.com/maclong9/web-ui/actions/workflows/test.yml/badge.svg)](https://github.com/maclong9/web-ui/actions/workflows/test.yml)
 
 </div>
 
@@ -78,11 +78,15 @@ steps:
 
 1. Open your `Package.swift` file.
 2. Add the WebUI repository URL to the `dependencies` array.
+  a. Select `from: "x.x.x"` for the release version.
+  b. Select `from: "next-x.x.x"` for the pre-release version.
+  c. Select `branch: "development"` for the most up to date changes.
 
 ```swift
 dependencies: [
-    // Add the WebUI package dependency
-    .package(url: "https://github.com/maclong9/web-ui.git", from: "1.0.0")
+    .package(url: "https://github.com/maclong9/web-ui.git", from: "1.0.0") // Release Version
+    .package(url: "https://github.com/maclong9/web-ui.git", from: "next-1.1.0") // Pre-Release Version
+    .package(url: "https://github.com/maclong9/web-ui.git", branch: "development") // Development Version
 ],
 ```
 
@@ -122,6 +126,15 @@ prefixes:
 - `feat!:` - Major version increment for breaking changes.
 - `feat:` - Minor version increment for new features.
 - `fix:` - Patch version increment for bug fixes.
+
+### Quick Fixes
+
+For urgent fixes that need to be pushed to `main` right away, create a PR with the title and merge message including `fix!:` 
+once this is approved and merged, an action will automatically create PRs for `next` and `development` as well.
+This ensures that all of the branches remain up in sync when quick changes are required in the main branch. Just
+make sure that you remember to approve and merge them.
+
+###
 
 ## Contributing
 
