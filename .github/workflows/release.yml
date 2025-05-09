@@ -2,9 +2,7 @@ name: Automated Release
 on:
   push:
     branches: [main, next]
-  pull_request:
-    branches: [main, next]
-
+    
 permissions:
   contents: write
   actions: read
