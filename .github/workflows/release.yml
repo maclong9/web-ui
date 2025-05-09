@@ -105,15 +105,16 @@ jobs:
           fi
 
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-          echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
+          PRE_RELEASE_TAG="$NEW_VERSION-pre"
+          echo "Bumping version from $CURRENT_VERSION to $PRE_RELEASE_TAG"
 
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
           git push origin ${{ github.ref_name }}
 
-          git tag -a "$NEW_VERSION" -m "$NEW_VERSION"
-          git push origin "$NEW_VERSION"
+          git tag -a "$PRE_RELEASE_TAG" -m "$PRE_RELEASE_TAG"
+          git push origin "$PRE_RELEASE_TAG"
 
           # Generate release notes from commits since last tag
           if [ -z "$LATEST_TAG" ]; then
@@ -125,7 +126,7 @@ jobs:
           echo "Release notes:"
           echo "$RELEASE_NOTES"
 
-          gh release create "$NEW_VERSION" \
-            --title "Pre-release $NEW_VERSION" \
+          gh release create "$PRE_RELEASE_TAG" \
+            --title "Pre-release $PRE_RELEASE_TAG" \
             --notes "$RELEASE_NOTES" \
             --prerelease
