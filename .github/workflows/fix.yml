@@ -11,12 +11,18 @@ jobs:
     if: contains(github.event.head_commit.message, 'fix!:')
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          PR_NEXT=$(gh pr create --base next --head main --title "chore: apply quick fix from main" --output json | jq -r '.number')
-          gh pr review $PR_NEXT --approve --body "auto-approved quick fix"
-          gh pr merge $PR_NEXT --auto --merge
-          PR_DEV=$(gh pr create --base development --head main --title "chore: apply quick fix from main" --output json | jq -r '.number')
-          gh pr review $PR_DEV --approve --body "auto-approved quick fix"
-          gh pr merge $PR_DEV --auto --merge
+      - name: Install latest GitHub CLI
+        run: |
+          brew install gh
+      - name: Create and merge PRs
+        run: |
+          PR_NEXT_URL=$(gh pr create --base next --head main --title "chore: apply quick fix from main")
+          PR_NEXT_NUMBER=$(echo $PR_NEXT_URL | grep -o '[0-9]\+$')
+          gh pr review $PR_NEXT_NUMBER --approve --body "auto-approved quick fix"
+          gh pr merge $PR_NEXT_NUMBER --auto --merge
+          PR_DEV_URL=$(gh pr create --base development --head main --title "chore: apply quick fix from main")
+          PR_DEV_NUMBER=$(echo $PR_DEV_URL | grep -o '[0-9]\+$')
+          gh pr review $PR_DEV_NUMBER --approve --body "auto-approved quick fix"
+          gh pr merge $PR_DEV_NUMBER --auto --merge
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
