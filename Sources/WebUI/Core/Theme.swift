@@ -208,7 +208,7 @@ public struct Theme {
     logger.debug("CSS generation completed with \(propertyCount) properties")
     return css
   }
-  
+
   public func generateFile() -> String {
     """
     @theme {
