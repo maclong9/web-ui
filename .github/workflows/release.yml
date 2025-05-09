@@ -110,7 +110,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-          git push origin next
+          git push origin ${{ github.ref_name }}
 
           git tag -a "$NEW_VERSION" -m "$NEW_VERSION"
           git push origin "$NEW_VERSION"
