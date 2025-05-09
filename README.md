@@ -130,7 +130,7 @@ prefixes:
 ### Quick Fixes
 
 For urgent fixes that need to be pushed to `main` right away, create a PR with the title including `fix!:` 
-once this is approved and merged, an action will automatically create PRs for `next` and `development` as well.
+once this is approved and merged, an action will automatically create and if possible approve PRs for `next` and `development` as well.
 This ensures that all of the branches remain up in sync when quick changes are required in the main branch.
 
 ###
