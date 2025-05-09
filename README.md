@@ -5,7 +5,7 @@
 </h2>
 
 <div align="center">
-  A library for generating Web User Interfaces in a simple, type-safe, and consistent manner.
+  A library for generating Websites in a simple, type-safe, and consistent manner.
   <br />
   <br />
   <a href="https://github.com/maclong9/web-ui/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
@@ -76,11 +76,15 @@ steps:
 
 1. Open your `Package.swift` file.
 2. Add the WebUI repository URL to the `dependencies` array.
+  a. Select `from: "x.x.x"` for the release version.
+  b. Select `from: "next-x.x.x"` for the pre-release version.
+  c. Select `branch: "development"` for the most up to date changes.
 
 ```swift
 dependencies: [
-    // Add the WebUI package dependency
-    .package(url: "https://github.com/maclong9/web-ui.git", from: "1.0.0")
+    .package(url: "https://github.com/maclong9/web-ui.git", from: "1.0.0") // Release Version
+    .package(url: "https://github.com/maclong9/web-ui.git", from: "next-1.1.0") // Pre-Release Version
+    .package(url: "https://github.com/maclong9/web-ui.git", branch: "development") // Development Version
 ],
 ```
 
