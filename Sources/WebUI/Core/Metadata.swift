@@ -22,7 +22,7 @@ public struct ThemeColor {
 public struct Metadata {
   public var site: String?
   public var title: String?
-  public var titleSeperator: String
+  public var titleSeperator: String?
   public var description: String
   public var date: Date?
   public var image: String?
@@ -34,13 +34,13 @@ public struct Metadata {
   public var themeColor: ThemeColor?
 
   public var pageTitle: String {
-    "\(title ?? "")\(titleSeperator)\(site ?? "")"
+    "\(title ?? "")\(titleSeperator ?? "")\(site ?? "")"
   }
 
   public init(
     site: String? = nil,
     title: String? = nil,
-    titleSeperator: String = " | ",
+    titleSeperator: String? = " | ",
     description: String,
     date: Date? = nil,
     image: String? = nil,

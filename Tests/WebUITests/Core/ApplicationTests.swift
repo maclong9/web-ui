@@ -6,7 +6,7 @@ import Testing
 @Suite("Application Tests") struct ApplicationTests {
   @Test("Creates the build directory and populates correctly")
   func createsAndPopulatesBuildDirectory() throws {
-    let app = Application(
+    let app = Website(
       routes: [
         Document(
           path: "index",
@@ -22,7 +22,7 @@ import Testing
           }
           Main {
             Stack {
-              Heading(level: .one) { "Tagline" }
+              Heading(.one) { "Tagline" }
               Text { "Lorem ipsum dolor sit amet." }
             }
           }
@@ -35,7 +35,7 @@ import Testing
           metadata: .init(title: "About", description: "Learn more here")
         ) {
           Article {
-            Heading(level: .two) { "Article Heading" }
+            Heading(.two) { "Article Heading" }
             Text { "Lorem ipsum dolor sit amet." }
           }
         },
