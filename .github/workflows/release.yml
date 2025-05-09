@@ -54,11 +54,12 @@ jobs:
           TAG=$([ "$BRANCH" = "main" ] && echo "$NEW_VERSION" || echo "next-$NEW_VERSION")
           TITLE=$([ "$BRANCH" = "main" ] && echo "Release $NEW_VERSION" || echo "Pre-release $TAG")
           PRERELEASE=$([ "$BRANCH" = "main" ] && echo "false" || echo "true")
+          NOTES=$(git log ${LATEST_TAG:+${LATEST_TAG}..HEAD} --pretty=format:'%s' | sed 's/^/- /' | jq -R -s -c .)
 
           echo "tag=$TAG" >> $GITHUB_OUTPUT
           echo "title=$TITLE" >> $GITHUB_OUTPUT
           echo "prerelease=$PRERELEASE" >> $GITHUB_OUTPUT
-          echo "notes=$(git log ${LATEST_TAG:+${LATEST_TAG}..HEAD} --pretty=format:'- %s')" >> $GITHUB_OUTPUT
+          echo "notes=$NOTES" >> $GITHUB_OUTPUT
 
       - name: Run tests
         if: steps.version.outputs.tag
