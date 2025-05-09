@@ -1,0 +1,15 @@
+name: Create Fix PRs
+on:
+  push:
+    branches: [main]
+jobs:
+  create-prs:
+    runs-on: macos-latest
+    if: contains(github.event.head_commit.message, 'fix!:')
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          gh pr create --base next --head hotfix --title "Hotfix to next" --body "Apply hotfix"
+          gh pr create --base development --head hotfix --title "Hotfix to development" --body "Apply hotfix"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
