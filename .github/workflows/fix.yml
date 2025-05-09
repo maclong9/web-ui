@@ -21,12 +21,15 @@ jobs:
 
       - name: Create and merge PRs
         run: |
-          PR_NEXT_URL=$(gh pr create --base next --head main --fill)
+          TITLE="chore: auto-approved quick fix"
+          BODY="This PR was auto-generated from a fix on main to keep branches in sync."
+
+          PR_NEXT_URL=$(gh pr create --base next --head main --title "$TITLE" --body "$BODY")
           PR_NEXT_NUMBER=$(echo "$PR_NEXT_URL" | grep -o '[0-9]\+$')
           gh pr review "$PR_NEXT_NUMBER" --approve --body "auto-approved quick fix"
           gh pr merge "$PR_NEXT_NUMBER" --auto --merge
 
-          PR_DEV_URL=$(gh pr create --base development --head main --fill)
+          PR_DEV_URL=$(gh pr create --base development --head main --title "$TITLE" --body "$BODY")
           PR_DEV_NUMBER=$(echo "$PR_DEV_URL" | grep -o '[0-9]\+$')
           gh pr review "$PR_DEV_NUMBER" --approve --body "auto-approved quick fix"
           gh pr merge "$PR_DEV_NUMBER" --auto --merge
