@@ -11,6 +11,7 @@ import Testing
       metadata: Metadata(
         site: "Test Site",
         title: "Hello World",
+        titleSeperator: " | ",
         description: "A test description"
       )
     ) {
@@ -40,7 +41,7 @@ import Testing
       metadata: Metadata(
         site: "Test Site",
         title: "Full Test",
-        titleSeperator: "-",
+        titleSeperator: " - ",
         description: "A complete metadata test",
         date: Date(),
         image: "https://example.com/image.png",
@@ -49,7 +50,7 @@ import Testing
         twitter: "testhandle",
         locale: .ru,
         type: .article,
-        themeColor: .init(light: "#0099ff", dark: "#1c1c1c"),
+        themeColor: .init("#0099ff", dark: "#1c1c1c"),
       )
     ) {
       "Content"
