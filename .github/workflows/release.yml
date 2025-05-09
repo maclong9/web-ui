@@ -25,27 +25,29 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
+
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          if ! echo "$COMMIT_MESSAGE" | grep -E '^(feat!|feat:|fix:)'; then
+          if ! echo "$COMMIT_MESSAGE" | grep -E '^(feat!|feat:|fix:)' >/dev/null; then
             echo "No release needed"
             exit 0
           fi
-          
-          LATEST_TAG=$(git tag -l '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1)
+
+          # Fetch latest semver tag
+          LATEST_TAG=$(git tag -l '[0-9]*.[0-9]*.[0-9]*' --sort=-v:refname | head -n 1 || true)
+          LATEST_TAG=$(echo "$LATEST_TAG" | tr -d '[:space:]')
           CURRENT_VERSION="${LATEST_TAG:-0.0.0}"
-          # Use POSIX-compatible method instead of here-string
+
           IFS='.'; set -- "$CURRENT_VERSION"; MAJOR=$1; MINOR=$2; PATCH=$3
-          
+
           case "$COMMIT_MESSAGE" in
             feat!*) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
             feat:*) MINOR=$((MINOR + 1)); PATCH=0 ;;
             fix:*)  PATCH=$((PATCH + 1)) ;;
           esac
-          
+
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-          # Use proper variable expansion
           BRANCH_NAME="${GITHUB_REF_NAME}"
-          
+
           if [ "$BRANCH_NAME" = "main" ]; then
             RELEASE_TAG="$NEW_VERSION"
             RELEASE_TITLE="Release $NEW_VERSION"
@@ -55,21 +57,21 @@ jobs:
             RELEASE_TITLE="Pre-release next-$NEW_VERSION"
             IS_PRERELEASE=true
           fi
-          
+
           echo "Bumping version to $RELEASE_TAG"
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          # Properly quote variables
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
           git tag -a "$RELEASE_TAG" -m "$RELEASE_TAG"
           git push origin "$RELEASE_TAG"
-          
-          if [ -z "$LATEST_TAG" ]; then
-            RELEASE_NOTES=$(git log --pretty=format:"- %s")
-          else
+
+          if [ -n "$LATEST_TAG" ]; then
             RELEASE_NOTES=$(git log "$LATEST_TAG"..HEAD --pretty=format:"- %s")
+          else
+            RELEASE_NOTES=$(git log --pretty=format:"- %s")
           fi
-          
+
           gh release create "$RELEASE_TAG" \
             --title "$RELEASE_TITLE" \
             --notes "$RELEASE_NOTES" \
