@@ -18,9 +18,11 @@
 <div align="center">
 <br />
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmaclong9%2Fweb-ui%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/maclong9/web-ui)
 [![license](https://img.shields.io/github/license/maclong9/web-ui.svg)](LICENSE)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/maclong9/web-ui/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 [![Automated Release](https://github.com/maclong9/web-ui/actions/workflows/release.yml/badge.svg)](https://github.com/maclong9/web-ui/actions/workflows/release.yml)
+[![Run Tests](https://github.com/maclong9/web-ui/actions/workflows/test.yml/badge.svg)](https://github.com/maclong9/web-ui/actions/workflows/test.yml)
 
 </div>
 
