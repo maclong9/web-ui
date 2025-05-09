@@ -11,15 +11,16 @@ struct MetadataTests {
     let metadata = Metadata(
       site: "Test Site",
       title: "Test Title",
+      titleSeperator: " | ",
       description: "Test description",
-      themeColor: .init(light: "#0099ff", dark: "#1c1c1c")
+      themeColor: .init("#0099ff", dark: "#1c1c1c")
     )
 
     // Assert
     #expect(metadata.site == "Test Site")
     #expect(metadata.title == "Test Title")
     #expect(metadata.description == "Test description")
-    #expect(metadata.titleSeperator == "|")
+    #expect(metadata.titleSeperator == " | ")
     #expect(metadata.pageTitle == "Test Title | Test Site")
     #expect(metadata.locale == .en)
     #expect(metadata.themeColor?.light == "#0099ff")
@@ -30,6 +31,7 @@ struct MetadataTests {
   @Test func testNoSiteMetadata() throws {
     let metadata = Metadata(
       title: "Just Title",
+      titleSeperator: nil,
       description: "No site metadata"
     )
 
@@ -42,11 +44,11 @@ struct MetadataTests {
     let metadata = Metadata(
       site: "My Site",
       title: "My Title",
-      titleSeperator: "-",
+      titleSeperator: " - ",
       description: "Custom separator test"
     )
 
-    #expect(metadata.titleSeperator == "-")
+    #expect(metadata.titleSeperator == " - ")
     #expect(metadata.pageTitle == "My Title - My Site")
   }
 
@@ -58,7 +60,7 @@ struct MetadataTests {
     let metadata = Metadata(
       site: "Full Site",
       title: "Full Title",
-      titleSeperator: ":",
+      titleSeperator: " : ",
       description: "Full metadata description",
       date: testDate,
       image: "/images/test.jpg",

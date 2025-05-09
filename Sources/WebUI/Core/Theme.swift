@@ -215,7 +215,7 @@ public struct Theme {
       --breakpoint-xs: 30rem;
       --breakpoint-3xl: 120rem;
       --breakpoint-4xl: 160rem;
-      \(self.generateCSS() ?? "")
+      \(self.generateCSS())
       @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
     }
     """
