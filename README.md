@@ -1,5 +1,3 @@
-# WebUI
-
 <h2 align="center">
   <a href="https://github.com/dec0dOS/amazing-github-template">
     <img src="https://github.com/user-attachments/assets/657945a9-5540-4abb-a107-4f6547e4a77e" alt="Logo" width="300">
