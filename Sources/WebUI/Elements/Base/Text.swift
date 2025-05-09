@@ -68,7 +68,7 @@ public final class Heading: Element {
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
   ///   - content: Closure providing heading content.
   public init(
-    level: HeadingLevel,
+    _ level: HeadingLevel,
     id: String? = nil,
     classes: [String]? = nil,
     role: AriaRole? = nil,

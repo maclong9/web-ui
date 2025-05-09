@@ -71,7 +71,7 @@ import Testing
     let rendered = element.render()
     #expect(rendered.contains("class=\"rounded-md\""))
   }
-  
+
   @Test("Border with radius on just one side")
   func testBorderWithOneSidedRadius() async throws {
     let element = Element(tag: "div").rounded(.full, .topLeft)
