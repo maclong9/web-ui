@@ -78,9 +78,9 @@ steps:
 
 1. Open your `Package.swift` file.
 2. Add the WebUI repository URL to the `dependencies` array.
-  a. Select `from: "x.x.x"` for the release version.
-  b. Select `from: "next-x.x.x"` for the pre-release version.
-  c. Select `branch: "development"` for the most up to date changes.
+  - Select `from: "x.x.x"` for the release version.
+  - Select `from: "next-x.x.x"` for the pre-release version.
+-  Select `branch: "development"` for the most up to date changes.
 
 ```swift
 dependencies: [
