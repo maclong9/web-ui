@@ -60,7 +60,11 @@ jobs:
           esac
 
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-          BRANCH_NAME=${{ github.ref_name }}
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BRANCH_NAME="${{ github.base_ref }}"
+          else
+            BRANCH_NAME="${{ github.ref_name }}"
+          fi
 
           if [ "$BRANCH_NAME" = "main" ]; then
             RELEASE_TAG="$NEW_VERSION"
