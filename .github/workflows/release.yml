@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   check-commit:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     outputs:
       should_release: ${{ steps.check.outputs.should_release }}
     steps:
