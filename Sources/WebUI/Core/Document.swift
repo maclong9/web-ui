@@ -22,7 +22,7 @@ public struct Document {
   public var stylesheets: [String]?
   public var theme: Theme?
   public let head: String?
-  private let contentBuilder: () -> [any HTML]
+  public let contentBuilder: () -> [any HTML]
 
   /// Computed HTML content from the content builder.
   var content: [any HTML] {

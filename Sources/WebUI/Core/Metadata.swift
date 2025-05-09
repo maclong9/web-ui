@@ -11,9 +11,9 @@ public enum Locale: String {
 
 public struct ThemeColor {
   public let light: String
-  public let dark: String
+  public let dark: String?
 
-  public init(light: String, dark: String) {
+  public init(_ light: String, dark: String? = nil) {
     self.light = light
     self.dark = dark
   }
@@ -119,11 +119,13 @@ public struct Metadata {
     }
     if let themeColor {
       baseTags.append(
-        "<meta name=\"theme-color\" content=\"\(themeColor.light)\" media=\"(prefers-color-scheme: light)\">"
+        "<meta name=\"theme-color\" content=\"\(themeColor.light)\" \(themeColor.dark != nil ? "media=\"(prefers-color-scheme: light)\"" : "")>"
       )
-      baseTags.append(
-        "<meta name=\"theme-color\" content=\"\(themeColor.dark)\" media=\"(prefers-color-scheme: dark)\">"
-      )
+      if themeColor.dark != nil {
+        baseTags.append(
+          "<meta name=\"theme-color\" content=\"\(themeColor.dark)\" media=\"(prefers-color-scheme: dark)\">"
+        )
+      }
     }
 
     return baseTags
