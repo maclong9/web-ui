@@ -15,13 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install latest GitHub CLI
-        run: |
-          brew install gh
-
       - name: Create and merge PRs
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           TITLE="chore: auto-approved quick fix"
           BODY="This PR was auto-generated from a fix on main to keep branches in sync."
