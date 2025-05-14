@@ -14,8 +14,8 @@ concurrency:
 jobs:
   release:
     if: |
-      !startsWith(github.event.head_commit.message, 'feat') &&
-      !startsWith(github.event.head_commit.message, 'fix')
+      startsWith(github.event.head_commit.message, 'feat') ||
+      startsWith(github.event.head_commit.message, 'fix')
     runs-on: macos-latest
     steps:
       - name: Checkout code
