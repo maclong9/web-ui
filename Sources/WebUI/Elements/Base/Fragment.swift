@@ -1,8 +1,15 @@
-/// Generates a generic HTML fragment.
+/// Generates a generic HTML fragment without a containing element.
 ///
 /// Groups arbitrary elements together without rendering a parent tag.
-/// Use for rendering components that have no obvious root tag.
-/// Also very useful for wrapping conditionals.
+/// Unlike other elements that produce an HTML tag, `Fragment` only renders its children.
+///
+/// Use `Fragment` for:
+/// - Rendering components that have no obvious root tag
+/// - Conditional rendering of multiple elements
+/// - Returning multiple elements from a component
+/// - Avoiding unnecessary DOM nesting
+///
+/// - Note: Conceptually similar to React's Fragment or Swift UI's Group component.
 public final class Fragment: HTML {
   let contentBuilder: () -> [any HTML]?
 
@@ -11,9 +18,19 @@ public final class Fragment: HTML {
     contentBuilder() ?? { [] }()
   }
 
-  /// Creates a new HTML fragment.
+  /// Creates a new HTML fragment that renders only its children.
   ///
   /// - Parameter content: Closure providing fragment content, defaults to empty.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   Fragment {
+  ///     Heading(.one) { "Title" }
+  ///     Text { "First paragraph" }
+  ///     Text { "Second paragraph" }
+  ///   }
+  ///   // Renders: <h1>Title</h1><p>First paragraph</p><p>Second paragraph</p>
+  ///   ```
   public init(
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {

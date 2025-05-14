@@ -1,25 +1,55 @@
 import Foundation
 import Logging
 
-/// Manages and builds a collection of routes into HTML files.
+/// Manages and builds a collection of routes (documents) into a complete static website.
+///
+/// The `Website` struct serves as the entry point for creating a static site, managing
+/// shared resources, and generating the final HTML files. It handles merging of common
+/// assets (like scripts and stylesheets) and provides a clean API for building multiple
+/// pages with consistent styling and behavior.
 public struct Website {
   private let logger = Logger(label: "com.webui.application")
 
+  /// Optional default metadata applied to all routes unless overridden.
   public let metadata: Metadata?
+  
+  /// Optional default theme applied to all routes unless overridden.
   public let theme: Theme?
+  
+  /// Optional stylesheet URLs applied to all routes.
   public let stylesheets: [String]?
+  
+  /// Optional JavaScript sources with their loading attributes applied to all routes.
   public let scripts: [String: ScriptAttribute?]?
+  
+  /// Optional custom HTML to append to all document head sections.
   public let head: String?
+  
+  /// Collection of document routes that make up the website.
   public let routes: [Document]
 
-  /// Initializes a static site.
+  /// Initializes a static site with shared resources and a collection of routes.
+  ///
+  /// This initializer configures a website with shared assets and settings that apply
+  /// to all routes. Individual routes can override these settings as needed.
+  ///
   /// - Parameters:
-  ///   - metadata: Optional default metadata for all routes.
-  ///   - theme: Optional default theme for all routes.
-  ///   - stylesheets: Optional stylesheet URLs for all routes.
-  ///   - scripts: Optional JavaScript sources for all routes.
-  ///   - head: Optional custom head tags for all routes.
-  ///   - routes: Routes to build into HTML files.
+  ///   - metadata: Optional default metadata for all routes (title, description, etc.).
+  ///   - theme: Optional default theme for all routes (colors, typography, etc.).
+  ///   - stylesheets: Optional stylesheet URLs to include in all routes.
+  ///   - scripts: Optional JavaScript sources with their loading attributes for all routes.
+  ///   - head: Optional custom head tags to include in all routes (analytics, fonts, etc.).
+  ///   - routes: Collection of document routes to build into HTML files.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let site = Website(
+  ///     metadata: Metadata(site: "My Site", description: "A great website"),
+  ///     stylesheets: ["main.css"],
+  ///     scripts: ["main.js": .defer],
+  ///     routes: [homePage, aboutPage, contactPage]
+  ///   )
+  ///   ```
   public init(
     metadata: Metadata? = nil,
     theme: Theme? = nil,
@@ -65,11 +95,28 @@ public struct Website {
     )
   }
 
-  /// Builds HTML files for each route in the specified directory.
+  /// Builds HTML files for each route and copies assets to the specified output directory.
+  ///
+  /// This method performs the following operations:
+  /// 1. Creates or clears the output directory
+  /// 2. Renders each document to its corresponding HTML file
+  /// 3. Creates any necessary subdirectories based on route paths
+  /// 4. Copies public assets to the output directory
+  ///
   /// - Parameters:
-  ///   - outputDirectory: Directory for generated HTML files. Defaults to `.output`.
-  ///   - assetsPath: Path to public assets. Defaults to `Sources/Public`.
-  /// - Throws: `BuildError` if file operations fail.
+  ///   - outputDirectory: Directory where the generated HTML files and assets will be placed. Defaults to `.output`.
+  ///   - assetsPath: Path to the directory containing public assets (images, client-side JS, etc.). Defaults to `Sources/Public`.
+  /// - Throws: `BuildError` if file operations fail, which can include file creation failures or route processing failures.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   do {
+  ///     try site.build(to: URL(filePath: "public"), assetsPath: "Resources/Assets")
+  ///     print("Site built successfully!")
+  ///   } catch {
+  ///     print("Failed to build site: \(error)")
+  ///   }
+  ///   ```
   public func build(
     to outputDirectory: URL = URL(filePath: ".output"),
     assetsPath: String = "Sources/Public"
@@ -167,9 +214,12 @@ public struct Website {
     logger.info("Build completed successfully with \(routes.count) routes")
   }
 
-  /// Errors during the build process.
+  /// Errors that can occur during the website build process.
   public enum BuildError: Error {
+    /// Indicates a failure to create a specific file. Contains the path that failed.
     case fileCreationFailed(String)
+    
+    /// Indicates that one or more routes failed to build. Contains the list of failed route paths.
     case failedRoutes([String])
   }
 }

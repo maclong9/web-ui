@@ -3,27 +3,35 @@ import Logging
 /// A structure that defines a theme configuration for generating CSS custom properties.
 ///
 /// This is typically used to define design tokens (such as colors, spacing, and typography settings) that
-/// can be consumed by a frontend through generated CSS variables.
+/// can be consumed by a frontend through generated CSS variables. The theme system provides a consistent
+/// way to manage design tokens across an entire application.
 ///
-/// The `Theme` struct is highly customizable and supports both standard categories and additional custom ones.
+/// The `Theme` struct is highly customizable and supports both standard categories (like colors and spacing)
+/// and additional custom categories through the `custom` parameter.
 ///
-/// Example:
-///
-/// ```swift
-/// let theme = Theme(
-///   colors: ["primary": "#ff0000", "background": "#ffffff"],
-///   spacing: ["sm": "4px", "md": "8px"],
-///   custom: ["zIndex": ["modal": "9999", "tooltip": "10000"]]
-/// )
-/// let css = theme.generateCSS()
-/// ```
+/// - Example:
+///   ```swift
+///   let theme = Theme(
+///     colors: ["primary": "#ff0000", "background": "#ffffff"],
+///     spacing: ["sm": "4px", "md": "8px"],
+///     custom: ["zIndex": ["modal": "9999", "tooltip": "10000"]]
+///   )
+///   let css = theme.generateCSS()
+///   ```
 ///
 /// The generated CSS string will contain custom properties like:
-/// ```css
-/// --color-primary: #ff0000;
-/// --spacing-sm: 4px;
-/// --zindex-modal: 9999;
-/// ```
+///   ```css
+///   --color-primary: #ff0000;
+///   --spacing-sm: 4px;
+///   --zindex-modal: 9999;
+///   ```
+///
+/// You can use these CSS variables in your HTML elements by referencing them with the `var()` function:
+///   ```html
+///   <div style="color: var(--color-primary); padding: var(--spacing-sm);">
+///     Themed content
+///   </div>
+///   ```
 public struct Theme {
   private let logger = Logger(label: "com.webui.theme")
 
@@ -66,27 +74,50 @@ public struct Theme {
 
   /// Creates a new `Theme` configuration.
   ///
-  /// All parameters are optional and default to empty dictionaries.
+  /// All parameters are optional and default to empty dictionaries. Each parameter represents
+  /// a category of design tokens that can be referenced in your CSS.
   ///
   /// - Parameters:
-  ///   - fonts: Custom font definitions.
-  ///   - colors: Color tokens.
-  ///   - spacing: Spacing values.
-  ///   - breakpoints: Media query breakpoint tokens.
-  ///   - container: Layout container sizes.
-  ///   - textSizes: Font size tokens.
-  ///   - fontWeights: Font weight tokens.
-  ///   - tracking: Letter spacing tokens.
-  ///   - leading: Line height tokens.
-  ///   - radius: Border radius tokens.
-  ///   - shadows: Box shadow tokens.
-  ///   - insetShadows: Inset box shadow tokens.
-  ///   - dropShadows: Drop shadow tokens.
-  ///   - blur: Blur effect tokens.
-  ///   - perspective: Perspective depth tokens.
-  ///   - aspect: Aspect ratio tokens.
-  ///   - ease: Transition timing function tokens.
-  ///   - custom: Arbitrary custom token categories.
+  ///   - fonts: Custom font definitions, such as font families or font stacks.
+  ///   - colors: Color tokens for brand colors, text, backgrounds, etc.
+  ///   - spacing: Spacing values for margins, padding, and layout gaps.
+  ///   - breakpoints: Media query breakpoint tokens for responsive design.
+  ///   - container: Layout container sizes for consistent content widths.
+  ///   - textSizes: Font size tokens for typography scale.
+  ///   - fontWeights: Font weight tokens (e.g., light, normal, bold).
+  ///   - tracking: Letter spacing tokens for typography refinement.
+  ///   - leading: Line height tokens for text readability.
+  ///   - radius: Border radius tokens for consistent corner rounding.
+  ///   - shadows: Box shadow tokens for elevation effects.
+  ///   - insetShadows: Inset box shadow tokens for inner shadows.
+  ///   - dropShadows: Drop shadow tokens for filter-based shadows.
+  ///   - blur: Blur effect tokens for glass/frosted effects.
+  ///   - perspective: Perspective depth tokens for 3D transformations.
+  ///   - aspect: Aspect ratio tokens for consistent media proportions.
+  ///   - ease: Transition timing function tokens for animations.
+  ///   - custom: Arbitrary custom token categories for any additional design tokens.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let theme = Theme(
+  ///     colors: [
+  ///       "primary": "#4A7AFF", 
+  ///       "secondary": "#FF4A7A",
+  ///       "text": "#222222"
+  ///     ],
+  ///     spacing: [
+  ///       "xs": "0.25rem",
+  ///       "sm": "0.5rem", 
+  ///       "md": "1rem",
+  ///       "lg": "2rem"
+  ///     ],
+  ///     radius: [
+  ///       "sm": "0.25rem",
+  ///       "md": "0.5rem",
+  ///       "pill": "9999px"
+  ///     ]
+  ///   )
+  ///   ```
   public init(
     fonts: [String: String] = [:],
     colors: [String: String] = [:],
@@ -142,16 +173,24 @@ public struct Theme {
 
   /// Generates a CSS snippet containing all defined theme tokens.
   ///
-  /// Each token becomes a `--variable-name: value;` line, namespaced by category.
-  ///
-  /// Example output:
-  /// ```css
-  /// --color-primary: #ff0000;
-  /// --spacing-sm: 4px;
-  /// --font-weight-bold: 700;
-  /// ```
+  /// This method converts all the theme tokens into CSS custom properties (variables),
+  /// organizing them by category. Each token becomes a `--variable-name: value;` line,
+  /// namespaced by its category for clarity and to prevent naming conflicts.
   ///
   /// - Returns: A formatted `String` containing CSS variable definitions, or an empty string if no properties are defined.
+  ///
+  /// - Example output:
+  ///   ```css
+  ///   --color-primary: #ff0000;
+  ///   --spacing-sm: 4px;
+  ///   --font-weight-bold: 700;
+  ///   
+  ///   /* Custom Category */
+  ///   --custom-category-value: 123;
+  ///   ```
+  ///
+  /// - Note: Custom categories are grouped with a comment header for better readability
+  ///   in the generated CSS.
   public func generateCSS() -> String {
     logger.debug("Generating CSS for theme")
 
@@ -209,6 +248,21 @@ public struct Theme {
     return css
   }
 
+  /// Generates a complete CSS file for the theme with default breakpoints and dark mode variant.
+  ///
+  /// This method creates a full CSS file structure that includes:
+  /// - Default breakpoint definitions
+  /// - All the theme's custom properties from `generateCSS()`
+  /// - A dark mode variant selector for theme support
+  ///
+  /// - Returns: A complete CSS theme file as a String.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let theme = Theme(colors: ["primary": "#0066ff"])
+  ///   let cssFile = theme.generateFile()
+  ///   // Write to a file or serve directly
+  ///   ```
   public func generateFile() -> String {
     """
     @theme {
