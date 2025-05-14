@@ -1,0 +1,66 @@
+# ``WebUI``
+
+Create beautiful static and dynamic websites using Swift.
+
+## Overview
+
+WebUI is a Swift library for creating websites with a declarative, component-based approach. It allows you to write HTML using Swift's type-safe syntax, with built-in support for styling, accessibility, and optimization. You can use WebUI for both static site generation and dynamic server-rendered content.
+
+With WebUI, you can:
+- Build type-safe HTML using Swift
+- Apply styling using a Tailwind CSS-inspired API
+- Create reusable components
+- Generate static sites with optimized markup
+- Create dynamic server-rendered content
+- Add Markdown content with front matter support
+
+## Topics
+
+### Essentials
+
+- <doc:getting-started>
+- <doc:creating-a-static-site>
+- <doc:webui-api>
+
+### Creating Content
+
+- ``Document``
+- ``Website``
+- ``Element``
+- ``HTMLBuilder``
+
+### Building Elements
+
+- ``Text``
+- ``Heading``
+- ``Link``
+- ``Button``
+- ``Image``
+- ``List``
+- ``Stack``
+- ``Fragment``
+
+### Layout
+
+- ``Header``
+- ``Main``
+- ``Footer``
+- ``Navigation``
+- ``Section``
+- ``Article``
+- ``Aside``
+
+### Styling
+
+- ``Color``
+- ``BorderStyle``
+- ``Modifier``
+- ``Edge``
+
+### Tutorials
+
+- <doc:creating-a-static-site>
+
+### Examples
+
+- [Portfolio](https://github.com/maclong9/portfolio) - A personal portfolio website built with WebUI

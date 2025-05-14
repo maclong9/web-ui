@@ -1,0 +1,13 @@
+@Tutorials(name: "WebUI") {
+    @Intro(title: "Learning WebUI") {
+        WebUI is a Swift library for creating websites with a declarative, component-based approach. Follow these tutorials to learn how to build beautiful static and dynamic websites with Swift.
+    }
+
+    @Chapter(name: "Building Static Sites") {
+        Create static websites with multiple pages using the WebUI library.
+
+        @Image(source: intro-image.png, alt: "Screenshot of a WebUI static site")
+
+        @TutorialReference(tutorial: "doc:creating-a-static-site")
+    }
+}

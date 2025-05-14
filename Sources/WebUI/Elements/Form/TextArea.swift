@@ -1,6 +1,14 @@
-/// Generates an HTML textarea element.
+/// Generates an HTML textarea element for multi-line text input.
 ///
-/// Provides a multi-line text input for long-form content.
+/// Provides a resizable, multi-line text input control for collecting longer text content
+/// such as comments, messages, or descriptions. Unlike single-line input elements,
+/// textareas can contain line breaks and are suitable for paragraph-length content.
+///
+/// - Example:
+///   ```swift
+///   TextArea(name: "comments", placeholder: "Share your thoughts...")
+///   // Renders: <textarea name="comments" placeholder="Share your thoughts..."></textarea>
+///   ```
 public final class TextArea: Element {
   let name: String
   let type: InputType?
@@ -9,20 +17,32 @@ public final class TextArea: Element {
   let autofocus: Bool?
   let required: Bool?
 
-  /// Creates a new HTML textarea element.
+  /// Creates a new HTML textarea element for multi-line text input.
   ///
   /// - Parameters:
-  ///   - name: Name for form submission.
-  ///   - type: Input type, optional.
-  ///   - value: Initial value, optional.
-  ///   - placeholder: Hint text when empty, optional.
-  ///   - autofocus: Focuses on page load if true, optional.
-  ///   - required: Indicates the input is required for form submission.
-  ///   - id: Unique identifier for the HTML element.
-  ///   - classes: An array of CSS classnames.
+  ///   - name: Name attribute used for form data submission, identifying the field in the submitted data.
+  ///   - type: Input type, optional (primarily included for API consistency with Input).
+  ///   - value: Initial text content for the textarea, optional.
+  ///   - placeholder: Hint text displayed when the textarea is empty, optional.
+  ///   - autofocus: When true, automatically focuses this element when the page loads, optional.
+  ///   - required: When true, indicates the textarea must be filled before form submission, optional.
+  ///   - id: Unique identifier for the HTML element, useful for labels and script interaction.
+  ///   - classes: An array of CSS classnames for styling the textarea.
   ///   - role: ARIA role of the element for accessibility.
-  ///   - label: ARIA label to describe the element.
-  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///   - label: ARIA label to describe the element for screen readers.
+  ///   - data: Dictionary of `data-*` attributes for storing custom data related to the textarea.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   TextArea(
+  ///     name: "bio",
+  ///     value: existingBio,
+  ///     placeholder: "Tell us about yourself...",
+  ///     required: true,
+  ///     id: "user-bio",
+  ///     classes: ["form-control", "bio-input"]
+  ///   )
+  ///   ```
   public init(
     name: String,
     type: InputType? = nil,

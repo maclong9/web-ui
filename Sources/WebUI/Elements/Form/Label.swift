@@ -1,19 +1,38 @@
-/// Generates an HTML label element.
+/// Generates an HTML label element for form controls.
 ///
-/// Associates descriptive text with a form field for accessibility.
+/// Associates descriptive text with a form field for accessibility and usability.
+/// Labels improve form usability by:
+/// - Providing clear descriptions for input fields
+/// - Creating larger clickable areas for checkboxes and radio buttons
+/// - Improving screen reader accessibility
+///
+/// - Example:
+///   ```swift
+///   Label(for: "email") {
+///     "Email Address:"
+///   }
+///   // Renders: <label for="email">Email Address:</label>
+///   ```
 public final class Label: Element {
   let `for`: String
 
-  /// Creates a new HTML label element.
+  /// Creates a new HTML label element associated with a form control.
   ///
   /// - Parameters:
-  ///   - for: ID of the associated input element.
-  ///   - id: Unique identifier for the HTML element.
-  ///   - classes: An array of CSS classnames.
+  ///   - for: ID of the associated input element. This creates a programmatic connection between the label and the form control.
+  ///   - id: Unique identifier for the HTML element itself.
+  ///   - classes: An array of CSS classnames for styling the label.
   ///   - role: ARIA role of the element for accessibility.
-  ///   - label: ARIA label to describe the element.
-  ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
-  ///   - content: Closure providing label content, defaults to empty.
+  ///   - label: ARIA label to describe the element for screen readers.
+  ///   - data: Dictionary of `data-*` attributes for storing custom data related to the label.
+  ///   - content: Closure providing label text content, defaults to empty.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   Label(for: "terms", classes: ["checkbox-label"]) {
+  ///     "I agree to the terms and conditions"
+  ///   }
+  ///   ```
   public init(
     `for`: String,
     id: String? = nil,
