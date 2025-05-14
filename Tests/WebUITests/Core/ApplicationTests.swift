@@ -22,7 +22,7 @@ import Testing
           }
           Main {
             Stack {
-              Heading(.one) { "Tagline" }
+              Heading(.largeTitle) { "Tagline" }
               Text { "Lorem ipsum dolor sit amet." }
             }
           }
@@ -35,7 +35,7 @@ import Testing
           metadata: .init(title: "About", description: "Learn more here")
         ) {
           Article {
-            Heading(.two) { "Article Heading" }
+            Heading(.title) { "Article Heading" }
             Text { "Lorem ipsum dolor sit amet." }
           }
         },
