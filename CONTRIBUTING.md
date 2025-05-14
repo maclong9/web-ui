@@ -108,7 +108,7 @@ swift test
 
 WebUI uses Swift DocC for documentation:
 
-1. Documentation is automatically published to the Swift Package Index.
+1. Documentation is automatically published to GitHub Pages (https://maclong9.github.io/web-ui/documentation/webui/).
 2. Locally generate and preview documentation with:
 
 ```sh
