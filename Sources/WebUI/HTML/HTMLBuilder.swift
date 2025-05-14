@@ -1,6 +1,6 @@
 /// Enables declarative construction of HTML content using Swift's result builder feature.
 ///
-/// `HTMLBuilder` provides a domain-specific language (DSL) for creating HTML structures 
+/// `HTMLBuilder` provides a domain-specific language (DSL) for creating HTML structures
 /// with a SwiftUI-like syntax. It transforms Swift code written in a declarative style
 /// into a collection of HTML elements, allowing for intuitive, hierarchical composition
 /// of web content.
@@ -46,7 +46,7 @@ public struct HTMLBuilder {
 
   /// Wraps a single HTML entity in an array.
   ///
-  /// This method converts an individual HTML expression (like a Heading or Text element) 
+  /// This method converts an individual HTML expression (like a Heading or Text element)
   /// into a component array, which is the standard format for all builder operations.
   ///
   /// - Parameters:

@@ -1,6 +1,6 @@
 /// Defines requirements for generating HTML content.
 ///
-/// The `HTML` protocol is the foundation of the WebUI framework, requiring entities to provide 
+/// The `HTML` protocol is the foundation of the WebUI framework, requiring entities to provide
 /// a method for rendering themselves as HTML strings. Any type that conforms to this protocol
 /// can be included in the document structure.
 ///
@@ -11,12 +11,12 @@
 ///   ```swift
 ///   struct CustomElement: HTML {
 ///     let content: String
-///     
+///
 ///     func render() -> String {
 ///       "<div class=\"custom\">\(content)</div>"
 ///     }
 ///   }
-///   
+///
 ///   let element = CustomElement(content: "Hello")
 ///   print(element.render()) // Outputs: <div class="custom">Hello</div>
 ///   ```

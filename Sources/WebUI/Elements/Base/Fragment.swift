@@ -25,7 +25,7 @@ public final class Fragment: HTML {
   /// - Example:
   ///   ```swift
   ///   Fragment {
-  ///     Heading(.one) { "Title" }
+  ///     Heading(.largeTitle) { "Title" }
   ///     Text { "First paragraph" }
   ///     Text { "Second paragraph" }
   ///   }

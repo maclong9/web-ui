@@ -4,7 +4,7 @@
 public enum ButtonType: String {
   /// Submits the form data to the server.
   case submit
-  
+
   /// Resets all form controls to their initial values.
   case reset
 }

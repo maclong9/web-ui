@@ -8,7 +8,7 @@
 ///   ```swift
 ///   Heading(.one) { "Page Title" }
 ///     .font(size: .xl3)
-///   
+///
 ///   Text { "Small print" }
 ///     .font(size: .xs)
 ///   ```
@@ -91,7 +91,7 @@ public enum Alignment: String {
   case center
   /// Aligns text to the right edge of the container.
   case right
-  
+
   /// The corresponding CSS class name for this alignment.
   var className: String { "text-\(rawValue)" }
 }
@@ -125,7 +125,7 @@ public enum Weight: String {
   case extrabold
   /// Extremely bold/black text (900).
   case black
-  
+
   /// The corresponding CSS class name for this font weight.
   var className: String { "font-\(rawValue)" }
 }
@@ -153,7 +153,7 @@ public enum Tracking: String {
   case wider
   /// Maximum letter spacing (greatest increase in space).
   case widest
-  
+
   /// The corresponding CSS class name for this tracking value.
   var className: String { "tracking-\(rawValue)" }
 }
@@ -181,7 +181,7 @@ public enum Leading: String {
   case relaxed
   /// Maximum line spacing for very open text layouts.
   case loose
-  
+
   /// The corresponding CSS class name for this line height value.
   var className: String { "leading-\(rawValue)" }
 }
@@ -209,7 +209,7 @@ public enum Decoration: String {
   case dashed
   /// Wavy line decoration.
   case wavy
-  
+
   /// The corresponding CSS class name for this decoration.
   var className: String { "decoration-\(rawValue)" }
 }
@@ -233,26 +233,12 @@ public enum Wrapping: String {
   case wrap
   /// Prevents text from wrapping to multiple lines.
   case nowrap
-  
+
   /// The corresponding CSS class name for this wrapping behavior.
   var className: String { "text-\(rawValue)" }
 }
 
 extension Element {
-  /// Applies font styling to the element with optional modifiers.
-  ///
-  /// - Parameters:
-  ///   - size: The font size.
-  ///   - weight: The font weight.
-  ///   - alignment: The text alignment.
-  ///   - tracking: The letter spacing.
-  ///   - leading: The line height.
-  ///   - decoration: The text decoration.
-  ///   - wrapping: The text wrapping.
-  ///   - color: The text color.
-  ///   - family: The font family (e.g., "sans", "serif", "mono").
-  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-  /// - Returns: A new element with updated font styling classes.
   /// Applies font styling to the element with optional modifiers.
   ///
   /// This comprehensive method allows controlling all aspects of typography including
@@ -283,7 +269,7 @@ extension Element {
   ///       tracking: .wide,
   ///       color: .blue(._600)
   ///     )
-  ///     
+  ///
   ///   // Responsive typography
   ///   Heading(.one) { "Responsive Title" }
   ///     .font(size: .xl3)
@@ -339,16 +325,16 @@ extension Element {
   public enum ProseSize: String {
     /// Small prose size for compact content layouts.
     case sm
-    
+
     /// Default prose size for standard content.
     case base
-    
+
     /// Large prose size for improved readability.
     case lg
-    
+
     /// Extra large prose size for featured content.
     case xl
-    
+
     /// Double extra large prose size for prominent content.
     case xl2 = "2xl"
 
@@ -371,13 +357,13 @@ extension Element {
   public enum ProseColor: String {
     /// Gray color theme for content.
     case gray
-    
+
     /// Slate color theme for content (blueish gray).
     case slate
-    
+
     /// Zinc color theme for content (neutral gray).
     case zinc
-    
+
     /// Neutral color theme for content (balanced gray).
     case neutral
 

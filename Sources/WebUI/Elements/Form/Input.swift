@@ -59,13 +59,13 @@ final public class Input: Element {
   ///   ```swift
   ///   // Text input for a username
   ///   Input(name: "username", type: .text, placeholder: "Enter your username", required: true)
-  ///     
+  ///
   ///   // Password input with autofocus
   ///   Input(name: "password", type: .password, placeholder: "Your password", autofocus: true)
-  ///     
+  ///
   ///   // Email input with validation
   ///   Input(name: "email", type: .email, placeholder: "your@email.com")
-  ///     
+  ///
   ///   // Checkbox for accepting terms
   ///   Input(name: "accept_terms", type: .checkbox, checked: false)
   ///   ```

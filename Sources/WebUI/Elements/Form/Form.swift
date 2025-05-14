@@ -7,7 +7,7 @@ public enum FormMethod: String {
   /// Appends form data to the URL as query parameters. Best for search forms or filters
   /// where the form data can be bookmarked and shared via URL.
   case get
-  
+
   /// HTTP POST request method.
   ///
   /// Sends form data in the request body. Best for forms that create, update, or delete
@@ -41,10 +41,10 @@ public final class Form: Element {
   ///   Form(action: "/submit", method: .post, id: "contact-form") {
   ///     Label(for: "name") { "Your Name:" }
   ///     Input(name: "name", type: .text, required: true)
-  ///       
+  ///
   ///     Label(for: "message") { "Message:" }
   ///     TextArea(name: "message")
-  ///       
+  ///
   ///     Button(type: .submit) { "Send Message" }
   ///   }
   ///   ```
