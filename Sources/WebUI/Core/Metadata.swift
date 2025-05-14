@@ -39,7 +39,7 @@ public enum Locale: String {
 public struct ThemeColor {
   /// The color value for light mode.
   public let light: String
-  
+
   /// The optional color value for dark mode.
   public let dark: String?
 
@@ -66,37 +66,37 @@ public struct ThemeColor {
 public struct Metadata {
   /// The name of the website or application.
   public var site: String?
-  
+
   /// The title of the current page.
   public var title: String?
-  
+
   /// The separator between the title and site name (e.g., " - " or " | ").
   public var titleSeperator: String?
-  
+
   /// A concise description of the page content.
   public var description: String
-  
+
   /// The publication date of the content.
   public var date: Date?
-  
+
   /// URL to an image representing the content (for social media sharing).
   public var image: String?
-  
+
   /// The name of the content author.
   public var author: String?
-  
+
   /// Keywords relevant to the content for SEO.
   public var keywords: [String]?
-  
+
   /// Twitter handle for attribution without the @ symbol.
   public var twitter: String?
-  
+
   /// The language locale of the content.
   public var locale: Locale
-  
+
   /// The type of content for Open Graph categorization.
   public var type: ContentType
-  
+
   /// The browser theme color for the document.
   public var themeColor: ThemeColor?
 
@@ -192,7 +192,7 @@ public struct Metadata {
   ///     titleSeperator: " | ",
   ///     description: "A website about Swift"
   ///   )
-  ///   
+  ///
   ///   let pageMetadata = Metadata(
   ///     from: siteMetadata,
   ///     title: "Blog Post",

@@ -7,7 +7,7 @@ public enum ListType: String {
   ///
   /// Use for sequential, prioritized, or step-by-step items.
   case ordered = "ol"
-  
+
   /// Creates an unordered (bulleted) list using the `<ul>` tag.
   ///
   /// Use for items where the sequence doesn't matter.

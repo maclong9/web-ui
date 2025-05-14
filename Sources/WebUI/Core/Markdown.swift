@@ -14,12 +14,12 @@ import Markdown
 ///   title: Hello World
 ///   date: January 1, 2023
 ///   ---
-///   
+///
 ///   # Welcome
-///   
+///
 ///   This is a Markdown document with front matter.
 ///   """
-///   
+///
 ///   let parsed = MarkdownParser.parseMarkdown(content)
 ///   // parsed.frontMatter contains ["title": "Hello World", "date": Date(...)]
 ///   // parsed.htmlContent contains "<h1>Welcome</h1><p>This is a Markdown document with front matter.</p>"
@@ -68,12 +68,12 @@ public struct MarkdownParser {
   ///   title: My Blog Post
   ///   published: January 15, 2023
   ///   ---
-  ///   
+  ///
   ///   # Hello World
-  ///   
+  ///
   ///   This is my first blog post.
   ///   """
-  ///   
+  ///
   ///   let result = MarkdownParser.parseMarkdown(markdownContent)
   ///   // Access the title from frontMatter
   ///   let title = result.frontMatter["title"] as? String
@@ -107,10 +107,10 @@ public struct MarkdownParser {
   ///   title: Example
   ///   tags: [swift, markdown]
   ///   ---
-  ///   
+  ///
   ///   # Content starts here
   ///   """
-  ///   
+  ///
   ///   let (frontMatter, markdownContent) = MarkdownParser.extractFrontMatter(from: content)
   ///   // frontMatter contains ["title": "Example", "tags": "[swift, markdown]"]
   ///   // markdownContent contains "# Content starts here"
@@ -162,7 +162,7 @@ public struct MarkdownParser {
   ///     "author: Jane Doe",
   ///     "published: January 15, 2023"
   ///   ]
-  ///   
+  ///
   ///   let result = MarkdownParser.parseFrontMatterLines(frontMatterLines)
   ///   // result contains:
   ///   // ["title": "My Document", "author": "Jane Doe", "published": Date(...)]

@@ -101,13 +101,13 @@ public struct Theme {
   ///   ```swift
   ///   let theme = Theme(
   ///     colors: [
-  ///       "primary": "#4A7AFF", 
+  ///       "primary": "#4A7AFF",
   ///       "secondary": "#FF4A7A",
   ///       "text": "#222222"
   ///     ],
   ///     spacing: [
   ///       "xs": "0.25rem",
-  ///       "sm": "0.5rem", 
+  ///       "sm": "0.5rem",
   ///       "md": "1rem",
   ///       "lg": "2rem"
   ///     ],
@@ -184,7 +184,7 @@ public struct Theme {
   ///   --color-primary: #ff0000;
   ///   --spacing-sm: 4px;
   ///   --font-weight-bold: 700;
-  ///   
+  ///
   ///   /* Custom Category */
   ///   --custom-category-value: 123;
   ///   ```

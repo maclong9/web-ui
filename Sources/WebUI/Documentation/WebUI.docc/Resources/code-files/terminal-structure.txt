@@ -1,0 +1,8 @@
+Sources/
+    WebUI/
+        Components/
+            Layout.swift
+        Pages/
+            HomePage.swift
+            AboutPage.swift
+        Application.swift

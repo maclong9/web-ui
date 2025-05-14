@@ -1,0 +1,25 @@
+// swift-tools-version:5.9
+import PackageDescription
+
+let package = Package(
+    name: "MyStaticSite",
+    platforms: [.macOS(.v13)],
+    products: [
+        .executable(
+            name: "MyStaticSite",
+            targets: ["MyStaticSite"]
+        ),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/swiftwasm/WebUI.git", branch: "main")
+    ],
+    targets: [
+        .executableTarget(
+            name: "MyStaticSite",
+            dependencies: [
+                .product(name: "WebUI", package: "WebUI")
+            ],
+            path: "Sources"
+        )
+    ]
+)

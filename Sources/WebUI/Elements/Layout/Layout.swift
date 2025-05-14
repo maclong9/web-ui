@@ -1,13 +1,13 @@
 /// Generates an HTML header element for page or section headers.
 ///
-/// The `Header` element represents a container for introductory content or a set of navigational links 
-/// at the beginning of a section or page. Typically contains elements like site logos, navigation menus, 
+/// The `Header` element represents a container for introductory content or a set of navigational links
+/// at the beginning of a section or page. Typically contains elements like site logos, navigation menus,
 /// and search forms.
 ///
 /// - Example:
 ///   ```swift
 ///   Header {
-///     Heading(.one) { "Site Title" }
+///     Heading(.largeTitle) { "Site Title" }
 ///     Navigation {
 ///       Link(to: "/home") { "Home" }
 ///       Link(to: "/about") { "About" }
@@ -28,7 +28,7 @@ public final class Header: Element {
   /// - Example:
   ///   ```swift
   ///   Header(id: "main-header", classes: ["site-header", "sticky"]) {
-  ///     Heading(.one) { "My Website" }
+  ///     Heading(.largeTitle) { "My Website" }
   ///   }
   ///   ```
   public init(
@@ -102,7 +102,7 @@ public final class Navigation: Element {
 /// - Example:
 ///   ```swift
 ///   Aside(classes: ["sidebar"]) {
-///     Heading(.two) { "Related Articles" }
+///     Heading(.title) { "Related Articles" }
 ///     List {
 ///       Item { Link(to: "/article1") { "Article 1" } }
 ///       Item { Link(to: "/article2") { "Article 2" } }
@@ -123,7 +123,7 @@ public final class Aside: Element {
   /// - Example:
   ///   ```swift
   ///   Aside(id: "glossary", classes: ["note", "bordered"], label: "Term Definition") {
-  ///     Heading(.three) { "Definition" }
+  ///     Heading(.headline) { "Definition" }
   ///     Text { "A detailed explanation of the term..." }
   ///   }
   ///   ```
@@ -151,7 +151,7 @@ public final class Aside: Element {
 /// - Example:
 ///   ```swift
 ///   Main {
-///     Heading(.one) { "Welcome to Our Website" }
+///     Heading(.largeTitle) { "Welcome to Our Website" }
 ///     Text { "This is the main content of our homepage." }
 ///     Article {
 ///       // Article content
@@ -173,7 +173,7 @@ public final class Main: Element {
   ///   ```swift
   ///   Main(id: "content", classes: ["container"]) {
   ///     Section {
-  ///       Heading(.one) { "About Us" }
+  ///       Heading(.largeTitle) { "About Us" }
   ///       Text { "Learn more about our company history..." }
   ///     }
   ///   }

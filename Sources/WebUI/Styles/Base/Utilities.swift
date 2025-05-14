@@ -22,52 +22,52 @@ public enum Modifier: String {
   ///
   /// Use for small mobile device specific styles.
   case xs
-  
+
   /// Small breakpoint modifier applying styles at 640px min-width and above.
   ///
   /// Use for larger mobile device specific styles.
   case sm
-  
+
   /// Medium breakpoint modifier applying styles at 768px min-width and above.
   ///
   /// Use for tablet and small desktop specific styles.
   case md
-  
+
   /// Large breakpoint modifier applying styles at 1024px min-width and above.
   ///
   /// Use for desktop specific styles.
   case lg
-  
+
   /// Extra-large breakpoint modifier applying styles at 1280px min-width and above.
   ///
   /// Use for larger desktop specific styles.
   case xl
-  
+
   /// 2x extra-large breakpoint modifier applying styles at 1536px min-width and above.
   ///
   /// Use for very large desktop and ultrawide monitor specific styles.
   case xl2 = "2xl"
-  
+
   /// Applies the style when the element is hovered over with a mouse pointer.
   ///
   /// Use to create interactive hover effects and highlight interactive elements.
   case hover
-  
+
   /// Applies the style when the element has keyboard focus.
   ///
   /// Use for accessibility to highlight the currently focused element.
   case focus
-  
+
   /// Applies the style when the element is actively being pressed or clicked.
   ///
   /// Use to provide visual feedback during interaction.
   case active
-  
+
   /// Applies the style to input placeholders within the element.
   ///
   /// Use to style placeholder text in input fields and text areas.
   case placeholder
-  
+
   /// Applies styles only when dark mode is active.
   ///
   /// Use to create dark theme variants of your UI elements.
@@ -100,32 +100,32 @@ public enum Edge: String {
   ///
   /// Use when you want uniform spacing on all sides of an element.
   case all = ""
-  
+
   /// Applies to the top edge only.
   ///
   /// Use when you need to control spacing above an element.
   case top = "t"
-  
+
   /// Applies to the leading (left) edge only.
   ///
   /// Use when you need to control spacing to the left of an element.
   case leading = "l"
-  
+
   /// Applies to the trailing (right) edge only.
   ///
   /// Use when you need to control spacing to the right of an element.
   case trailing = "r"
-  
+
   /// Applies to the bottom edge only.
   ///
   /// Use when you need to control spacing below an element.
   case bottom = "b"
-  
+
   /// Applies to both leading and trailing edges (horizontal axis).
   ///
   /// Use when you want equal spacing on both left and right sides.
   case horizontal = "x"
-  
+
   /// Applies to both top and bottom edges (vertical axis).
   ///
   /// Use when you want equal spacing on both top and bottom sides.
@@ -148,12 +148,12 @@ public enum Axis: String {
   ///
   /// Use when you need to control behavior along the left-right direction.
   case x
-  
+
   /// Applies to the vertical (y) axis only.
   ///
   /// Use when you need to control behavior along the top-bottom direction.
   case y
-  
+
   /// Applies to both horizontal and vertical axes simultaneously.
   ///
   /// Use when you need to apply the same behavior in both directions.
@@ -177,11 +177,11 @@ public enum Axis: String {
 ///   // Without modifiers
 ///   let classes1 = combineClasses(["bg-blue-500"], withModifiers: [])
 ///   // Returns: ["bg-blue-500"]
-///   
+///
 ///   // With a single modifier
 ///   let classes2 = combineClasses(["bg-blue-700"], withModifiers: [.hover])
 ///   // Returns: ["hover:bg-blue-700"]
-///   
+///
 ///   // With multiple modifiers and classes
 ///   let classes3 = combineClasses(["text-lg", "font-bold"], withModifiers: [.md, .dark])
 ///   // Returns: ["md:dark:text-lg", "md:dark:font-bold"]

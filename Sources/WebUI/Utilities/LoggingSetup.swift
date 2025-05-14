@@ -11,7 +11,7 @@ import Logging
 ///   ```swift
 ///   // Configure logging with info level
 ///   LoggingSetup.bootstrap()
-///   
+///
 ///   // Configure logging with debug level
 ///   LoggingSetup.bootstrap(logLevelString: "debug")
 ///   ```
@@ -22,7 +22,7 @@ public struct LoggingSetup {
   /// and output formatting. It should be called early in the application lifecycle,
   /// typically during initialization.
   ///
-  /// - Parameter logLevelString: The string representation of the desired log level from environment 
+  /// - Parameter logLevelString: The string representation of the desired log level from environment
   ///   (e.g., "trace", "debug", "info", "notice", "warning", "error", "critical").
   ///   Defaults to "info" if not specified.
   ///

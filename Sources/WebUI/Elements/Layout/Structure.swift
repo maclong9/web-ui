@@ -7,7 +7,7 @@
 /// - Example:
 ///   ```swift
 ///   Article {
-///     Heading(.one) { "Blog Post Title" }
+///     Heading(.largeTitle) { "Blog Post Title" }
 ///     Text { "Published on May 15, 2023" }
 ///     Text { "This is the content of the blog post..." }
 ///   }
@@ -26,7 +26,7 @@ public final class Article: Element {
   /// - Example:
   ///   ```swift
   ///   Article(id: "post-123", classes: ["blog-post", "featured"]) {
-  ///     Heading(.one) { "Getting Started with WebUI" }
+  ///     Heading(.largeTitle) { "Getting Started with WebUI" }
   ///     Text { "Learn how to build static websites using Swift..." }
   ///   }
   ///   ```
@@ -53,7 +53,7 @@ public final class Article: Element {
 /// - Example:
 ///   ```swift
 ///   Section(id: "features") {
-///     Heading(.two) { "Key Features" }
+///     Heading(.title) { "Key Features" }
 ///     List {
 ///       Item { "Simple API" }
 ///       Item { "Type-safe HTML generation" }
@@ -75,7 +75,7 @@ public final class Section: Element {
   /// - Example:
   ///   ```swift
   ///   Section(id: "about", classes: ["content-section"]) {
-  ///     Heading(.two) { "About Us" }
+  ///     Heading(.title) { "About Us" }
   ///     Text { "Our company was founded in 2020..." }
   ///   }
   ///   ```
@@ -125,7 +125,7 @@ public final class Stack: Element {
   ///   ```swift
   ///   Stack(id: "user-profile", classes: ["card", "shadow"], data: ["user-id": "123"]) {
   ///     Image(source: "/avatar.jpg", description: "User Avatar")
-  ///     Heading(.three) { "Jane Doe" }
+  ///     Heading(.headline) { "Jane Doe" }
   ///     Text { "Software Engineer" }
   ///   }
   ///   ```

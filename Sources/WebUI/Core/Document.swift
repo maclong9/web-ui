@@ -9,7 +9,7 @@ public enum ScriptAttribute: String {
   ///
   /// - Note: Scripts with the `defer` attribute will execute in the order they appear in the document.
   case `defer`
-  
+
   /// Causes the script to download in parallel and execute as soon as it's available.
   ///
   /// - Note: Scripts with the `async` attribute may execute in any order and should not depend on other scripts.
@@ -27,7 +27,7 @@ public enum ScriptAttribute: String {
 public struct Script {
   /// The source URL of the script.
   let src: String
-  
+
   /// Optional attribute controlling how the script is loaded and executed.
   let attribute: ScriptAttribute?
 }
@@ -76,7 +76,7 @@ public struct Document {
   ///     scripts: ["main.js": .defer],
   ///     stylesheets: ["styles.css"],
   ///     content: {
-  ///       Heading(.one) { "Welcome" }
+  ///       Heading(.largeTitle) { "Welcome" }
   ///       Text { "This is our homepage." }
   ///     }
   ///   )

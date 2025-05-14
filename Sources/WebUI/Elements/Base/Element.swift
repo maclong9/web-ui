@@ -7,7 +7,7 @@ public enum AriaRole: String {
   ///
   /// Use this role for search forms or search input containers.
   case search
-  
+
   /// Provides metadata about the document.
   ///
   /// Typically used for page footers containing copyright information, privacy statements, etc.
@@ -59,7 +59,7 @@ public class Element: HTML {
   ///     classes: ["card", "shadow"],
   ///     data: ["user-id": "12345"],
   ///     content: {
-  ///       Heading(.two) { "User Profile" }
+  ///       Heading(.title) { "User Profile" }
   ///       Text { "Welcome back!" }
   ///     }
   ///   )
@@ -137,7 +137,7 @@ public class Element: HTML {
   ///   ```swift
   ///   let div = Element(tag: "div", id: "content", content: { "Hello" })
   ///   let html = div.render() // Returns `<div id="content">Hello</div>`
-  ///   
+  ///
   ///   let img = Element(tag: "img", customAttributes: ["src=\"image.jpg\""], isSelfClosing: true)
   ///   let imgHtml = img.render() // Returns `<img src="image.jpg">`
   ///   ```

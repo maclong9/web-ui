@@ -12,19 +12,19 @@ public struct Website {
 
   /// Optional default metadata applied to all routes unless overridden.
   public let metadata: Metadata?
-  
+
   /// Optional default theme applied to all routes unless overridden.
   public let theme: Theme?
-  
+
   /// Optional stylesheet URLs applied to all routes.
   public let stylesheets: [String]?
-  
+
   /// Optional JavaScript sources with their loading attributes applied to all routes.
   public let scripts: [String: ScriptAttribute?]?
-  
+
   /// Optional custom HTML to append to all document head sections.
   public let head: String?
-  
+
   /// Collection of document routes that make up the website.
   public let routes: [Document]
 
@@ -218,7 +218,7 @@ public struct Website {
   public enum BuildError: Error {
     /// Indicates a failure to create a specific file. Contains the path that failed.
     case fileCreationFailed(String)
-    
+
     /// Indicates that one or more routes failed to build. Contains the list of failed route paths.
     case failedRoutes([String])
   }
