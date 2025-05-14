@@ -52,7 +52,11 @@ extension Element {
   ///
   /// - Parameters:
   ///   - width: The width dimension.
+  ///   - minWidth: The minimum width dimension.
+  ///   - maxWidth: The maximum width dimension.
   ///   - height: The height dimension.
+  ///   - minHeight: The minimum height dimension.
+  ///   - maxHeight: The maximum height dimension.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated sizing classes.
   public func frame(

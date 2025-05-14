@@ -4,6 +4,7 @@ extension Element {
   /// - Parameters:
   ///   - edges: One or more edges to apply the margin to. Defaults to `.all`.
   ///   - length: The spacing value in `0.25rem` increments.
+  ///   - auto: Whether to use automatic margins instead of a specific length.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated margin classes.
   public func margins(

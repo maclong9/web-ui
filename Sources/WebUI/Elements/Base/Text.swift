@@ -38,29 +38,30 @@ public final class Text: Element {
 
 /// Defines levels for HTML heading tags from h1 to h6.
 public enum HeadingLevel: String {
-  /// Primary title or main topic (h1).
-  case one = "h1"
-  /// Major section or subtopic (h2).
-  case two = "h2"
-  /// Subsection within a major section (h3).
-  case three = "h3"
-  /// Sub-subsection or deeper detail (h4).
-  case four = "h4"
-  /// Minor detail or supporting heading (h5).
-  case five = "h5"
-  /// Finest level of detail (h6).
-  case six = "h6"
+  /// Large title, most prominent heading (h1).
+  case largeTitle = "h1"
+  /// Title, second most prominent heading (h2).
+  case title = "h2"
+  /// Headline, third most prominent heading (h3).
+  case headline = "h3"
+  /// Subheadline, fourth most prominent heading (h4).
+  case subheadline = "h4"
+  /// Body, fifth most prominent heading (h5).
+  case body = "h5"
+  /// Footnote, least prominent heading (h6).
+  case footnote = "h6"
 }
 
 /// Generates HTML heading elements from `<h1>` to `<h6>`.
 ///
-/// The level of the heading should descend through the document,
-/// with the main page title being 1 and then section headings being 2.
+/// The level of the heading should follow a semantic hierarchy through the document,
+/// with `.title` for the main page title, `.section` for major sections, and
+/// progressively more detailed levels (`.subsection`, `.topic`, etc.) for nested content.
 public final class Heading: Element {
   /// Creates a new heading.
   ///
   /// - Parameters:
-  ///   - level: Heading level (h1 to h6).
+  ///   - level: Heading level (.largeTitle, .title, .headline, .subheadline, .body, or .footnote).
   ///   - id: Unique identifier for the HTML element.
   ///   - classes: An array of CSS classnames.
   ///   - role: ARIA role of the element for accessibility.

@@ -34,6 +34,9 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Usage](#usage)
+  - [Documentation](#documentation)
+  - [Tutorials](#tutorials)
+  - [Examples](#examples)
   - [Adding WebUI to a Swift Package Manager (SPM) project](#adding-webui-to-a-swift-package-manager-spm-project)
 - [Development](#development)
 - [Contributing](#contributing)
@@ -70,6 +73,19 @@ To use WebUI, ensure you have the following installed:
 Refer to the
 [Static Site Generation with WebUI](https://maclong.uk/articles/introduction-to-webui)
 guide for detailed instructions on how to get started.
+
+### Documentation
+
+Comprehensive API documentation is available on the [Swift Package Index](https://swiftpackageindex.com/maclong9/web-ui/main/documentation/webui).
+
+### Tutorials
+
+- [Creating a Static Site](https://swiftpackageindex.com/maclong9/web-ui/main/documentation/webui/creating-a-static-site)
+- [Getting Started with WebUI](https://swiftpackageindex.com/maclong9/web-ui/main/documentation/webui/getting-started)
+
+### Examples
+
+- [Portfolio](https://github.com/maclong9/portfolio) - A personal portfolio website built with WebUI
 
 ### Adding WebUI to a Swift Package Manager (SPM) project
 
