@@ -39,6 +39,7 @@
   - [Examples](#examples)
   - [Adding WebUI to a Swift Package Manager (SPM) project](#adding-webui-to-a-swift-package-manager-spm-project)
 - [Development](#development)
+  - [Quick Reference](#quick-reference)
 - [Contributing](#contributing)
 - [Support](#support)
 - [License](#license)
@@ -71,12 +72,12 @@ To use WebUI, ensure you have the following installed:
 ### Usage
 
 Refer to the
-[Static Site Generation with WebUI](https://maclong.uk/articles/introduction-to-webui)
+[Static Site Generation with WebUI]()
 guide for detailed instructions on how to get started.
 
 ### Documentation
 
-Comprehensive API documentation is available on the [Swift Package Index](https://swiftpackageindex.com/maclong9/web-ui/main/documentation/webui).
+Comprehensive API documentation is available on the [Swift Package Index](https://swiftpackageindex.com/maclong9/web-ui/main/tutorials/creating-a-static-site).
 
 ### Tutorials
 
@@ -134,31 +135,32 @@ import WebUI
 
 ## Development
 
-### Versioning
+WebUI follows a structured development process with automated workflows to ensure code quality and consistency across releases.
 
-Version bumps are triggered automatically via commit messages. Use the following
-prefixes:
+For detailed information about contributing to WebUI, please refer to our [CONTRIBUTING.md](CONTRIBUTING.md) file, which includes:
 
-- `feat!:` - Major version increment for breaking changes.
-- `feat:` - Minor version increment for new features.
-- `fix:` - Patch version increment for bug fixes.
+- Branch structure and workflow
+- Versioning system
+- Release process
+- Hotfix procedures
+- Testing guidelines
+- Documentation generation
+- Code style guidelines
 
-### Quick Fixes
+### Quick Reference
 
-For urgent fixes that need to be pushed to `main` right away, create a PR with the title and merge message including `fix!:` 
-once this is approved and merged, an action will automatically create PRs for `next` and `development` as well.
-This ensures that all of the branches remain in sync when quick changes are required in the main branch. 
-
-> [!NOTE]
-> Ensure the auto-generated PRs are approved and merged.
-
-###
+- Version bumps are triggered by commit prefixes: `feat!:` (major), `feat:` (minor), and `fix:` (patch)
+- For hotfixes, use `fix!:` in the commit message to trigger automatic PRs to all branches
+- Run tests locally with `swift test`
+- Generate documentation with `swift package generate-documentation --target WebUI`
 
 ## Contributing
 
 Contributions are what make the open-source community such an amazing place to
 learn, inspire, and create. Any contributions you make will benefit everybody
 else and are greatly appreciated.
+
+Please see our [CONTRIBUTING.md](CONTRIBUTING.md) document for detailed guidelines on how to contribute to this project. All contributors are expected to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Support
 
