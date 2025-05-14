@@ -1,19 +1,42 @@
 import Foundation
 import Logging
 
+/// Defines attributes for controlling JavaScript script loading behavior.
+///
+/// These attributes help optimize loading performance by controlling when scripts are loaded and executed.
 public enum ScriptAttribute: String {
-  /// Defers downloading of the script to during page pare
+  /// Defers downloading and execution of the script until after the page has been parsed.
+  ///
+  /// - Note: Scripts with the `defer` attribute will execute in the order they appear in the document.
   case `defer`
-  /// Causes the script to run as soon as it's available
+
+  /// Causes the script to download in parallel and execute as soon as it's available.
+  ///
+  /// - Note: Scripts with the `async` attribute may execute in any order and should not depend on other scripts.
   case async
 }
 
+/// Represents a JavaScript script with its source and optional loading attribute.
+///
+/// Used to define scripts that should be included in the HTML document.
+///
+/// - Example:
+///   ```swift
+///   let mainScript = Script(src: "/js/main.js", attribute: .defer)
+///   ```
 public struct Script {
+  /// The source URL of the script.
   let src: String
+
+  /// Optional attribute controlling how the script is loaded and executed.
   let attribute: ScriptAttribute?
 }
 
-/// Represents an immutable HTML document with metadata and content.
+/// Represents an immutable HTML document with metadata, scripts, stylesheets, and content.
+///
+/// The `Document` struct serves as the core building block for constructing HTML pages
+/// with a consistent structure and the ability to customize various aspects like metadata,
+/// scripts, and styling.
 public struct Document {
   private let logger = Logger(label: "com.webui.document")
   public let path: String?
@@ -25,20 +48,39 @@ public struct Document {
   public let contentBuilder: () -> [any HTML]
 
   /// Computed HTML content from the content builder.
+  ///
+  /// This property executes the content builder closure to generate the document's HTML elements.
   var content: [any HTML] {
     contentBuilder()
   }
 
   /// Creates a new HTML document with metadata, optional head content, and body content.
   ///
+  /// This initializer creates a complete HTML document structure including the necessary
+  /// metadata, scripts, stylesheets, and content.
+  ///
   /// - Parameters:
-  ///   - path: URL path for navigating to the document. Required for build, not for server side rendering.
-  ///   - metadata: Configuration for the head section.
-  ///   - scripts: Optional array of strings that contain script sources to append to the head section.
-  ///   - stylesheets: Optional array of strings that contain stylesheet sources to append to the head section.
-  ///   - theme: Optionally extend the default theme with custom values.
-  ///   - head: Optional raw HTML string to append to the head section (e.g., scripts, styles).
-  ///   - content: Closure building the body's HTML content.
+  ///   - path: URL path for navigating to the document. Required for static site building, not for server-side rendering.
+  ///   - metadata: Configuration for the head section including title, description, and other meta tags.
+  ///   - scripts: Optional dictionary mapping script sources to their attributes to append to the head section.
+  ///   - stylesheets: Optional array of stylesheet URLs to append to the head section.
+  ///   - theme: Optional theme configuration to extend the default theme with custom values.
+  ///   - head: Optional raw HTML string to append to the head section (e.g., additional scripts, styles).
+  ///   - content: A closure that builds the document's HTML content using the HTML builder DSL.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let homePage = Document(
+  ///     path: "index",
+  ///     metadata: Metadata(title: "Home", description: "Welcome to our site"),
+  ///     scripts: ["main.js": .defer],
+  ///     stylesheets: ["styles.css"],
+  ///     content: {
+  ///       Heading(.largeTitle) { "Welcome" }
+  ///       Text { "This is our homepage." }
+  ///     }
+  ///   )
+  ///   ```
   public init(
     path: String? = nil,
     metadata: Metadata,
@@ -66,10 +108,20 @@ public struct Document {
 
   /// Renders the document as a complete HTML string.
   ///
-  /// Generates HTML with a head section (metadata and optional head content) and body (content).
+  /// Generates a complete HTML document with:
+  /// - A DOCTYPE declaration
+  /// - An HTML element with the specified language
+  /// - A head section containing metadata, scripts, stylesheets, and optional custom head content
+  /// - A body section containing the document's content
   ///
-  /// - Returns: Complete HTML document string.
+  /// - Returns: A complete HTML document as a string.
   /// - Complexity: O(n) where n is the number of content elements.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let htmlString = document.render()
+  ///   // Returns "<!DOCTYPE html><html lang="en">...</html>"
+  ///   ```
   public func render() -> String {
     logger.debug("Rendering document: \(path ?? "index")")
     logger.trace("Starting metadata rendering")
