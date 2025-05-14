@@ -69,11 +69,26 @@ To use WebUI, ensure you have the following installed:
 
 - Swift 6.1 or later
 
-### Usage
+## Usage
 
-Refer to the
-[Static Site Generation with WebUI]()
-guide for detailed instructions on how to get started.
+Add the following to your package dependencies:
+``` Package.swift
+dependencies: [
+    .package(url: "https://github.com/maclong9/web-ui.git", from: "1.0.0")
+  ],
+```
+
+And then add this to your Target:
+``` Package.swift
+ .executableTarget(
+      name: "Application",
+      dependencies: [
+        .product(name: "WebUI", package: "web-ui")
+      ],
+      path: "Sources",
+      resources: [.process("Public")]
+    )
+```
 
 ### Documentation
 
