@@ -77,12 +77,12 @@ guide for detailed instructions on how to get started.
 
 ### Documentation
 
-Comprehensive API documentation is available on the [Swift Package Index](https://swiftpackageindex.com/maclong9/web-ui/main/tutorials/creating-a-static-site).
+Comprehensive API documentation is available on the [GitHub Pages](https://maclong9.github.io/web-ui/documentation/webui/).
 
 ### Tutorials
 
-- [Creating a Static Site](https://swiftpackageindex.com/maclong9/web-ui/main/documentation/webui/creating-a-static-site)
-- [Getting Started with WebUI](https://swiftpackageindex.com/maclong9/web-ui/main/documentation/webui/getting-started)
+- [Creating a Static Site](https://maclong9.github.io/web-ui/tutorials/webui/creating-a-static-site)
+- [Getting Started with WebUI](https://maclong9.github.io/web-ui/documentation/webui/getting-started)
 
 ### Examples
 
