@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   publish-docs:
-    if: contains(github.event.head_commit.message, 'docs:')
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, 'docs:')
     runs-on: macos-latest
 
     steps:
