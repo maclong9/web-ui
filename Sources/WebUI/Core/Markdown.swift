@@ -4,9 +4,31 @@ import Markdown
 /// A service for parsing Markdown strings into front matter and HTML content.
 ///
 /// This struct provides functionality to process Markdown content, extracting metadata (front matter)
-/// and converting the Markdown body into HTML using the `Markdown` framework.
+/// and converting the Markdown body into HTML using the `Markdown` framework. It handles the complete
+/// lifecycle of Markdown processing, from parsing front matter to rendering HTML.
+///
+/// - Example:
+///   ```swift
+///   let content = """
+///   ---
+///   title: Hello World
+///   date: January 1, 2023
+///   ---
+///   
+///   # Welcome
+///   
+///   This is a Markdown document with front matter.
+///   """
+///   
+///   let parsed = MarkdownParser.parseMarkdown(content)
+///   // parsed.frontMatter contains ["title": "Hello World", "date": Date(...)]
+///   // parsed.htmlContent contains "<h1>Welcome</h1><p>This is a Markdown document with front matter.</p>"
+///   ```
 public struct MarkdownParser {
   /// A structure representing a parsed Markdown document, containing front matter and HTML content.
+  ///
+  /// Encapsulates the results of parsing a Markdown document, providing access to both
+  /// the extracted metadata (front matter) and the rendered HTML content.
   public struct ParsedMarkdown {
     public let frontMatter: [String: Any]
     public let htmlContent: String
@@ -14,8 +36,16 @@ public struct MarkdownParser {
     /// Initializes a `ParsedMarkdown` instance with front matter and HTML content.
     ///
     /// - Parameters:
-    ///   - frontMatter: The parsed front matter as a dictionary.
-    ///   - htmlContent: The HTML content generated from the Markdown.
+    ///   - frontMatter: The parsed front matter as a dictionary mapping string keys to values.
+    ///   - htmlContent: The HTML content generated from the Markdown body.
+    ///
+    /// - Example:
+    ///   ```swift
+    ///   let parsed = ParsedMarkdown(
+    ///     frontMatter: ["title": "My Page", "author": "Jane Doe"],
+    ///     htmlContent: "<h1>My Page</h1><p>Content goes here.</p>"
+    ///   )
+    ///   ```
     public init(frontMatter: [String: Any], htmlContent: String) {
       self.frontMatter = frontMatter
       self.htmlContent = htmlContent
@@ -25,10 +55,31 @@ public struct MarkdownParser {
   /// Parses a Markdown string into front matter and HTML content.
   ///
   /// This method processes a Markdown string, separating the front matter (if present) and converting
-  /// the Markdown content into HTML.
+  /// the Markdown content into HTML. It handles the complete workflow from extracting front matter
+  /// to rendering the final HTML.
   ///
   /// - Parameter content: The raw Markdown string to parse.
   /// - Returns: A `ParsedMarkdown` instance containing the parsed front matter and HTML content.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let markdownContent = """
+  ///   ---
+  ///   title: My Blog Post
+  ///   published: January 15, 2023
+  ///   ---
+  ///   
+  ///   # Hello World
+  ///   
+  ///   This is my first blog post.
+  ///   """
+  ///   
+  ///   let result = MarkdownParser.parseMarkdown(markdownContent)
+  ///   // Access the title from frontMatter
+  ///   let title = result.frontMatter["title"] as? String
+  ///   // Access the HTML content
+  ///   let html = result.htmlContent
+  ///   ```
   public static func parseMarkdown(_ content: String) -> ParsedMarkdown {
     let (frontMatter, markdownContent) = extractFrontMatter(from: content)
 
@@ -48,6 +99,22 @@ public struct MarkdownParser {
   ///
   /// - Parameter content: The raw Markdown string.
   /// - Returns: A tuple containing the parsed front matter as a dictionary and the remaining Markdown content.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let content = """
+  ///   ---
+  ///   title: Example
+  ///   tags: [swift, markdown]
+  ///   ---
+  ///   
+  ///   # Content starts here
+  ///   """
+  ///   
+  ///   let (frontMatter, markdownContent) = MarkdownParser.extractFrontMatter(from: content)
+  ///   // frontMatter contains ["title": "Example", "tags": "[swift, markdown]"]
+  ///   // markdownContent contains "# Content starts here"
+  ///   ```
   public static func extractFrontMatter(from content: String) -> ([String: Any], String) {
     let lines = content.components(separatedBy: .newlines)
     var frontMatter: [String: Any] = [:]
@@ -87,6 +154,19 @@ public struct MarkdownParser {
   ///
   /// - Parameter lines: An array of strings representing front matter lines.
   /// - Returns: A dictionary containing the parsed key-value pairs.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let frontMatterLines = [
+  ///     "title: My Document",
+  ///     "author: Jane Doe",
+  ///     "published: January 15, 2023"
+  ///   ]
+  ///   
+  ///   let result = MarkdownParser.parseFrontMatterLines(frontMatterLines)
+  ///   // result contains:
+  ///   // ["title": "My Document", "author": "Jane Doe", "published": Date(...)]
+  ///   ```
   public static func parseFrontMatterLines(_ lines: [String]) -> [String: Any] {
     var frontMatter: [String: Any] = [:]
     let dateFormatter = DateFormatter()
@@ -118,14 +198,28 @@ public struct MarkdownParser {
   }
 }
 
-/// A renderer that converts a Markdown AST into HTML.
+/// A renderer that converts a Markdown Abstract Syntax Tree (AST) into HTML.
+///
+/// `HtmlRenderer` walks through the Markdown document structure and generates appropriate
+/// HTML tags for each Markdown element, with special handling for links, code blocks,
+/// and other formatting constructs.
 public struct HtmlRenderer: MarkupWalker {
   public var html = ""
 
   /// Renders a Markdown document into HTML.
   ///
+  /// Traverses the entire document tree and converts each node into its corresponding HTML representation.
+  ///
   /// - Parameter document: The Markdown document to render.
   /// - Returns: The generated HTML string.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let document = Document(parsing: "# Hello\n\nThis is a paragraph.")
+  ///   var renderer = HtmlRenderer()
+  ///   let html = renderer.render(document)
+  ///   // html contains "<h1>Hello</h1><p>This is a paragraph.</p>"
+  ///   ```
   public mutating func render(_ document: Markdown.Document) -> String {
     html = ""
     visit(document)
@@ -133,6 +227,8 @@ public struct HtmlRenderer: MarkupWalker {
   }
 
   /// Visits a heading node and generates corresponding HTML.
+  ///
+  /// Converts Markdown headings (# syntax) to HTML heading tags (h1-h6).
   ///
   /// - Parameter heading: The heading node to process.
   public mutating func visitHeading(_ heading: Markdown.Heading) {
@@ -144,6 +240,8 @@ public struct HtmlRenderer: MarkupWalker {
 
   /// Visits a paragraph node and generates corresponding HTML.
   ///
+  /// Converts Markdown paragraphs to HTML paragraph tags with proper content.
+  ///
   /// - Parameter paragraph: The paragraph node to process.
   public mutating func visitParagraph(_ paragraph: Paragraph) {
     html += "<p>"
@@ -153,12 +251,17 @@ public struct HtmlRenderer: MarkupWalker {
 
   /// Visits a text node and generates escaped HTML content.
   ///
+  /// Converts plain text nodes while ensuring special characters are properly escaped.
+  ///
   /// - Parameter text: The text node to process.
   public mutating func visitText(_ text: Markdown.Text) {
     html += escapeHTML(text.string)
   }
 
   /// Visits a link node and generates corresponding HTML.
+  ///
+  /// Converts Markdown links to HTML anchor tags, with special handling for external links
+  /// (adding target="_blank" and rel attributes for security).
   ///
   /// - Parameter link: The link node to process.
   public mutating func visitLink(_ link: Markdown.Link) {
@@ -330,8 +433,18 @@ public struct HtmlRenderer: MarkupWalker {
 
   /// Escapes special HTML characters in a string to prevent injection.
   ///
+  /// Replaces characters like `<`, `>`, `&`, `"`, and `'` with their HTML entity equivalents
+  /// to ensure content is safely rendered as text and not interpreted as HTML.
+  ///
   /// - Parameter string: The input string to escape.
   /// - Returns: The escaped string safe for HTML output.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let input = "This is <b>bold</b> & \"quoted\""
+  ///   let escaped = renderer.escapeHTML(input)
+  ///   // escaped contains "This is &lt;b&gt;bold&lt;/b&gt; &amp; &quot;quoted&quot;"
+  ///   ```
   public func escapeHTML(_ string: String) -> String {
     string
       .replacingOccurrences(of: "&", with: "&amp;")
