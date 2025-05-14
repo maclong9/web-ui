@@ -1,0 +1,39 @@
+name: Publish Swift DocC
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-docs:
+    if: contains(github.event.head_commit.message, 'docs:')
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Swift
+        uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: "6.1"
+
+      - name: Build DocC documentation
+        run: |
+          mkdir -p docs-output
+          swift package --allow-writing-to-directory ./docs-output \
+            generate-documentation \
+            --target WebUI \
+            --disable-indexing \
+            --transform-for-static-hosting \
+            --hosting-base-path web-ui \
+            --output-path ./docs-output
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs-output
+          publish_branch: docs
+          force_orphan: true
