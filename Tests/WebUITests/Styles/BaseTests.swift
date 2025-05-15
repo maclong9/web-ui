@@ -7,7 +7,7 @@ import Testing
 
   @Test("Frame with fixed width and height")
   func testFrameWithFixedDimensions() async throws {
-    let element = Element(tag: "div").frame(width: .fixed(100), height: .fixed(200))
+    let element = Element(tag: "div").frame(width: .spacing(100), height: .spacing(200))
     let rendered = element.render()
     #expect(rendered.contains("class=\"w-100 h-200\""))
   }
@@ -19,9 +19,16 @@ import Testing
     #expect(rendered.contains("class=\"w-1/2\""))
   }
 
+  @Test("Frame with Int fraction extension")
+  func testFrameWithIntFractionExtension() async throws {
+    let element = Element(tag: "div").frame(width: 1.fraction(4), height: 3.fraction(4))
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"w-1/4 h-3/4\""))
+  }
+
   @Test("Frame with min and max dimensions")
   func testFrameWithMinMaxDimensions() async throws {
-    let element = Element(tag: "div").frame(minWidth: .minContent, maxHeight: .fitContent)
+    let element = Element(tag: "div").frame(minWidth: .min, maxHeight: .fit)
     let rendered = element.render()
     #expect(rendered.contains("class=\"min-w-min max-h-fit\""))
   }
@@ -38,6 +45,119 @@ import Testing
     let element = Element(tag: "div").frame(height: .custom("50vh"))
     let rendered = element.render()
     #expect(rendered.contains("class=\"h-[50vh]\""))
+  }
+
+  @Test("Frame with CGFloat values")
+  func testFrameWithCGFloatValues() async throws {
+    let element = Element(tag: "div").frame(width: 120, height: 80)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"w-120 h-80\""))
+  }
+
+  @Test("Frame with convenience extensions")
+  func testFrameWithConvenienceExtensions() async throws {
+    let element = Element(tag: "div").frame(
+      width: 4.spacing,
+      height: 2.fraction(3),
+      minWidth: 30.ch
+    )
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"w-4 h-2/3 min-w-[30ch]\""))
+  }
+
+  @Test("Frame with container size presets")
+  func testFrameWithContainerSizePresets() async throws {
+    let element = Element(tag: "div").frame(
+      width: .container(.medium),
+      maxWidth: .xl2
+    )
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"w-md max-w-2xl\""))
+  }
+
+  @Test("Size method for square dimensions")
+  func testSizeMethodForSquareDimensions() async throws {
+    let element = Element(tag: "div").size(.full)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"size-full\""))
+  }
+
+  @Test("Size method with modifiers")
+  func testSizeMethodWithModifiers() async throws {
+    let element = Element(tag: "div").size(16.spacing, on: .hover, .lg)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"hover:lg:size-16\""))
+  }
+
+  @Test("Size method with different sizing values")
+  func testSizeMethodWithDifferentValues() async throws {
+    let element = Element(tag: "div").size(.min)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"size-min\""))
+
+    let element2 = Element(tag: "div").size(.fraction(1, 3))
+    let rendered2 = element2.render()
+    #expect(rendered2.contains("class=\"size-1/3\""))
+  }
+
+  @Test("Aspect ratio with custom dimensions")
+  func testAspectRatioWithCustomDimensions() async throws {
+    let element = Element(tag: "div").aspectRatio(16, 9)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"aspect-[1.7777777777777777]\""))
+  }
+
+  @Test("Square aspect ratio")
+  func testSquareAspectRatio() async throws {
+    let element = Element(tag: "div").aspectRatio()
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"aspect-square\""))
+  }
+
+  @Test("Video aspect ratio")
+  func testVideoAspectRatio() async throws {
+    let element = Element(tag: "div").aspectRatioVideo()
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"aspect-video\""))
+  }
+
+  @Test("Aspect ratio with modifiers")
+  func testAspectRatioWithModifiers() async throws {
+    let element = Element(tag: "div").aspectRatio(4, 3, on: .hover)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"hover:aspect-[1.3333333333333333]\""))
+  }
+
+  @Test("Frame with viewport units")
+  func testFrameWithViewportUnits() async throws {
+    let element = Element(tag: "div").frame(
+      width: .dvw,
+      height: .viewport(.dynamicViewHeight)
+    )
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"w-dvw h-dvh\""))
+  }
+
+  @Test("Frame with content sizing")
+  func testFrameWithContentSizing() async throws {
+    let element = Element(tag: "div").frame(
+      width: .content(.min),
+      height: .content(.max),
+      maxWidth: .content(.fit)
+    )
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"w-min h-max max-w-fit\""))
+  }
+
+  @Test("Frame with constants")
+  func testFrameWithConstants() async throws {
+    let element = Element(tag: "div").frame(
+      width: .constant(.auto),
+      height: .constant(.full),
+      minWidth: .constant(.px)
+    )
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"w-auto h-full min-w-px\""))
   }
 
   // MARK: - Typography Tests
@@ -194,6 +314,36 @@ import Testing
       ))
   }
 
+  @Test("Combined sizing styles")
+  func testCombinedSizingStyles() async throws {
+    let element = Element(tag: "div")
+      .frame(width: .container(.extraLarge), minHeight: 50.spacing)
+      .size(24.spacing, on: .sm)
+      .aspectRatioVideo(on: .lg)
+    let rendered = element.render()
+    #expect(
+      rendered.contains(
+        "class=\"w-xl min-h-50 sm:size-24 lg:aspect-video\""
+      ))
+  }
+
+  @Test("Frame with min and max CGFloat values")
+  func testFrameWithMinMaxCGFloatValues() async throws {
+    let element = Element(tag: "div").frame(
+      width: 100,
+      height: 80,
+      minWidth: 50,
+      maxWidth: 200,
+      minHeight: 40,
+      maxHeight: 160
+    )
+    let rendered = element.render()
+    #expect(
+      rendered.contains(
+        "class=\"w-100 h-80 min-w-50 max-w-200 min-h-40 max-h-160\""
+      ))
+  }
+
   // MARK: - Edge Cases
 
   @Test("Frame with no dimensions")
@@ -201,6 +351,38 @@ import Testing
     let element = Element(tag: "div").frame()
     let rendered = element.render()
     #expect(!rendered.contains("class="))
+  }
+
+  @Test("Frame with modifiers on specific dimensions")
+  func testFrameWithModifiersOnSpecificDimensions() async throws {
+    let element = Element(tag: "div").frame(
+      width: .auto,
+      maxWidth: .container(.fourExtraLarge),
+      on: .md, .dark
+    )
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"md:dark:w-auto md:dark:max-w-4xl\""))
+  }
+
+  @Test("Frame with container size static constants")
+  func testFrameWithContainerSizeStaticConstants() async throws {
+    let element = Element(tag: "div").frame(
+      width: .xs,
+      maxWidth: .xl3
+    )
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"w-xs max-w-3xl\""))
+  }
+
+  @Test("Frame with character sizing")
+  func testFrameWithCharacterSizing() async throws {
+    let element = Element(tag: "div").frame(width: .character(80))
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"w-[80ch]\""))
+
+    let element2 = Element(tag: "div").frame(width: 40.ch)
+    let rendered2 = element2.render()
+    #expect(rendered2.contains("class=\"w-[40ch]\""))
   }
 
   @Test("Font with no properties")
