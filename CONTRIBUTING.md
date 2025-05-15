@@ -212,7 +212,7 @@ WebUI follows a compositional pattern for creating HTML elements. When adding a 
    - Usage examples showing common implementations
    - Mention any accessibility considerations
 
-### Adding New Style Modifiers
+## Adding New Style Modifiers
 
 Style modifiers in WebUI follow an extension pattern on the `Element` class. Here's how to add a new style modifier:
 
@@ -277,6 +277,17 @@ Style modifiers in WebUI follow an extension pattern on the `Element` class. Her
    }
    ```
 
+   c. **Update Responsive Support** (if applicable):
+   ```swift
+   extension Element {
+       /// Responsive version for use within the .responsive block
+       @discardableResult
+       public func styleModifier(option: StyleOption) -> Element {
+           return self.styleModifier(option: option, on: []).proxy()
+       }
+   }
+   ```
+
 3. **Testing**: Add unit tests for the new style modifier in the `Tests` directory.
 
 4. **Documentation**: Include comprehensive DocC documentation with:
@@ -284,6 +295,7 @@ Style modifiers in WebUI follow an extension pattern on the `Element` class. Her
    - Parameter documentation for all method parameters
    - Usage examples showing common implementations
    - Visual examples if the style has a significant impact on appearance
+   - Examples of using the modifier within responsive blocks
 
 ### Adding Extensions to Existing Elements
 
@@ -306,7 +318,51 @@ You can extend existing elements with specialized methods to improve developer e
    }
    ```
 
-2. **Documentation**: As with other additions, include comprehensive DocC documentation.
+2. **Responsive Support**: If the method should work within responsive blocks, add a version without the `on modifiers` parameter:
+   ```swift
+   extension ElementName {
+       /// Responsive version of the specialized method for use within responsive blocks.
+       @discardableResult
+       public func specializedMethod(parameter: ParameterType) -> Element {
+           return self.specializedMethod(parameter: parameter, on: []).proxy()
+       }
+   }
+   ```
+
+3. **Documentation**: As with other additions, include comprehensive DocC documentation.
+
+## Using Responsive Styling
+
+WebUI provides a block-based responsive API for cleaner responsive designs.
+
+### Basic Usage
+
+The `.responsive` modifier allows applying multiple style changes across different breakpoints in a single block:
+
+```swift
+Text { "Responsive Content" }
+  .font(size: .sm)
+  .background(color: .neutral(._500))
+  .responsive {
+    $0.md {
+      $0.font(size: .lg)
+      $0.background(color: .neutral(._700))
+      $0.padding(of: 4)
+    }
+    $0.lg {
+      $0.font(size: .xl)
+      $0.background(color: .neutral(._900))
+    }
+  }
+```
+
+### Adding Support to Custom Style Methods
+
+When creating custom style modifiers, ensure they work within responsive blocks by:
+
+1. Adding a version without the `on modifiers` parameter
+2. Using the `.proxy()` method to maintain the proper element chain
+3. Adding examples showing how to use the style in responsive contexts
 
 ## Styleguides
 

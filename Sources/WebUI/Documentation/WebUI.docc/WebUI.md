@@ -20,6 +20,7 @@ With WebUI, you can:
 
 - <doc:getting-started>
 - <doc:creating-a-static-site>
+- <doc:responsive-styling>
 - <doc:webui-api>
 
 ### Creating Content
@@ -56,6 +57,13 @@ With WebUI, you can:
 - ``BorderStyle``
 - ``Modifier``
 - ``Edge``
+- ``ResponsiveBuilder``
+
+### Responsive Design
+
+- <doc:responsive-styling>
+- ``Element/responsive(_:)``
+- ``ResponsiveBuilder``
 
 ### Tutorials
 

@@ -235,10 +235,6 @@ public final class Picture: Element {
           source: sources[0].src,
           description: description,
           size: size,
-          id: id,
-          classes: classes,
-          role: role,
-          label: label,
           data: data
         )
       }
