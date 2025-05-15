@@ -14,10 +14,24 @@ The fundamental building blocks for creating websites.
 
 - ``Document``
 - ``Website``
-- ``Metadata``
-- ``Theme``
 - ``Script``
 - ``ScriptAttribute``
+
+### Metadata and SEO
+
+- ``Metadata``
+- ``ThemeColor``
+- ``Favicon``
+- ``ContentType``
+- ``Locale``
+- ``StructuredData``
+- ``SitemapEntry``
+- ``RobotsRule``
+- ``SEOUtils``
+
+### Theming
+
+- ``Theme``
 
 ### HTML Building
 
@@ -132,6 +146,7 @@ Helper types and extensions.
 
 - ``LoggingSetup``
 - ``MarkdownParser``
+- ``MarkdownParser/ParsedMarkdown``
 - ``Element/Attribute/string(_:_:)``
 - ``Element/Attribute/bool(_:_:)``
 - ``Element/Attribute/typed(_:_:)``
