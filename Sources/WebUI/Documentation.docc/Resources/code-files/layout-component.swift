@@ -22,8 +22,8 @@ struct Layout: HTML {
       }
       .flex(justify: .between, align: .center)
       .frame(width: .screen)
-      .margins(EdgeInsets(bottom: 4))
-      .padding(EdgeInsets(all: 4))
+      .margins(at: .bottom)
+      .padding(of: 6, at: .all)
 
       Main {
         children.render()

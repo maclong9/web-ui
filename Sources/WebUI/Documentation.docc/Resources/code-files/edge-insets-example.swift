@@ -27,7 +27,7 @@ struct CardComponent: HTML {
       Stack(classes: ["card-body"]) {
         if let src = imageSrc {
           Image(src: src, alt: "Card image")
-            .margins(EdgeInsets(bottom: 4))
+            .margins(of: 4, at: .bottom)
             .frame(width: .full)
         }
 
