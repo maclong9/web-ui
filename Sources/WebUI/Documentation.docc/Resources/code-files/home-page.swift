@@ -38,6 +38,6 @@ struct Home: HTML {
       }
       .frame(maxWidth: .fraction(2, 3))
       .margins(at: .horizontal, auto: true)
-    }
+    }.render()
   }
 }

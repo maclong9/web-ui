@@ -21,9 +21,11 @@ With WebUI, you can:
 ### Essentials
 
 - <doc:getting-started>
-- <doc:creating-a-static-site>
 - <doc:responsive-styling>
-- <doc:webui-api>
+
+### Tutorials
+
+- <doc:creating-a-static-site>
 
 ### Creating Content
 

@@ -5,4 +5,5 @@ Sources/
         Pages/
             Home.swift
             About.swift
+        Public/
         Application.swift

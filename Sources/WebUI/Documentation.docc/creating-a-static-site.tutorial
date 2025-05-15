@@ -3,8 +3,6 @@
         Learn how to build a simple static website with a home page and an about page using the WebUI library.
 
         This tutorial will walk you through setting up a WebUI project, creating a reusable layout component, building pages with different content, adding navigation between them, and generating the final static site.
-
-        @Image(source: intro-image.png, alt: "A screenshot showing a browser with the two-page static site.")
     }
 
     @Section(title: "Set Up Your Project") {
