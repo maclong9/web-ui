@@ -60,14 +60,10 @@ public final class Form: Element {
   ) {
     self.action = action
     self.method = method
-    var customAttributes: [String] = []
-    if let action = action, !action.isEmpty {
-      customAttributes.append("action=\"\(action)\"")
-    }
-    let methodValue = method.rawValue
-    if !methodValue.isEmpty {
-      customAttributes.append("method=\"\(methodValue)\"")
-    }
+    let customAttributes = [
+      Attribute.string("action", action),
+      Attribute.typed("method", method),
+    ].compactMap { $0 }
     super.init(
       tag: "form",
       id: id,

@@ -62,25 +62,14 @@ public final class TextArea: Element {
     self.placeholder = placeholder
     self.autofocus = autofocus
     self.required = required
-    var customAttributes: [String] = []
-    if !name.isEmpty {
-      customAttributes.append("name=\"\(name)\"")
-    }
-    if let typeValue = type?.rawValue, !typeValue.isEmpty {
-      customAttributes.append("type=\"\(typeValue)\"")
-    }
-    if let value = value, !value.isEmpty {
-      customAttributes.append("value=\"\(value)\"")
-    }
-    if let placeholder = placeholder, !placeholder.isEmpty {
-      customAttributes.append("placeholder=\"\(placeholder)\"")
-    }
-    if autofocus == true {
-      customAttributes.append("autofocus")
-    }
-    if required == true {
-      customAttributes.append("required")
-    }
+    let customAttributes = [
+      Attribute.string("name", name),
+      Attribute.typed("type", type),
+      Attribute.string("value", value),
+      Attribute.string("placeholder", placeholder),
+      Attribute.bool("autofocus", autofocus),
+      Attribute.bool("required", required),
+    ].compactMap { $0 }
     super.init(
       tag: "textarea",
       id: id,

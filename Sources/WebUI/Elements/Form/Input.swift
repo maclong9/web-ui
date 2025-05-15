@@ -91,28 +91,15 @@ final public class Input: Element {
     self.autofocus = autofocus
     self.required = required
     self.checked = checked
-    var customAttributes: [String] = []
-    if !name.isEmpty {
-      customAttributes.append("name=\"\(name)\"")
-    }
-    if let typeValue = type?.rawValue, !typeValue.isEmpty {
-      customAttributes.append("type=\"\(typeValue)\"")
-    }
-    if let value = value, !value.isEmpty {
-      customAttributes.append("value=\"\(value)\"")
-    }
-    if let placeholder = placeholder, !placeholder.isEmpty {
-      customAttributes.append("placeholder=\"\(placeholder)\"")
-    }
-    if autofocus == true {
-      customAttributes.append("autofocus")
-    }
-    if required == true {
-      customAttributes.append("required")
-    }
-    if checked == true {
-      customAttributes.append("checked")
-    }
+    let customAttributes = [
+      Attribute.string("name", name),
+      Attribute.typed("type", type),
+      Attribute.string("value", value),
+      Attribute.string("placeholder", placeholder),
+      Attribute.bool("autofocus", autofocus),
+      Attribute.bool("required", required),
+      Attribute.bool("checked", checked),
+    ].compactMap { $0 }
     super.init(
       tag: "input",
       id: id,

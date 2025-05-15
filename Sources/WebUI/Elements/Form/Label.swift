@@ -43,10 +43,9 @@ public final class Label: Element {
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.for = `for`
-    var customAttributes: [String] = []
-    if !`for`.isEmpty {
-      customAttributes.append("for=\"\(`for`)\"")
-    }
+    let customAttributes = [
+      Attribute.string("for", `for`)
+    ].compactMap { $0 }
     super.init(
       tag: "label",
       id: id,

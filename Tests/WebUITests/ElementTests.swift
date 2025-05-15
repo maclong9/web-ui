@@ -18,7 +18,7 @@ import Testing
   // MARK: - Element Base Class Tests
 
   @Test("Element base class with basic attributes")
-  func testElementBaseAttributes() async throws {
+  func testElementBasAttributes() async throws {
     let element = Element(
       tag: "div",
       id: "test-id",
@@ -52,29 +52,40 @@ import Testing
     #expect(rendered == "<input>")
   }
 
-  @Test("Element helper functions")
+  @Test("Attribute helper functions")
   func testElementHelperFunctions() async throws {
-    let element = Element(tag: "div")
+    // These tests don't need an element instance anymore
 
-    // Test attribute function
-    let attr1 = element.attribute("data-test", "value")
+    // Test Attr helper namespace functions
+    let attr1 = Attribute.string("data-test", "value")
     #expect(attr1 == "data-test=\"value\"")
 
-    let attr2 = element.attribute("data-empty", "")
+    let attr2 = Attribute.string("data-empty", "")
     #expect(attr2 == nil)
 
-    let attr3 = element.attribute("data-nil", nil)
+    let attr3 = Attribute.string("data-nil", nil as String?)
     #expect(attr3 == nil)
 
     // Test boolean attribute function
-    let boolAttr1 = element.booleanAttribute("selected", true)
-    #expect(boolAttr1 == "selected")
+    let booAttribute1 = Attribute.bool("selected", true)
+    #expect(booAttribute1 == "selected")
 
-    let boolAttr2 = element.booleanAttribute("selected", false)
-    #expect(boolAttr2 == nil)
+    let booAttribute2 = Attribute.bool("selected", false)
+    #expect(booAttribute2 == nil)
 
-    let boolAttr3 = element.booleanAttribute("selected", nil)
-    #expect(boolAttr3 == nil)
+    let booAttribute3 = Attribute.bool("selected", nil as Bool?)
+    #expect(booAttribute3 == nil)
+
+    // Test typed attribute function
+    enum TestEnum: String {
+      case test = "test-value"
+    }
+
+    let typeAttribute1 = Attribute.typed("test", TestEnum.test)
+    #expect(typeAttribute1 == "test=\"test-value\"")
+
+    let typeAttribute2 = Attribute.typed("test", nil as TestEnum?)
+    #expect(typeAttribute2 == nil)
   }
 
   // MARK: - Button Tests
@@ -747,10 +758,10 @@ import Testing
       ))
   }
 
-  // MARK: - Data Attributes Tests
+  // MARK: - DataAttributes Tests
 
   @Test("Element with single data attribute")
-  func testSingleDataAttribute() async throws {
+  func testSingleDatAttribute() async throws {
     let element = Element(
       tag: "div",
       data: ["test": "value"]
@@ -761,7 +772,7 @@ import Testing
   }
 
   @Test("Element with multiple data attributes")
-  func testMultipleDataAttributes() async throws {
+  func testMultipleDatAttributes() async throws {
     let element = Element(
       tag: "span",
       data: [
@@ -778,7 +789,7 @@ import Testing
   }
 
   @Test("Element with data attributes and other attributes")
-  func testDataAttributesWithOtherAttributes() async throws {
+  func testDatAttributesWithOtheAttributes() async throws {
     let element = Element(
       tag: "section",
       id: "content",
@@ -799,7 +810,7 @@ import Testing
   }
 
   @Test("Element with empty data attributes")
-  func testEmptyDataAttributes() async throws {
+  func testEmptyDatAttributes() async throws {
     let element = Element(
       tag: "div",
       data: [:]
@@ -810,7 +821,7 @@ import Testing
   }
 
   @Test("Element with nil data attributes")
-  func testNilDataAttributes() async throws {
+  func testNilDatAttributes() async throws {
     let element = Element(
       tag: "div",
       data: nil
@@ -821,7 +832,7 @@ import Testing
   }
 
   @Test("Element with data attributes in nested structure")
-  func testDataAttributesInNestedStructure() async throws {
+  func testDatAttributesInNestedStructure() async throws {
     let element = Element(
       tag: "div",
       data: ["container": "main"]

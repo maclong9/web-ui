@@ -46,13 +46,10 @@ public final class Source: Element {
   ) {
     self.src = src
     self.type = type
-    var customAttributes: [String] = []
-    if !src.isEmpty {
-      customAttributes.append("src=\"\(src)\"")
-    }
-    if let typeValue = type, !typeValue.isEmpty {
-      customAttributes.append("type=\"\(typeValue)\"")
-    }
+    let customAttributes = [
+      Attribute.string("src", src),
+      Attribute.string("type", type),
+    ].compactMap { $0 }
     super.init(
       tag: "source",
       data: data,
@@ -84,19 +81,12 @@ public final class Image: Element {
     self.source = source
     self.description = description
     self.size = size
-    var customAttributes: [String] = []
-    if !source.isEmpty {
-      customAttributes.append("src=\"\(source)\"")
-    }
-    if !description.isEmpty {
-      customAttributes.append("alt=\"\(description)\"")
-    }
-    if let width = size?.width {
-      customAttributes.append("width=\"\(width)\"")
-    }
-    if let height = size?.height {
-      customAttributes.append("height=\"\(height)\"")
-    }
+    let customAttributes = [
+      Attribute.string("src", source),
+      Attribute.string("alt", description),
+      Attribute.string("width", size?.width?.description),
+      Attribute.string("height", size?.height?.description),
+    ].compactMap { $0 }
     super.init(
       tag: "img",
       data: data,
@@ -243,22 +233,13 @@ public final class Video: Element {
     self.autoplay = autoplay
     self.loop = loop
     self.size = size
-    var customAttributes: [String] = []
-    if controls == true {
-      customAttributes.append("controls")
-    }
-    if autoplay == true {
-      customAttributes.append("autoplay")
-    }
-    if loop == true {
-      customAttributes.append("loop")
-    }
-    if let width = size?.width {
-      customAttributes.append("width=\"\(width)\"")
-    }
-    if let height = size?.height {
-      customAttributes.append("height=\"\(height)\"")
-    }
+    let customAttributes = [
+      Attribute.bool("controls", controls),
+      Attribute.bool("autoplay", autoplay),
+      Attribute.bool("loop", loop),
+      Attribute.string("width", size?.width?.description),
+      Attribute.string("height", size?.height?.description),
+    ].compactMap { $0 }
     super.init(
       tag: "video",
       id: id,
@@ -311,16 +292,11 @@ public final class Audio: Element {
     self.controls = controls
     self.autoplay = autoplay
     self.loop = loop
-    var customAttributes: [String] = []
-    if controls == true {
-      customAttributes.append("controls")
-    }
-    if autoplay == true {
-      customAttributes.append("autoplay")
-    }
-    if loop == true {
-      customAttributes.append("loop")
-    }
+    let customAttributes = [
+      Attribute.bool("controls", controls),
+      Attribute.bool("autoplay", autoplay),
+      Attribute.bool("loop", loop),
+    ].compactMap { $0 }
     super.init(
       tag: "audio",
       id: id,
