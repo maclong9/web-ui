@@ -7,6 +7,17 @@ extension Element {
   ///   - value: Specifies the z-index value as an integer.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated z-index classes.
+  ///
+  /// ## Example
+  /// ```swift
+  /// // Header that stays on top of other content
+  /// Header()
+  ///   .zIndex(50)
+  ///
+  /// // Dropdown menu that appears above other elements when activated
+  /// Stack(classes: ["dropdown-menu"])
+  ///   .zIndex(10, on: .hover)
+  /// ```
   public func zIndex(
     _ value: Int,
     on modifiers: Modifier...

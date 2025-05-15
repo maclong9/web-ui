@@ -9,14 +9,14 @@
 ///
 /// - Note: You do not need to redefine all styles on each modifier, just the ones that change.
 ///
-/// - Example:
-///   ```swift
-///   Button() { "Click me" }
-///     .background(color: .blue(._500))
-///     .background(color: .blue(._600), on: .hover)
-///     .font(color: .white)
-///     .font(size: .lg, on: .md)  // Larger text on medium screens and up
-///   ```
+/// ## Example
+/// ```swift
+/// Button() { "Click me" }
+///   .background(color: .blue(._500))
+///   .background(color: .blue(._600), on: .hover)
+///   .font(color: .white)
+///   .font(size: .lg, on: .md)  // Larger text on medium screens and up
+/// ```
 public enum Modifier: String {
   /// Extra small breakpoint modifier applying styles at 480px min-width and above.
   ///
@@ -89,12 +89,12 @@ public enum Modifier: String {
 /// Each case corresponds to a specific edge or set of edges that styling can be applied to,
 /// providing fine-grained control over layout spacing.
 ///
-/// - Example:
-///   ```swift
-///   Stack()
-///     .padding(.horizontal, length: 4)  // Adds padding to left and right sides
-///     .margins(.top, length: 2)        // Adds margin to just the top edge
-///   ```
+/// ## Example
+/// ```swift
+/// Stack()
+///   .padding(.horizontal, length: 4)  // Adds padding to left and right sides
+///   .margins(.top, length: 2)        // Adds margin to just the top edge
+/// ```
 public enum Edge: String {
   /// Applies to all edges (top, right, bottom, and left).
   ///
@@ -137,12 +137,12 @@ public enum Edge: String {
 /// Represents the direction(s) in which various layout rules are applied,
 /// such as overflow handling, scroll behavior, or spacing between child elements.
 ///
-/// - Example:
-///   ```swift
-///   Stack()
-///     .overflow(.hidden, axis: .x)  // Hide horizontal overflow only
-///     .spacing(.y, length: 4)      // Add vertical spacing between children
-///   ```
+/// ## Example
+/// ```swift
+/// Stack()
+///   .overflow(.hidden, axis: .x)  // Hide horizontal overflow only
+///   .spacing(.y, length: 4)      // Add vertical spacing between children
+/// ```
 public enum Axis: String {
   /// Applies to the horizontal (x) axis only.
   ///
@@ -172,20 +172,20 @@ public enum Axis: String {
 ///   - modifiers: Zero or more modifiers to apply (e.g., `[.hover, .xl]`).
 /// - Returns: An array of CSS classes with modifiers applied (e.g., `["hover:xl:overflow-x-hidden"]`).
 ///
-/// - Example:
-///   ```swift
-///   // Without modifiers
-///   let classes1 = combineClasses(["bg-blue-500"], withModifiers: [])
-///   // Returns: ["bg-blue-500"]
+/// ## Example
+/// ```swift
+/// // Without modifiers
+/// let classes1 = combineClasses(["bg-blue-500"], withModifiers: [])
+/// // Returns: ["bg-blue-500"]
 ///
-///   // With a single modifier
-///   let classes2 = combineClasses(["bg-blue-700"], withModifiers: [.hover])
-///   // Returns: ["hover:bg-blue-700"]
+/// // With a single modifier
+/// let classes2 = combineClasses(["bg-blue-700"], withModifiers: [.hover])
+/// // Returns: ["hover:bg-blue-700"]
 ///
-///   // With multiple modifiers and classes
-///   let classes3 = combineClasses(["text-lg", "font-bold"], withModifiers: [.md, .dark])
-///   // Returns: ["md:dark:text-lg", "md:dark:font-bold"]
-///   ```
+/// // With multiple modifiers and classes
+/// let classes3 = combineClasses(["text-lg", "font-bold"], withModifiers: [.md, .dark])
+/// // Returns: ["md:dark:text-lg", "md:dark:font-bold"]
+/// ```
 public func combineClasses(_ baseClasses: [String], withModifiers modifiers: [Modifier]) -> [String] {
   if modifiers.isEmpty {
     return baseClasses

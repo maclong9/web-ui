@@ -1,6 +1,12 @@
 /// Defines sides for applying border radius.
 ///
 /// Represents individual corners or groups of corners for styling border radius.
+///
+/// ## Example
+/// ```swift
+/// Button() { "Sign Up" }
+///   .rounded(.lg, .top)
+/// ```
 public enum RadiusSide: String {
   /// Applies radius to all corners
   case all = ""
@@ -25,6 +31,12 @@ public enum RadiusSide: String {
 /// Specifies sizes for border radius.
 ///
 /// Defines a range of radius values from none to full circular.
+///
+/// ## Example
+/// ```swift
+/// Stack(classes: ["card"])
+///   .rounded(.xl)
+/// ```
 public enum RadiusSize: String {
   /// No border radius (0)
   case none = "none"
@@ -49,6 +61,12 @@ public enum RadiusSize: String {
 /// Defines styles for borders and outlines.
 ///
 /// Provides options for solid, dashed, and other border appearances.
+///
+/// ## Example
+/// ```swift
+/// Stack()
+///   .border(width: 1, style: .dashed, color: .gray(._300))
+/// ```
 public enum BorderStyle: String {
   /// Solid line border
   case solid = "solid"
@@ -69,6 +87,12 @@ public enum BorderStyle: String {
 /// Specifies sizes for box shadows.
 ///
 /// Defines shadow sizes from none to extra-large.
+///
+/// ## Example
+/// ```swift
+/// Stack(classes: ["card"])
+///   .shadow(size: .lg, color: .gray(._300, opacity: 0.5))
+/// ```
 public enum ShadowSize: String {
   /// No shadow
   case none = "none"
@@ -89,6 +113,16 @@ public enum ShadowSize: String {
 }
 
 extension Element {
+  /// Applies border styling to the element with specified attributes.
+  ///
+  /// Adds borders with custom width, style, and color to specified edges of an element.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Stack()
+  ///   .border(width: 2, edges: .bottom, color: .blue(._500))
+  ///   .border(width: 1, edges: .horizontal, color: .gray(._200), on: .hover)
+  /// ```
   public func border(
     width: Int? = nil,
     edges: Edge...,
@@ -158,6 +192,18 @@ extension Element {
     )
   }
 
+  /// Applies border radius to the element.
+  ///
+  /// Creates rounded corners with specified size and edge placement.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Button() { "Sign Up" }
+  ///   .rounded(.full)
+  ///
+  /// Input(name: "search")
+  ///   .rounded(.lg, .left)
+  /// ```
   public func rounded(
     _ size: RadiusSize,
     _ edge: RadiusSide = .all,
@@ -179,6 +225,15 @@ extension Element {
     )
   }
 
+  /// Applies outline styling to the element.
+  ///
+  /// Adds an outline with specified width, style, and color around the element.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Button() { "Submit" }
+  ///   .outline(width: 2, style: .solid, color: .blue(._500), on: .focus)
+  /// ```
   public func outline(
     width: Int? = nil,
     style: BorderStyle? = nil,
@@ -208,6 +263,19 @@ extension Element {
     )
   }
 
+  /// Applies shadow styling to the element.
+  ///
+  /// Adds a box shadow with specified size and optional color.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Stack(classes: ["card"]) {
+  ///   Heading(.title) { "Card Title" }
+  ///   Text { "Card content" }
+  /// }
+  /// .shadow(size: .md)
+  /// .shadow(size: .xl, on: .hover)
+  /// ```
   public func shadow(
     size: ShadowSize,
     color: Color? = nil,
@@ -232,6 +300,15 @@ extension Element {
     )
   }
 
+  /// Applies a focus ring around the element.
+  ///
+  /// Adds a ring with specified size and color, useful for highlighting interactive elements.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Button() { "Click Me" }
+  ///   .ring(size: 2, color: .blue(._500), on: .focus)
+  /// ```
   public func ring(
     size: Int = 1,
     color: Color? = nil,

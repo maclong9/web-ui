@@ -1,6 +1,15 @@
 /// Defines overflow behavior options.
 ///
 /// Specifies how content exceeding an element's bounds is handled.
+///
+/// ## Example
+/// ```swift
+/// Stack() {
+///   // Long content that might overflow
+///   Text { "This is a long text that might overflow its container..." }
+/// }
+/// .overflow(.hidden)
+/// ```
 public enum OverflowType: String {
   /// Automatically adds scrollbars when content overflows.
   case auto
@@ -22,6 +31,17 @@ extension Element {
   ///   - axis: Specifies the axis for overflow (defaults to both).
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated overflow classes.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Stack(classes: ["content-container"])
+  ///   .overflow(.scroll, axis: .y)
+  ///   .frame(height: .spacing(300))
+  ///
+  /// Stack(classes: ["image-container"])
+  ///   .overflow(.hidden)
+  ///   .rounded(.lg)
+  /// ```
   public func overflow(
     _ type: OverflowType,
     axis: Axis = .both,

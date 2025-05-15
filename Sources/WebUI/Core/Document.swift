@@ -68,7 +68,7 @@ public struct Document {
   ///   - head: Optional raw HTML string to append to the head section (e.g., additional scripts, styles).
   ///   - content: A closure that builds the document's HTML content using the HTML builder DSL.
   ///
-  /// - Example:
+  /// ## Example
   ///   ```swift
   ///   let homePage = Document(
   ///     path: "index",

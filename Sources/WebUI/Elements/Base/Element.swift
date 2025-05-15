@@ -85,9 +85,9 @@ public class Element: HTML {
   ///   - customAttributes: Custom attributes specific to this element, provided as an array of attribute strings.
   ///   - content: Closure providing inner HTML content, defaults to empty.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   let customDiv = Element(
+  /// ## Example
+  /// ```swift
+  /// let customDiv = Element(
   ///     tag: "div",
   ///     id: "profile-card",
   ///     classes: ["card", "shadow"],
@@ -97,7 +97,7 @@ public class Element: HTML {
   ///       Text { "Welcome back!" }
   ///     }
   ///   )
-  ///   ```
+  ///   ````
   public init(
     tag: String,
     id: String? = nil,
@@ -129,9 +129,9 @@ public class Element: HTML {
   ///
   /// - Returns: Complete HTML element string with attributes and content.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   let div = Element(tag: "div", id: "content", content: { "Hello" })
+  /// ## Example
+  /// ```swift
+  /// let div = Element(tag: "div", id: "content", content: { "Hello" })
   ///   let html = div.render() // Returns `<div id="content">Hello</div>`
   ///
   ///   let img = Element(tag: "img", customAttributes: ["src=\"image.jpg\""], isSelfClosing: true)
