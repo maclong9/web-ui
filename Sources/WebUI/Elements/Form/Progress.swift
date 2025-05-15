@@ -43,13 +43,10 @@ public final class Progress: Element {
   ) {
     self.value = value
     self.max = max
-    var customAttributes: [String] = []
-    if let value = value {
-      customAttributes.append("value=\"\(value.description)\"")
-    }
-    if let max = max {
-      customAttributes.append("max=\"\(max.description)\"")
-    }
+    let customAttributes = [
+      Attribute.string("value", value?.description),
+      Attribute.string("max", max?.description),
+    ].compactMap { $0 }
     super.init(
       tag: "progress",
       id: id,

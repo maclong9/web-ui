@@ -49,13 +49,10 @@ public final class Button: Element {
   ) {
     self.type = type
     self.autofocus = autofocus
-    var customAttributes: [String] = []
-    if let typeValue = type?.rawValue, !typeValue.isEmpty {
-      customAttributes.append("type=\"\(typeValue)\"")
-    }
-    if autofocus == true {
-      customAttributes.append("autofocus")
-    }
+    let customAttributes = [
+      Attribute.typed("type", type),
+      Attribute.bool("autofocus", autofocus),
+    ].compactMap { $0 }
     super.init(
       tag: "button",
       id: id,

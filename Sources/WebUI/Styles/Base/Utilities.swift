@@ -186,8 +186,7 @@ public enum Axis: String {
 ///   let classes3 = combineClasses(["text-lg", "font-bold"], withModifiers: [.md, .dark])
 ///   // Returns: ["md:dark:text-lg", "md:dark:font-bold"]
 ///   ```
-public func combineClasses(_ baseClasses: [String], withModifiers modifiers: [Modifier]) -> [String]
-{
+public func combineClasses(_ baseClasses: [String], withModifiers modifiers: [Modifier]) -> [String] {
   if modifiers.isEmpty {
     return baseClasses
   }

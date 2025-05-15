@@ -24,6 +24,7 @@ The fundamental building blocks for creating websites.
 - ``HTML``
 - ``HTMLBuilder``
 - ``Children``
+- ``Element/Attribute``
 
 ## Elements
 
@@ -131,6 +132,9 @@ Helper types and extensions.
 
 - ``LoggingSetup``
 - ``MarkdownParser``
+- ``Element/Attribute/string(_:_:)``
+- ``Element/Attribute/bool(_:_:)``
+- ``Element/Attribute/typed(_:_:)``
 
 ### String Extensions
 
