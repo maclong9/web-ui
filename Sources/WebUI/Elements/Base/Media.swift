@@ -163,6 +163,7 @@ public final class Image: Element {
 }
 
 /// Generates an HTML picture element with multiple source tags.
+/// Styles and attributes applied to this element are also passed to the nested Image element.
 ///
 /// ## Example
 /// ```swift
@@ -190,6 +191,9 @@ public final class Picture: Element {
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///
+  /// All style attributes (id, classes, role, label, data) are passed to the nested Image element
+  /// to ensure proper styling, as the Picture element itself is invisible in the rendered output.
   ///
   /// ## Example
   /// ```swift
@@ -227,13 +231,24 @@ public final class Picture: Element {
         for source in sources {
           Source(src: source.src, type: source.type?.rawValue)
         }
-        Image(source: sources[0].src, description: description, size: size)
+        Image(
+          source: sources[0].src,
+          description: description,
+          size: size,
+          id: id,
+          classes: classes,
+          role: role,
+          label: label,
+          data: data
+        )
       }
     )
   }
 }
 
 /// Generates an HTML figure element with a picture and figcaption.
+/// Styles and attributes applied to this element are passed to the nested Picture element,
+/// which further passes them to its nested Image element.
 ///
 /// ## Example
 /// ```swift
@@ -261,6 +276,9 @@ public final class Figure: Element {
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///
+  /// All style attributes (id, classes, role, label, data) are passed to the nested Picture element
+  /// and ultimately to the Image element, ensuring proper styling throughout the hierarchy.
   ///
   /// ## Example
   /// ```swift
@@ -297,7 +315,12 @@ public final class Figure: Element {
         Picture(
           sources: sources,
           description: description,
-          size: size
+          size: size,
+          id: id,
+          classes: classes,
+          role: role,
+          label: label,
+          data: data
         )
         Element(
           tag: "figcaption",
