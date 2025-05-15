@@ -162,7 +162,7 @@ public class ResponsiveBuilder {
   /// Applies the breakpoint prefix to all pending classes and add them to the element
   private func applyBreakpoint() {
     guard let breakpoint = currentBreakpoint else { return }
-    
+
     // Apply the breakpoint prefix to all pending classes
     let responsiveClasses = pendingClasses.map {
       // Handle duplication for flex-*, justify-*, items-*
