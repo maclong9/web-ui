@@ -29,14 +29,14 @@ public final class Button: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the button.
   ///   - content: Closure providing button content (text or other HTML elements), defaults to empty.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Button(type: .submit, id: "save-button") {
-  ///     "Save Changes"
-  ///   }
-  ///   .background(color: .blue(.600))
-  ///   .padding(.all, length: 2)
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Button(type: .submit, id: "save-button") {
+  ///   "Save Changes"
+  /// }
+  /// .background(color: .blue(.600))
+  /// .padding(.all, length: 2)
+  /// ```
   public init(
     type: ButtonType? = nil,
     autofocus: Bool? = nil,
@@ -49,13 +49,10 @@ public final class Button: Element {
   ) {
     self.type = type
     self.autofocus = autofocus
-    var customAttributes: [String] = []
-    if let typeValue = type?.rawValue, !typeValue.isEmpty {
-      customAttributes.append("type=\"\(typeValue)\"")
-    }
-    if autofocus == true {
-      customAttributes.append("autofocus")
-    }
+    let customAttributes = [
+      Attribute.typed("type", type),
+      Attribute.bool("autofocus", autofocus),
+    ].compactMap { $0 }
     super.init(
       tag: "button",
       id: id,

@@ -2,14 +2,14 @@ extension Element {
   /// Applies margin styling to the element with one or more edges.
   ///
   /// - Parameters:
-  ///   - edges: One or more edges to apply the margin to. Defaults to `.all`.
   ///   - length: The spacing value in `0.25rem` increments.
+  ///   - edges: One or more edges to apply the margin to. Defaults to `.all`.
   ///   - auto: Whether to use automatic margins instead of a specific length.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated margin classes.
   public func margins(
-    _ edges: Edge...,
-    length: Int? = 4,
+    of length: Int? = 4,
+    at edges: Edge...,
     auto: Bool = false,
     on modifiers: Modifier...
   ) -> Element {
@@ -47,13 +47,13 @@ extension Element {
   /// Applies padding styling to the element with one or more edges.
   ///
   /// - Parameters:
-  ///   - edges: One or more edges to apply the padding to. Defaults to `.all`.
   ///   - length: The spacing value.
+  ///   - edges: One or more edges to apply the padding to. Defaults to `.all`.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated padding classes.
   public func padding(
-    _ edges: Edge...,
-    length: Int? = 4,
+    of length: Int? = 4,
+    at edges: Edge...,
     on modifiers: Modifier...
   ) -> Element {
     let effectiveEdges = edges.isEmpty ? [Edge.all] : edges
@@ -82,13 +82,13 @@ extension Element {
   /// Applies spacing between child elements horizontally and/or vertically.
   ///
   /// - Parameters:
-  ///   - direction: The direction(s) to apply spacing (`horizontal`, `vertical`, or both).
   ///   - length: The spacing value in `0.25rem` increments.
+  ///   - direction: The direction(s) to apply spacing (`horizontal`, `vertical`, or both).
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated spacing classes.
   public func spacing(
-    _ direction: Axis = .both,
-    length: Int? = 4,
+    of length: Int? = 4,
+    along direction: Axis = .both,
     on modifiers: Modifier...
   ) -> Element {
     let baseClasses: [String] =

@@ -19,36 +19,34 @@ struct AboutPage: HTML {
           "About This Site"
         }
         .font(size: .xl3, weight: .bold)
-        .margins(.bottom, length: 6)
+        .margins(EdgeInsets(top: 0, leading: 0, bottom: 6, trailing: 0))
 
         Text {
           "This is the About page of my static website built with WebUI. This page demonstrates how to create multiple pages that share common layout elements but have unique content."
         }
-        .margins(.bottom, length: 4)
+        .margins(EdgeInsets(bottom: 4))
 
         Heading(.headline) {
           "About the Creator"
         }
         .font(size: .xl, weight: .bold)
-        .margins(.top, length: 6)
-        .margins(.bottom, length: 3)
+        .margins(EdgeInsets(top: 6, leading: 0, bottom: 3, trailing: 0))
 
         Text {
           "I'm a Swift developer who loves building clean, fast websites. This site serves as a demonstration of using Swift for web development."
         }
-        .margins(.bottom, length: 4)
+        .margins(EdgeInsets(bottom: 4))
 
         Heading(.headline) {
           "Built with WebUI"
         }
         .font(size: .xl, weight: .bold)
-        .margins(.top, length: 6)
-        .margins(.bottom, length: 3)
+        .margins(EdgeInsets(top: 6, leading: 0, bottom: 3, trailing: 0))
 
         Text {
           "WebUI is a Swift library that makes it easy to build static websites using a component-based approach. Key features include:"
         }
-        .margins(.bottom, length: 4)
+        .margins(EdgeInsets(bottom: 4))
 
         List {
           Item { "Type-safe HTML generation" }
@@ -56,21 +54,20 @@ struct AboutPage: HTML {
           Item { "Component reusability" }
           Item { "Simple static site generation" }
         }
-        .padding(.leading, length: 8)
-        .margins(.bottom, length: 4)
+        .padding(EdgeInsets(leading: 8))
+        .margins(EdgeInsets(bottom: 4))
 
         Link(to: "/") {
           "Return to Home Page"
         }
-        .margins(.top, length: 4)
+        .margins(EdgeInsets(top: 4))
         .background(color: .blue(._500))
         .font(color: .custom("white"))
-        .padding(.horizontal, length: 4)
-        .padding(.vertical, length: 2)
+        .padding(EdgeInsets(vertical: 2, horizontal: 4))
         .rounded(.md)
       }
       .frame(maxWidth: .fraction(2, 3))
-      .margins(.horizontal, auto: true)
+      .margins(at: .horizontal, auto: true)
     }
   }
 }

@@ -1,68 +1,10 @@
-// Metadata.swift
 import Foundation
-
-/// Defines the type of content for Open Graph metadata.
-///
-/// Content type affects how social media platforms and search engines categorize and display the content.
-public enum ContentType: String {
-  /// Standard website content type.
-  case website
-  /// Article or blog post content type.
-  case article
-  /// Video content type.
-  case video
-  /// Personal or organizational profile content type.
-  case profile
-}
-
-/// Defines supported language locales for content.
-///
-/// Used to specify the language of the document for accessibility and SEO purposes.
-public enum Locale: String {
-  /// English locale.
-  case en
-  /// Spanish locale.
-  case sp
-  /// French locale.
-  case fr
-  /// German locale.
-  case de
-  /// Japanese locale.
-  case ja
-  /// Russian locale.
-  case ru
-}
-
-/// Represents a theme color with optional dark mode variant.
-///
-/// Used to specify the browser theme color for the document, supporting both light and dark mode.
-public struct ThemeColor {
-  /// The color value for light mode.
-  public let light: String
-
-  /// The optional color value for dark mode.
-  public let dark: String?
-
-  /// Creates a new theme color with optional dark mode variant.
-  ///
-  /// - Parameters:
-  ///   - light: The color value for light mode (can be any valid CSS color).
-  ///   - dark: The optional color value for dark mode (can be any valid CSS color).
-  ///
-  /// - Example:
-  ///   ```swift
-  ///   let brandColor = ThemeColor("#0077ff", dark: "#3399ff")
-  ///   ```
-  public init(_ light: String, dark: String? = nil) {
-    self.light = light
-    self.dark = dark
-  }
-}
 
 /// Represents metadata for an HTML document including SEO and social media properties.
 ///
 /// The `Metadata` struct encapsulates all the metadata that can be included in the `<head>` section
 /// of an HTML document, such as title, description, Open Graph tags, and Twitter card information.
+/// It also supports structured data for enhanced SEO and rich snippets in search results.
 public struct Metadata {
   /// The name of the website or application.
   public var site: String?
@@ -100,6 +42,12 @@ public struct Metadata {
   /// The browser theme color for the document.
   public var themeColor: ThemeColor?
 
+  /// The favicons for the document, supporting different sizes and modes.
+  public var favicons: [Favicon]?
+
+  /// The structured data for the document in JSON-LD format.
+  public var structuredData: StructuredData?
+
   /// The fully formatted page title combining the title, separator, and site name.
   ///
   /// - Returns: A string combining the title, separator, and site name, handling nil values appropriately.
@@ -122,6 +70,8 @@ public struct Metadata {
   ///   - locale: The language locale of the content (defaults to English).
   ///   - type: The type of content (defaults to "website").
   ///   - themeColor: The browser theme color for the document.
+  ///   - favicons: The favicons for the document in various sizes and for different modes.
+  ///   - structuredData: The structured data for the document in JSON-LD format.
   ///
   /// - Example:
   ///   ```swift
@@ -133,7 +83,11 @@ public struct Metadata {
   ///     author: "John Doe",
   ///     keywords: ["swift", "web", "ui"],
   ///     locale: .en,
-  ///     themeColor: ThemeColor("#3366ff")
+  ///     themeColor: ThemeColor("#3366ff"),
+  ///     favicons: [
+  ///       Favicon("/favicon.png", dark: "/favicon-dark.png", size: "32x32"),
+  ///       Favicon("/favicon.ico")
+  ///     ]
   ///   )
   ///   ```
   public init(
@@ -148,7 +102,9 @@ public struct Metadata {
     twitter: String? = nil,
     locale: Locale = .en,
     type: ContentType = .website,
-    themeColor: ThemeColor? = nil
+    themeColor: ThemeColor? = nil,
+    favicons: [Favicon]? = nil,
+    structuredData: StructuredData? = nil
   ) {
     self.site = site
     self.title = title
@@ -162,6 +118,8 @@ public struct Metadata {
     self.locale = locale
     self.type = type
     self.themeColor = themeColor
+    self.favicons = favicons
+    self.structuredData = structuredData
   }
 
   /// Creates a new metadata configuration by extending an existing one.
@@ -213,7 +171,9 @@ public struct Metadata {
     twitter: String? = nil,
     locale: Locale? = nil,
     type: ContentType? = nil,
-    themeColor: ThemeColor? = nil
+    themeColor: ThemeColor? = nil,
+    favicons: [Favicon]? = nil,
+    structuredData: StructuredData? = nil
   ) {
     self.site = site ?? base.site
     self.title = title ?? base.title
@@ -227,6 +187,8 @@ public struct Metadata {
     self.locale = locale ?? base.locale
     self.type = type ?? base.type
     self.themeColor = themeColor ?? base.themeColor
+    self.favicons = favicons ?? base.favicons
+    self.structuredData = structuredData ?? base.structuredData
   }
 
   /// Generates HTML meta tags from the metadata.
@@ -269,6 +231,42 @@ public struct Metadata {
       if let themeDark = themeColor.dark {
         baseTags.append(
           "<meta name=\"theme-color\" content=\"\(themeDark)\" media=\"(prefers-color-scheme: dark)\">"
+        )
+      }
+    }
+
+    if let favicons {
+      for favicon in favicons {
+        let sizeAttr = favicon.size.map { " sizes=\"\($0)\"" } ?? ""
+
+        if favicon.dark != nil {
+          baseTags.append(
+            "<link rel=\"icon\" type=\"\(favicon.type)\" href=\"\(favicon.light)\"\(sizeAttr) media=\"(prefers-color-scheme: light)\">"
+          )
+          baseTags.append(
+            "<link rel=\"icon\" type=\"\(favicon.type)\" href=\"\(favicon.dark!)\"\(sizeAttr) media=\"(prefers-color-scheme: dark)\">"
+          )
+        } else {
+          baseTags.append(
+            "<link rel=\"icon\" type=\"\(favicon.type)\" href=\"\(favicon.light)\"\(sizeAttr)>"
+          )
+        }
+
+        // Add Apple touch icon if this is a PNG and has a size
+        if favicon.type == "image/png", let size = favicon.size {
+          baseTags.append(
+            "<link rel=\"apple-touch-icon\" sizes=\"\(size)\" href=\"\(favicon.light)\">"
+          )
+        }
+      }
+    }
+
+    // Add structured data if available
+    if let structuredData = structuredData {
+      let jsonString = structuredData.toJSON()
+      if !jsonString.isEmpty {
+        baseTags.append(
+          "<script type=\"application/ld+json\">\n\(jsonString)\n</script>"
         )
       }
     }

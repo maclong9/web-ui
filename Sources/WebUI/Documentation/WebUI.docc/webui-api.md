@@ -14,16 +14,31 @@ The fundamental building blocks for creating websites.
 
 - ``Document``
 - ``Website``
-- ``Metadata``
-- ``Theme``
 - ``Script``
 - ``ScriptAttribute``
+
+### Metadata and SEO
+
+- ``Metadata``
+- ``ThemeColor``
+- ``Favicon``
+- ``ContentType``
+- ``Locale``
+- ``StructuredData``
+- ``SitemapEntry``
+- ``RobotsRule``
+- ``SEOUtils``
+
+### Theming
+
+- ``Theme``
 
 ### HTML Building
 
 - ``HTML``
 - ``HTMLBuilder``
 - ``Children``
+- ``Element/Attribute``
 
 ## Elements
 
@@ -98,6 +113,7 @@ Components for styling your HTML elements.
 ### Layout
 
 - ``Edge``
+- ``EdgeInsets``
 - ``Axis``
 - ``Justify``
 - ``Align``
@@ -131,6 +147,10 @@ Helper types and extensions.
 
 - ``LoggingSetup``
 - ``MarkdownParser``
+- ``MarkdownParser/ParsedMarkdown``
+- ``Element/Attribute/string(_:_:)``
+- ``Element/Attribute/bool(_:_:)``
+- ``Element/Attribute/typed(_:_:)``
 
 ### String Extensions
 

@@ -55,20 +55,20 @@ final public class Input: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data.
   ///   - on: String? = nil,
   ///
-  /// - Example:
-  ///   ```swift
-  ///   // Text input for a username
-  ///   Input(name: "username", type: .text, placeholder: "Enter your username", required: true)
+  /// ## Example
+  /// ```swift
+  /// // Text input for a username
+  /// Input(name: "username", type: .text, placeholder: "Enter your username", required: true)
   ///
-  ///   // Password input with autofocus
-  ///   Input(name: "password", type: .password, placeholder: "Your password", autofocus: true)
+  /// // Password input with autofocus
+  /// Input(name: "password", type: .password, placeholder: "Your password", autofocus: true)
   ///
-  ///   // Email input with validation
-  ///   Input(name: "email", type: .email, placeholder: "your@email.com")
+  /// // Email input with validation
+  /// Input(name: "email", type: .email, placeholder: "your@email.com")
   ///
-  ///   // Checkbox for accepting terms
-  ///   Input(name: "accept_terms", type: .checkbox, checked: false)
-  ///   ```
+  /// // Checkbox for accepting terms
+  /// Input(name: "accept_terms", type: .checkbox, checked: false)
+  /// ```
   public init(
     name: String,
     type: InputType? = nil,
@@ -91,28 +91,15 @@ final public class Input: Element {
     self.autofocus = autofocus
     self.required = required
     self.checked = checked
-    var customAttributes: [String] = []
-    if !name.isEmpty {
-      customAttributes.append("name=\"\(name)\"")
-    }
-    if let typeValue = type?.rawValue, !typeValue.isEmpty {
-      customAttributes.append("type=\"\(typeValue)\"")
-    }
-    if let value = value, !value.isEmpty {
-      customAttributes.append("value=\"\(value)\"")
-    }
-    if let placeholder = placeholder, !placeholder.isEmpty {
-      customAttributes.append("placeholder=\"\(placeholder)\"")
-    }
-    if autofocus == true {
-      customAttributes.append("autofocus")
-    }
-    if required == true {
-      customAttributes.append("required")
-    }
-    if checked == true {
-      customAttributes.append("checked")
-    }
+    let customAttributes = [
+      Attribute.string("name", name),
+      Attribute.typed("type", type),
+      Attribute.string("value", value),
+      Attribute.string("placeholder", placeholder),
+      Attribute.bool("autofocus", autofocus),
+      Attribute.bool("required", required),
+      Attribute.bool("checked", checked),
+    ].compactMap { $0 }
     super.init(
       tag: "input",
       id: id,

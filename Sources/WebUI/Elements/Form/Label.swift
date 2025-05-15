@@ -6,13 +6,13 @@
 /// - Creating larger clickable areas for checkboxes and radio buttons
 /// - Improving screen reader accessibility
 ///
-/// - Example:
-///   ```swift
-///   Label(for: "email") {
-///     "Email Address:"
-///   }
-///   // Renders: <label for="email">Email Address:</label>
-///   ```
+/// ## Example
+/// ```swift
+/// Label(for: "email") {
+///   "Email Address:"
+/// }
+/// // Renders: <label for="email">Email Address:</label>
+/// ```
 public final class Label: Element {
   let `for`: String
 
@@ -27,12 +27,12 @@ public final class Label: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the label.
   ///   - content: Closure providing label text content, defaults to empty.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Label(for: "terms", classes: ["checkbox-label"]) {
-  ///     "I agree to the terms and conditions"
-  ///   }
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Label(for: "terms", classes: ["checkbox-label"]) {
+  ///   "I agree to the terms and conditions"
+  /// }
+  /// ```
   public init(
     `for`: String,
     id: String? = nil,
@@ -43,10 +43,9 @@ public final class Label: Element {
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.for = `for`
-    var customAttributes: [String] = []
-    if !`for`.isEmpty {
-      customAttributes.append("for=\"\(`for`)\"")
-    }
+    let customAttributes = [
+      Attribute.string("for", `for`)
+    ].compactMap { $0 }
     super.init(
       tag: "label",
       id: id,

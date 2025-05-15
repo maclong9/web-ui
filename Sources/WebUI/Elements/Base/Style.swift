@@ -7,19 +7,19 @@
 /// - Note: For larger applications, consider using external stylesheets for better
 ///   caching and separation of concerns.
 ///
-/// - Example:
-///   ```swift
-///   Style {
-///     """
-///     .custom-heading {
-///       color: blue;
-///       font-size: 24px;
-///       margin-bottom: 16px;
-///     }
-///     """
+/// ## Example
+/// ```swift
+/// Style {
+///   """
+///   .custom-heading {
+///     color: blue;
+///     font-size: 24px;
+///     margin-bottom: 16px;
 ///   }
-///   // Renders: <style>.custom-heading { color: blue; font-size: 24px; margin-bottom: 16px; }</style>
-///   ```
+///   """
+/// }
+/// // Renders: <style>.custom-heading { color: blue; font-size: 24px; margin-bottom: 16px; }</style>
+/// ```
 public final class Style: Element {
   /// Creates a new HTML style element.
   ///
@@ -31,13 +31,13 @@ public final class Style: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data.
   ///   - content: Closure providing the CSS content as strings.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Style(id: "theme-styles") {
-  ///     "body { background-color: #f5f5f5; }"
-  ///     "header { font-weight: bold; }"
-  ///   }
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Style(id: "theme-styles") {
+  ///   "body { background-color: #f5f5f5; }"
+  ///   "header { font-weight: bold; }"
+  /// }
+  /// ```
   public init(
     id: String? = nil,
     classes: [String]? = nil,

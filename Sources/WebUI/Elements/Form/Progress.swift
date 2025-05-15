@@ -4,11 +4,11 @@
 /// such as a file download, form submission, or data processing operation. It provides
 /// users with visual feedback about ongoing operations.
 ///
-/// - Example:
-///   ```swift
-///   Progress(value: 75, max: 100)
-///   // Renders: <progress value="75" max="100"></progress>
-///   ```
+/// ## Example
+/// ```swift
+/// Progress(value: 75, max: 100)
+/// // Renders: <progress value="75" max="100"></progress>
+/// ```
 public final class Progress: Element {
   let value: Double?
   let max: Double?
@@ -24,14 +24,14 @@ public final class Progress: Element {
   ///   - label: ARIA label to describe the element for screen readers (e.g., "Download progress").
   ///   - data: Dictionary of `data-*` attributes for storing element-relevant data.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   // Determinate progress bar showing 30% completion
-  ///   Progress(value: 30, max: 100, id: "download-progress", label: "Download progress")
+  /// ## Example
+  /// ```swift
+  /// // Determinate progress bar showing 30% completion
+  /// Progress(value: 30, max: 100, id: "download-progress", label: "Download progress")
   ///
-  ///   // Indeterminate progress bar (activity indicator)
-  ///   Progress(id: "loading-indicator", label: "Loading content")
-  ///   ```
+  /// // Indeterminate progress bar (activity indicator)
+  /// Progress(id: "loading-indicator", label: "Loading content")
+  /// ```
   public init(
     value: Double? = nil,
     max: Double? = nil,
@@ -43,13 +43,10 @@ public final class Progress: Element {
   ) {
     self.value = value
     self.max = max
-    var customAttributes: [String] = []
-    if let value = value {
-      customAttributes.append("value=\"\(value.description)\"")
-    }
-    if let max = max {
-      customAttributes.append("max=\"\(max.description)\"")
-    }
+    let customAttributes = [
+      Attribute.string("value", value?.description),
+      Attribute.string("max", max?.description),
+    ].compactMap { $0 }
     super.init(
       tag: "progress",
       id: id,

@@ -1,12 +1,29 @@
 import Foundation
 
 /// Represents media size by width and height
+///
+/// ## Example
+/// ```swift
+/// let size = MediaSize(width: 800, height: 600)
+/// Image(source: "/images/hero.jpg", description: "Hero image", size: size)
+/// ```
 public struct MediaSize {
   let width: Int?
   let height: Int?
 }
 
 /// Enum for image MIME types
+///
+/// ## Example
+/// ```swift
+/// Picture(
+///   sources: [
+///     ("image.webp", .webp),
+///     ("image.jpg", .jpeg)
+///   ],
+///   description: "Responsive image"
+/// )
+/// ```
 public enum ImageType: String {
   case jpeg = "image/jpeg"
   case png = "image/png"
@@ -15,6 +32,17 @@ public enum ImageType: String {
 }
 
 /// Enum for video MIME types
+///
+/// ## Example
+/// ```swift
+/// Video(
+///   sources: [
+///     ("video.webm", .webm),
+///     ("video.mp4", .mp4)
+///   ],
+///   controls: true
+/// )
+/// ```
 public enum VideoType: String {
   case mp4 = "video/mp4"
   case webm = "video/webm"
@@ -22,6 +50,18 @@ public enum VideoType: String {
 }
 
 /// Enum for audio MIME types
+///
+/// ## Example
+/// ```swift
+/// Audio(
+///   sources: [
+///     ("music.mp3", .mp3),
+///     ("music.ogg", .ogg)
+///   ],
+///   controls: true,
+///   loop: true
+/// )
+/// ```
 public enum AudioType: String {
   case mp3 = "audio/mpeg"
   case ogg = "audio/ogg"
@@ -29,6 +69,11 @@ public enum AudioType: String {
 }
 
 /// Generates an HTML source element for media tags.
+///
+/// ## Example
+/// ```swift
+/// Source(src: "video.mp4", type: "video/mp4")
+/// ```
 public final class Source: Element {
   let src: String
   let type: String?
@@ -39,6 +84,11 @@ public final class Source: Element {
   ///   - src: Source URL.
   ///   - type: MIME type, optional.
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Source(src: "image.webp", type: "image/webp")
+  /// ```
   public init(
     src: String,
     type: String? = nil,
@@ -46,13 +96,10 @@ public final class Source: Element {
   ) {
     self.src = src
     self.type = type
-    var customAttributes: [String] = []
-    if !src.isEmpty {
-      customAttributes.append("src=\"\(src)\"")
-    }
-    if let typeValue = type, !typeValue.isEmpty {
-      customAttributes.append("type=\"\(typeValue)\"")
-    }
+    let customAttributes = [
+      Attribute.string("src", src),
+      Attribute.string("type", type),
+    ].compactMap { $0 }
     super.init(
       tag: "source",
       data: data,
@@ -63,6 +110,12 @@ public final class Source: Element {
 }
 
 /// Generates an HTML img element.
+///
+/// ## Example
+/// ```swift
+/// Image(source: "/images/logo.png", description: "Company Logo")
+///   .rounded(.lg)
+/// ```
 public final class Image: Element {
   let source: String
   let description: String
@@ -75,6 +128,16 @@ public final class Image: Element {
   ///   - description: Alt text for accessibility.
   ///   - size: Image size dimensions, optional.
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Image(
+  ///   source: "/images/profile.jpg",
+  ///   description: "User Profile Photo",
+  ///   size: MediaSize(width: 200, height: 200)
+  /// )
+  /// .rounded(.full)
+  /// ```
   public init(
     source: String,
     description: String,
@@ -84,19 +147,12 @@ public final class Image: Element {
     self.source = source
     self.description = description
     self.size = size
-    var customAttributes: [String] = []
-    if !source.isEmpty {
-      customAttributes.append("src=\"\(source)\"")
-    }
-    if !description.isEmpty {
-      customAttributes.append("alt=\"\(description)\"")
-    }
-    if let width = size?.width {
-      customAttributes.append("width=\"\(width)\"")
-    }
-    if let height = size?.height {
-      customAttributes.append("height=\"\(height)\"")
-    }
+    let customAttributes = [
+      Attribute.string("src", source),
+      Attribute.string("alt", description),
+      Attribute.string("width", size?.width?.description),
+      Attribute.string("height", size?.height?.description),
+    ].compactMap { $0 }
     super.init(
       tag: "img",
       data: data,
@@ -107,6 +163,18 @@ public final class Image: Element {
 }
 
 /// Generates an HTML picture element with multiple source tags.
+/// Styles and attributes applied to this element are also passed to the nested Image element.
+///
+/// ## Example
+/// ```swift
+/// Picture(
+///   sources: [
+///     ("banner.webp", .webp),
+///     ("banner.jpg", .jpeg)
+///   ],
+///   description: "Website banner image"
+/// )
+/// ```
 public final class Picture: Element {
   let sources: [(src: String, type: ImageType?)]
   let description: String
@@ -123,6 +191,22 @@ public final class Picture: Element {
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///
+  /// All style attributes (id, classes, role, label, data) are passed to the nested Image element
+  /// to ensure proper styling, as the Picture element itself is invisible in the rendered output.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Picture(
+  ///   sources: [
+  ///     ("hero-large.webp", .webp),
+  ///     ("hero-large.jpg", .jpeg)
+  ///   ],
+  ///   description: "Hero Banner",
+  ///   id: "hero-image",
+  ///   classes: ["responsive-image"]
+  /// )
+  /// ```
   public init(
     sources: [(src: String, type: ImageType?)],
     description: String,
@@ -147,13 +231,31 @@ public final class Picture: Element {
         for source in sources {
           Source(src: source.src, type: source.type?.rawValue)
         }
-        Image(source: sources[0].src, description: description, size: size)
+        Image(
+          source: sources[0].src,
+          description: description,
+          size: size,
+          data: data
+        )
       }
     )
   }
 }
 
 /// Generates an HTML figure element with a picture and figcaption.
+/// Styles and attributes applied to this element are passed to the nested Picture element,
+/// which further passes them to its nested Image element.
+///
+/// ## Example
+/// ```swift
+/// Figure(
+///   sources: [
+///     ("chart.webp", .webp),
+///     ("chart.png", .png)
+///   ],
+///   description: "Annual revenue growth chart"
+/// )
+/// ```
 public final class Figure: Element {
   let sources: [(src: String, type: ImageType?)]
   let description: String
@@ -170,6 +272,21 @@ public final class Figure: Element {
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///
+  /// All style attributes (id, classes, role, label, data) are passed to the nested Picture element
+  /// and ultimately to the Image element, ensuring proper styling throughout the hierarchy.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Figure(
+  ///   sources: [
+  ///     ("product.webp", .webp),
+  ///     ("product.jpg", .jpeg)
+  ///   ],
+  ///   description: "Product XYZ with special features",
+  ///   classes: ["product-figure", "bordered"]
+  /// )
+  /// ```
   public init(
     sources: [(src: String, type: ImageType?)],
     description: String,
@@ -194,7 +311,12 @@ public final class Figure: Element {
         Picture(
           sources: sources,
           description: description,
-          size: size
+          size: size,
+          id: id,
+          classes: classes,
+          role: role,
+          label: label,
+          data: data
         )
         Element(
           tag: "figcaption",
@@ -206,6 +328,18 @@ public final class Figure: Element {
 }
 
 /// Generates an HTML video element with multiple source tags.
+///
+/// ## Example
+/// ```swift
+/// Video(
+///   sources: [
+///     ("intro.webm", .webm),
+///     ("intro.mp4", .mp4)
+///   ],
+///   controls: true,
+///   autoplay: false
+/// )
+/// ```
 public final class Video: Element {
   let sources: [(src: String, type: VideoType?)]
   let controls: Bool?
@@ -226,6 +360,21 @@ public final class Video: Element {
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Video(
+  ///   sources: [
+  ///     ("tutorial.webm", .webm),
+  ///     ("tutorial.mp4", .mp4)
+  ///   ],
+  ///   controls: true,
+  ///   loop: true,
+  ///   size: MediaSize(width: 1280, height: 720),
+  ///   id: "tutorial-video",
+  ///   classes: ["responsive-video"]
+  /// )
+  /// ```
   public init(
     sources: [(src: String, type: VideoType?)],
     controls: Bool? = nil,
@@ -243,22 +392,13 @@ public final class Video: Element {
     self.autoplay = autoplay
     self.loop = loop
     self.size = size
-    var customAttributes: [String] = []
-    if controls == true {
-      customAttributes.append("controls")
-    }
-    if autoplay == true {
-      customAttributes.append("autoplay")
-    }
-    if loop == true {
-      customAttributes.append("loop")
-    }
-    if let width = size?.width {
-      customAttributes.append("width=\"\(width)\"")
-    }
-    if let height = size?.height {
-      customAttributes.append("height=\"\(height)\"")
-    }
+    let customAttributes = [
+      Attribute.bool("controls", controls),
+      Attribute.bool("autoplay", autoplay),
+      Attribute.bool("loop", loop),
+      Attribute.string("width", size?.width?.description),
+      Attribute.string("height", size?.height?.description),
+    ].compactMap { $0 }
     super.init(
       tag: "video",
       id: id,
@@ -278,6 +418,17 @@ public final class Video: Element {
 }
 
 /// Generates an HTML audio element with multiple source tags.
+///
+/// ## Example
+/// ```swift
+/// Audio(
+///   sources: [
+///     ("background.mp3", .mp3),
+///     ("background.ogg", .ogg)
+///   ],
+///   controls: true
+/// )
+/// ```
 public final class Audio: Element {
   let sources: [(src: String, type: AudioType?)]
   let controls: Bool?
@@ -296,6 +447,19 @@ public final class Audio: Element {
   ///   - role: ARIA role of the element for accessibility.
   ///   - label: ARIA label to describe the element.
   ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Audio(
+  ///   sources: [
+  ///     ("podcast.mp3", .mp3),
+  ///     ("podcast.ogg", .ogg)
+  ///   ],
+  ///   controls: true,
+  ///   id: "podcast-player",
+  ///   label: "Episode 42: Web Development with Swift"
+  /// )
+  /// ```
   public init(
     sources: [(src: String, type: AudioType?)],
     controls: Bool? = nil,
@@ -311,16 +475,11 @@ public final class Audio: Element {
     self.controls = controls
     self.autoplay = autoplay
     self.loop = loop
-    var customAttributes: [String] = []
-    if controls == true {
-      customAttributes.append("controls")
-    }
-    if autoplay == true {
-      customAttributes.append("autoplay")
-    }
-    if loop == true {
-      customAttributes.append("loop")
-    }
+    let customAttributes = [
+      Attribute.bool("controls", controls),
+      Attribute.bool("autoplay", autoplay),
+      Attribute.bool("loop", loop),
+    ].compactMap { $0 }
     super.init(
       tag: "audio",
       id: id,

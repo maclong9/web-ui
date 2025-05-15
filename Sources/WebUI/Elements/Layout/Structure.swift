@@ -4,14 +4,14 @@
 /// news story, forum post, or any content that could stand alone. Articles are ideal for
 /// content that could be syndicated or reused elsewhere.
 ///
-/// - Example:
-///   ```swift
-///   Article {
-///     Heading(.largeTitle) { "Blog Post Title" }
-///     Text { "Published on May 15, 2023" }
-///     Text { "This is the content of the blog post..." }
-///   }
-///   ```
+/// ## Example
+/// ```swift
+/// Article {
+///   Heading(.largeTitle) { "Blog Post Title" }
+///   Text { "Published on May 15, 2023" }
+///   Text { "This is the content of the blog post..." }
+/// }
+/// ```
 public final class Article: Element {
   /// Creates a new HTML article element for self-contained content.
   ///
@@ -23,13 +23,13 @@ public final class Article: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the article.
   ///   - content: Closure providing article content such as headings, paragraphs, and media.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Article(id: "post-123", classes: ["blog-post", "featured"]) {
-  ///     Heading(.largeTitle) { "Getting Started with WebUI" }
-  ///     Text { "Learn how to build static websites using Swift..." }
-  ///   }
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Article(id: "post-123", classes: ["blog-post", "featured"]) {
+  ///   Heading(.largeTitle) { "Getting Started with WebUI" }
+  ///   Text { "Learn how to build static websites using Swift..." }
+  /// }
+  /// ```
   public init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -50,17 +50,17 @@ public final class Article: Element {
 /// that forms a distinct section of a document. Sections typically have their own heading
 /// and represent a logical grouping of related content.
 ///
-/// - Example:
-///   ```swift
-///   Section(id: "features") {
-///     Heading(.title) { "Key Features" }
-///     List {
-///       Item { "Simple API" }
-///       Item { "Type-safe HTML generation" }
-///       Item { "Responsive design" }
-///     }
+/// ## Example
+/// ```swift
+/// Section(id: "features") {
+///   Heading(.title) { "Key Features" }
+///   List {
+///     Item { "Simple API" }
+///     Item { "Type-safe HTML generation" }
+///     Item { "Responsive design" }
 ///   }
-///   ```
+/// }
+/// ```
 public final class Section: Element {
   /// Creates a new HTML section element for thematic content grouping.
   ///
@@ -72,13 +72,13 @@ public final class Section: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the section.
   ///   - content: Closure providing section content such as headings, paragraphs, and other elements.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Section(id: "about", classes: ["content-section"]) {
-  ///     Heading(.title) { "About Us" }
-  ///     Text { "Our company was founded in 2020..." }
-  ///   }
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Section(id: "about", classes: ["content-section"]) {
+  ///   Heading(.title) { "About Us" }
+  ///   Text { "Our company was founded in 2020..." }
+  /// }
+  /// ```
   public init(
     id: String? = nil,
     classes: [String]? = nil,
@@ -103,13 +103,13 @@ public final class Section: Element {
 /// - Note: Use semantic elements like `Article`, `Section`, or `Aside` when possible,
 ///   and reserve `Stack` for purely presentational grouping.
 ///
-/// - Example:
-///   ```swift
-///   Stack(classes: ["flex-container"]) {
-///     Stack(classes: ["card"]) { "Card 1 content" }
-///     Stack(classes: ["card"]) { "Card 2 content" }
-///   }
-///   ```
+/// ## Example
+/// ```swift
+/// Stack(classes: ["flex-container"]) {
+///   Stack(classes: ["card"]) { "Card 1 content" }
+///   Stack(classes: ["card"]) { "Card 2 content" }
+/// }
+/// ```
 public final class Stack: Element {
   /// Creates a new HTML div element for generic content grouping.
   ///
@@ -121,14 +121,14 @@ public final class Stack: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the container.
   ///   - content: Closure providing the container's content elements.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Stack(id: "user-profile", classes: ["card", "shadow"], data: ["user-id": "123"]) {
-  ///     Image(source: "/avatar.jpg", description: "User Avatar")
-  ///     Heading(.headline) { "Jane Doe" }
-  ///     Text { "Software Engineer" }
-  ///   }
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Stack(id: "user-profile", classes: ["card", "shadow"], data: ["user-id": "123"]) {
+  ///   Image(source: "/avatar.jpg", description: "User Avatar")
+  ///   Heading(.headline) { "Jane Doe" }
+  ///   Text { "Software Engineer" }
+  /// }
+  /// ```
   public init(
     id: String? = nil,
     classes: [String]? = nil,

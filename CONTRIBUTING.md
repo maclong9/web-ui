@@ -9,16 +9,17 @@ First off, thank you for considering contributing to WebUI! It's people like you
   - [Issues](#issues)
   - [Pull Requests](#pull-requests)
 - [Development Process](#development-process)
-  - [Branch Structure](#branch-structure)
-  - [Development Workflow](#development-workflow)
-  - [Versioning](#versioning)
-  - [Release Process](#release-process)
-  - [Quick Fixes (Hotfixes)](#quick-fixes-hotfixes)
-  - [Testing](#testing)
-  - [Documentation Generation](#documentation-generation)
-  - [Adding New Elements](#adding-new-elements)
-  - [Adding New Style Modifiers](#adding-new-style-modifiers)
-  - [Adding Extensions to Existing Elements](#adding-extensions-to-existing-elements)
+- [Branch Structure](#branch-structure)
+- [Development Workflow](#development-workflow)
+- [Versioning](#versioning)
+- [Release Process](#release-process)
+- [Quick Fixes (Hotfixes)](#quick-fixes-hotfixes)
+- [Testing](#testing)
+- [Documentation Generation](#documentation-generation)
+- [Core Directory Structure](#core-directory-structure)
+- [Adding New Elements](#adding-new-elements)
+- [Adding New Style Modifiers](#adding-new-style-modifiers)
+- [Adding Extensions to Existing Elements](#adding-extensions-to-existing-elements)
 - [Styleguides](#styleguides)
   - [Swift Style Guide](#swift-style-guide)
   - [Commit Messages](#commit-messages)
@@ -184,11 +185,10 @@ WebUI follows a compositional pattern for creating HTML elements. When adding a 
        ) {
            self.type = type
 
-           // Build custom attributes based on element properties
-           var customAttributes: [String] = []
-           if let typeValue = type?.rawValue {
-               customAttributes.append("type=\"\(typeValue)\"")
-           }
+           // Build custom attributes using Attr namespace
+           let customAttributes = [
+               Attribute.typed("type", type)
+           ].compactMap { $0 }
 
            // Initialize the parent Element class
            super.init(
@@ -213,7 +213,7 @@ WebUI follows a compositional pattern for creating HTML elements. When adding a 
    - Usage examples showing common implementations
    - Mention any accessibility considerations
 
-### Adding New Style Modifiers
+## Adding New Style Modifiers
 
 Style modifiers in WebUI follow an extension pattern on the `Element` class. Here's how to add a new style modifier:
 
@@ -278,6 +278,17 @@ Style modifiers in WebUI follow an extension pattern on the `Element` class. Her
    }
    ```
 
+   c. **Update Responsive Support** (if applicable):
+   ```swift
+   extension Element {
+       /// Responsive version for use within the .responsive block
+       @discardableResult
+       public func styleModifier(option: StyleOption) -> Element {
+           return self.styleModifier(option: option, on: []).proxy()
+       }
+   }
+   ```
+
 3. **Testing**: Add unit tests for the new style modifier in the `Tests` directory.
 
 4. **Documentation**: Include comprehensive DocC documentation with:
@@ -285,6 +296,7 @@ Style modifiers in WebUI follow an extension pattern on the `Element` class. Her
    - Parameter documentation for all method parameters
    - Usage examples showing common implementations
    - Visual examples if the style has a significant impact on appearance
+   - Examples of using the modifier within responsive blocks
 
 ### Adding Extensions to Existing Elements
 
@@ -307,7 +319,66 @@ You can extend existing elements with specialized methods to improve developer e
    }
    ```
 
-2. **Documentation**: As with other additions, include comprehensive DocC documentation.
+2. **Responsive Support**: If the method should work within responsive blocks, add a version without the `on modifiers` parameter:
+   ```swift
+   extension ElementName {
+       /// Responsive version of the specialized method for use within responsive blocks.
+       @discardableResult
+       public func specializedMethod(parameter: ParameterType) -> Element {
+           return self.specializedMethod(parameter: parameter, on: []).proxy()
+       }
+   }
+   ```
+
+3. **Documentation**: As with other additions, include comprehensive DocC documentation.
+
+### Using Responsive Styling
+
+WebUI provides a block-based responsive API for cleaner responsive designs.
+
+### Basic Usage
+
+The `.responsive` modifier allows applying multiple style changes across different breakpoints in a single block:
+
+```swift
+Text { "Responsive Content" }
+  .font(size: .sm)
+  .background(color: .neutral(._500))
+  .responsive {
+    $0.md {
+      $0.font(size: .lg)
+      $0.background(color: .neutral(._700))
+      $0.padding(of: 4)
+    }
+    $0.lg {
+      $0.font(size: .xl)
+      $0.background(color: .neutral(._900))
+    }
+  }
+```
+
+### File Organization Principles
+
+When organizing code in the WebUI library, follow these principles:
+
+1. **Single Responsibility**: Each file should have a clear, focused purpose
+2. **Logical Grouping**: Group related functionality together
+3. **Progressive Disclosure**: Place most commonly used functionality first
+4. **Manageable Size**: Keep files under on the smaller side where possible
+5. **Clear Dependencies**: Make dependencies between components explicit and avoid circularity
+
+When refactoring or adding new code, consider if you should:
+- Add to an existing file (for small, closely related additions)
+- Create a new file in an existing directory (for new components in an established category)
+- Create a new directory (for entirely new subsystems or categories)
+
+### Adding Support to Custom Style Methods
+
+When creating custom style modifiers, ensure they work within responsive blocks by:
+
+1. Adding a version without the `on modifiers` parameter
+2. Using the `.proxy()` method to maintain the proper element chain
+3. Adding examples showing how to use the style in responsive contexts
 
 ## Styleguides
 
@@ -341,5 +412,14 @@ WebUI follows the [Swift API Design Guidelines](https://swift.org/documentation/
 - Use Swift DocC for API documentation
 - Include usage examples for complex functionality
 - Document public APIs thoroughly with parameter descriptions, return values, and any exceptions
+- When extracting code to new files, ensure documentation references are updated accordingly
+- For complex components split across multiple files, include cross-references between related types
+
+### Code Structure
+
+- Aim for vertical cohesion - related code should be close together
+- Place most important/commonly used methods first
+- Group methods by functionality or feature
+- When a file approaches 500 lines, consider refactoring into multiple files following the Core directory guidelines
 
 Thank you for contributing to WebUI! Your effort helps make this library better for everyone.
