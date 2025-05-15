@@ -103,51 +103,6 @@ Comprehensive API documentation is available on the [GitHub Pages](https://maclo
 
 - [Portfolio](https://github.com/maclong9/portfolio) - A personal portfolio website built with WebUI
 
-### Adding WebUI to a Swift Package Manager (SPM) project
-
-To add WebUI to your Swift project using the Swift Package Manager, follow these
-steps:
-
-1. Open your `Package.swift` file.
-2. Add the WebUI repository URL to the `dependencies` array.
-  - Select `from: "x.x.x"` for the release version.
-  - Select `from: "next-x.x.x"` for the pre-release version.
--  Select `branch: "development"` for the most up to date changes.
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/maclong9/web-ui.git", from: "1.0.0") // Release Version
-    .package(url: "https://github.com/maclong9/web-ui.git", from: "next-1.1.0") // Pre-Release Version
-    .package(url: "https://github.com/maclong9/web-ui.git", branch: "development") // Development Version
-],
-```
-
-3. Include `WebUI` as a dependency for your target(s):
-
-```swift
-targets: [
-    .target(
-        name: "YourTargetName",
-        dependencies: [
-            .product(name: "WebUI", package: "web-ui")
-        ]
-    ),
-]
-```
-
-4. Save the `Package.swift` file and run the following command in your terminal
-   to fetch the dependencies:
-
-```sh
-swift package update
-```
-
-5. You can now import and use WebUI in your project files:
-
-```swift
-import WebUI
-```
-
 ## Development
 
 WebUI follows a structured development process with automated workflows to ensure code quality and consistency across releases.
