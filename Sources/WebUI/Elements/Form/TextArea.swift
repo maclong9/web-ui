@@ -4,11 +4,11 @@
 /// such as comments, messages, or descriptions. Unlike single-line input elements,
 /// textareas can contain line breaks and are suitable for paragraph-length content.
 ///
-/// - Example:
-///   ```swift
-///   TextArea(name: "comments", placeholder: "Share your thoughts...")
-///   // Renders: <textarea name="comments" placeholder="Share your thoughts..."></textarea>
-///   ```
+/// ## Example
+/// ```swift
+/// TextArea(name: "comments", placeholder: "Share your thoughts...")
+/// // Renders: <textarea name="comments" placeholder="Share your thoughts..."></textarea>
+/// ```
 public final class TextArea: Element {
   let name: String
   let type: InputType?
@@ -32,17 +32,17 @@ public final class TextArea: Element {
   ///   - label: ARIA label to describe the element for screen readers.
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the textarea.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   TextArea(
-  ///     name: "bio",
-  ///     value: existingBio,
-  ///     placeholder: "Tell us about yourself...",
-  ///     required: true,
-  ///     id: "user-bio",
-  ///     classes: ["form-control", "bio-input"]
-  ///   )
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// TextArea(
+  ///   name: "bio",
+  ///   value: existingBio,
+  ///   placeholder: "Tell us about yourself...",
+  ///   required: true,
+  ///   id: "user-bio",
+  ///   classes: ["form-control", "bio-input"]
+  /// )
+  /// ```
   public init(
     name: String,
     type: InputType? = nil,
@@ -62,25 +62,14 @@ public final class TextArea: Element {
     self.placeholder = placeholder
     self.autofocus = autofocus
     self.required = required
-    var customAttributes: [String] = []
-    if !name.isEmpty {
-      customAttributes.append("name=\"\(name)\"")
-    }
-    if let typeValue = type?.rawValue, !typeValue.isEmpty {
-      customAttributes.append("type=\"\(typeValue)\"")
-    }
-    if let value = value, !value.isEmpty {
-      customAttributes.append("value=\"\(value)\"")
-    }
-    if let placeholder = placeholder, !placeholder.isEmpty {
-      customAttributes.append("placeholder=\"\(placeholder)\"")
-    }
-    if autofocus == true {
-      customAttributes.append("autofocus")
-    }
-    if required == true {
-      customAttributes.append("required")
-    }
+    let customAttributes = [
+      Attribute.string("name", name),
+      Attribute.typed("type", type),
+      Attribute.string("value", value),
+      Attribute.string("placeholder", placeholder),
+      Attribute.bool("autofocus", autofocus),
+      Attribute.bool("required", required),
+    ].compactMap { $0 }
     super.init(
       tag: "textarea",
       id: id,

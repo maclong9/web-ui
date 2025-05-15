@@ -21,15 +21,15 @@ public enum ListType: String {
 ///
 /// - Note: Use `Item` elements as children of a `List` to create list items.
 ///
-/// - Example:
-///   ```swift
-///   List(type: .ordered) {
-///     Item { "First item" }
-///     Item { "Second item" }
-///     Item { "Third item" }
-///   }
-///   // Renders: <ol><li>First item</li><li>Second item</li><li>Third item</li></ol>
-///   ```
+/// ## Example
+/// ```swift
+/// List(type: .ordered) {
+///   Item { "First item" }
+///   Item { "Second item" }
+///   Item { "Third item" }
+/// }
+/// // Renders: <ol><li>First item</li><li>Second item</li><li>Third item</li></ol>
+/// ```
 public final class List: Element {
   let type: ListType
 
@@ -44,13 +44,13 @@ public final class List: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data.
   ///   - content: Closure providing list items, typically `Item` elements.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   List(type: .unordered, classes: ["checklist"]) {
-  ///     Item { "Buy groceries" }
-  ///     Item { "Clean house" }
-  ///   }
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// List(type: .unordered, classes: ["checklist"]) {
+  ///   Item { "Buy groceries" }
+  ///   Item { "Clean house" }
+  /// }
+  /// ```
   public init(
     type: ListType = .unordered,
     id: String? = nil,
@@ -72,14 +72,14 @@ public final class List: Element {
 /// `Item` elements should be used as children of a `List` element to represent
 /// individual entries in a list. Each item can contain any HTML content.
 ///
-/// - Example:
-///   ```swift
-///   Item {
-///     Text { "This is a list item with " }
-///     Strong { "bold text" }
-///   }
-///   // Renders: <li><span>This is a list item with </span><strong>bold text</strong></li>
-///   ```
+/// ## Example
+/// ```swift
+/// Item {
+///   Text { "This is a list item with " }
+///   Strong { "bold text" }
+/// }
+/// // Renders: <li><span>This is a list item with </span><strong>bold text</strong></li>
+/// ```
 public final class Item: Element {
   /// Creates a new HTML list item element.
   ///
@@ -91,13 +91,13 @@ public final class Item: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data.
   ///   - content: Closure providing the list item's content (text or other HTML elements).
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Item(classes: ["completed"], data: ["task-id": "123"]) {
-  ///     "Complete documentation"
-  ///   }
-  ///   // Renders: <li class="completed" data-task-id="123">Complete documentation</li>
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Item(classes: ["completed"], data: ["task-id": "123"]) {
+  ///   "Complete documentation"
+  /// }
+  /// // Renders: <li class="completed" data-task-id="123">Complete documentation</li>
+  /// ```
   public init(
     id: String? = nil,
     classes: [String]? = nil,

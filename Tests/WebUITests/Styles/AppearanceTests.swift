@@ -60,7 +60,7 @@ import Testing
 
   @Test("Border with width and style")
   func testBorderWithWidthAndStyle() async throws {
-    let element = Element(tag: "div").border(width: 2, style: .solid)
+    let element = Element(tag: "div").border(of: 2, style: .solid)
     let rendered = element.render()
     #expect(rendered.contains("class=\"border-2 border-solid\""))
   }
@@ -81,21 +81,21 @@ import Testing
 
   @Test("Border with specific edge and color")
   func testBorderWithEdgeAndColor() async throws {
-    let element = Element(tag: "div").border(edges: .top, color: .blue(._500))
+    let element = Element(tag: "div").border(at: .top, color: .blue(._500))
     let rendered = element.render()
     #expect(rendered.contains("class=\"border-t border-blue-500\""))
   }
 
   @Test("Border with divide style")
   func testBorderWithDivideStyle() async throws {
-    let element = Element(tag: "div").border(width: 1, edges: .horizontal, style: .divide)
+    let element = Element(tag: "div").border(of: 1, at: .horizontal, style: .divide)
     let rendered = element.render()
     #expect(rendered.contains("class=\"divide-x-1\""))
   }
 
   @Test("Border with modifiers")
   func testBorderWithModifiers() async throws {
-    let element = Element(tag: "div").border(width: 3, on: .hover, .md)
+    let element = Element(tag: "div").border(of: 3, on: .hover, .md)
     let rendered = element.render()
     #expect(rendered.contains("class=\"hover:md:border-3\""))
   }
@@ -104,7 +104,7 @@ import Testing
 
   @Test("Outline with width and color")
   func testOutlineWithWidthAndColor() async throws {
-    let element = Element(tag: "div").outline(width: 2, color: .purple(._600))
+    let element = Element(tag: "div").outline(of: 2, color: .purple(._600))
     let rendered = element.render()
     #expect(rendered.contains("class=\"outline-2 outline-purple-600\""))
   }
@@ -120,14 +120,14 @@ import Testing
 
   @Test("Shadow with size")
   func testShadowWithSize() async throws {
-    let element = Element(tag: "div").shadow(size: .lg)
+    let element = Element(tag: "div").shadow(of: .lg)
     let rendered = element.render()
     #expect(rendered.contains("class=\"shadow-lg\""))
   }
 
   @Test("Shadow with color and modifier")
   func testShadowWithColorAndModifier() async throws {
-    let element = Element(tag: "div").shadow(size: .md, color: .gray(._500), on: .hover)
+    let element = Element(tag: "div").shadow(of: .md, color: .gray(._500), on: .hover)
     let rendered = element.render()
     #expect(rendered.contains("class=\"hover:shadow-md hover:shadow-gray-500\""))
   }
@@ -143,7 +143,7 @@ import Testing
 
   @Test("Ring with color and modifier")
   func testRingWithColorAndModifier() async throws {
-    let element = Element(tag: "div").ring(size: 2, color: .pink(._400), on: .focus)
+    let element = Element(tag: "div").ring(of: 2, color: .pink(._400), on: .focus)
     let rendered = element.render()
     #expect(rendered.contains("class=\"focus:ring-2 focus:ring-pink-400\""))
   }
@@ -216,8 +216,8 @@ import Testing
   func testCombinedAppearanceStyles() async throws {
     let element = Element(tag: "div")
       .background(color: .blue(._600))
-      .border(width: 1, style: .solid, color: .blue(._800))
-      .shadow(size: .md)
+      .border(of: 1, style: .solid, color: .blue(._800))
+      .shadow(of: .md)
       .opacity(90, on: .hover)
       .flex(direction: .row, justify: .center)
     let rendered = element.render()
@@ -231,14 +231,14 @@ import Testing
 
   @Test("Empty modifiers")
   func testEmptyModifiers() async throws {
-    let element = Element(tag: "div").border(width: 2)
+    let element = Element(tag: "div").border(of: 2)
     let rendered = element.render()
     #expect(rendered.contains("class=\"border-2\""))
   }
 
   @Test("Border with No Width")
   func testBorderWithNoWidth() async throws {
-    let element = Element(tag: "div").border(edges: .bottom, color: .neutral(._800, opacity: 0.5))
+    let element = Element(tag: "div").border(at: .bottom, color: .neutral(._800, opacity: 0.5))
     let rendered = element.render()
     #expect(rendered.contains("class=\"border-b border-neutral-800/50\""))
   }

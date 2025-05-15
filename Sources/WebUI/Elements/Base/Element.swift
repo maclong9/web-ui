@@ -1,3 +1,37 @@
+public enum Attribute {
+  /// Builds an HTML attribute string if the value exists.
+  ///
+  /// - Parameters:
+  ///   - name: Attribute name (e.g., "id", "class", "src").
+  ///   - value: Attribute value, optional.
+  /// - Returns: Formatted attribute string (e.g., `id="header"`) or nil if value is empty.
+  public static func string(_ name: String, _ value: String?) -> String? {
+    value?.isEmpty == false ? "\(name)=\"\(value!)\"" : nil
+  }
+
+  /// Builds a boolean HTML attribute if enabled.
+  ///
+  /// - Parameters:
+  ///   - name: Attribute name (e.g., "disabled", "checked", "required").
+  ///   - enabled: Boolean enabling the attribute, optional.
+  /// - Returns: Attribute name if true, nil otherwise.
+  public static func bool(_ name: String, _ enabled: Bool?) -> String? {
+    enabled == true ? name : nil
+  }
+
+  /// Builds an HTML attribute string from a typed enum value.
+  ///
+  /// - Parameters:
+  ///   - name: Attribute name (e.g., "type", "role").
+  ///   - value: Enum value with String rawValue, optional.
+  /// - Returns: Formatted attribute string (e.g., `type="submit"`) or nil if value is nil or empty.
+  public static func typed<T: RawRepresentable>(_ name: String, _ value: T?) -> String?
+  where T.RawValue == String {
+    guard let stringValue = value?.rawValue, !stringValue.isEmpty else { return nil }
+    return "\(name)=\"\(stringValue)\""
+  }
+}
+
 /// Defines ARIA roles for accessibility.
 ///
 /// ARIA roles help communicate the purpose of elements to assistive technologies,
@@ -51,9 +85,9 @@ public class Element: HTML {
   ///   - customAttributes: Custom attributes specific to this element, provided as an array of attribute strings.
   ///   - content: Closure providing inner HTML content, defaults to empty.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   let customDiv = Element(
+  /// ## Example
+  /// ```swift
+  /// let customDiv = Element(
   ///     tag: "div",
   ///     id: "profile-card",
   ///     classes: ["card", "shadow"],
@@ -63,7 +97,7 @@ public class Element: HTML {
   ///       Text { "Welcome back!" }
   ///     }
   ///   )
-  ///   ```
+  ///   ````
   public init(
     tag: String,
     id: String? = nil,
@@ -86,45 +120,7 @@ public class Element: HTML {
     self.contentBuilder = content
   }
 
-  /// Builds an HTML attribute string if the value exists.
-  ///
-  /// This utility method creates an HTML attribute string in the format `name="value"`,
-  /// but only if the value is non-nil and non-empty. This helps avoid generating
-  /// empty attributes.
-  ///
-  /// - Parameters:
-  ///   - name: Attribute name (e.g., "id", "class", "src").
-  ///   - value: Attribute value, optional.
-  /// - Returns: Formatted attribute string (e.g., `id="main"`) or nil if value is empty.
-  ///
-  /// - Example:
-  ///   ```swift
-  ///   let idAttr = attribute("id", "header") // Returns `id="header"`
-  ///   let emptyAttr = attribute("data-empty", "") // Returns nil
-  ///   ```
-  func attribute(_ name: String, _ value: String?) -> String? {
-    value?.isEmpty == false ? "\(name)=\"\(value!)\"" : nil
-  }
-
-  /// Builds a boolean HTML attribute if enabled.
-  ///
-  /// This utility method handles boolean HTML attributes, which are either present
-  /// or absent in the element, without an explicit value (e.g., `disabled`, `checked`).
-  ///
-  /// - Parameters:
-  ///   - name: Attribute name (e.g., "disabled", "checked", "required").
-  ///   - enabled: Boolean enabling the attribute, optional.
-  /// - Returns: Attribute name if true, nil otherwise.
-  ///
-  /// - Example:
-  ///   ```swift
-  ///   let disabledAttr = booleanAttribute("disabled", true) // Returns "disabled"
-  ///   let checkedAttr = booleanAttribute("checked", false) // Returns nil
-  ///   ```
-  func booleanAttribute(_ name: String, _ enabled: Bool?) -> String? {
-    enabled == true ? name : nil
-  }
-
+  /// Namespace containing helper methods for HTML attribute creation.
   /// Renders the element as an HTML string.
   ///
   /// This method generates the complete HTML representation of the element,
@@ -133,9 +129,9 @@ public class Element: HTML {
   ///
   /// - Returns: Complete HTML element string with attributes and content.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   let div = Element(tag: "div", id: "content", content: { "Hello" })
+  /// ## Example
+  /// ```swift
+  /// let div = Element(tag: "div", id: "content", content: { "Hello" })
   ///   let html = div.render() // Returns `<div id="content">Hello</div>`
   ///
   ///   let img = Element(tag: "img", customAttributes: ["src=\"image.jpg\""], isSelfClosing: true)
@@ -144,13 +140,13 @@ public class Element: HTML {
   public func render() -> String {
     let baseAttributes: [String] =
       [
-        attribute("id", id),
-        attribute("class", classes?.joined(separator: " ")),
-        attribute("role", role?.rawValue),
-        attribute("aria-label", label),
+        Attribute.string("id", id),
+        Attribute.string("class", classes?.joined(separator: " ")),
+        Attribute.string("role", role?.rawValue),
+        Attribute.string("aria-label", label),
       ].compactMap { $0 }
       + (data?.map { entry in
-        attribute("data-\(entry.key)", entry.value)
+        Attribute.string("data-\(entry.key)", entry.value)
       }.compactMap { $0 } ?? [])
 
     let allAttributes = baseAttributes + (customAttributes ?? [])

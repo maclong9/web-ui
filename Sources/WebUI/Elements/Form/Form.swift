@@ -36,18 +36,18 @@ public final class Form: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the form.
   ///   - content: Closure providing form content, typically input elements, labels, and buttons.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Form(action: "/submit", method: .post, id: "contact-form") {
-  ///     Label(for: "name") { "Your Name:" }
-  ///     Input(name: "name", type: .text, required: true)
+  /// ## Example
+  /// ```swift
+  /// Form(action: "/submit", method: .post, id: "contact-form") {
+  ///   Label(for: "name") { "Your Name:" }
+  ///   Input(name: "name", type: .text, required: true)
   ///
-  ///     Label(for: "message") { "Message:" }
-  ///     TextArea(name: "message")
+  ///   Label(for: "message") { "Message:" }
+  ///   TextArea(name: "message")
   ///
-  ///     Button(type: .submit) { "Send Message" }
-  ///   }
-  ///   ```
+  ///   Button(type: .submit) { "Send Message" }
+  /// }
+  /// ```
   public init(
     action: String? = nil,
     method: FormMethod = .post,
@@ -60,14 +60,10 @@ public final class Form: Element {
   ) {
     self.action = action
     self.method = method
-    var customAttributes: [String] = []
-    if let action = action, !action.isEmpty {
-      customAttributes.append("action=\"\(action)\"")
-    }
-    let methodValue = method.rawValue
-    if !methodValue.isEmpty {
-      customAttributes.append("method=\"\(methodValue)\"")
-    }
+    let customAttributes = [
+      Attribute.string("action", action),
+      Attribute.typed("method", method),
+    ].compactMap { $0 }
     super.init(
       tag: "form",
       id: id,

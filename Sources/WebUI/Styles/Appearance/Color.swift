@@ -4,12 +4,12 @@
 /// and a custom option for arbitrary values. These colors map directly to Tailwind CSS
 /// color classes when applied to elements.
 ///
-/// - Example:
-///   ```swift
-///   Button(type: .submit) { "Save" }
-///     .background(color: .blue(.500))
-///     .font(color: .white)
-///   ```
+/// ## Example
+/// ```swift
+/// Button(type: .submit) { "Save" }
+///   .background(color: .blue(.500))
+///   .font(color: .white)
+/// ```
 public enum Color {
   /// A slate gray color with varying intensity shades and optional opacity.
   ///
@@ -129,11 +129,12 @@ public enum Color {
   ///   - String: A valid CSS color value (hex, RGB, HSL, or named color).
   ///   - opacity: Optional opacity value between 0 and 1.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Color.custom("#00aabb")
-  ///   Color.custom("rgb(100, 150, 200)", opacity: 0.5)
-  ///   ```
+  ///
+  /// ## Example
+  /// ```swift
+  /// Color.custom("#00aabb")
+  /// Color.custom("rgb(100, 150, 200)", opacity: 0.5)
+  /// ```
   case custom(String, opacity: Double? = nil)
 
   /// Defines shade intensity for colors in a consistent scale.
@@ -142,13 +143,14 @@ public enum Color {
   /// providing fine-grained control over color intensity. The scale follows a
   /// consistent progression where lower numbers are lighter and higher numbers are darker.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   // Light blue background with dark blue text
-  ///   Stack()
-  ///     .background(color: .blue(._100))
-  ///     .font(color: .blue(._800))
-  ///   ```
+  ///
+  /// ## Example
+  /// ```swift
+  /// // Light blue background with dark blue text
+  /// Stack()
+  ///   .background(color: .blue(._100))
+  ///   .font(color: .blue(._800))
+  /// ```
   public enum Shade: Int {
     /// The lightest shade (50), typically a very faint tint.
     ///
@@ -213,11 +215,12 @@ public enum Color {
   ///
   /// - Returns: A string representing the color in CSS class format.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   let color = Color.blue(._500, opacity: 0.75)
-  ///   let value = color.rawValue // Returns "blue-500/75"
-  ///   ```
+  ///
+  /// ## Example
+  /// ```swift
+  /// let color = Color.blue(._500, opacity: 0.75)
+  /// let value = color.rawValue // Returns "blue-500/75"
+  /// ```
   public var rawValue: String {
     func formatOpacity(_ opacity: Double?) -> String {
       guard let opacity = opacity, (0...1).contains(opacity) else { return "" }
@@ -287,17 +290,18 @@ extension Element {
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated background color classes.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   // Simple background color
-  ///   Button() { "Submit" }
-  ///     .background(color: .green(._500))
   ///
-  ///   // Background color with modifiers
-  ///   Button() { "Hover me" }
-  ///     .background(color: .white, on: .dark)
-  ///     .background(color: .blue(._500), on: .hover)
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// // Simple background color
+  /// Button() { "Submit" }
+  ///   .background(color: .green(._500))
+  ///
+  /// // Background color with modifiers
+  /// Button() { "Hover me" }
+  ///   .background(color: .white, on: .dark)
+  ///   .background(color: .blue(._500), on: .hover)
+  /// ```
   public func background(
     color: Color,
     on modifiers: Modifier...

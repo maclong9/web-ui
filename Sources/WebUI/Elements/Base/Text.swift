@@ -111,14 +111,16 @@ public final class Link: Element {
   ) {
     self.href = destination
     self.newTab = newTab
-    var customAttributes: [String] = []
-    if !destination.isEmpty {
-      customAttributes.append("href=\"\(destination)\"")
-    }
+
+    var attributes = [Attribute.string("href", destination)].compactMap { $0 }
+
     if newTab == true {
-      customAttributes.append("target=\"_blank\"")
-      customAttributes.append("rel=\"noreferrer\"")
+      attributes.append(contentsOf: [
+        "target=\"_blank\"",
+        "rel=\"noreferrer\"",
+      ])
     }
+
     super.init(
       tag: "a",
       id: id,
@@ -126,7 +128,7 @@ public final class Link: Element {
       role: role,
       label: label,
       data: data,
-      customAttributes: customAttributes.isEmpty ? nil : customAttributes,
+      customAttributes: attributes.isEmpty ? nil : attributes,
       content: content
     )
   }
@@ -213,10 +215,9 @@ public final class Time: Element {
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {
     self.datetime = datetime
-    var customAttributes: [String] = []
-    if !datetime.isEmpty {
-      customAttributes.append("datetime=\"\(datetime)\"")
-    }
+    let customAttributes = [
+      Attribute.string("datetime", datetime)
+    ].compactMap { $0 }
     super.init(
       tag: "time",
       id: id,

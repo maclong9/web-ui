@@ -41,8 +41,8 @@ extension Element {
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated transition classes.
   public func transition(
-    property: TransitionProperty? = nil,
-    duration: Int? = nil,
+    of property: TransitionProperty? = nil,
+    for duration: Int? = nil,
     easing: Easing? = nil,
     delay: Int? = nil,
     on modifiers: Modifier...
