@@ -303,9 +303,9 @@ import Testing
 
   @Test("Heading element")
   func testHeadingElement() async throws {
-    let heading1 = Heading(.one) { "Main Title" }
-    let heading2 = Heading(.two) { "Subtitle" }
-    let heading6 = Heading(.six) { "Small Heading" }
+    let heading1 = Heading(.largeTitle) { "Main Title" }
+    let heading2 = Heading(.title) { "Subtitle" }
+    let heading6 = Heading(.footnote) { "Small Heading" }
 
     #expect(heading1.render() == "<h1>Main Title</h1>")
     #expect(heading2.render() == "<h2>Subtitle</h2>")
@@ -495,7 +495,7 @@ import Testing
   @Test("Header element")
   func testHeaderElement() async throws {
     let header = Header(id: "page-header") {
-      Heading(.one) { "Site Title" }
+      Heading(.largeTitle) { "Site Title" }
     }
 
     let rendered = header.render()
@@ -562,7 +562,7 @@ import Testing
   @Test("Article element")
   func testArticleElement() async throws {
     let article = Article(id: "blog-post") {
-      Heading(.two) { "Article Title" }
+      Heading(.title) { "Article Title" }
       Text { "Article content" }
     }
 
@@ -577,7 +577,7 @@ import Testing
   @Test("Section element")
   func testSectionElement() async throws {
     let section = Section(id: "features") {
-      Heading(.three) { "Features" }
+      Heading(.headline) { "Features" }
       Text { "Feature list" }
     }
 
@@ -660,7 +660,7 @@ import Testing
   func testPageLayout() async throws {
     let page = Fragment {
       Header(id: "main-header") {
-        Heading(.one) { "My Website" }
+        Heading(.largeTitle) { "My Website" }
         Navigation {
           List(type: .unordered, classes: ["nav-links"]) {
             Item { Link(to: "/") { "Home" } }
@@ -671,12 +671,12 @@ import Testing
       }
       Main {
         Article {
-          Heading(.two) { "Welcome" }
+          Heading(.title) { "Welcome" }
           Text { "This is the main content of the page." }
         }
       }
       Aside(id: "sidebar") {
-        Heading(.three) { "Related Links" }
+        Heading(.headline) { "Related Links" }
         List(type: .unordered) {
           Item { Link(to: "/link1") { "Link 1" } }
           Item { Link(to: "/link2") { "Link 2" } }
