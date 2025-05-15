@@ -1,11 +1,19 @@
 import Foundation
 import Testing
+import Logging
 
 @testable import WebUI
 
 @Suite("Application Tests") struct ApplicationTests {
   @Test("Creates the build directory and populates correctly")
   func createsAndPopulatesBuildDirectory() throws {
+    // Set log level to critical to silence build output
+    LoggingSystem.bootstrap { label in
+      var handler = StreamLogHandler.standardOutput(label: label)
+      handler.logLevel = .critical
+      return handler
+    }
+    
     let app = Website(
       routes: [
         Document(
@@ -22,7 +30,7 @@ import Testing
           }
           Main {
             Stack {
-              Heading(.one) { "Tagline" }
+              Heading(.largeTitle) { "Tagline" }
               Text { "Lorem ipsum dolor sit amet." }
             }
           }
@@ -35,7 +43,7 @@ import Testing
           metadata: .init(title: "About", description: "Learn more here")
         ) {
           Article {
-            Heading(.two) { "Article Heading" }
+            Heading(.title) { "Article Heading" }
             Text { "Lorem ipsum dolor sit amet." }
           }
         },
