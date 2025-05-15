@@ -1,6 +1,104 @@
 import Foundation
 import Logging
 
+/// Represents a rule in a robots.txt file.
+///
+/// Used to define instructions for web crawlers about which parts of the website should be crawled.
+public struct RobotsRule {
+  /// The user agent the rule applies to (e.g., "Googlebot" or "*" for all crawlers).
+  public let userAgent: String
+
+  /// Paths that should not be crawled.
+  public let disallow: [String]?
+
+  /// Paths that are allowed to be crawled (overrides disallow rules).
+  public let allow: [String]?
+
+  /// The delay between successive crawls in seconds.
+  public let crawlDelay: Int?
+
+  /// Creates a new robots.txt rule.
+  ///
+  /// - Parameters:
+  ///   - userAgent: The user agent the rule applies to (e.g., "Googlebot" or "*" for all crawlers).
+  ///   - disallow: Paths that should not be crawled.
+  ///   - allow: Paths that are allowed to be crawled (overrides disallow rules).
+  ///   - crawlDelay: The delay between successive crawls in seconds.
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let rule = RobotsRule(
+  ///     userAgent: "*",
+  ///     disallow: ["/admin/", "/private/"],
+  ///     allow: ["/public/"],
+  ///     crawlDelay: 10
+  ///   )
+  ///   ```
+  public init(
+    userAgent: String,
+    disallow: [String]? = nil,
+    allow: [String]? = nil,
+    crawlDelay: Int? = nil
+  ) {
+    self.userAgent = userAgent
+    self.disallow = disallow
+    self.allow = allow
+    self.crawlDelay = crawlDelay
+  }
+}
+
+/// Represents a sitemap entry for a URL with metadata.
+///
+/// Used to define information for a URL to be included in a sitemap.xml file.
+/// Follows the Sitemap protocol as defined at https://www.sitemaps.org/protocol.html.
+public struct SitemapEntry {
+  /// The URL of the page.
+  public let url: String
+
+  /// The date when the page was last modified.
+  public let lastModified: Date?
+
+  /// The expected frequency of changes to the page.
+  public enum ChangeFrequency: String {
+    case always, hourly, daily, weekly, monthly, yearly, never
+  }
+
+  /// How frequently the page is likely to change.
+  public let changeFrequency: ChangeFrequency?
+
+  /// The priority of this URL relative to other URLs on your site (0.0 to 1.0).
+  public let priority: Double?
+
+  /// Creates a new sitemap entry for a URL.
+  ///
+  /// - Parameters:
+  ///   - url: The URL of the page.
+  ///   - lastModified: The date when the page was last modified.
+  ///   - changeFrequency: How frequently the page is likely to change.
+  ///   - priority: The priority of this URL relative to other URLs (0.0 to 1.0).
+  ///
+  /// - Example:
+  ///   ```swift
+  ///   let homepage = SitemapEntry(
+  ///     url: "https://example.com/",
+  ///     lastModified: Date(),
+  ///     changeFrequency: .weekly,
+  ///     priority: 1.0
+  ///   )
+  ///   ```
+  public init(
+    url: String,
+    lastModified: Date? = nil,
+    changeFrequency: ChangeFrequency? = nil,
+    priority: Double? = nil
+  ) {
+    self.url = url
+    self.lastModified = lastModified
+    self.changeFrequency = changeFrequency
+    self.priority = priority
+  }
+}
+
 /// Manages and builds a collection of routes (documents) into a complete static website.
 ///
 /// The `Website` struct serves as the entry point for creating a static site, managing
@@ -28,6 +126,21 @@ public struct Website {
   /// Collection of document routes that make up the website.
   public let routes: [Document]
 
+  /// Base URL of the website for sitemap generation.
+  public let baseURL: String?
+
+  /// Custom sitemap entries to include in the sitemap.xml.
+  public let sitemapEntries: [SitemapEntry]?
+
+  /// Controls whether to generate a sitemap.xml file.
+  public let generateSitemap: Bool
+
+  /// Controls whether to generate a robots.txt file.
+  public let generateRobotsTxt: Bool
+
+  /// Custom rules to include in robots.txt file.
+  public let robotsRules: [RobotsRule]?
+
   /// Initializes a static site with shared resources and a collection of routes.
   ///
   /// This initializer configures a website with shared assets and settings that apply
@@ -40,6 +153,11 @@ public struct Website {
   ///   - scripts: Optional JavaScript sources with their loading attributes for all routes.
   ///   - head: Optional custom head tags to include in all routes (analytics, fonts, etc.).
   ///   - routes: Collection of document routes to build into HTML files.
+  ///   - baseURL: Base URL of the website for sitemap generation (e.g., "https://example.com").
+  ///   - sitemapEntries: Custom sitemap entries to include in addition to the routes.
+  ///   - generateSitemap: Whether to generate a sitemap.xml file (defaults to true if baseURL is provided).
+  ///   - generateRobotsTxt: Whether to generate a robots.txt file (defaults to true if baseURL is provided).
+  ///   - robotsRules: Custom rules to include in the robots.txt file.
   ///
   /// - Example:
   ///   ```swift
@@ -47,7 +165,9 @@ public struct Website {
   ///     metadata: Metadata(site: "My Site", description: "A great website"),
   ///     stylesheets: ["main.css"],
   ///     scripts: ["main.js": .defer],
-  ///     routes: [homePage, aboutPage, contactPage]
+  ///     routes: [homePage, aboutPage, contactPage],
+  ///     baseURL: "https://example.com",
+  ///     generateSitemap: true
   ///   )
   ///   ```
   public init(
@@ -56,13 +176,23 @@ public struct Website {
     stylesheets: [String]? = nil,
     scripts: [String: ScriptAttribute?]? = nil,
     head: String? = nil,
-    routes: [Document]
+    routes: [Document],
+    baseURL: String? = nil,
+    sitemapEntries: [SitemapEntry]? = nil,
+    generateSitemap: Bool? = nil,
+    generateRobotsTxt: Bool? = nil,
+    robotsRules: [RobotsRule]? = nil
   ) {
     self.metadata = metadata
     self.theme = theme
     self.stylesheets = stylesheets
     self.scripts = scripts
     self.head = head
+    self.baseURL = baseURL
+    self.sitemapEntries = sitemapEntries
+    self.generateSitemap = generateSitemap ?? (baseURL != nil)
+    self.generateRobotsTxt = generateRobotsTxt ?? (baseURL != nil)
+    self.robotsRules = robotsRules
     self.routes = routes.map { document in
       // Merge scripts: Website scripts + Document scripts (Document scripts override duplicates)
       var mergedScripts = scripts ?? [:]
@@ -211,7 +341,184 @@ public struct Website {
       )
       throw BuildError.failedRoutes(failedRoutes)
     }
+
+    // Generate sitemap if enabled and baseURL is set
+    if generateSitemap, let baseURL = baseURL {
+      logger.info("Generating sitemap.xml")
+      let sitemapPath = outputDirectory.appendingPathComponent("sitemap.xml")
+
+      // Generate sitemap content
+      let sitemapContent = generateSitemapXML(baseURL: baseURL)
+
+      // Write sitemap to file
+      do {
+        try sitemapContent.write(
+          to: sitemapPath,
+          atomically: true,
+          encoding: .utf8
+        )
+        logger.debug("Successfully wrote sitemap.xml")
+      } catch {
+        logger.error("Failed to write sitemap.xml: \(error)")
+        throw BuildError.fileCreationFailed("sitemap.xml")
+      }
+    }
+
+    // Generate robots.txt if enabled
+    if generateRobotsTxt {
+      logger.info("Generating robots.txt")
+      let robotsPath = outputDirectory.appendingPathComponent("robots.txt")
+
+      // Generate robots.txt content
+      let robotsContent = generateRobotsTxt(baseURL: baseURL)
+
+      // Write robots.txt to file
+      do {
+        try robotsContent.write(
+          to: robotsPath,
+          atomically: true,
+          encoding: .utf8
+        )
+        logger.debug("Successfully wrote robots.txt")
+      } catch {
+        logger.error("Failed to write robots.txt: \(error)")
+        throw BuildError.fileCreationFailed("robots.txt")
+      }
+    }
+
     logger.info("Build completed successfully with \(routes.count) routes")
+  }
+
+  /// Generates a sitemap.xml file content from the website routes.
+  ///
+  /// This method creates a standard sitemap.xml file that includes all routes in the website,
+  /// plus any additional custom sitemap entries. It follows the Sitemap protocol specification
+  /// from sitemaps.org.
+  ///
+  /// - Parameter baseURL: The base URL of the website (e.g., "https://example.com").
+  /// - Returns: A string containing the XML content of the sitemap.
+  ///
+  /// - Note: If any route has a `metadata.date` value, it will be used as the lastmod date
+  ///   in the sitemap. Priority is set based on the path depth (home page gets 1.0).
+  private func generateSitemapXML(baseURL: String) -> String {
+    let dateFormatter = ISO8601DateFormatter()
+
+    var xml = """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+      """
+
+    // Add entries for all routes
+    for route in routes {
+      let path = route.path ?? "index"
+      let url = "\(baseURL)/\(path == "index" ? "" : "\(path).html")"
+
+      var entry = "  <url>\n    <loc>\(url)</loc>\n"
+
+      // Add lastmod if metadata has a date
+      if let date = route.metadata.date {
+        entry += "    <lastmod>\(dateFormatter.string(from: date))</lastmod>\n"
+      }
+
+      // Set priority based on path depth (home page gets higher priority)
+      let depth = path.components(separatedBy: "/").count
+      let priority = path == "index" ? 1.0 : max(0.5, 1.0 - Double(depth) * 0.1)
+      entry += "    <priority>\(String(format: "%.1f", priority))</priority>\n"
+
+      // Add changefreq based on path (index and main sections change more frequently)
+      if path == "index" {
+        entry += "    <changefreq>weekly</changefreq>\n"
+      } else if depth == 1 {
+        entry += "    <changefreq>monthly</changefreq>\n"
+      } else {
+        entry += "    <changefreq>yearly</changefreq>\n"
+      }
+
+      entry += "  </url>\n"
+      xml += entry
+    }
+
+    // Add custom sitemap entries
+    if let customEntries = sitemapEntries {
+      for entry in customEntries {
+        xml += "  <url>\n    <loc>\(entry.url)</loc>\n"
+
+        if let lastMod = entry.lastModified {
+          xml += "    <lastmod>\(dateFormatter.string(from: lastMod))</lastmod>\n"
+        }
+
+        if let changeFreq = entry.changeFrequency {
+          xml += "    <changefreq>\(changeFreq.rawValue)</changefreq>\n"
+        }
+
+        if let priority = entry.priority {
+          xml += "    <priority>\(String(format: "%.1f", priority))</priority>\n"
+        }
+
+        xml += "  </url>\n"
+      }
+    }
+
+    xml += "</urlset>"
+    return xml
+  }
+
+  /// Generates a robots.txt file content.
+  ///
+  /// This method creates a standard robots.txt file that includes instructions for web crawlers,
+  /// including a reference to the sitemap if one exists.
+  ///
+  /// - Parameter baseURL: The optional base URL of the website (e.g., "https://example.com").
+  /// - Returns: A string containing the content of the robots.txt file.
+  ///
+  /// - Note: If custom rules are provided via the `robotsRules` property, they will be included in the file.
+  ///   Otherwise, a default permissive robots.txt will be generated.
+  private func generateRobotsTxt(baseURL: String?) -> String {
+    var content = "# robots.txt generated by WebUI\n\n"
+
+    // Add custom rules if provided
+    if let rules = robotsRules, !rules.isEmpty {
+      for rule in rules {
+        // Add user-agent section
+        if rule.userAgent == "*" {
+          content += "User-agent: *\n"
+        } else {
+          content += "User-agent: \(rule.userAgent)\n"
+        }
+
+        // Add disallow paths
+        if let disallow = rule.disallow, !disallow.isEmpty {
+          for path in disallow {
+            content += "Disallow: \(path)\n"
+          }
+        }
+
+        // Add allow paths
+        if let allow = rule.allow, !allow.isEmpty {
+          for path in allow {
+            content += "Allow: \(path)\n"
+          }
+        }
+
+        // Add crawl delay if provided
+        if let crawlDelay = rule.crawlDelay {
+          content += "Crawl-delay: \(crawlDelay)\n"
+        }
+
+        content += "\n"
+      }
+    } else {
+      // Default permissive robots.txt
+      content += "User-agent: *\nAllow: /\n\n"
+    }
+
+    // Add sitemap reference if sitemap is generated and baseURL is provided
+    if generateSitemap, let baseURL = baseURL {
+      content += "Sitemap: \(baseURL)/sitemap.xml\n"
+    }
+
+    return content
   }
 
   /// Errors that can occur during the website build process.

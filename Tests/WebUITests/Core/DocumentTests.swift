@@ -69,6 +69,65 @@ import Testing
     #expect(rendered.contains("<html lang=\"ru\">"))
   }
 
+  /// Tests that favicons are correctly added to the document head.
+  @Test func testFaviconRendering() throws {
+    let rendered = Document(
+      path: "favicons",
+      metadata: Metadata(
+        title: "Favicon Test",
+        description: "Testing favicon rendering",
+        favicons: [
+          Favicon("/favicon.png", size: "32x32"),
+          Favicon("/favicon-light.ico", dark: "/favicon-dark.ico", type: "image/x-icon"),
+        ]
+      )
+    ) {
+      "Favicon Test"
+    }.render()
+
+    // Check standard favicon rendering
+    #expect(
+      rendered.contains("<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"32x32\">"))
+
+    // Check Apple touch icon for PNG favicons
+    #expect(
+      rendered.contains("<link rel=\"apple-touch-icon\" sizes=\"32x32\" href=\"/favicon.png\">"))
+
+    // Check dark mode favicon rendering
+    #expect(
+      rendered.contains("<link rel=\"icon\" type=\"image/x-icon\" href=\"/favicon-light.ico\" media=\"(prefers-color-scheme: light)\">"))
+    #expect(
+      rendered.contains("<link rel=\"icon\" type=\"image/x-icon\" href=\"/favicon-dark.ico\" media=\"(prefers-color-scheme: dark)\">"))
+  }
+
+  /// Tests that structured data is correctly added to the document head.
+  @Test func testStructuredDataRendering() throws {
+    let rendered = Document(
+      path: "structured-data",
+      metadata: Metadata(
+        title: "Structured Data Test",
+        description: "Testing structured data rendering",
+        structuredData: StructuredData.article(
+          headline: "Test Article",
+          image: "https://example.com/image.jpg",
+          author: "Test Author",
+          publisher: "Test Publisher",
+          datePublished: Date(),
+          description: "A test article"
+        )
+      )
+    ) {
+      "Structured Data Test"
+    }.render()
+
+    // Check for JSON-LD script tag
+    #expect(rendered.contains("<script type=\"application/ld+json\">"))
+    #expect(rendered.contains("\"@context\" : \"https://schema.org\""))
+    #expect(rendered.contains("\"@type\" : \"Article\""))
+    #expect(rendered.contains("\"headline\" : \"Test Article\""))
+    #expect(rendered.contains("\"image\" : \"https://example.com/image.jpg\""))
+  }
+
   /// Tests that custom scripts are correctly added to the document head.
   @Test func testCustomScripts() throws {
     let rendered = Document(
