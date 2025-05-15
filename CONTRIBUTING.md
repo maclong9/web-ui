@@ -9,16 +9,17 @@ First off, thank you for considering contributing to WebUI! It's people like you
   - [Issues](#issues)
   - [Pull Requests](#pull-requests)
 - [Development Process](#development-process)
-  - [Branch Structure](#branch-structure)
-  - [Development Workflow](#development-workflow)
-  - [Versioning](#versioning)
-  - [Release Process](#release-process)
-  - [Quick Fixes (Hotfixes)](#quick-fixes-hotfixes)
-  - [Testing](#testing)
-  - [Documentation Generation](#documentation-generation)
-  - [Adding New Elements](#adding-new-elements)
-  - [Adding New Style Modifiers](#adding-new-style-modifiers)
-  - [Adding Extensions to Existing Elements](#adding-extensions-to-existing-elements)
+- [Branch Structure](#branch-structure)
+- [Development Workflow](#development-workflow)
+- [Versioning](#versioning)
+- [Release Process](#release-process)
+- [Quick Fixes (Hotfixes)](#quick-fixes-hotfixes)
+- [Testing](#testing)
+- [Documentation Generation](#documentation-generation)
+- [Core Directory Structure](#core-directory-structure)
+- [Adding New Elements](#adding-new-elements)
+- [Adding New Style Modifiers](#adding-new-style-modifiers)
+- [Adding Extensions to Existing Elements](#adding-extensions-to-existing-elements)
 - [Styleguides](#styleguides)
   - [Swift Style Guide](#swift-style-guide)
   - [Commit Messages](#commit-messages)
@@ -331,7 +332,7 @@ You can extend existing elements with specialized methods to improve developer e
 
 3. **Documentation**: As with other additions, include comprehensive DocC documentation.
 
-## Using Responsive Styling
+### Using Responsive Styling
 
 WebUI provides a block-based responsive API for cleaner responsive designs.
 
@@ -355,6 +356,21 @@ Text { "Responsive Content" }
     }
   }
 ```
+
+### File Organization Principles
+
+When organizing code in the WebUI library, follow these principles:
+
+1. **Single Responsibility**: Each file should have a clear, focused purpose
+2. **Logical Grouping**: Group related functionality together
+3. **Progressive Disclosure**: Place most commonly used functionality first
+4. **Manageable Size**: Keep files under on the smaller side where possible
+5. **Clear Dependencies**: Make dependencies between components explicit and avoid circularity
+
+When refactoring or adding new code, consider if you should:
+- Add to an existing file (for small, closely related additions)
+- Create a new file in an existing directory (for new components in an established category)
+- Create a new directory (for entirely new subsystems or categories)
 
 ### Adding Support to Custom Style Methods
 
@@ -396,5 +412,14 @@ WebUI follows the [Swift API Design Guidelines](https://swift.org/documentation/
 - Use Swift DocC for API documentation
 - Include usage examples for complex functionality
 - Document public APIs thoroughly with parameter descriptions, return values, and any exceptions
+- When extracting code to new files, ensure documentation references are updated accordingly
+- For complex components split across multiple files, include cross-references between related types
+
+### Code Structure
+
+- Aim for vertical cohesion - related code should be close together
+- Place most important/commonly used methods first
+- Group methods by functionality or feature
+- When a file approaches 500 lines, consider refactoring into multiple files following the Core directory guidelines
 
 Thank you for contributing to WebUI! Your effort helps make this library better for everyone.
