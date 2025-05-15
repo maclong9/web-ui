@@ -1,6 +1,6 @@
 import Foundation
-import Testing
 import Logging
+import Testing
 
 @testable import WebUI
 
@@ -13,7 +13,7 @@ import Logging
       handler.logLevel = .critical
       return handler
     }
-    
+
     let app = Website(
       routes: [
         Document(

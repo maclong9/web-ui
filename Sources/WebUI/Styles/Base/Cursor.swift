@@ -28,7 +28,7 @@ extension Element {
   /// Link(to: "/contact") { "Contact Us" }
   ///   .cursor(.pointer)
   ///
-  /// Button() 
+  /// Button()
   ///   .cursor(.notAllowed, on: .hover)
   /// ```
   public func cursor(
