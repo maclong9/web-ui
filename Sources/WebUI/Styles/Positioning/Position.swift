@@ -27,8 +27,8 @@ extension Element {
   /// - Returns: A new element with updated position classes.
   public func position(
     _ type: PositionType? = nil,
-    edges: Edge...,
-    length: Int? = nil,
+    at edges: Edge...,
+    offset length: Int? = nil,
     on modifiers: Modifier...
   ) -> Element {
     let effectiveEdges = edges.isEmpty ? [Edge.all] : edges

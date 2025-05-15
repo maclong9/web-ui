@@ -105,7 +105,7 @@ WebUI provides a SwiftUI like modifier  API for styling your elements:
 Button(type: .submit) { "Submit" }
     .background(color: .blue(.500))
     .font(color: .white)
-    .padding(.all, length: 4)
+    .padding(of: 4, at: .all)
     .rounded(.md)
     .font(weight: .semibold)
 ```

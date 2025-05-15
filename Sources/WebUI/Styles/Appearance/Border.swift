@@ -120,12 +120,12 @@ extension Element {
   /// ## Example
   /// ```swift
   /// Stack()
-  ///   .border(width: 2, edges: .bottom, color: .blue(._500))
-  ///   .border(width: 1, edges: .horizontal, color: .gray(._200), on: .hover)
+  ///   .border(width: 2, at: .bottom, color: .blue(._500))
+  ///   .border(width: 1, at: .horizontal, color: .gray(._200), on: .hover)
   /// ```
   public func border(
-    width: Int? = nil,
-    edges: Edge...,
+    of width: Int? = nil,
+    at edges: Edge...,
     style: BorderStyle? = nil,
     color: Color? = nil,
     on modifiers: Modifier...
@@ -235,7 +235,7 @@ extension Element {
   ///   .outline(width: 2, style: .solid, color: .blue(._500), on: .focus)
   /// ```
   public func outline(
-    width: Int? = nil,
+    of width: Int? = nil,
     style: BorderStyle? = nil,
     color: Color? = nil,
     on modifiers: Modifier...
@@ -273,11 +273,11 @@ extension Element {
   ///   Heading(.title) { "Card Title" }
   ///   Text { "Card content" }
   /// }
-  /// .shadow(size: .md)
-  /// .shadow(size: .xl, on: .hover)
+  /// .shadow(of: .md)
+  /// .shadow(of: .xl, on: .hover)
   /// ```
   public func shadow(
-    size: ShadowSize,
+    of size: ShadowSize,
     color: Color? = nil,
     on modifiers: Modifier...
   ) -> Element {
@@ -307,10 +307,10 @@ extension Element {
   /// ## Example
   /// ```swift
   /// Button() { "Click Me" }
-  ///   .ring(size: 2, color: .blue(._500), on: .focus)
+  ///   .ring(of: 2, color: .blue(._500), on: .focus)
   /// ```
   public func ring(
-    size: Int = 1,
+    of size: Int = 1,
     color: Color? = nil,
     on modifiers: Modifier...
   ) -> Element {
