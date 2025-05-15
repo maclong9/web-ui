@@ -18,7 +18,7 @@ import PackageDescription
 
 let package = Package(
     name: "MyWebsite",
-    platforms: [.macOS(.v12)],
+    platforms: [.macOS(.v15)],
     dependencies: [
         .package(url: "https://github.com/maclong9/web-ui.git", from: "1.0.0"),
     ],
@@ -29,7 +29,7 @@ let package = Package(
                 .product(name: "WebUI", package: "web-ui")
             ],
             path: "Sources",
-            resources: [.process("Public")]
+            resources: [.process("Public")] // Add your asset files here
         )
     ]
 )
@@ -120,11 +120,11 @@ Button(type: .submit) { "Submit" }
     .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
     .rounded(.md)
     .font(weight: .semibold)
-    
+
 // Different margins for vertical and horizontal sides
 Stack(classes: ["card"])
     .margins(EdgeInsets(vertical: 4, horizontal: 6))
-    
+
 // Same border width on all sides
 Image(src: "profile.jpg", alt: "Profile photo")
     .border(EdgeInsets(all: 2), style: .solid, color: .gray(._300))
@@ -134,4 +134,4 @@ Image(src: "profile.jpg", alt: "Profile photo")
 
 Now that you understand the basics of WebUI:
 
-- Try the <doc:creating-a-static-site> tutorial for hands-on experience with static sites
+- Try the <doc:creating-a-static-site> tutorial for a full look at the recommended way to structure your website, pages and components.
