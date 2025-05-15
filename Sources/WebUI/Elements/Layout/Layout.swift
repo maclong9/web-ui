@@ -15,34 +15,40 @@
 ///   }
 ///   ```
 public final class Header: Element {
-  /// Creates a new HTML header element.
-  ///
-  /// - Parameters:
-  ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
-  ///   - classes: An array of CSS classnames for styling the header.
-  ///   - role: ARIA role of the element for accessibility and screen readers.
-  ///   - label: ARIA label to describe the element for screen readers.
-  ///   - data: Dictionary of `data-*` attributes for storing custom data related to the header.
-  ///   - content: Closure providing header content like headings, navigation, and logos.
-  ///
-  /// ## Example
-  /// ```swift
-  /// Header(id: "main-header", classes: ["site-header", "sticky"]) {
-  ///     Heading(.largeTitle) { "My Website" }
-  ///   }
-  ///   ```
-  public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    label: String? = nil,
-    data: [String: String]? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
-  ) {
-    super.init(
-      tag: "header", id: id, classes: classes, role: role, label: label, data: data,
-      content: content)
-  }
+    /// Creates a new HTML header element.
+    ///
+    /// - Parameters:
+    ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
+    ///   - classes: An array of CSS classnames for styling the header.
+    ///   - role: ARIA role of the element for accessibility and screen readers.
+    ///   - label: ARIA label to describe the element for screen readers.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data related to the header.
+    ///   - content: Closure providing header content like headings, navigation, and logos.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Header(id: "main-header", classes: ["site-header", "sticky"]) {
+    ///     Heading(.largeTitle) { "My Website" }
+    ///   }
+    ///   ```
+    public init(
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil,
+        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    ) {
+        super.init(
+            tag: "header",
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data,
+            content: content
+        )
+    }
 }
 
 /// Generates an HTML navigation element for site navigation.
@@ -62,34 +68,41 @@ public final class Header: Element {
 ///   }
 ///   ```
 public final class Navigation: Element {
-  /// Creates a new HTML navigation element.
-  ///
-  /// - Parameters:
-  ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
-  ///   - classes: An array of CSS classnames for styling the navigation container.
-  ///   - role: ARIA role of the element for accessibility and screen readers.
-  ///   - label: ARIA label to describe the element's purpose (e.g., "Main Navigation").
-  ///   - data: Dictionary of `data-*` attributes for storing custom data related to navigation.
-  ///   - content: Closure providing navigation content, typically links or lists of links.
-  ///
-  /// ## Example
-  /// ```swift
-  /// Navigation(id: "main-nav", label: "Main Navigation") {
-  ///     Link(to: "/home") { "Home" }
-  ///     Link(to: "/about") { "About Us" }
-  ///   }
-  ///   ```
-  public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    label: String? = nil,
-    data: [String: String]? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
-  ) {
-    super.init(
-      tag: "nav", id: id, classes: classes, role: role, label: label, data: data, content: content)
-  }
+    /// Creates a new HTML navigation element.
+    ///
+    /// - Parameters:
+    ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
+    ///   - classes: An array of CSS classnames for styling the navigation container.
+    ///   - role: ARIA role of the element for accessibility and screen readers.
+    ///   - label: ARIA label to describe the element's purpose (e.g., "Main Navigation").
+    ///   - data: Dictionary of `data-*` attributes for storing custom data related to navigation.
+    ///   - content: Closure providing navigation content, typically links or lists of links.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Navigation(id: "main-nav", label: "Main Navigation") {
+    ///     Link(to: "/home") { "Home" }
+    ///     Link(to: "/about") { "About Us" }
+    ///   }
+    ///   ```
+    public init(
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil,
+        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    ) {
+        super.init(
+            tag: "nav",
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data,
+            content: content
+        )
+    }
 }
 
 /// Generates an HTML aside element for tangentially related content.
@@ -110,35 +123,41 @@ public final class Navigation: Element {
 ///   }
 ///   ```
 public final class Aside: Element {
-  /// Creates a new HTML aside element.
-  ///
-  /// - Parameters:
-  ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
-  ///   - classes: An array of CSS classnames for styling the aside container.
-  ///   - role: ARIA role of the element for accessibility and screen readers.
-  ///   - label: ARIA label to describe the element's purpose (e.g., "Related Content").
-  ///   - data: Dictionary of `data-*` attributes for storing custom data related to the aside.
-  ///   - content: Closure providing aside content, such as related links, footnotes, or supplementary information.
-  ///
-  /// ## Example
-  /// ```swift
-  /// Aside(id: "glossary", classes: ["note", "bordered"], label: "Term Definition") {
-  ///     Heading(.headline) { "Definition" }
-  ///     Text { "A detailed explanation of the term..." }
-  ///   }
-  ///   ```
-  public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    label: String? = nil,
-    data: [String: String]? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
-  ) {
-    super.init(
-      tag: "aside", id: id, classes: classes, role: role, label: label, data: data, content: content
-    )
-  }
+    /// Creates a new HTML aside element.
+    ///
+    /// - Parameters:
+    ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
+    ///   - classes: An array of CSS classnames for styling the aside container.
+    ///   - role: ARIA role of the element for accessibility and screen readers.
+    ///   - label: ARIA label to describe the element's purpose (e.g., "Related Content").
+    ///   - data: Dictionary of `data-*` attributes for storing custom data related to the aside.
+    ///   - content: Closure providing aside content, such as related links, footnotes, or supplementary information.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Aside(id: "glossary", classes: ["note", "bordered"], label: "Term Definition") {
+    ///     Heading(.headline) { "Definition" }
+    ///     Text { "A detailed explanation of the term..." }
+    ///   }
+    ///   ```
+    public init(
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil,
+        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    ) {
+        super.init(
+            tag: "aside",
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data,
+            content: content
+        )
+    }
 }
 
 /// Generates an HTML main element for the primary content of a page.
@@ -159,36 +178,43 @@ public final class Aside: Element {
 ///   }
 ///   ```
 public final class Main: Element {
-  /// Creates a new HTML main element.
-  ///
-  /// - Parameters:
-  ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
-  ///   - classes: An array of CSS classnames for styling the main content area.
-  ///   - role: ARIA role of the element for accessibility and screen readers.
-  ///   - label: ARIA label to describe the element's purpose (e.g., "Main Content").
-  ///   - data: Dictionary of `data-*` attributes for storing custom data related to the main content.
-  ///   - content: Closure providing the primary content of the page, typically including articles, sections, and other content elements.
-  ///
-  /// ## Example
-  /// ```swift
-  /// Main(id: "content", classes: ["container"]) {
-  ///     Section {
-  ///       Heading(.largeTitle) { "About Us" }
-  ///       Text { "Learn more about our company history..." }
-  ///     }
-  ///   }
-  ///   ```
-  public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    label: String? = nil,
-    data: [String: String]? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
-  ) {
-    super.init(
-      tag: "main", id: id, classes: classes, role: role, label: label, data: data, content: content)
-  }
+    /// Creates a new HTML main element.
+    ///
+    /// - Parameters:
+    ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
+    ///   - classes: An array of CSS classnames for styling the main content area.
+    ///   - role: ARIA role of the element for accessibility and screen readers.
+    ///   - label: ARIA label to describe the element's purpose (e.g., "Main Content").
+    ///   - data: Dictionary of `data-*` attributes for storing custom data related to the main content.
+    ///   - content: Closure providing the primary content of the page, typically including articles, sections, and other content elements.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Main(id: "content", classes: ["container"]) {
+    ///     Section {
+    ///       Heading(.largeTitle) { "About Us" }
+    ///       Text { "Learn more about our company history..." }
+    ///     }
+    ///   }
+    ///   ```
+    public init(
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil,
+        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    ) {
+        super.init(
+            tag: "main",
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data,
+            content: content
+        )
+    }
 }
 
 /// Generates an HTML footer element for page or section footers.
@@ -206,36 +232,42 @@ public final class Main: Element {
 ///   }
 ///   ```
 public final class Footer: Element {
-  /// Creates a new HTML footer element.
-  ///
-  /// - Parameters:
-  ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
-  ///   - classes: An array of CSS classnames for styling the footer.
-  ///   - role: ARIA role of the element for accessibility and screen readers.
-  ///   - label: ARIA label to describe the element's purpose (e.g., "Page Footer").
-  ///   - data: Dictionary of `data-*` attributes for storing custom data related to the footer.
-  ///   - content: Closure providing footer content, such as copyright notices, contact information, and secondary navigation.
-  ///
-  /// ## Example
-  /// ```swift
-  /// Footer(id: "site-footer", classes: ["footer", "bg-dark"]) {
-  ///     Stack(classes: ["footer-links"]) {
-  ///       Link(to: "/about") { "About" }
-  ///       Link(to: "/contact") { "Contact" }
-  ///     }
-  ///     Text { "© \(Date().formattedYear()) My Company" }
-  ///   }
-  ///   ```
-  public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    label: String? = nil,
-    data: [String: String]? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
-  ) {
-    super.init(
-      tag: "footer", id: id, classes: classes, role: role, label: label, data: data,
-      content: content)
-  }
+    /// Creates a new HTML footer element.
+    ///
+    /// - Parameters:
+    ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
+    ///   - classes: An array of CSS classnames for styling the footer.
+    ///   - role: ARIA role of the element for accessibility and screen readers.
+    ///   - label: ARIA label to describe the element's purpose (e.g., "Page Footer").
+    ///   - data: Dictionary of `data-*` attributes for storing custom data related to the footer.
+    ///   - content: Closure providing footer content, such as copyright notices, contact information, and secondary navigation.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Footer(id: "site-footer", classes: ["footer", "bg-dark"]) {
+    ///     Stack(classes: ["footer-links"]) {
+    ///       Link(to: "/about") { "About" }
+    ///       Link(to: "/contact") { "Contact" }
+    ///     }
+    ///     Text { "© \(Date().formattedYear()) My Company" }
+    ///   }
+    ///   ```
+    public init(
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil,
+        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    ) {
+        super.init(
+            tag: "footer",
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data,
+            content: content
+        )
+    }
 }

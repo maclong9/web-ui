@@ -21,13 +21,13 @@
 ///   print(element.render()) // Outputs: <div class="custom">Hello</div>
 ///   ```
 public protocol HTML {
-  /// Renders the entity as an HTML string.
-  ///
-  /// This method converts the conforming type into its HTML representation. It's the central
-  /// mechanism for transforming Swift objects into their corresponding HTML markup.
-  ///
-  /// - Returns: The complete HTML content as a string.
-  ///
-  /// - Note: Implementations should ensure proper HTML escaping when including user-provided content.
-  func render() -> String
+    /// Renders the entity as an HTML string.
+    ///
+    /// This method converts the conforming type into its HTML representation. It's the central
+    /// mechanism for transforming Swift objects into their corresponding HTML markup.
+    ///
+    /// - Returns: The complete HTML content as a string.
+    ///
+    /// - Note: Implementations should ensure proper HTML escaping when including user-provided content.
+    func render() -> String
 }
