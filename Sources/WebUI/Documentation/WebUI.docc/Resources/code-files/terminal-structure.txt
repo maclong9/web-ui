@@ -3,6 +3,6 @@ Sources/
         Components/
             Layout.swift
         Pages/
-            HomePage.swift
-            AboutPage.swift
+            Home.swift
+            About.swift
         Application.swift
