@@ -99,7 +99,7 @@ try website.build(to: URL(filePath: ".output")) // `.output` is the default valu
 
 ## Styling Elements
 
-WebUI provides a SwiftUI like modifier  API for styling your elements:
+WebUI provides a SwiftUI like modifier API for styling your elements:
 
 ```swift
 Button(type: .submit) { "Submit" }
@@ -108,6 +108,26 @@ Button(type: .submit) { "Submit" }
     .padding(of: 4, at: .all)
     .rounded(.md)
     .font(weight: .semibold)
+```
+
+You can also use EdgeInsets for precise control over spacing on different sides:
+
+```swift
+Button(type: .submit) { "Submit" }
+    .background(color: .blue(.500))
+    .font(color: .white)
+    // Apply different padding to each side
+    .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
+    .rounded(.md)
+    .font(weight: .semibold)
+    
+// Different margins for vertical and horizontal sides
+Stack(classes: ["card"])
+    .margins(EdgeInsets(vertical: 4, horizontal: 6))
+    
+// Same border width on all sides
+Image(src: "profile.jpg", alt: "Profile photo")
+    .border(EdgeInsets(all: 2), style: .solid, color: .gray(._300))
 ```
 
 ## Next Steps

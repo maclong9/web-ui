@@ -70,17 +70,20 @@ This approach is ideal for:
 
 ```swift
 Stack(classes: ["card"])
-  .padding(of: 4)
+  // Using EdgeInsets for different padding on each side
+  .padding(EdgeInsets(top: 4, leading: 6, bottom: 4, trailing: 6))
   .background(color: .white)
   .shadow(of: .sm)
   .rounded(.md)
   .responsive {
     $0.md {
-      $0.padding(of: 6)
+      // Uniform padding using EdgeInsets
+      $0.padding(EdgeInsets(all: 6))
       $0.shadow(of: .md)
     }
     $0.lg {
-      $0.padding(of: 8)
+      // Different vertical/horizontal padding with EdgeInsets
+      $0.padding(EdgeInsets(vertical: 8, horizontal: 12))
       $0.flex(direction: .row)
     }
   }
@@ -128,9 +131,13 @@ Heading(.largeTitle) { "Welcome to WebUI" }
 // Section heading
 Heading(.title) { "Key Features" }
   .font(size: .xl, weight: .semibold)
+  // Add margins with EdgeInsets
+  .margins(EdgeInsets(top: 4, leading: 0, bottom: 2, trailing: 0))
   .responsive {
     $0.md {
       $0.font(size: .xl2)
+      // Different margins at medium breakpoint
+      $0.margins(EdgeInsets(top: 6, leading: 0, bottom: 3, trailing: 0))
     }
   }
 ```
@@ -142,22 +149,48 @@ You can combine both approaches when needed, though the block-based approach is 
 ```swift
 Button { "Sign Up" }
   .background(color: .blue(._500))
-  .padding(of: 2, at: .vertical)
-  .padding(of: 4, at: .horizontal)
+  // Using EdgeInsets for different padding values
+  .padding(EdgeInsets(vertical: 2, horizontal: 4))
   .font(color: .white, weight: .semibold)
   // One-off responsive adjustment
   .rounded(.full, on: .lg)
   // Block of related responsive adjustments
   .responsive {
     $0.md {
-      $0.padding(of: 3, at: .vertical)
-      $0.padding(of: 6, at: .horizontal)
+      // Combining EdgeInsets with responsive design
+      $0.padding(EdgeInsets(vertical: 3, horizontal: 6))
     }
     $0.lg {
       $0.background(color: .blue(._600))
+      // Advanced EdgeInsets with different values for each edge
+      $0.padding(EdgeInsets(top: 3, leading: 8, bottom: 3, trailing: 8))
     }
   }
 ```
+
+## Using EdgeInsets for Precise Spacing
+
+EdgeInsets allows you to define different spacing values for each edge (top, leading, bottom, trailing) in a single method call:
+
+```swift
+// Different values for each edge
+Element(tag: "div")
+  .padding(EdgeInsets(top: 4, leading: 6, bottom: 8, trailing: 6))
+
+// Same value for all edges
+Button() { "Submit" }
+  .margins(EdgeInsets(all: 4))
+
+// Different vertical and horizontal values
+Stack()
+  .padding(EdgeInsets(vertical: 2, horizontal: 4))
+```
+
+EdgeInsets can be used with:
+- `padding()`: Apply padding to elements
+- `margins()`: Set margins around elements
+- `border()`: Define border widths for each edge
+- `position()`: Set position offsets for each edge
 
 ## Best Practices
 
@@ -169,7 +202,9 @@ Button { "Sign Up" }
 
 4. **Avoid Breakpoint Proliferation**: Limit the number of different breakpoints to maintain consistency
 
-5. **Test Across Devices**: Always test responsive designs on actual devices or using browser dev tools
+5. **Use EdgeInsets for Precision**: When elements need different spacing values on each side, use EdgeInsets instead of multiple edge-specific calls
+
+6. **Test Across Devices**: Always test responsive designs on actual devices or using browser dev tools
 
 ## See Also
 

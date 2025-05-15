@@ -127,7 +127,7 @@
                 It ensures header, navigation, and footer are consistent across all pages
 
                 @Justification {
-                    Correct! The Layout component encapsulates common elements like the header, navigation, and footer, ensuring they're consistent across all pages while allowing for different content.
+                    Correct! The Layout component encapsulates common elements like the header, navigation, and footer, ensuring they're consistent across all pages while allowing for different content. It also maintains consistent spacing using EdgeInsets across all pages.
                 }
             }
 
