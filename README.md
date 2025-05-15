@@ -94,14 +94,11 @@ And then add this to your Target:
 
 Comprehensive API documentation is available on the [GitHub Pages](https://maclong9.github.io/web-ui/documentation/webui/).
 
-### Tutorials
+#### Learning Resources
 
-- [Creating a Static Site](https://maclong9.github.io/web-ui/tutorials/webui/creating-a-static-site)
 - [Getting Started with WebUI](https://maclong9.github.io/web-ui/documentation/webui/getting-started)
-
-### Examples
-
-- [Portfolio](https://github.com/maclong9/portfolio) - A personal portfolio website built with WebUI
+- [Creating a Static Site](https://maclong9.github.io/web-ui/tutorials/webui/creating-a-static-site)
+- [Portfolio Example](https://github.com/maclong9/portfolio) - A personal portfolio website built with WebUI
 
 ## Development
 
