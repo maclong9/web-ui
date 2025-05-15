@@ -59,6 +59,7 @@ With WebUI, you can:
 - ``BorderStyle``
 - ``Modifier``
 - ``Edge``
+- ``EdgeInsets``
 - ``ResponsiveBuilder``
 
 ### Responsive Design

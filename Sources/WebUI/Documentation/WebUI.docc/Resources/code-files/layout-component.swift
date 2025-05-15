@@ -22,8 +22,8 @@ struct Layout: HTML {
       }
       .flex(justify: .between, align: .center)
       .frame(width: .screen)
-      .margins(at: .bottom)
-      .padding()
+      .margins(EdgeInsets(bottom: 4))
+      .padding(EdgeInsets(all: 4))
 
       Main {
         children.render()
@@ -43,7 +43,7 @@ struct Layout: HTML {
         )
       }
       .flex(justify: .center, align: .center)
-      .padding()
+      .padding(EdgeInsets(all: 4))
     }
     .font(family: Application.theme.fonts["body"] ?? "system-ui")
     .frame(minHeight: .screen)

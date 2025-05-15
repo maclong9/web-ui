@@ -113,6 +113,7 @@ Components for styling your HTML elements.
 ### Layout
 
 - ``Edge``
+- ``EdgeInsets``
 - ``Axis``
 - ``Justify``
 - ``Align``
