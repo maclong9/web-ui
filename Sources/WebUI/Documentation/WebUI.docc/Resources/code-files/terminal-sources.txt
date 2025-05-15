@@ -1,5 +1,0 @@
-mkdir -p Sources/MyStaticSite/Components
-touch Sources/Components/Layout.swift
-touch Sources/HomePage.swift
-touch Sources/AboutPage.swift
-touch Sources/Application.swift

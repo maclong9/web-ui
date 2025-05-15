@@ -14,13 +14,13 @@
             @Step {
                 First, create a new directory for your project and initialize a Swift package.
 
-                @Code(name: "Terminal", file: terminal-init.txt)
+                @Code(name: "Terminal", file: terminal-init.sh)
             }
 
             @Step {
                 Update your Package.swift file to add the WebUI dependency.
 
-                @Code(name: "Package.swift", file: package-swift.txt)
+                @Code(name: "Package.swift", file: package-swift.swift)
             }
 
             @Step {
@@ -28,7 +28,7 @@
 
                 > This structure is an example of how you can organize your project files.
 
-                @Code(name: "Terminal", file: terminal-sources.txt)
+                @Code(name: "Terminal", file: terminal-sources.sh)
             }
 
             @Step {
@@ -58,11 +58,11 @@
 
         @Steps {
             @Step {
-                Create a new Swift file called HomePage.swift in your Sources directory.
+                Create a new Swift file called Home.swift in your Sources directory.
 
-                In this file, we'll create a `HomePage` struct that conforms to the `HTML` protocol with a `document` property that creates a Document with metadata and content. We'll implement a `render()` method that uses our Layout component to wrap the page-specific content, defining a Section with a heading and paragraphs. The Layout component handles the header, navigation, and footer automatically, so we only need to focus on the main content.
+                In this file, we'll create a `Home` struct that conforms to the `HTML` protocol with a `document` property that creates a Document with metadata and content. We'll implement a `render()` method that uses our Layout component to wrap the page-specific content, defining a Section with a heading and paragraphs. The Layout component handles the header, navigation, and footer automatically, so we only need to focus on the main content.
 
-                @Code(name: "HomePage.swift", file: home-page.swift)
+                @Code(name: "Home.swift", file: home-page.swift)
             }
         }
     }
@@ -72,11 +72,11 @@
 
         @Steps {
             @Step {
-                Create a new Swift file called AboutPage.swift in your Sources directory.
+                Create a new Swift file called About.swift in your Sources directory.
 
                 The About page also uses the same Layout component but customizes it with different page metadata (title and description). It contains unique content about your site including multiple sections, feature descriptions, and a styled link button to return to the home page. By using the Layout component, we ensure consistency across pages.
 
-                @Code(name: "AboutPage.swift", file: about-page.swift)
+                @Code(name: "About.swift", file: about-page.swift)
             }
         }
     }
@@ -98,7 +98,7 @@
 
                 When the build completes, check your output directory to find the generated HTML files. You'll see index.html (Home page), about/index.html (About page), and a public directory with any assets. You can now open these files in a browser or deploy them to a web server.
 
-                @Code(name: "Terminal", file: terminal-build.txt)
+                @Code(name: "Terminal", file: terminal-build.sh)
             }
 
             @Step {

@@ -1,6 +1,6 @@
 import WebUI
 
-struct HomePage: HTML {
+struct Home: HTML {
   var document: Document {
     .init(
       path: "/",
@@ -19,17 +19,17 @@ struct HomePage: HTML {
           "Welcome to My Website"
         }
         .font(size: .xl3, weight: .bold)
-        .margins(EdgeInsets(bottom: 4))
+        .margins(at: .bottom)
 
         Text {
           "This is a simple static website built with WebUI and Swift. WebUI makes it easy to create clean, semantic HTML without writing any HTML directly."
         }
-        .margins(EdgeInsets(bottom: 4))
+        .margins(at: .bottom)
 
         Text {
           "This homepage is one of two pages in our site. You can navigate to the About page using the link in the header."
         }
-        .margins(EdgeInsets(bottom: 4))
+        .margins(at: .bottom)
 
         Text {
           "Learn more about WebUI by exploring this site!"
