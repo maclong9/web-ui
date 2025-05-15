@@ -14,21 +14,21 @@ import Testing
 
   @Test("Transition with specific property and duration")
   func testTransitionWithPropertyAndDuration() async throws {
-    let element = Element(tag: "div").transition(property: .opacity, duration: 300)
+    let element = Element(tag: "div").transition(of: .opacity, for: 300)
     let rendered = element.render()
     #expect(rendered.contains("class=\"transition-opacity duration-300\""))
   }
 
   @Test("Transition with easing and delay")
   func testTransitionWithEasingAndDelay() async throws {
-    let element = Element(tag: "div").transition(easing: .inOut, delay: 100)
+    let element = Element(tag: "div").transition(of: nil, easing: .inOut, delay: 100)
     let rendered = element.render()
     #expect(rendered.contains("class=\"transition ease-in-out delay-100\""))
   }
 
   @Test("Transition with modifier")
   func testTransitionWithModifier() async throws {
-    let element = Element(tag: "div").transition(property: .colors, duration: 500, on: .hover)
+    let element = Element(tag: "div").transition(of: .colors, for: 500, on: .hover)
     let rendered = element.render()
     #expect(rendered.contains("class=\"hover:transition-colors hover:duration-500\""))
   }
@@ -67,28 +67,28 @@ import Testing
 
   @Test("Position with edges and length")
   func testPositionWithEdgesAndLength() async throws {
-    let element = Element(tag: "div").position(.fixed, edges: .top, .leading, length: 4)
+    let element = Element(tag: "div").position(.fixed, at: .top, .leading, offset: 4)
     let rendered = element.render()
     #expect(rendered.contains("class=\"fixed top-4 left-4\""))
   }
 
   @Test("Position with negative length")
   func testPositionWithNegativeLength() async throws {
-    let element = Element(tag: "div").position(.relative, edges: .bottom, length: -2)
+    let element = Element(tag: "div").position(.relative, at: .bottom, offset: -2)
     let rendered = element.render()
     #expect(rendered.contains("class=\"relative -bottom-2\""))
   }
 
   @Test("Position with modifier")
   func testPositionWithModifier() async throws {
-    let element = Element(tag: "div").position(.sticky, edges: .top, length: 0, on: .md)
+    let element = Element(tag: "div").position(.sticky, at: .top, offset: 0, on: .md)
     let rendered = element.render()
     #expect(rendered.contains("class=\"md:sticky md:top-0\""))
   }
 
   @Test("Position with horizontal edge")
   func testPositionWithHorizontalEdge() async throws {
-    let element = Element(tag: "div").position(.absolute, edges: .horizontal, length: 8)
+    let element = Element(tag: "div").position(.absolute, at: .horizontal, offset: 8)
     let rendered = element.render()
     #expect(rendered.contains("class=\"absolute inset-x-8\""))
   }
@@ -225,9 +225,9 @@ import Testing
   @Test("Combined positioning styles")
   func testCombinedPositioningStyles() async throws {
     let element = Element(tag: "div")
-      .transition(property: .transform, duration: 200, easing: .out)
+      .transition(of: .transform, for: 200, easing: .out)
       .zIndex(30)
-      .position(.absolute, edges: .top, .trailing, length: 4)
+      .position(.absolute, at: .top, .trailing, offset: 4)
       .overflow(.hidden, axis: .y)
       .transform(scale: (x: 95, y: 95), rotate: 15)
     let rendered = element.render()

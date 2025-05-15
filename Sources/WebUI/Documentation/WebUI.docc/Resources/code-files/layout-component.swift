@@ -18,11 +18,11 @@ struct Layout: HTML {
               .nav()
               .font(size: .sm)
           }
-        }.flex(align: .center).spacing(.x, length: 2)
+        }.flex(align: .center).spacing(of: 2, along: .x)
       }
       .flex(justify: .between, align: .center)
       .frame(width: .screen)
-      .margins(.bottom)
+      .margins(at: .bottom)
       .padding()
 
       Main {

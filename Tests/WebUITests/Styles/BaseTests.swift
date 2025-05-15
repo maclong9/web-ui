@@ -231,21 +231,28 @@ import Testing
 
   @Test("Margins with specific edge and length")
   func testMarginsWithSpecificEdgeAndLength() async throws {
-    let element = Element(tag: "div").margins(.top, .bottom, length: 8)
+    let element = Element(tag: "div").margins(of: 8, at: .top, .bottom)
     let rendered = element.render()
     #expect(rendered.contains("class=\"mt-8 mb-8\""))
   }
 
   @Test("Margins with auto")
   func testMarginsWithAuto() async throws {
-    let element = Element(tag: "div").margins(.horizontal, auto: true)
+    let element = Element(tag: "div").margins(at: .horizontal, auto: true)
     let rendered = element.render()
     #expect(rendered.contains("class=\"mx-auto\""))
   }
 
+  @Test("Margins with at parameter only")
+  func testMarginsWithAtParameterOnly() async throws {
+    let element = Element(tag: "div").margins(at: .top)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"mt-4\""))
+  }
+
   @Test("Margins with modifier")
   func testMarginsWithModifier() async throws {
-    let element = Element(tag: "div").margins(.leading, length: 6, on: .md)
+    let element = Element(tag: "div").margins(of: 6, at: .leading, on: .md)
     let rendered = element.render()
     #expect(rendered.contains("class=\"md:ml-6\""))
   }
@@ -261,14 +268,21 @@ import Testing
 
   @Test("Padding with specific edges")
   func testPaddingWithSpecificEdges() async throws {
-    let element = Element(tag: "div").padding(.vertical, length: 5)
+    let element = Element(tag: "div").padding(of: 5, at: .vertical)
     let rendered = element.render()
     #expect(rendered.contains("class=\"py-5\""))
   }
 
+  @Test("Padding with at parameter only")
+  func testPaddingWithAtParameterOnly() async throws {
+    let element = Element(tag: "div").padding(at: .horizontal)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"px-4\""))
+  }
+
   @Test("Padding with modifier")
   func testPaddingWithModifier() async throws {
-    let element = Element(tag: "div").padding(.trailing, length: 3, on: .hover)
+    let element = Element(tag: "div").padding(of: 3, at: .trailing, on: .hover)
     let rendered = element.render()
     #expect(rendered.contains("class=\"hover:pr-3\""))
   }
@@ -284,14 +298,21 @@ import Testing
 
   @Test("Spacing with horizontal direction")
   func testSpacingWithHorizontalDirection() async throws {
-    let element = Element(tag: "div").spacing(.x, length: 6)
+    let element = Element(tag: "div").spacing(of: 6, along: .x)
     let rendered = element.render()
     #expect(rendered.contains("class=\"space-x-6\""))
   }
 
+  @Test("Spacing with along parameter only")
+  func testSpacingWithAlongParameterOnly() async throws {
+    let element = Element(tag: "div").spacing(along: .y)
+    let rendered = element.render()
+    #expect(rendered.contains("class=\"space-y-4\""))
+  }
+
   @Test("Spacing with modifier")
   func testSpacingWithModifier() async throws {
-    let element = Element(tag: "div").spacing(.y, length: 2, on: .lg)
+    let element = Element(tag: "div").spacing(of: 2, along: .y, on: .lg)
     let rendered = element.render()
     #expect(rendered.contains("class=\"lg:space-y-2\""))
   }
@@ -304,9 +325,9 @@ import Testing
       .frame(width: .full, height: .screen)
       .font(size: .xl, weight: .semibold, color: .gray(._700))
       .cursor(.pointer)
-      .margins(.horizontal, auto: true)
-      .padding(.all, length: 6)
-      .spacing(.both, length: 4)
+      .margins(of: 0, at: .horizontal, auto: true)
+      .padding(of: 6, at: .all)
+      .spacing(of: 4, along: .both)
     let rendered = element.render()
     #expect(
       rendered.contains(
@@ -394,21 +415,21 @@ import Testing
 
   @Test("Margins with nil length and no auto")
   func testMarginsWithNilLength() async throws {
-    let element = Element(tag: "div").margins(.top, length: nil)
+    let element = Element(tag: "div").margins(of: nil, at: .top)
     let rendered = element.render()
     #expect(!rendered.contains("class="))
   }
 
   @Test("Padding with nil length")
   func testPaddingWithNilLength() async throws {
-    let element = Element(tag: "div").padding(.bottom, length: nil)
+    let element = Element(tag: "div").padding(of: nil, at: .bottom)
     let rendered = element.render()
     #expect(!rendered.contains("class="))
   }
 
   @Test("Spacing with nil length")
   func testSpacingWithNilLength() async throws {
-    let element = Element(tag: "div").spacing(.x, length: nil)
+    let element = Element(tag: "div").spacing(of: nil, along: .x)
     let rendered = element.render()
     #expect(!rendered.contains("class="))
   }
