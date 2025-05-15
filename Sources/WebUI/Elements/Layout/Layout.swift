@@ -4,11 +4,11 @@
 /// at the beginning of a section or page. Typically contains elements like site logos, navigation menus,
 /// and search forms.
 ///
-/// - Example:
-///   ```swift
-///   Header {
-///     Heading(.largeTitle) { "Site Title" }
-///     Navigation {
+/// ## Example
+/// ```swift
+/// Header {
+///   Heading(.largeTitle) { "Site Title" }
+///   Navigation {
 ///       Link(to: "/home") { "Home" }
 ///       Link(to: "/about") { "About" }
 ///     }
@@ -25,9 +25,9 @@ public final class Header: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the header.
   ///   - content: Closure providing header content like headings, navigation, and logos.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Header(id: "main-header", classes: ["site-header", "sticky"]) {
+  /// ## Example
+  /// ```swift
+  /// Header(id: "main-header", classes: ["site-header", "sticky"]) {
   ///     Heading(.largeTitle) { "My Website" }
   ///   }
   ///   ```
@@ -51,9 +51,9 @@ public final class Header: Element {
 /// links to other pages or parts within the current page. It helps screen readers and
 /// other assistive technologies identify the main navigation structure of the website.
 ///
-/// - Example:
-///   ```swift
-///   Navigation(classes: ["main-nav"]) {
+/// ## Example
+/// ```swift
+/// Navigation(classes: ["main-nav"]) {
 ///     List {
 ///       Item { Link(to: "/") { "Home" } }
 ///       Item { Link(to: "/products") { "Products" } }
@@ -72,9 +72,9 @@ public final class Navigation: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to navigation.
   ///   - content: Closure providing navigation content, typically links or lists of links.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Navigation(id: "main-nav", label: "Main Navigation") {
+  /// ## Example
+  /// ```swift
+  /// Navigation(id: "main-nav", label: "Main Navigation") {
   ///     Link(to: "/home") { "Home" }
   ///     Link(to: "/about") { "About Us" }
   ///   }
@@ -99,9 +99,9 @@ public final class Navigation: Element {
 /// sidebars or call-out boxes, containing content like related articles, glossary terms,
 /// advertisements, or author biographies.
 ///
-/// - Example:
-///   ```swift
-///   Aside(classes: ["sidebar"]) {
+/// ## Example
+/// ```swift
+/// Aside(classes: ["sidebar"]) {
 ///     Heading(.title) { "Related Articles" }
 ///     List {
 ///       Item { Link(to: "/article1") { "Article 1" } }
@@ -120,9 +120,9 @@ public final class Aside: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the aside.
   ///   - content: Closure providing aside content, such as related links, footnotes, or supplementary information.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Aside(id: "glossary", classes: ["note", "bordered"], label: "Term Definition") {
+  /// ## Example
+  /// ```swift
+  /// Aside(id: "glossary", classes: ["note", "bordered"], label: "Term Definition") {
   ///     Heading(.headline) { "Definition" }
   ///     Text { "A detailed explanation of the term..." }
   ///   }
@@ -148,9 +148,9 @@ public final class Aside: Element {
 /// should have only one `main` element, which helps assistive technologies navigate to the
 /// primary content.
 ///
-/// - Example:
-///   ```swift
-///   Main {
+/// ## Example
+/// ```swift
+/// Main {
 ///     Heading(.largeTitle) { "Welcome to Our Website" }
 ///     Text { "This is the main content of our homepage." }
 ///     Article {
@@ -169,9 +169,9 @@ public final class Main: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the main content.
   ///   - content: Closure providing the primary content of the page, typically including articles, sections, and other content elements.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Main(id: "content", classes: ["container"]) {
+  /// ## Example
+  /// ```swift
+  /// Main(id: "content", classes: ["container"]) {
   ///     Section {
   ///       Heading(.largeTitle) { "About Us" }
   ///       Text { "Learn more about our company history..." }
@@ -197,9 +197,9 @@ public final class Main: Element {
 /// element. A footer typically contains information about the author, copyright data, related links,
 /// legal information, and other metadata that appears at the end of a document or section.
 ///
-/// - Example:
-///   ```swift
-///   Footer {
+/// ## Example
+/// ```swift
+/// Footer {
 ///     Text { "© 2023 My Company. All rights reserved." }
 ///     Link(to: "/privacy") { "Privacy Policy" }
 ///     Link(to: "/terms") { "Terms of Service" }
@@ -216,9 +216,9 @@ public final class Footer: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the footer.
   ///   - content: Closure providing footer content, such as copyright notices, contact information, and secondary navigation.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Footer(id: "site-footer", classes: ["footer", "bg-dark"]) {
+  /// ## Example
+  /// ```swift
+  /// Footer(id: "site-footer", classes: ["footer", "bg-dark"]) {
   ///     Stack(classes: ["footer-links"]) {
   ///       Link(to: "/about") { "About" }
   ///       Link(to: "/contact") { "Contact" }

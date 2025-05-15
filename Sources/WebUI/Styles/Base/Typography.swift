@@ -4,14 +4,14 @@
 /// mapping to predefined CSS classes. The scale follows a progressive pattern
 /// where larger numbers indicate proportionally larger text sizes.
 ///
-/// - Example:
-///   ```swift
-///   Heading(.one) { "Page Title" }
-///     .font(size: .xl3)
+/// ## Example
+/// ```swift
+/// Heading(.one) { "Page Title" }
+///   .font(size: .xl3)
 ///
-///   Text { "Small print" }
-///     .font(size: .xs)
-///   ```
+/// Text { "Small print" }
+///   .font(size: .xs)
+/// ```
 public enum TextSize: String {
   /// Represents an extra-small font size (0.75rem/12px)
   ///
@@ -79,11 +79,11 @@ public enum TextSize: String {
 ///
 /// Controls how text is aligned within its container element.
 ///
-/// - Example:
-///   ```swift
-///   Text { "Centered Heading" }
-///     .font(alignment: .center)
-///   ```
+/// ## Example
+/// ```swift
+/// Text { "Centered Heading" }
+///   .font(alignment: .center)
+/// ```
 public enum Alignment: String {
   /// Aligns text to the left edge of the container.
   case left
@@ -101,11 +101,11 @@ public enum Alignment: String {
 /// Provides a range of weights from extremely thin to extra bold,
 /// allowing precise control over text emphasis and visual hierarchy.
 ///
-/// - Example:
-///   ```swift
-///   Text { "Important note" }
-///     .font(weight: .bold)
-///   ```
+/// ## Example
+/// ```swift
+/// Text { "Important note" }
+///   .font(weight: .bold)
+/// ```
 public enum Weight: String {
   /// Extremely thin text (100).
   case thin
@@ -135,11 +135,11 @@ public enum Weight: String {
 /// Controls the amount of space between characters (tracking),
 /// enhancing readability or creating stylistic effects.
 ///
-/// - Example:
-///   ```swift
-///   Heading(.one) { "Spaced Title" }
-///     .font(tracking: .wide)
-///   ```
+/// ## Example
+/// ```swift
+/// Heading(.one) { "Spaced Title" }
+///   .font(tracking: .wide)
+/// ```
 public enum Tracking: String {
   /// Very tight letter spacing (reduced space between characters).
   case tighter
@@ -163,11 +163,11 @@ public enum Tracking: String {
 /// Adjusts the vertical spacing between lines of text, improving
 /// readability or allowing for tighter or looser paragraphs.
 ///
-/// - Example:
-///   ```swift
-///   Text { "This paragraph has multiple lines of text and needs good spacing for readability" }
-///     .font(leading: .relaxed)
-///   ```
+/// ## Example
+/// ```swift
+/// Text { "This paragraph has multiple lines of text and needs good spacing for readability" }
+///   .font(leading: .relaxed)
+/// ```
 public enum Leading: String {
   /// Extremely tight line spacing (closest lines).
   case tightest
@@ -191,11 +191,11 @@ public enum Leading: String {
 /// Applies visual decorations to text such as underlines, strikethroughs,
 /// and various line styles for emphasis or indicating specific meaning.
 ///
-/// - Example:
-///   ```swift
-///   Text { "This text is important" }
-///     .font(decoration: .underline)
-///   ```
+/// ## Example
+/// ```swift
+/// Text { "This text is important" }
+///   .font(decoration: .underline)
+/// ```
 public enum Decoration: String {
   /// Simple underline beneath the text.
   case underline
@@ -219,11 +219,11 @@ public enum Decoration: String {
 /// Determines how text should wrap within its container, affecting
 /// line breaks, overflow behavior, and overall text flow.
 ///
-/// - Example:
-///   ```swift
-///   Text { "A long paragraph that needs to wrap nicely within its container" }
-///     .font(wrapping: .balance)
-///   ```
+/// ## Example
+/// ```swift
+/// Text { "A long paragraph that needs to wrap nicely within its container" }
+///   .font(wrapping: .balance)
+/// ```
 public enum Wrapping: String {
   /// Balances line lengths for more aesthetically pleasing paragraphs.
   case balance
@@ -259,22 +259,22 @@ extension Element {
   ///   - modifiers: Zero or more modifiers to scope the styles (e.g., responsive breakpoints or states).
   /// - Returns: A new element with updated font styling classes.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Text { "Welcome to our site" }
-  ///     .font(
-  ///       size: .xl2,
-  ///       weight: .bold,
-  ///       alignment: .center,
-  ///       tracking: .wide,
-  ///       color: .blue(._600)
-  ///     )
+  /// ## Example
+  /// ```swift
+  /// Text { "Welcome to our site" }
+  ///   .font(
+  ///     size: .xl2,
+  ///     weight: .bold,
+  ///     alignment: .center,
+  ///     tracking: .wide,
+  ///     color: .blue(._600)
+  ///   )
   ///
-  ///   // Responsive typography
-  ///   Heading(.one) { "Responsive Title" }
-  ///     .font(size: .xl3)
-  ///     .font(size: .xl5, on: .lg)  // Larger on desktop
-  ///   ```
+  /// // Responsive typography
+  /// Heading(.one) { "Responsive Title" }
+  ///   .font(size: .xl3)
+  ///   .font(size: .xl5, on: .lg)  // Larger on desktop
+  /// ```
   public func font(
     size: TextSize? = nil,
     weight: Weight? = nil,
@@ -317,11 +317,11 @@ extension Element {
   /// Defines standardized sizes for rich text content styling, useful for
   /// blog posts, articles, or other long-form content sections.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Article()
-  ///     .font(proseSize: .lg)
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Article()
+  ///   .font(proseSize: .lg)
+  /// ```
   public enum ProseSize: String {
     /// Small prose size for compact content layouts.
     case sm
@@ -349,11 +349,11 @@ extension Element {
   /// Defines color palettes for content styling, affecting headings,
   /// links, and other elements within long-form content.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Article()
-  ///     .font(proseColor: .slate)
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Article()
+  ///   .font(proseColor: .slate)
+  /// ```
   public enum ProseColor: String {
     /// Gray color theme for content.
     case gray

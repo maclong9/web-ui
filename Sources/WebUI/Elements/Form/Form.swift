@@ -36,18 +36,18 @@ public final class Form: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the form.
   ///   - content: Closure providing form content, typically input elements, labels, and buttons.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Form(action: "/submit", method: .post, id: "contact-form") {
-  ///     Label(for: "name") { "Your Name:" }
-  ///     Input(name: "name", type: .text, required: true)
+  /// ## Example
+  /// ```swift
+  /// Form(action: "/submit", method: .post, id: "contact-form") {
+  ///   Label(for: "name") { "Your Name:" }
+  ///   Input(name: "name", type: .text, required: true)
   ///
-  ///     Label(for: "message") { "Message:" }
-  ///     TextArea(name: "message")
+  ///   Label(for: "message") { "Message:" }
+  ///   TextArea(name: "message")
   ///
-  ///     Button(type: .submit) { "Send Message" }
-  ///   }
-  ///   ```
+  ///   Button(type: .submit) { "Send Message" }
+  /// }
+  /// ```
   public init(
     action: String? = nil,
     method: FormMethod = .post,

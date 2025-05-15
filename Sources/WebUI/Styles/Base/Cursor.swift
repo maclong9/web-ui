@@ -1,4 +1,10 @@
 /// Represents cursor types.
+///
+/// ## Example
+/// ```swift
+/// Button() { "Click Me" }
+///   .cursor(.pointer)
+/// ```
 public enum CursorType: String {
   case auto
   case `default`
@@ -16,6 +22,15 @@ extension Element {
   ///   - type: The cursor type.
   ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
   /// - Returns: A new element with updated cursor classes.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Link(to: "/contact") { "Contact Us" }
+  ///   .cursor(.pointer)
+  ///
+  /// Button() 
+  ///   .cursor(.notAllowed, on: .hover)
+  /// ```
   public func cursor(
     _ type: CursorType,
     on modifiers: Modifier...

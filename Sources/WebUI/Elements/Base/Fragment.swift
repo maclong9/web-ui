@@ -22,15 +22,15 @@ public final class Fragment: HTML {
   ///
   /// - Parameter content: Closure providing fragment content, defaults to empty.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Fragment {
-  ///     Heading(.largeTitle) { "Title" }
-  ///     Text { "First paragraph" }
-  ///     Text { "Second paragraph" }
-  ///   }
-  ///   // Renders: <h1>Title</h1><p>First paragraph</p><p>Second paragraph</p>
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Fragment {
+  ///   Heading(.largeTitle) { "Title" }
+  ///   Text { "First paragraph" }
+  ///   Text { "Second paragraph" }
+  /// }
+  /// // Renders: <h1>Title</h1><p>First paragraph</p><p>Second paragraph</p>
+  /// ```
   public init(
     @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
   ) {

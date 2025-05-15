@@ -4,11 +4,11 @@
 /// such as comments, messages, or descriptions. Unlike single-line input elements,
 /// textareas can contain line breaks and are suitable for paragraph-length content.
 ///
-/// - Example:
-///   ```swift
-///   TextArea(name: "comments", placeholder: "Share your thoughts...")
-///   // Renders: <textarea name="comments" placeholder="Share your thoughts..."></textarea>
-///   ```
+/// ## Example
+/// ```swift
+/// TextArea(name: "comments", placeholder: "Share your thoughts...")
+/// // Renders: <textarea name="comments" placeholder="Share your thoughts..."></textarea>
+/// ```
 public final class TextArea: Element {
   let name: String
   let type: InputType?
@@ -32,17 +32,17 @@ public final class TextArea: Element {
   ///   - label: ARIA label to describe the element for screen readers.
   ///   - data: Dictionary of `data-*` attributes for storing custom data related to the textarea.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   TextArea(
-  ///     name: "bio",
-  ///     value: existingBio,
-  ///     placeholder: "Tell us about yourself...",
-  ///     required: true,
-  ///     id: "user-bio",
-  ///     classes: ["form-control", "bio-input"]
-  ///   )
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// TextArea(
+  ///   name: "bio",
+  ///   value: existingBio,
+  ///   placeholder: "Tell us about yourself...",
+  ///   required: true,
+  ///   id: "user-bio",
+  ///   classes: ["form-control", "bio-input"]
+  /// )
+  /// ```
   public init(
     name: String,
     type: InputType? = nil,

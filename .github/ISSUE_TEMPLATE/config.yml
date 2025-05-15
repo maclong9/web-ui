@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: WebUI Discussions
+    url: https://github.com/maclong9/web-ui/discussions
+    about: Please ask questions about usage and implementation here
+  - name: Documentation
+    url: https://maclong9.github.io/web-ui/documentation/webui/
+    about: Check the documentation for answers to common questions
+  - name: Swift Package Index
+    url: https://maclong9.github.io/web-ui/documentation/webui/
+    about: View the WebUI package documentation

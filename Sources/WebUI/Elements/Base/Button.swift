@@ -29,14 +29,14 @@ public final class Button: Element {
   ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the button.
   ///   - content: Closure providing button content (text or other HTML elements), defaults to empty.
   ///
-  /// - Example:
-  ///   ```swift
-  ///   Button(type: .submit, id: "save-button") {
-  ///     "Save Changes"
-  ///   }
-  ///   .background(color: .blue(.600))
-  ///   .padding(.all, length: 2)
-  ///   ```
+  /// ## Example
+  /// ```swift
+  /// Button(type: .submit, id: "save-button") {
+  ///   "Save Changes"
+  /// }
+  /// .background(color: .blue(.600))
+  /// .padding(.all, length: 2)
+  /// ```
   public init(
     type: ButtonType? = nil,
     autofocus: Bool? = nil,
