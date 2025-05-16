@@ -31,7 +31,7 @@ public struct Script {
     /// Optional attribute controlling how the script is loaded and executed.
     let attribute: ScriptAttribute?
 
-    init(src: String, attribute: ScriptAttribute? = nil) {
+    public init(src: String, attribute: ScriptAttribute? = nil) {
         self.src = src
         self.attribute = attribute
     }
