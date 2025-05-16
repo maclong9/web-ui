@@ -21,10 +21,10 @@ while [ $# -gt 0 ]; do
         -*)
             echo "Unknown option: $1"
             echo "Usage: $0 [--template static|server] [project-name]"
-            exit 1
+                1
             ;;
         *)
-            PROJECT_NAME="web-ui-template"
+            PROJECT_NAME="$1"
             ;;
     esac
     shift
@@ -48,7 +48,7 @@ fi
 cp -R "$TEMPLATE_PATH" "$PROJECT_NAME"
 
 # macOS/BSD sed needs '' after -i, GNU sed does not
-if [ $(uname -s)" = "Darwin" ] then
+if [ "$(uname -s)" = "Darwin" ]; then
     SED_INPLACE="sed -i ''"
 else
     SED_INPLACE="sed -i"
@@ -59,4 +59,5 @@ find "$PROJECT_NAME/Sources" -type f -name "Application.swift" -exec $SED_INPLAC
 rm -rf "$PROJECT_NAME/.git"
 rm -rf "$TMP_DIR"
 
-printf '\033[1;32m✓\033[0m \033[1;32m%s\033[0m initialisation complete\nRun \033[1;33mcd %s && swift run\033[0m to build\nyour static site to the \033[1;36m.output\033[0m directory.\n' "$PROJECT_NAME" "$PROJECT_NAME"
+# Simplified printf with proper ANSI codes
+printf '\033[1;32m✓ %s initialisation complete\nRun \033[1;33mcd %s && swift run\033[0m to build\nyour static site to the \033[1;36m.output\033[0m directory.\n' "$PROJECT_NAME" "$PROJECT_NAME"
