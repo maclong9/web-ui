@@ -11,33 +11,33 @@
 ///
 /// - Note: Conceptually similar to React's Fragment or Swift UI's Group component.
 public final class Fragment: HTML {
-  let contentBuilder: () -> [any HTML]?
+    let contentBuilder: () -> [any HTML]?
 
-  /// Computed inner HTML content.
-  var content: [any HTML] {
-    contentBuilder() ?? { [] }()
-  }
+    /// Computed inner HTML content.
+    var content: [any HTML] {
+        contentBuilder() ?? { [] }()
+    }
 
-  /// Creates a new HTML fragment that renders only its children.
-  ///
-  /// - Parameter content: Closure providing fragment content, defaults to empty.
-  ///
-  /// ## Example
-  /// ```swift
-  /// Fragment {
-  ///   Heading(.largeTitle) { "Title" }
-  ///   Text { "First paragraph" }
-  ///   Text { "Second paragraph" }
-  /// }
-  /// // Renders: <h1>Title</h1><p>First paragraph</p><p>Second paragraph</p>
-  /// ```
-  public init(
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
-  ) {
-    self.contentBuilder = content
-  }
+    /// Creates a new HTML fragment that renders only its children.
+    ///
+    /// - Parameter content: Closure providing fragment content, defaults to empty.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Fragment {
+    ///   Heading(.largeTitle) { "Title" }
+    ///   Text { "First paragraph" }
+    ///   Text { "Second paragraph" }
+    /// }
+    /// // Renders: <h1>Title</h1><p>First paragraph</p><p>Second paragraph</p>
+    /// ```
+    public init(
+        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    ) {
+        self.contentBuilder = content
+    }
 
-  public func render() -> String {
-    content.map { $0.render() }.joined()
-  }
+    public func render() -> String {
+        content.map { $0.render() }.joined()
+    }
 }

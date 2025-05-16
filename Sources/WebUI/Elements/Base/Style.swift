@@ -21,33 +21,39 @@
 /// // Renders: <style>.custom-heading { color: blue; font-size: 24px; margin-bottom: 16px; }</style>
 /// ```
 public final class Style: Element {
-  /// Creates a new HTML style element.
-  ///
-  /// - Parameters:
-  ///   - id: Unique identifier for the HTML element.
-  ///   - classes: An array of CSS classnames for the style element itself.
-  ///   - role: ARIA role of the element for accessibility.
-  ///   - label: ARIA label to describe the element for screen readers.
-  ///   - data: Dictionary of `data-*` attributes for storing custom data.
-  ///   - content: Closure providing the CSS content as strings.
-  ///
-  /// ## Example
-  /// ```swift
-  /// Style(id: "theme-styles") {
-  ///   "body { background-color: #f5f5f5; }"
-  ///   "header { font-weight: bold; }"
-  /// }
-  /// ```
-  public init(
-    id: String? = nil,
-    classes: [String]? = nil,
-    role: AriaRole? = nil,
-    label: String? = nil,
-    data: [String: String]? = nil,
-    @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
-  ) {
-    super.init(
-      tag: "style", id: id, classes: classes, role: role, label: label, data: data, content: content
-    )
-  }
+    /// Creates a new HTML style element.
+    ///
+    /// - Parameters:
+    ///   - id: Unique identifier for the HTML element.
+    ///   - classes: An array of CSS classnames for the style element itself.
+    ///   - role: ARIA role of the element for accessibility.
+    ///   - label: ARIA label to describe the element for screen readers.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data.
+    ///   - content: Closure providing the CSS content as strings.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Style(id: "theme-styles") {
+    ///   "body { background-color: #f5f5f5; }"
+    ///   "header { font-weight: bold; }"
+    /// }
+    /// ```
+    public init(
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil,
+        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+    ) {
+        super.init(
+            tag: "style",
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data,
+            content: content
+        )
+    }
 }

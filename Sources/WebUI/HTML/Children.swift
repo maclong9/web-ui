@@ -13,36 +13,36 @@
 ///   }
 ///   ```
 public struct Children {
-  private let content: [any HTML]
+    private let content: [any HTML]
 
-  /// Initializes children using an HTMLBuilder closure.
-  ///
-  /// - Parameter content: A closure that produces HTML elements using the HTMLBuilder DSL.
-  ///
-  /// - Example:
-  ///   ```swift
-  ///   let items = Children {
-  ///     Text { "First item" }
-  ///     Text { "Second item" }
-  ///   }
-  ///   ```
-  public init(@HTMLBuilder content: HTMLContentBuilder) {
-    self.content = content()
-  }
+    /// Initializes children using an HTMLBuilder closure.
+    ///
+    /// - Parameter content: A closure that produces HTML elements using the HTMLBuilder DSL.
+    ///
+    /// - Example:
+    ///   ```swift
+    ///   let items = Children {
+    ///     Text { "First item" }
+    ///     Text { "Second item" }
+    ///   }
+    ///   ```
+    public init(@HTMLBuilder content: HTMLContentBuilder) {
+        self.content = content()
+    }
 
-  /// Renders all children as a single HTML string.
-  ///
-  /// This method concatenates the rendered HTML of all child elements into a single string,
-  /// without any additional wrapper elements.
-  ///
-  /// - Returns: A string containing the combined HTML of all child elements.
-  ///
-  /// - Example:
-  ///   ```swift
-  ///   let html = navigationItems.render()
-  ///   // html contains: <a href="/home">Home</a><a href="/about">About</a><a href="/contact">Contact</a>
-  ///   ```
-  public func render() -> String {
-    content.map { $0.render() }.joined()
-  }
+    /// Renders all children as a single HTML string.
+    ///
+    /// This method concatenates the rendered HTML of all child elements into a single string,
+    /// without any additional wrapper elements.
+    ///
+    /// - Returns: A string containing the combined HTML of all child elements.
+    ///
+    /// - Example:
+    ///   ```swift
+    ///   let html = navigationItems.render()
+    ///   // html contains: <a href="/home">Home</a><a href="/about">About</a><a href="/contact">Contact</a>
+    ///   ```
+    public func render() -> String {
+        content.map { $0.render() }.joined()
+    }
 }
