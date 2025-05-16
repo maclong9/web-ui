@@ -20,7 +20,7 @@ public struct Website {
     public let stylesheets: [String]?
 
     /// Optional JavaScript sources with their loading attributes applied to all routes.
-    public let scripts: [String: ScriptAttribute?]?
+    public let scripts: [Script]?
 
     /// Optional custom HTML to append to all document head sections.
     public let head: String?
@@ -76,7 +76,7 @@ public struct Website {
         metadata: Metadata? = nil,
         theme: Theme? = nil,
         stylesheets: [String]? = nil,
-        scripts: [String: ScriptAttribute?]? = nil,
+        scripts: [Script]? = nil,
         head: String? = nil,
         routes: [Document],
         baseURL: String? = nil,
@@ -97,10 +97,9 @@ public struct Website {
         self.robotsRules = robotsRules
         self.routes = routes.map { document in
             // Merge scripts: Website scripts + Document scripts (Document scripts override duplicates)
-            var mergedScripts = scripts ?? [:]
-            if let documentScripts = document.scripts {
-                mergedScripts.merge(documentScripts) { _, new in new }
-            }
+            let mergedScripts = Array(
+                (scripts ?? []) + (document.scripts ?? [])
+            )
 
             // Merge stylesheets: Website stylesheets + Document stylesheets (combine, remove duplicates)
             let mergedStylesheets = Array(

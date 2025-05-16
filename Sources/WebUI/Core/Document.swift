@@ -41,7 +41,7 @@ public struct Document {
     private let logger = Logger(label: "com.webui.document")
     public let path: String?
     public var metadata: Metadata
-    public var scripts: [String: ScriptAttribute?]?
+    public var scripts: [Script]?
     public var stylesheets: [String]?
     public var theme: Theme?
     public let head: String?
@@ -84,7 +84,7 @@ public struct Document {
     public init(
         path: String? = nil,
         metadata: Metadata,
-        scripts: [String: ScriptAttribute?]? = nil,
+        scripts: [Script]? = nil,
         stylesheets: [String]? = nil,
         theme: Theme? = nil,
         head: String? = nil,
@@ -131,7 +131,7 @@ public struct Document {
             logger.trace("Adding \(scripts.count) script tags")
             for script in scripts {
                 optionalTags.append(
-                    "<script \(script.value?.rawValue ?? "") src=\"\(script.key)\"></script>"
+                    "<script \(script.attribute?.rawValue ?? "") src=\"\(script.src)\"></script>"
                 )
             }
         }
@@ -156,7 +156,7 @@ public struct Document {
                 \(optionalTags.joined(separator: "\n"))
                 <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
                 \(head ?? "")
-            </head> 
+            </head>
             <body>
               \(content.map { $0.render() }.joined())
             </body>
