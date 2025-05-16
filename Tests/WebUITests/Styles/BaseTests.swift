@@ -187,7 +187,7 @@ import Testing
     func testFontWithDecorationAndWrapping() async throws {
         let element = Element(tag: "div").font(decoration: .underline, wrapping: .nowrap)
         let rendered = element.render()
-        #expect(rendered.contains("class=\"decoration-underline text-nowrap\""))
+        #expect(rendered.contains("class=\"underline text-nowrap\""))
     }
 
     @Test("Font with family and modifier")
