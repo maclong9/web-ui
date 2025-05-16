@@ -155,6 +155,17 @@ import Testing
         #expect(rendered.contains("</ol>"))
     }
 
+    @Test("List Styles")
+    func testListStyles() async throws {
+      let disc = List(style: .disc).render()
+      let circle = List(style: .circle).render()
+      let square = List(style: .square).render()
+      
+      #expect(disc.contains("list-disc"))
+      #expect(circle.contains("list-circle"))
+      #expect(square.contains("list-[square]"))
+    }
+  
     // MARK: - Media Tests
 
     @Test("Picture element with multiple sources")
