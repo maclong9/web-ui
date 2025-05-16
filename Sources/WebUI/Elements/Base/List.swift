@@ -18,7 +18,7 @@ public enum ListType: String {
 ///
 /// HTML supports various styles for list elements, such as disc, circle, or square.
 /// This enum provides a type-safe way to specify which style to use.
-public enum StyleType: String {
+public enum ListStyle: String {
     /// Creates a list with no bullets or numbers.
     case none
 
@@ -50,6 +50,7 @@ public enum StyleType: String {
 /// ```
 public final class List: Element {
     let type: ListType
+    let style: ListStyle
 
     /// Creates a new HTML list element (`<ul>` or `<ol>`).
     ///
