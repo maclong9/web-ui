@@ -199,8 +199,10 @@ public enum Leading: String {
 public enum Decoration: String {
     /// Simple underline beneath the text.
     case underline
+    /// Line above the text.
+    case overline
     /// Line through the middle of the text (strikethrough).
-    case lineThrough
+    case lineThrough = "line-through"
     /// Double line decoration.
     case double
     /// Dotted line decoration.
@@ -209,9 +211,11 @@ public enum Decoration: String {
     case dashed
     /// Wavy line decoration.
     case wavy
-
+    /// Remove line decoration
+    case none = "no-underline"
+    
     /// The corresponding CSS class name for this decoration.
-    var className: String { "decoration-\(rawValue)" }
+    var className: String { "\(rawValue)" }
 }
 
 /// Text wrapping options for controlling how text flows.
