@@ -30,6 +30,11 @@ public struct Script {
 
     /// Optional attribute controlling how the script is loaded and executed.
     let attribute: ScriptAttribute?
+
+    init(src: String, attribute: ScriptAttribute? = nil) {
+        self.src = src
+        self.attribute = attribute
+    }
 }
 
 /// Represents an immutable HTML document with metadata, scripts, stylesheets, and content.
