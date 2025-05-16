@@ -4,10 +4,7 @@ struct Home: HTML {
     var document: Document {
         .init(
             path: "",
-            metadata: Metadata(
-                title: "Home",
-                description: "Welcome to my personal website built with WebUI"
-            ),
+            metadata: Metadata(from: Application.metadata, title: "Home"),
             content: { self }
         )
     }
