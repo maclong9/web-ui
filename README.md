@@ -71,6 +71,14 @@ To use WebUI, ensure you have the following installed:
 
 ## Usage
 
+### Script
+
+```sh
+curl -fSls https://raw.githubusercontent.com/maclong9/web-ui/refs/heads/main/initialize.sh | sh
+```
+
+### Manually
+
 Add the following to your package dependencies:
 ``` Package.swift
 dependencies: [
