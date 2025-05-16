@@ -152,8 +152,8 @@ import Testing
                 description: "Testing script inclusion"
             ),
             scripts: [
-                "https://cdn.example.com/script1.js": .async,
-                "/public/script2.js": .defer,
+                Script(src: "https://cdn.example.com/script1.js", attribute: .async),
+                Script(src: "/public/script2.js", attribute: .defer),
             ]
         ) {
             "Script Test"
