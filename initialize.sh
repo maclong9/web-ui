@@ -24,7 +24,7 @@ while [ $# -gt 0 ]; do
             exit 1
             ;;
         *)
-            PROJECT_NAME="$1"
+            PROJECT_NAME="web-ui-template"
             ;;
     esac
     shift
