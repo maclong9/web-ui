@@ -4,10 +4,7 @@ struct About: HTML {
     var document: Document {
         .init(
             path: "about",
-            metadata: Metadata(
-                title: "About",
-                description: "Learn more about this website and its creator"
-            ),
+            metadata: Metadata(from: Application.metadata, title: "About"),
             content: { self }
         )
     }
