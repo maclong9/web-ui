@@ -20,7 +20,7 @@ public enum ListType: String {
 /// This enum provides a type-safe way to specify which style to use.
 public enum ListStyle: String {
     /// Creates a list with no bullets or numbers.
-    case none
+    case none = ""
 
     /// Creates a list with bullets shaped like discs.
     case disc
@@ -29,7 +29,7 @@ public enum ListStyle: String {
     case circle
 
     /// Creates a list with bullets shaped like squares.
-    case square
+    case square = "[square]"
 }
 
 /// Generates HTML list elements (`<ul>` or `<ol>`).
@@ -73,7 +73,7 @@ public final class List: Element {
     /// ```
     public init(
         type: ListType = .unordered,
-        style: ListStyle = .disc,
+        style: ListStyle = .none,
         id: String? = nil,
         classes: [String]? = nil,
         role: AriaRole? = nil,
@@ -86,7 +86,7 @@ public final class List: Element {
         super.init(
             tag: type.rawValue,
             id: id,
-            classes: classes ?? [] + style.rawValue,
+            classes: (classes ?? []) + (style != .none ? ["list-\(style.rawValue)"] : []),
             role: role,
             label: label,
             data: data,
