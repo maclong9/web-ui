@@ -1,0 +1,1 @@
+This file can be removed, this directory is where you store your assets such as images, scripts, stylesheets and anything else you need to serve.

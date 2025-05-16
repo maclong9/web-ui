@@ -1,0 +1,67 @@
+name: Build and Deploy Static Site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write 
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      # Check out the repository code
+      - uses: actions/checkout@v4
+      
+      # Set up Swift
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+      
+      # Cache Swift build artifacts
+      - name: Cache Swift Build
+        uses: actions/cache@v4
+        id: cache-swift-build
+        with:
+          path: .build
+          key: ${{ runner.os }}-swift-build-${{ hashFiles('Package.swift', 'Sources/**') }}
+          restore-keys: |
+            ${{ runner.os }}-swift-build-
+      
+      # Build the project
+      - name: Build
+        run: swift build -v
+        if: steps.cache-swift-build.outputs.cache-hit != 'true'
+      
+      # Cache generated site output
+      - name: Cache Generated Site
+        uses: actions/cache@v4
+        id: cache-site-output
+        with:
+          path: .output
+          key: ${{ runner.os }}-site-output-${{ hashFiles('Sources/**') }}
+          restore-keys: |
+            ${{ runner.os }}-site-output-
+      
+      # Run the static site generator
+      - name: Generate Site
+        run: swift run Application
+        if: steps.cache-site-output.outputs.cache-hit != 'true'
+
+      # Push to static branch (only on push to main)
+      - name: Push to static branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git checkout -B static
+          rm -rf ./*
+          mv .output/* .
+          rm -rf .output .gitignore .github .build .swift-format
+          git add .
+          git commit -m "release: update static site content"
+          git push origin static --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
