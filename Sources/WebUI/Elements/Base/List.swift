@@ -14,6 +14,24 @@ public enum ListType: String {
     case unordered = "ul"
 }
 
+/// Defines styles for HTML list elements.
+///
+/// HTML supports various styles for list elements, such as disc, circle, or square.
+/// This enum provides a type-safe way to specify which style to use.
+public enum ListStyle: String {
+    /// Creates a list with no bullets or numbers.
+    case none = ""
+
+    /// Creates a list with bullets shaped like discs.
+    case disc
+
+    /// Creates a list with bullets shaped like circles.
+    case circle
+
+    /// Creates a list with bullets shaped like squares.
+    case square = "[square]"
+}
+
 /// Generates HTML list elements (`<ul>` or `<ol>`).
 ///
 /// `List` can be rendered as an unordered list with bullet points when sequence is unimportant,
@@ -32,11 +50,13 @@ public enum ListType: String {
 /// ```
 public final class List: Element {
     let type: ListType
+    let style: ListStyle
 
     /// Creates a new HTML list element (`<ul>` or `<ol>`).
     ///
     /// - Parameters:
     ///   - type: List type (ordered or unordered), defaults to unordered.
+    ///   - style: List style (disc, circle, or square), defaults to none.
     ///   - id: Unique identifier for the HTML element.
     ///   - classes: An array of CSS classnames for styling the list.
     ///   - role: ARIA role of the element for accessibility.
@@ -53,6 +73,7 @@ public final class List: Element {
     /// ```
     public init(
         type: ListType = .unordered,
+        style: ListStyle = .none,
         id: String? = nil,
         classes: [String]? = nil,
         role: AriaRole? = nil,
@@ -61,10 +82,11 @@ public final class List: Element {
         @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
     ) {
         self.type = type
+        self.style = style
         super.init(
             tag: type.rawValue,
             id: id,
-            classes: classes,
+            classes: (classes ?? []) + (style != .none ? ["list-\(style.rawValue)"] : []),
             role: role,
             label: label,
             data: data,
