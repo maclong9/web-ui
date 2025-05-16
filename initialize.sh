@@ -60,4 +60,4 @@ rm -rf "$PROJECT_NAME/.git"
 rm -rf "$TMP_DIR"
 
 # Simplified printf with proper ANSI codes
-printf '\033[1;32m✓ %s initialisation complete\nRun \033[1;33mcd %s && swift run\033[0m to build\nyour static site to the \033[1;36m.output\033[0m directory.\n' "$PROJECT_NAME" "$PROJECT_NAME"
+printf '\033[1;32m✓ %s initialisation complete\n\nRun \033[1;33mcd %s && swift run\033[0m to build\nyour static site to the \033[1;36m.output\033[0m directory.\n\n' "$PROJECT_NAME" "$PROJECT_NAME"
