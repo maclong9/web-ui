@@ -48,10 +48,10 @@ fi
 cp -R "$TEMPLATE_PATH" "$PROJECT_NAME"
 
 # macOS/BSD sed needs '' after -i, GNU sed does not
-if sed --version >/dev/null 2>&1; then
-    SED_INPLACE="sed -i"
-else
+if [ $(uname -s)" = "Darwin" ] then
     SED_INPLACE="sed -i ''"
+else
+    SED_INPLACE="sed -i"
 fi
 
 find "$PROJECT_NAME" -type f -name "Package.swift" -exec $SED_INPLACE "s/example/$PROJECT_NAME/g" {} +
