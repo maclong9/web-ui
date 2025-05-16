@@ -154,6 +154,7 @@ import Testing
             scripts: [
                 Script(src: "https://cdn.example.com/script1.js", attribute: .async),
                 Script(src: "/public/script2.js", attribute: .defer),
+                Script(src: "/public/script3.js"),
             ]
         ) {
             "Script Test"
@@ -165,6 +166,7 @@ import Testing
             )
         )
         #expect(rendered.contains("<script defer src=\"/public/script2.js\"></script>"))
+        #expect(rendered.contains("<script  src=\"/public/script3.js\"></script>"))
     }
 
     /// Tests that custom stylesheets are correctly added to the document head.
