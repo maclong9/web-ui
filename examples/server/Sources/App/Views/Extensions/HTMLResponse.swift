@@ -1,6 +1,6 @@
 import Hummingbird
 
-/// Type wrapping HTML code. Will convert to HBResponse that includes the correct content-type header
+/// Type wrapping HTML code.
 struct HTMLResponse: ResponseGenerator {
     let content: String
 

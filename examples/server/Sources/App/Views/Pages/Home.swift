@@ -2,6 +2,12 @@ import WebUI
 
 struct HomeView: HTML {
     let info: [String: String]?
+    let greeting: String?
+
+    init(info: [String: String]? = nil, greeting: String? = nil) {
+        self.info = info
+        self.greeting = greeting
+    }
 
     var document: Document {
         .init(
@@ -13,7 +19,21 @@ struct HomeView: HTML {
 
     func render() -> String {
         Layout {
-            Text { "Here is a simple full stack application template built with Swift, Hummingbird, and WebUI." }
+            // Intro Section
+            Stack {
+                Heading(.largeTitle) { "Welcome to WebUI!" }.font(size: .xl4, weight: .bold)
+                Text { "Here is a simple full stack application template built with Swift, Hummingbird, and WebUI." }
+                Stack {
+                    Link(to: "https://github.com/maclong9/web-ui", newTab: true) { "Source Code" }.button()
+                    Link(to: "https://maclong9.github.io/web-ui/documentation/webui/", newTab: true) { "Read Documentation" }
+                        .button(primary: true)
+                }.spacing(of: 2, along: .x).margins(at: .top)
+            }
+            .frame(maxWidth: .fraction(3, 4))
+            .margins(at: .horizontal, auto: true)
+            .spacing(along: .y)
+
+            // Information Section
             Stack {
                 Strong { "User Information:" }
                 List {
@@ -21,7 +41,28 @@ struct HomeView: HTML {
                         Item { "\(key): \(value)" }
                     }
                 }
-            }.margins(at: .top)
+            }
+            .margins(at: .top)
+            .frame(maxWidth: .fraction(3, 4))
+            .margins(at: .horizontal, auto: true)
+            .padding(at: .vertical)
+
+            // Greeting Section
+            Form(action: "/api/greet", method: .post) {
+                Label(for: "name") { "Enter your name" }.font(weight: .bold)
+                Input(name: "name", type: .text, placeholder: "Your name...")
+                    .border(EdgeInsets(all: 1))
+                    .padding(EdgeInsets(vertical: 2, horizontal: 4))
+                    .rounded(.lg)
+                Button(type: .submit) { "Enter" }.button(primary: true)
+            }
+            .flex(direction: .column)
+            .spacing(of: 2, along: .y)
+            .frame(maxWidth: .fraction(3, 4))
+            .margins(at: .horizontal, auto: true)
+            if let greeting {
+                Text { greeting }
+            }
         }.render()
     }
 }
