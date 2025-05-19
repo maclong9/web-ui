@@ -37,24 +37,11 @@ public func buildApplication(_ arguments: some AppArguments) async throws -> som
 }
 
 /// Build router
+///
+/// Includes setup of logging middleware and initialization of view controller routes
 func buildRouter() -> Router<AppRequestContext> {
     let router = Router(context: AppRequestContext.self)
-    // Add middleware
-    router.addMiddleware {
-        // logging middleware
-        LogRequestsMiddleware(.info)
-    }
-    // Add default endpoint
-    router.get("/") { _, _ in
-        HTMLResponse(content: HomeView(info: ["Hello": "World"]).document.render())
-    }
-    router.get("/greet") { _, _ in
-        HTMLResponse(content: GreetView().document.render())
-    }
-    router.post("/greet") { request, context in
-        let user = try await request.decode(as: User.self, context: context)
-
-        return HTMLResponse(content: GreetView(greeting: "Hello \(user.name)").document.render())
-    }
+    router.addMiddleware { LogRequestsMiddleware(.info) }
+    ViewController().addRoutes(to: router)
     return router
 }

@@ -40,7 +40,7 @@ struct Layout: HTML {
             .frame(maxWidth: .custom("99vw"))
             .frame(maxWidth: .character(76), on: .sm)
             .padding()
-            .padding(of: 20, at: .top)
+            .spacing(of: 4, along: .y)
 
             Footer {
                 Text {
