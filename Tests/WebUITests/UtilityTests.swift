@@ -51,14 +51,14 @@ import Testing
     }
 
     @Test("Formatted year returns correctly")
-    func testFormattedYear() throws {
+    func testFormatAsYear() throws {
         // Test with given date
         let date = Date(timeIntervalSince1970: 1_677_657_600)  // Feb 28, 2023
-        let year = date.formattedYear()
+        let year = date.formatAsYear()
         #expect(year == "2023")
 
         // Test with current date
-        let currentYear = Date().formattedYear()
+        let currentYear = Date().formatAsYear()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy"
         let expected = formatter.string(from: Date())

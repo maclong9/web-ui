@@ -725,6 +725,101 @@ import Testing
         #expect(rendered.contains("<span>Copyright © 2025</span>"))
     }
 
+    // MARK: - Abbrevation Tests
+
+    @Test("Abbreviation element")
+    func testAbbreviationElement() async throws {
+        let abbr = Abbreviation(title: "Hypertext Markup Language") {
+            "HTML"
+        }
+
+        let rendered = abbr.render()
+        #expect(rendered.contains("<abbr"))
+        #expect(rendered.contains("title=\"Hypertext Markup Language\""))
+        #expect(rendered.contains(">HTML</abbr>"))
+    }
+
+    @Test("Abbreviation with additional attributes")
+    func testAbbreviationWithAttributes() async throws {
+        let abbr = Abbreviation(
+            title: "World Health Organization",
+            id: "who-abbr",
+            classes: ["term", "org"]
+        ) {
+            "WHO"
+        }
+
+        let rendered = abbr.render()
+        #expect(rendered.contains("<abbr"))
+        #expect(rendered.contains("id=\"who-abbr\""))
+        #expect(rendered.contains("class=\"term org\""))
+        #expect(rendered.contains("title=\"World Health Organization\""))
+        #expect(rendered.contains(">WHO</abbr>"))
+    }
+
+    // MARK: - ARIA Support Tests
+
+    @Test("Element with ARIA attributes")
+    func testElementWithAriaAttributes() async throws {
+        let element = Element(
+            tag: "div",
+            role: .tabpanel,
+            label: "Panel Description",
+            ariaAttributes: [
+                "expanded": "true",
+                "controls": "content-1",
+                "selected": "true",
+                "hidden": "false",
+            ]
+        )
+
+        let rendered = element.render()
+        #expect(rendered.contains("role=\"tabpanel\""))
+        #expect(rendered.contains("aria-label=\"Panel Description\""))
+        #expect(rendered.contains("aria-expanded=\"true\""))
+        #expect(rendered.contains("aria-controls=\"content-1\""))
+        #expect(rendered.contains("aria-selected=\"true\""))
+        #expect(rendered.contains("aria-hidden=\"false\""))
+    }
+
+    @Test("Interactive element with ARIA roles")
+    func testInteractiveElementWithAriaRoles() async throws {
+        let tabContainer = Element(
+            tag: "div",
+            role: .tablist,
+            ariaAttributes: ["orientation": "horizontal"]
+        ) {
+            Element(
+                tag: "button",
+                role: .tab,
+                label: "First tab",
+                ariaAttributes: [
+                    "selected": "true",
+                    "controls": "panel-1",
+                ]
+            ) { "Tab 1" }
+
+            Element(
+                tag: "button",
+                role: .tab,
+                label: "Second tab",
+                ariaAttributes: [
+                    "selected": "false",
+                    "controls": "panel-2",
+                ]
+            ) { "Tab 2" }
+        }
+
+        let rendered = tabContainer.render()
+        #expect(rendered.contains("role=\"tablist\""))
+        #expect(rendered.contains("aria-orientation=\"horizontal\""))
+        #expect(rendered.contains("role=\"tab\""))
+        #expect(rendered.contains("aria-selected=\"true\""))
+        #expect(rendered.contains("aria-selected=\"false\""))
+        #expect(rendered.contains("aria-controls=\"panel-1\""))
+        #expect(rendered.contains("aria-controls=\"panel-2\""))
+    }
+
     // MARK: - Edge Cases Tests
 
     @Test("Empty elements")

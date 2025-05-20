@@ -4,6 +4,37 @@ import Testing
 @testable import WebUI
 
 @Suite("Document Tests") struct DocumentTests {
+    /// Tests that a document renders correctly with nil description.
+    @Test func testNilDescriptionDocument() throws {
+        let rendered = Document(
+            path: "no-description",
+            metadata: Metadata(
+                site: "Test Site",
+                title: "No Description",
+                description: nil
+            )
+        ) {
+            "Test content"
+        }.render()
+
+        #expect(
+            rendered.contains("<title>No Description Test Site</title>"),
+            "Title set correctly"
+        )
+        #expect(
+            rendered.contains("<meta property=\"og:title\" content=\"No Description Test Site\">"),
+            "OG title set correctly"
+        )
+        #expect(
+            !rendered.contains("<meta name=\"description\""),
+            "Description meta tag should not be present"
+        )
+        #expect(
+            !rendered.contains("<meta property=\"og:description\""),
+            "OG description meta tag should not be present"
+        )
+        #expect(rendered.contains("Test content"), "Content rendered correctly")
+    }
     @Test("Document renders basic metadata correctly")
     func testBasicDocumentRendering() throws {
         let rendered = Document(

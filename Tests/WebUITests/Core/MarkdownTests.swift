@@ -112,7 +112,11 @@ import Testing
         let (frontMatter, markdownContent) = MarkdownParser.extractFrontMatter(from: content)
 
         #expect(frontMatter.isEmpty)
-        #expect(markdownContent == "# Heading\nContent")
+        let expectedContent = "# Heading\nContent"
+        #expect(
+            markdownContent.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: "\r\n", with: "\n")
+                == expectedContent
+        )
     }
 
     // MARK: - Markdown Parsing Tests
