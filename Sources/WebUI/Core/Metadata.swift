@@ -16,7 +16,7 @@ public struct Metadata {
     public var titleSeperator: String?
 
     /// A concise description of the page content.
-    public var description: String
+    public var description: String?
 
     /// The publication date of the content.
     public var date: Date?
@@ -94,7 +94,7 @@ public struct Metadata {
         site: String? = nil,
         title: String? = nil,
         titleSeperator: String? = " ",
-        description: String,
+        description: String? = nil,
         date: Date? = nil,
         image: String? = nil,
         author: String? = nil,
@@ -204,11 +204,14 @@ public struct Metadata {
     var tags: [String] {
         var baseTags: [String] = [
             "<meta property=\"og:title\" content=\"\(pageTitle)\">",
-            "<meta name=\"description\" content=\"\(description)\">",
-            "<meta property=\"og:description\" content=\"\(description)\">",
             "<meta property=\"og:type\" content=\"\(type.rawValue)\">",
             "<meta name=\"twitter:card\" content=\"summary_large_image\">",
         ]
+
+        if let description, !description.isEmpty {
+            baseTags.append("<meta name=\"description\" content=\"\(description)\">")
+            baseTags.append("<meta property=\"og:description\" content=\"\(description)\">")
+        }
 
         if let image, !image.isEmpty {
             baseTags.append("<meta property=\"og:image\" content=\"\(image)\">")
