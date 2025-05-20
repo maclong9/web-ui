@@ -37,7 +37,6 @@
   - [Documentation](#documentation)
   - [Tutorials](#tutorials)
   - [Examples](#examples)
-  - [Adding WebUI to a Swift Package Manager (SPM) project](#adding-webui-to-a-swift-package-manager-spm-project)
 - [Development](#development)
   - [Quick Reference](#quick-reference)
 - [Contributing](#contributing)
