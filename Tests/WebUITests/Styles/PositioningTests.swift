@@ -79,6 +79,14 @@ import Testing
         #expect(rendered.contains("class=\"relative -bottom-2\""))
     }
 
+    @Test("Position with multiple negative values")
+    func testPositionWithMultipleNegativeValues() async throws {
+        let element = Element(tag: "div").position(.absolute, at: .top, .trailing, offset: -10)
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"absolute -top-10 -right-10\""))
+        #expect(!rendered.contains("-top--10"))  // Should NOT contain double negative
+    }
+
     @Test("Position with modifier")
     func testPositionWithModifier() async throws {
         let element = Element(tag: "div").position(.sticky, at: .top, offset: 0, on: .md)

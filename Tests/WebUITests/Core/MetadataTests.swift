@@ -38,6 +38,7 @@ struct MetadataTests {
         )
 
         #expect(metadata.site == nil)
+        #expect(metadata.description == "No site metadata")
         #expect(metadata.pageTitle == "Just Title")
     }
 
@@ -51,7 +52,22 @@ struct MetadataTests {
         )
 
         #expect(metadata.titleSeperator == " - ")
+        #expect(metadata.description == "Custom separator test")
         #expect(metadata.pageTitle == "My Title - My Site")
+    }
+
+    /// Tests that metadata handles nil description correctly.
+    @Test func testNilDescription() throws {
+        let metadata = Metadata(
+            site: "Test Site",
+            title: "Test Title",
+            description: nil
+        )
+
+        #expect(metadata.site == "Test Site")
+        #expect(metadata.title == "Test Title")
+        #expect(metadata.description == nil)
+        #expect(metadata.pageTitle == "Test Title Test Site")
     }
 
     /// Tests that all optional metadata fields are correctly initialized.
@@ -74,6 +90,7 @@ struct MetadataTests {
         )
 
         #expect(metadata.date == testDate)
+        #expect(metadata.description == "Full metadata description")
         #expect(metadata.image == "/images/test.jpg")
         #expect(metadata.author == "Test Author")
         #expect(metadata.keywords == keywords)
@@ -85,11 +102,43 @@ struct MetadataTests {
 
     /// Tests all available locale options.
     @Test func testLocaleOptions() throws {
+        // European languages
         #expect(Locale.en.rawValue == "en")
-        #expect(Locale.sp.rawValue == "sp")
+        #expect(Locale.es.rawValue == "es")
+        #expect(Locale.pt.rawValue == "pt")
         #expect(Locale.fr.rawValue == "fr")
         #expect(Locale.de.rawValue == "de")
+        #expect(Locale.it.rawValue == "it")
+        #expect(Locale.nl.rawValue == "nl")
+        #expect(Locale.pl.rawValue == "pl")
+        #expect(Locale.ru.rawValue == "ru")
+        #expect(Locale.sv.rawValue == "sv")
+        #expect(Locale.da.rawValue == "da")
+        #expect(Locale.no.rawValue == "no")
+        #expect(Locale.fi.rawValue == "fi")
+
+        // Asian languages
         #expect(Locale.ja.rawValue == "ja")
+        #expect(Locale.zhCN.rawValue == "zh-CN")
+        #expect(Locale.zhTW.rawValue == "zh-TW")
+        #expect(Locale.ko.rawValue == "ko")
+        #expect(Locale.th.rawValue == "th")
+        #expect(Locale.vi.rawValue == "vi")
+        #expect(Locale.hi.rawValue == "hi")
+
+        // Middle Eastern languages
+        #expect(Locale.ar.rawValue == "ar")
+        #expect(Locale.he.rawValue == "he")
+        #expect(Locale.tr.rawValue == "tr")
+
+        // Other languages
+        #expect(Locale.id.rawValue == "id")
+        #expect(Locale.ms.rawValue == "ms")
+        #expect(Locale.bn.rawValue == "bn")
+        #expect(Locale.ur.rawValue == "ur")
+
+        // Custom locale
+        #expect(Locale.custom("fr-CA").rawValue == "fr-CA")
     }
 
     /// Tests all available content type options.
@@ -132,6 +181,7 @@ struct MetadataTests {
         )
 
         #expect(metadata.favicons?.count == 3)
+        #expect(metadata.description == "Testing favicons")
         #expect(metadata.favicons?[0].light == "/favicon-32.png")
         #expect(metadata.favicons?[0].dark == "/favicon-dark-32.png")
         #expect(metadata.favicons?[1].size == "16x16")
@@ -156,6 +206,7 @@ struct MetadataTests {
             title: "Extended"
         )
 
+        #expect(extendedMetadata.description == "Base description")
         #expect(extendedMetadata.favicons?.count == 1)
         #expect(extendedMetadata.favicons?[0].light == "/base-favicon.png")
 
@@ -254,6 +305,7 @@ struct MetadataTests {
         )
 
         #expect(metadata.structuredData != nil)
+        #expect(metadata.description == "About our organization")
         #expect(metadata.structuredData?.type == .organization)
 
         // Test metadata extension with structured data
@@ -264,5 +316,45 @@ struct MetadataTests {
 
         #expect(extendedMetadata.structuredData != nil)
         #expect(extendedMetadata.structuredData?.type == .organization)
+    }
+
+    /// Tests structured data generation for a person.
+    @Test func testStructuredDataPerson() throws {
+        let birthDate = Date()
+
+        let personData = StructuredData.person(
+            name: "Jane Doe",
+            givenName: "Jane",
+            familyName: "Doe",
+            image: "https://example.com/jane.jpg",
+            jobTitle: "Software Engineer",
+            email: "jane@example.com",
+            telephone: "+1-555-123-4567",
+            url: "https://janedoe.example.com",
+            address: [
+                "streetAddress": "123 Main St",
+                "addressLocality": "Anytown",
+                "postalCode": "12345",
+                "addressCountry": "US",
+            ],
+            birthDate: birthDate,
+            sameAs: ["https://twitter.com/janedoe", "https://github.com/janedoe"]
+        )
+
+        #expect(personData.type == .person)
+
+        let json = personData.toJSON()
+        #expect(json.contains("\"@context\" : \"https://schema.org\""))
+        #expect(json.contains("\"@type\" : \"Person\""))
+        #expect(json.contains("\"name\" : \"Jane Doe\""))
+        #expect(json.contains("\"givenName\" : \"Jane\""))
+        #expect(json.contains("\"familyName\" : \"Doe\""))
+        #expect(json.contains("\"image\" : \"https://example.com/jane.jpg\""))
+        #expect(json.contains("\"jobTitle\" : \"Software Engineer\""))
+        #expect(json.contains("\"email\" : \"jane@example.com\""))
+        #expect(json.contains("\"telephone\" : \"+1-555-123-4567\""))
+        #expect(json.contains("\"url\" : \"https://janedoe.example.com\""))
+        #expect(json.contains("\"@type\" : \"PostalAddress\""))
+        #expect(json.contains("\"streetAddress\" : \"123 Main St\""))
     }
 }

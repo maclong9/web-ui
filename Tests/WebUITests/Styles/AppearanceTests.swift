@@ -210,6 +210,29 @@ import Testing
         #expect(!rendered.contains("class=\"hidden\""))
     }
 
+    // MARK: - Display Tests
+
+    @Test("Display element as block")
+    func testDisplayAsBlock() async throws {
+        let element = Element(tag: "span").display(.block)
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"display-block\""))
+    }
+
+    @Test("Display element as inline-block with hover")
+    func testDisplayAsInlineBlockWithHover() async throws {
+        let element = Element(tag: "div").display(.inlineBlock, on: .hover)
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"hover:display-inline-block\""))
+    }
+
+    @Test("Display as table on medium screens")
+    func testDisplayAsTableOnMedium() async throws {
+        let element = Element(tag: "div").display(.table, on: .md)
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"md:display-table\""))
+    }
+
     // MARK: - Complex Appearance Tests
 
     @Test("Combined appearance styles")
