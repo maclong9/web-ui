@@ -74,7 +74,7 @@ To use WebUI, ensure you have the following installed:
 ### Script
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/maclong9/web-ui/main/init.swift |
+curl -fsSL https://raw.githubusercontent.com/maclong9/web-ui/main/initialize.swift |
   swift - [--template|-t static|server] your-project-name
 ```
 
