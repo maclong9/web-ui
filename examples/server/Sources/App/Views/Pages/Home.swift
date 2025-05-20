@@ -25,8 +25,10 @@ struct HomeView: HTML {
                 Text { "Here is a simple full stack application template built with Swift, Hummingbird, and WebUI." }
                 Stack {
                     Link(to: "https://github.com/maclong9/web-ui", newTab: true) { "Source Code" }.button()
-                    Link(to: "https://maclong9.github.io/web-ui/documentation/webui/", newTab: true) { "Read Documentation" }
-                        .button(primary: true)
+                    Link(to: "https://maclong9.github.io/web-ui/documentation/webui/", newTab: true) {
+                        "Read Documentation"
+                    }
+                    .button(primary: true)
                 }.spacing(of: 2, along: .x).margins(at: .top)
             }
             .frame(maxWidth: .fraction(3, 4))
@@ -48,7 +50,7 @@ struct HomeView: HTML {
             .padding(at: .vertical)
 
             // Greeting Section
-            Form(action: "/api/greet", method: .post) {
+            Form(action: "/", method: .post) {
                 Label(for: "name") { "Enter your name" }.font(weight: .bold)
                 Input(name: "name", type: .text, placeholder: "Your name...")
                     .border(EdgeInsets(all: 1))
