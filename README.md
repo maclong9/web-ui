@@ -73,12 +73,13 @@ To use WebUI, ensure you have the following installed:
 
 ### Script
 
-If you pass no template the static one will be used by default and if you pass no project name it will default to `web-ui-template`
-
 ```sh
-curl -fSls https://raw.githubusercontent.com/maclong9/web-ui/refs/heads/main/initialize.sh \
-  | sh -s -- --template [static|server] [<project-name>]
+curl -fsSL https://raw.githubusercontent.com/maclong9/web-ui/main/init.swift |
+  swift - [--template|-t static|server] your-project-name
 ```
+
+> [!NOTE]
+> If you pass no template the static one will be used by default.
 
 ### Manually
 
