@@ -4,7 +4,7 @@
 
 ### Date Formatting
 
-- ``formattedYear()``
+- ``formatAsYear()``
 
 ## See Also
 
