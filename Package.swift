@@ -6,7 +6,8 @@ let package = Package(
     name: "web-ui",
     platforms: [.macOS(.v15), .iOS(.v13), .tvOS(.v13), .watchOS(.v6)],
     products: [
-        .library(name: "WebUI", targets: ["WebUI"])
+        .library(name: "WebUI", targets: ["WebUI"]),
+        .library(name: "WebUIMarkdown", targets: ["WebUIMarkdown"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
@@ -16,6 +17,12 @@ let package = Package(
     targets: [
         .target(
             name: "WebUI",
+            dependencies: [
+                .product(name: "Logging", package: "swift-log")
+            ]
+        ),
+        .target(
+            name: "WebUIMarkdown",
             dependencies: [
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "Markdown", package: "swift-markdown"),
