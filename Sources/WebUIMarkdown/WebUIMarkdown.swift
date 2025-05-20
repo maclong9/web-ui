@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 import Markdown
 
 /// A module for parsing and rendering Markdown content with front matter support.
@@ -6,6 +7,17 @@ import Markdown
 /// This module provides functionality to transform Markdown text into HTML and extract
 /// front matter metadata, making it suitable for content-driven websites and applications.
 public struct WebUIMarkdown {
+    /// Logger instance for tracking events within WebUIMarkdown
+    private let logger: Logger
+
+    /// Initializes a WebUIMarkdown instance with a custom or default logger.
+    ///
+    /// - Parameter logger: The logger to use for tracking events. If nil, a default logger is created.
+    public init(logger: Logger? = nil) {
+        self.logger = logger ?? Logger(label: "com.webui.markdown")
+        self.logger.info("WebUIMarkdown initialized")
+    }
+
     /// A structure representing a parsed Markdown document, containing front matter and HTML content.
     ///
     /// Encapsulates the results of parsing a Markdown document, providing access to both
@@ -36,13 +48,17 @@ public struct WebUIMarkdown {
     ///
     /// - Parameter content: The raw Markdown string to parse.
     /// - Returns: A `ParsedMarkdown` instance containing the parsed front matter and HTML content.
-    public static func parseMarkdown(_ content: String) -> ParsedMarkdown {
+    public func parseMarkdown(_ content: String) -> ParsedMarkdown {
+        logger.debug("Starting to parse markdown content")
         let (frontMatter, markdownContent) = extractFrontMatter(from: content)
+        logger.debug("Front matter extracted with \(frontMatter.count) key-value pairs")
 
         // Parse the markdown content to HTML
+        logger.debug("Converting markdown content to HTML")
         let document = Markdown.Document(parsing: markdownContent)
-        var renderer = HtmlRenderer()
+        var renderer = HtmlRenderer(logger: logger)
         let html = renderer.render(document)
+        logger.debug("HTML rendering complete - generated \(html.count) characters")
 
         return ParsedMarkdown(frontMatter: frontMatter, htmlContent: html)
     }
@@ -55,13 +71,15 @@ public struct WebUIMarkdown {
     ///
     /// - Parameter content: The raw Markdown string.
     /// - Returns: A tuple containing the parsed front matter as a dictionary and the remaining Markdown content.
-    public static func extractFrontMatter(from content: String) -> ([String: Any], String) {
+    public func extractFrontMatter(from content: String) -> ([String: Any], String) {
+        logger.debug("Extracting front matter from content")
         let lines = content.components(separatedBy: .newlines)
         var frontMatter: [String: Any] = [:]
         var contentStartIndex = 0
 
         // Check if the string starts with front matter (---)
         if lines.first?.trimmingCharacters(in: .whitespaces) == "---" {
+            logger.debug("Front matter delimiter found at start of content")
             var frontMatterLines: [String] = []
             var foundEndDelimiter = false
 
@@ -71,6 +89,7 @@ public struct WebUIMarkdown {
                 if trimmedLine == "---" {
                     foundEndDelimiter = true
                     contentStartIndex = index + 2  // Skip the --- line
+                    logger.debug("End front matter delimiter found at line \(index + 2)")
                     break
                 }
                 frontMatterLines.append(line)
@@ -78,12 +97,18 @@ public struct WebUIMarkdown {
 
             if foundEndDelimiter {
                 // Parse front matter lines into a dictionary
+                logger.debug("Parsing \(frontMatterLines.count) lines of front matter")
                 frontMatter = parseFrontMatterLines(frontMatterLines)
+            } else {
+                logger.warning("Front matter started but end delimiter not found")
             }
+        } else {
+            logger.debug("No front matter found in content")
         }
 
         // Join the remaining lines for the markdown content
         let markdownContent = lines[contentStartIndex...].joined(separator: "\n")
+        logger.debug("Extracted \(markdownContent.count) characters of markdown content")
         return (frontMatter, markdownContent)
     }
 
@@ -94,18 +119,25 @@ public struct WebUIMarkdown {
     ///
     /// - Parameter lines: An array of strings representing front matter lines.
     /// - Returns: A dictionary containing the parsed key-value pairs.
-    public static func parseFrontMatterLines(_ lines: [String]) -> [String: Any] {
+    public func parseFrontMatterLines(_ lines: [String]) -> [String: Any] {
         var frontMatter: [String: Any] = [:]
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM d, yyyy"
 
-        for line in lines {
+        logger.debug("Parsing \(lines.count) front matter lines")
+        for (index, line) in lines.enumerated() {
             let trimmed = line.trimmingCharacters(in: .whitespaces)
-            if trimmed.isEmpty { continue }
+            if trimmed.isEmpty {
+                logger.trace("Skipping empty line at index \(index)")
+                continue
+            }
 
             // Split on the first colon to separate key and value
             let components = trimmed.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: true)
-            guard components.count == 2 else { continue }
+            guard components.count == 2 else {
+                logger.warning("Invalid front matter format at line \(index): \(trimmed)")
+                continue
+            }
 
             let key = components[0].trimmingCharacters(in: .whitespaces).lowercased()
             let valueString = components[1].trimmingCharacters(in: .whitespaces)
@@ -114,13 +146,16 @@ public struct WebUIMarkdown {
             if key.contains("date") || key == "published",
                 let date = dateFormatter.date(from: valueString)
             {
+                logger.trace("Parsed date value for key '\(key)': \(valueString)")
                 frontMatter[key] = date
             } else {
                 // Store as string by default
+                logger.trace("Stored string value for key '\(key)': \(valueString)")
                 frontMatter[key] = valueString
             }
         }
 
+        logger.debug("Front matter parsing complete: \(frontMatter.count) key-value pairs extracted")
         return frontMatter
     }
 }
@@ -132,6 +167,15 @@ public struct WebUIMarkdown {
 /// and other formatting constructs.
 public struct HtmlRenderer: MarkupWalker {
     public var html = ""
+    private let logger: Logger
+
+    /// Initializes a HtmlRenderer with a logger.
+    ///
+    /// - Parameter logger: The logger to use for tracking the rendering process.
+    public init(logger: Logger = Logger(label: "com.webui.markdown.renderer")) {
+        self.logger = logger
+        logger.debug("HtmlRenderer initialized")
+    }
 
     /// Renders a Markdown document into HTML.
     ///
@@ -140,14 +184,17 @@ public struct HtmlRenderer: MarkupWalker {
     /// - Parameter document: The Markdown document to render.
     /// - Returns: The generated HTML string.
     public mutating func render(_ document: Markdown.Document) -> String {
+        logger.debug("Starting HTML rendering")
         html = ""
         visit(document)
+        logger.debug("HTML rendering complete, generated \(html.count) characters")
         return html
     }
 
     /// Visits a heading node and generates corresponding HTML.
     public mutating func visitHeading(_ heading: Markdown.Heading) {
         let level = heading.level
+        logger.trace("Rendering h\(level) heading")
         html += "<h\(level)>"
         descendInto(heading)
         html += "</h\(level)>"
@@ -155,6 +202,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a paragraph node and generates corresponding HTML.
     public mutating func visitParagraph(_ paragraph: Paragraph) {
+        logger.trace("Rendering paragraph")
         html += "<p>"
         descendInto(paragraph)
         html += "</p>"
@@ -162,6 +210,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a text node and generates escaped HTML content.
     public mutating func visitText(_ text: Markdown.Text) {
+        logger.trace("Rendering text: \(text.string.prefix(20))...")
         html += escapeHTML(text.string)
     }
 
@@ -170,6 +219,7 @@ public struct HtmlRenderer: MarkupWalker {
         let destination = link.destination ?? ""
         let isExternal = destination.hasPrefix("http://") || destination.hasPrefix("https://")
         let targetAttr = isExternal ? " target=\"_blank\" rel=\"noopener noreferrer\"" : ""
+        logger.trace("Rendering link to \(destination) (external: \(isExternal))")
         html += "<a href=\"\(destination)\"\(targetAttr)>"
         descendInto(link)
         html += "</a>"
@@ -177,6 +227,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits an emphasis node and generates corresponding HTML.
     public mutating func visitEmphasis(_ emphasis: Markdown.Emphasis) {
+        logger.trace("Rendering emphasis")
         html += "<em>"
         descendInto(emphasis)
         html += "</em>"
@@ -184,6 +235,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a strong node and generates corresponding HTML.
     public mutating func visitStrong(_ strong: Markdown.Strong) {
+        logger.trace("Rendering strong emphasis")
         html += "<strong>"
         descendInto(strong)
         html += "</strong>"
@@ -192,6 +244,7 @@ public struct HtmlRenderer: MarkupWalker {
     /// Visits a code block node and generates corresponding HTML.
     public mutating func visitCodeBlock(_ codeBlock: CodeBlock) {
         let language = codeBlock.language ?? ""
+        logger.trace("Rendering code block with language: \(language)")
         html += "<pre><code class=\"language-\(language)\">"
         html += escapeHTML(codeBlock.code)
         html += "</code></pre>"
@@ -199,6 +252,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits an inline code node and generates corresponding HTML.
     public mutating func visitInlineCode(_ inlineCode: InlineCode) {
+        logger.trace("Rendering inline code")
         html += "<code>"
         html += escapeHTML(inlineCode.code)
         html += "</code>"
@@ -206,6 +260,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a list item node and generates corresponding HTML.
     public mutating func visitListItem(_ listItem: ListItem) {
+        logger.trace("Rendering list item")
         html += "<li>"
         descendInto(listItem)
         html += "</li>"
@@ -213,6 +268,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits an unordered list node and generates corresponding HTML.
     public mutating func visitUnorderedList(_ unorderedList: UnorderedList) {
+        logger.trace("Rendering unordered list")
         html += "<ul>"
         descendInto(unorderedList)
         html += "</ul>"
@@ -220,6 +276,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits an ordered list node and generates corresponding HTML.
     public mutating func visitOrderedList(_ orderedList: OrderedList) {
+        logger.trace("Rendering ordered list")
         html += "<ol>"
         descendInto(orderedList)
         html += "</ol>"
@@ -227,6 +284,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a block quote node and generates corresponding HTML.
     public mutating func visitBlockQuote(_ blockQuote: BlockQuote) {
+        logger.trace("Rendering blockquote")
         html += "<blockquote>"
         descendInto(blockQuote)
         html += "</blockquote>"
@@ -234,17 +292,21 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a thematic break node and generates corresponding HTML.
     public mutating func visitThematicBreak(_ thematicBreak: ThematicBreak) {
+        logger.trace("Rendering horizontal rule")
         html += "<hr />"
     }
 
     /// Visits an image node and generates corresponding HTML.
     public mutating func visitImage(_ image: Markdown.Image) {
         let altText = image.plainText
-        html += "<img src=\"\(image.source ?? "")\" alt=\"\(altText)\" />"
+        let source = image.source ?? ""
+        logger.trace("Rendering image: \(source)")
+        html += "<img src=\"\(source)\" alt=\"\(altText)\" />"
     }
 
     /// Visits a table node and generates corresponding HTML.
     public mutating func visitTable(_ table: Table) {
+        logger.trace("Rendering table")
         html += "<table>"
         descendInto(table)
         html += "</table>"
@@ -252,6 +314,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a table head node and generates corresponding HTML.
     public mutating func visitTableHead(_ tableHead: Table.Head) {
+        logger.trace("Rendering table head")
         html += "<thead><tr>"
         insideTableHead = true
         for child in tableHead.children {
@@ -267,6 +330,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a table row node and generates corresponding HTML.
     public mutating func visitTableRow(_ tableRow: Table.Row) {
+        logger.trace("Rendering table row")
         html += "<tr>"
         for child in tableRow.children {
             if let cell = child as? Table.Cell {
@@ -280,6 +344,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a table body node and generates corresponding HTML.
     public mutating func visitTableBody(_ tableBody: Table.Body) {
+        logger.trace("Rendering table body")
         html += "<tbody>"
         descendInto(tableBody)
         html += "</tbody>"
@@ -291,6 +356,7 @@ public struct HtmlRenderer: MarkupWalker {
     /// Visits a table cell node and generates corresponding HTML.
     public mutating func visitTableCell(_ tableCell: Table.Cell) {
         let tag = insideTableHead ? "th" : "td"
+        logger.trace("Rendering table \(tag) cell")
         html += "<\(tag)>"
         descendInto(tableCell)
         html += "</\(tag)>"
@@ -298,12 +364,15 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// A fallback method for visiting any unhandled markup nodes.
     public mutating func defaultVisit(_ markup: Markup) {
+        logger.trace("Visiting unhandled markup node: \(type(of: markup))")
         descendInto(markup)
     }
 
     /// Escapes special HTML characters in a string to prevent injection.
     public func escapeHTML(_ string: String) -> String {
-        string
+        logger.trace("Escaping HTML characters in string (\(string.count) characters)")
+        return
+            string
             .replacingOccurrences(of: "&", with: "&amp;")
             .replacingOccurrences(of: "<", with: "&lt;")
             .replacingOccurrences(of: ">", with: "&gt;")
