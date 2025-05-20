@@ -1,3 +1,31 @@
+/// Defines CSS display types for controlling element rendering.
+///
+/// Specifies how an element is displayed in the layout.
+public enum DisplayType: String {
+    /// Makes the element not display at all (removed from layout flow).
+    case none
+    /// Standard block element (takes full width, creates new line).
+    case block
+    /// Inline element (flows with text, no line breaks).
+    case inline
+    /// Hybrid that allows width/height but flows inline.
+    case inlineBlock = "inline-block"
+    /// Creates a flex container.
+    case flex
+    /// Creates an inline flex container.
+    case inlineFlex = "inline-flex"
+    /// Creates a grid container.
+    case grid
+    /// Creates an inline grid container.
+    case inlineGrid = "inline-grid"
+    /// Creates a table element.
+    case table
+    /// Creates a table cell element.
+    case tableCell = "table-cell"
+    /// Creates a table row element.
+    case tableRow = "table-row"
+}
+
 /// Defines justification options for layout alignment.
 ///
 /// Specifies how items are distributed along the main axis in flexbox or grid layouts.
@@ -60,6 +88,43 @@ public enum Grow: Int {
 }
 
 extension Element {
+    /// Sets the CSS display property with optional modifiers.
+    ///
+    /// - Parameters:
+    ///   - type: The display type to apply.
+    ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
+    /// - Returns: A new element with updated display classes.
+    ///
+    /// ## Example
+    /// ```swift
+    /// // Make an element a block
+    /// Element(tag: "span").display(.block)
+    ///
+    /// // Make an element inline-block on hover
+    /// Element(tag: "div").display(.inlineBlock, on: .hover)
+    ///
+    /// // Display as table on medium screens and up
+    /// Element(tag: "div").display(.table, on: .md)
+    /// ```
+    public func display(
+        _ type: DisplayType,
+        on modifiers: Modifier...
+    ) -> Element {
+        let displayClass = "display-\(type.rawValue)"
+        let newClasses = combineClasses([displayClass], withModifiers: modifiers)
+
+        return Element(
+            tag: self.tag,
+            id: self.id,
+            classes: (self.classes ?? []) + newClasses,
+            role: self.role,
+            label: self.label,
+            isSelfClosing: self.isSelfClosing,
+            customAttributes: self.customAttributes,
+            content: self.contentBuilder
+        )
+    }
+
     public func flex(
         direction: Direction? = nil,
         justify: Justify? = nil,
