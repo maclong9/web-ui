@@ -46,9 +46,11 @@ extension Element {
                 case .horizontal: edgePrefix = "inset-x"
                 case .vertical: edgePrefix = "inset-y"
                 }
-                baseClasses.append(
-                    "\(length != nil && length! >= 0 ? "" : "-")\(edgePrefix)-\(abs(lengthValue))"
-                )
+                if lengthValue < 0 {
+                    baseClasses.append("-\(edgePrefix)-\(abs(lengthValue))")
+                } else {
+                    baseClasses.append("\(edgePrefix)-\(lengthValue)")
+                }
             }
         }
 
