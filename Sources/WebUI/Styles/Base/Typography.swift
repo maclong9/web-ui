@@ -213,7 +213,7 @@ public enum Decoration: String {
     case wavy
     /// Remove line decoration
     case none = "no-underline"
-    
+
     /// The corresponding CSS class name for this decoration.
     var className: String { "\(rawValue)" }
 }
