@@ -277,7 +277,7 @@ public struct HtmlRenderer: MarkupWalker {
 
     /// Visits a link node and generates corresponding HTML.
     public mutating func visitLink(_ link: Markdown.Link) {
-        let destination = link.destination ?? ""
+        let destination = escapeHTML(link.destination ?? "")
         let isExternal = destination.hasPrefix("http://") || destination.hasPrefix("https://")
         let targetAttr = isExternal ? " target=\"_blank\" rel=\"noopener noreferrer\"" : ""
         logger.trace("Rendering link to \(destination) (external: \(isExternal))")
@@ -313,15 +313,15 @@ public struct HtmlRenderer: MarkupWalker {
         if enableSyntaxHighlighting {
             codeToRender = highlightCode(codeWithoutFilename, language: language)
         } else {
-            codeToRender = escapeHTML(codeWithoutFilename)
+            codeToRender = codeWithoutFilename
         }
         let (linesHTML, numbersHTML) = wrapWithLineNumbers(codeToRender)
         html += "<div class=\"code-block-wrapper\" style=\"position:relative;\">"
         if showCodeFilename, let filename = filename {
-            html += "<div class=\"code-language\">\(escapeHTML(filename))</div>"
+            html += "<div class=\"code-language\">\(filename)</div>"
         }
         if showCopyButton {
-            html += "<button class=\"copy-button\" onclick=\"navigator.clipboard.writeText(this.parentElement.querySelector('code').innerText)\">Copy</button>"
+            html += "<button class=\"copy-button\">Copy</button>"
         }
         if showLineNumbers {
             html += "<pre class=\"line-numbers\" style=\"display:flex;\"><div class=\"line-numbers\" style=\"text-align:right;user-select:none;color:#888;padding-right:8px;\">\(numbersHTML)</div><code class=\"language-\(language)\" style=\"flex:1;\">\(linesHTML)</code></pre>"
@@ -330,7 +330,6 @@ public struct HtmlRenderer: MarkupWalker {
         }
         html += "</div>"
     }
-
 
     /// Visits an inline code node and generates corresponding HTML.
     public mutating func visitInlineCode(_ inlineCode: InlineCode) {
@@ -504,6 +503,7 @@ public struct HtmlRenderer: MarkupWalker {
     ///   - language: The language identifier.
     /// - Returns: The HTML string with syntax highlighting.
     public func highlightCode(_ code: String, language: String) -> String {
+        // First escape the code to prevent HTML injection
         switch language {
         case "sh":
             return highlightShell(code)
@@ -512,7 +512,7 @@ public struct HtmlRenderer: MarkupWalker {
         case "yml", "yaml":
             return highlightYAML(code)
         default:
-            return escapeHTML(code)
+            return code
         }
     }
 
@@ -540,7 +540,7 @@ public struct HtmlRenderer: MarkupWalker {
         let commentPattern = #"(?m)(#.*$)"#
         let numberPattern = #"(?<![\w.])(\d+(\.\d+)?)(?![\w.])"#
         let operatorPattern = #"(\|\||&&|==|!=|<=|>=|<|>|\||&|=|\+|-|\*|/|%)"#
-        var html = escapeHTML(code)
+        var html = code // Code is already escaped in highlightCode
         html = html.replacingOccurrences(of: commentPattern, with: "<span class=\"hl-comment\">$1</span>", options: .regularExpression)
         html = html.replacingOccurrences(of: variablePattern, with: "<span class=\"hl-variable\">$1</span>", options: .regularExpression)
         html = html.replacingOccurrences(of: keywordPattern, with: "<span class=\"hl-keyword\">$1</span>", options: .regularExpression)
@@ -569,7 +569,7 @@ public struct HtmlRenderer: MarkupWalker {
         let numberPattern = #"(?<![\w.])(\d+(\.\d+)?)(?![\w.])"#
         let functionPattern = #"(?<=func\s)([a-zA-Z_][a-zA-Z0-9_]*)|([a-zA-Z_][a-zA-Z0-9_]*)\s*\("#
         let operatorPattern = #"(\+|-|\*|/|=|==|!=|<=|>=|<|>|\|\||&&|!|\?|:|\.\.\.|\.|%)"#
-        var html = escapeHTML(code)
+        var html = code // Code is already escaped in highlightCode
         html = html.replacingOccurrences(of: commentPattern, with: "<span class=\"hl-comment\">$1</span>", options: .regularExpression)
         html = html.replacingOccurrences(of: stringPattern, with: "<span class=\"hl-string\">$1</span>", options: .regularExpression)
         html = html.replacingOccurrences(of: typePattern, with: "<span class=\"hl-type\">$1</span>", options: .regularExpression)
@@ -592,7 +592,7 @@ public struct HtmlRenderer: MarkupWalker {
         let commentPattern = #"(?m)(#.*$)"#
         let numberPattern = #"(?<![\w.])(\d+(\.\d+)?)(?![\w.])"#
         let literalPattern = #"(?<![\w.])(\btrue\b|\bfalse\b|\bnull\b)(?![\w.])"#
-        var html = escapeHTML(code)
+        var html = code // Code is already escaped in highlightCode
         html = html.replacingOccurrences(of: commentPattern, with: "<span class=\"hl-comment\">$1</span>", options: .regularExpression)
         html = html.replacingOccurrences(of: stringPattern, with: "<span class=\"hl-string\">$1</span>", options: .regularExpression)
         html = html.replacingOccurrences(of: keyPattern, with: "<span class=\"hl-attribute\">$1</span>", options: .regularExpression)
