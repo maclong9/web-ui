@@ -331,6 +331,7 @@ public struct HtmlRenderer: MarkupWalker {
         html += "</div>"
     }
 
+
     /// Visits an inline code node and generates corresponding HTML.
     public mutating func visitInlineCode(_ inlineCode: InlineCode) {
         logger.trace("Rendering inline code")
