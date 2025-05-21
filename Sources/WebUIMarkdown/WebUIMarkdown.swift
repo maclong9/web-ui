@@ -6,16 +6,46 @@ import Markdown
 ///
 /// This module provides functionality to transform Markdown text into HTML and extract
 /// front matter metadata, making it suitable for content-driven websites and applications.
+/// A module for parsing and rendering Markdown content with front matter support and configurable code block rendering.
+///
+/// This module provides functionality to transform Markdown text into HTML and extract
+/// front matter metadata, making it suitable for content-driven websites and applications.
+/// Code block rendering features such as syntax highlighting, filename display, copy button,
+/// and line numbers can be enabled or disabled via boolean flags.
 public struct WebUIMarkdown {
     /// Logger instance for tracking events within WebUIMarkdown
     private let logger: Logger
 
-    /// Initializes a WebUIMarkdown instance with a custom or default logger.
+    /// Whether to display the filename at the top of code blocks.
+    public let showCodeFilename: Bool
+    /// Whether to display a copy button for code blocks.
+    public let showCopyButton: Bool
+    /// Whether to display line numbers for code blocks.
+    public let showLineNumbers: Bool
+    /// Whether to enable syntax highlighting for code blocks.
+    public let enableSyntaxHighlighting: Bool
+
+    /// Initializes a WebUIMarkdown instance with configurable code block options and a custom or default logger.
     ///
-    /// - Parameter logger: The logger to use for tracking events. If nil, a default logger is created.
-    public init(logger: Logger? = nil) {
+    /// - Parameters:
+    ///   - logger: The logger to use for tracking events. If nil, a default logger is created.
+    ///   - showCodeFilename: Whether to display the filename at the top of code blocks. Default is true.
+    ///   - showCopyButton: Whether to display a copy button for code blocks. Default is true.
+    ///   - showLineNumbers: Whether to display line numbers for code blocks. Default is true.
+    ///   - enableSyntaxHighlighting: Whether to enable syntax highlighting for code blocks. Default is true.
+    public init(
+        logger: Logger? = nil,
+        showCodeFilename: Bool = true,
+        showCopyButton: Bool = true,
+        showLineNumbers: Bool = true,
+        enableSyntaxHighlighting: Bool = true
+    ) {
         self.logger = logger ?? Logger(label: "com.webui.markdown")
         self.logger.info("WebUIMarkdown initialized")
+        self.showCodeFilename = showCodeFilename
+        self.showCopyButton = showCopyButton
+        self.showLineNumbers = showLineNumbers
+        self.enableSyntaxHighlighting = enableSyntaxHighlighting
     }
 
     /// A structure representing a parsed Markdown document, containing front matter and HTML content.
@@ -56,7 +86,13 @@ public struct WebUIMarkdown {
         // Parse the markdown content to HTML
         logger.debug("Converting markdown content to HTML")
         let document = Markdown.Document(parsing: markdownContent)
-        var renderer = HtmlRenderer(logger: logger)
+        var renderer = HtmlRenderer(
+            logger: logger,
+            showCodeFilename: showCodeFilename,
+            showCopyButton: showCopyButton,
+            showLineNumbers: showLineNumbers,
+            enableSyntaxHighlighting: enableSyntaxHighlighting
+        )
         let html = renderer.render(document)
         logger.debug("HTML rendering complete - generated \(html.count) characters")
 
@@ -165,15 +201,40 @@ public struct WebUIMarkdown {
 /// `HtmlRenderer` walks through the Markdown document structure and generates appropriate
 /// HTML tags for each Markdown element, with special handling for links, code blocks,
 /// and other formatting constructs.
+/// A renderer that converts a Markdown Abstract Syntax Tree (AST) into HTML with configurable code block rendering options.
+///
+/// `HtmlRenderer` walks through the Markdown document structure and generates appropriate
+/// HTML tags for each Markdown element, with special handling for links, code blocks,
+/// and other formatting constructs. Code block rendering features such as syntax highlighting,
+/// filename display, copy button, and line numbers can be enabled or disabled via boolean flags.
 public struct HtmlRenderer: MarkupWalker {
     public var html = ""
     private let logger: Logger
+    public let showCodeFilename: Bool
+    public let showCopyButton: Bool
+    public let showLineNumbers: Bool
+    public let enableSyntaxHighlighting: Bool
 
-    /// Initializes a HtmlRenderer with a logger.
+    /// Initializes a HtmlRenderer with a logger and code block rendering options.
     ///
-    /// - Parameter logger: The logger to use for tracking the rendering process.
-    public init(logger: Logger = Logger(label: "com.webui.markdown.renderer")) {
+    /// - Parameters:
+    ///   - logger: The logger to use for tracking the rendering process.
+    ///   - showCodeFilename: Whether to display the filename at the top of code blocks.
+    ///   - showCopyButton: Whether to display a copy button for code blocks.
+    ///   - showLineNumbers: Whether to display line numbers for code blocks.
+    ///   - enableSyntaxHighlighting: Whether to enable syntax highlighting for code blocks.
+    public init(
+        logger: Logger = Logger(label: "com.webui.markdown.renderer"),
+        showCodeFilename: Bool = true,
+        showCopyButton: Bool = true,
+        showLineNumbers: Bool = true,
+        enableSyntaxHighlighting: Bool = true
+    ) {
         self.logger = logger
+        self.showCodeFilename = showCodeFilename
+        self.showCopyButton = showCopyButton
+        self.showLineNumbers = showLineNumbers
+        self.enableSyntaxHighlighting = enableSyntaxHighlighting
         logger.debug("HtmlRenderer initialized")
     }
 
@@ -241,13 +302,33 @@ public struct HtmlRenderer: MarkupWalker {
         html += "</strong>"
     }
 
-    /// Visits a code block node and generates corresponding HTML.
+    /// Visits a code block node and generates corresponding HTML with optional syntax highlighting, filename, copy button, and line numbers.
+    ///
+    /// - Parameter codeBlock: The code block node to render.
     public mutating func visitCodeBlock(_ codeBlock: CodeBlock) {
         let language = codeBlock.language ?? ""
         logger.trace("Rendering code block with language: \(language)")
-        html += "<pre><code class=\"language-\(language)\">"
-        html += escapeHTML(codeBlock.code)
-        html += "</code></pre>"
+        let (filename, codeWithoutFilename) = extractFilename(from: codeBlock.code, language: language)
+        let codeToRender: String
+        if enableSyntaxHighlighting {
+            codeToRender = highlightCode(codeWithoutFilename, language: language)
+        } else {
+            codeToRender = escapeHTML(codeWithoutFilename)
+        }
+        let (linesHTML, numbersHTML) = wrapWithLineNumbers(codeToRender)
+        html += "<div class=\"code-block-wrapper\" style=\"position:relative;\">"
+        if showCodeFilename, let filename = filename {
+            html += "<div class=\"code-language\">\(escapeHTML(filename))</div>"
+        }
+        if showCopyButton {
+            html += "<button class=\"copy-button\" onclick=\"navigator.clipboard.writeText(this.parentElement.querySelector('code').innerText)\">Copy</button>"
+        }
+        if showLineNumbers {
+            html += "<pre class=\"line-numbers\" style=\"display:flex;\"><div class=\"line-numbers\" style=\"text-align:right;user-select:none;color:#888;padding-right:8px;\">\(numbersHTML)</div><code class=\"language-\(language)\" style=\"flex:1;\">\(linesHTML)</code></pre>"
+        } else {
+            html += "<pre><code class=\"language-\(language)\">\(codeToRender)</code></pre>"
+        }
+        html += "</div>"
     }
 
     /// Visits an inline code node and generates corresponding HTML.
@@ -369,6 +450,9 @@ public struct HtmlRenderer: MarkupWalker {
     }
 
     /// Escapes special HTML characters in a string to prevent injection.
+    ///
+    /// - Parameter string: The string to escape.
+    /// - Returns: The escaped HTML string.
     public func escapeHTML(_ string: String) -> String {
         logger.trace("Escaping HTML characters in string (\(string.count) characters)")
         return
@@ -378,5 +462,141 @@ public struct HtmlRenderer: MarkupWalker {
             .replacingOccurrences(of: ">", with: "&gt;")
             .replacingOccurrences(of: "\"", with: "&quot;")
             .replacingOccurrences(of: "'", with: "&#39;")
+    }
+
+    /// Extracts a filename from the first line of the code block if it matches a comment convention for the language.
+    ///
+    /// - Parameters:
+    ///   - code: The code block string.
+    ///   - language: The language identifier.
+    /// - Returns: A tuple of (filename, codeWithoutFilename).
+    public func extractFilename(from code: String, language: String) -> (String?, String) {
+        let lines = code.components(separatedBy: .newlines)
+        guard let first = lines.first else { return (nil, code) }
+        let trimmed = first.trimmingCharacters(in: .whitespaces)
+        let filename: String?
+        let pattern: String
+        switch language {
+        case "sh":
+            pattern = #"^#\s*([\w\-.]+\.(sh|bash))$"#
+        case "swift":
+            pattern = #"^//\s*([\w\-.]+\.swift)$"#
+        case "yml", "yaml":
+            pattern = #"^#\s*([\w\-.]+\.ya?ml)$"#
+        default:
+            pattern = ""
+        }
+        if let regex = try? NSRegularExpression(pattern: pattern, options: []),
+           let match = regex.firstMatch(in: trimmed, options: [], range: NSRange(location: 0, length: trimmed.utf16.count)),
+           let range = Range(match.range(at: 1), in: trimmed) {
+            filename = String(trimmed[range])
+            let codeWithoutFilename = lines.dropFirst().joined(separator: "\n")
+            return (filename, codeWithoutFilename)
+        }
+        return (nil, code)
+    }
+
+    /// Applies basic regex-based syntax highlighting for sh, swift, and yml.
+    ///
+    /// - Parameters:
+    ///   - code: The code string.
+    ///   - language: The language identifier.
+    /// - Returns: The HTML string with syntax highlighting.
+    public func highlightCode(_ code: String, language: String) -> String {
+        switch language {
+        case "sh":
+            return highlightShell(code)
+        case "swift":
+            return highlightSwift(code)
+        case "yml", "yaml":
+            return highlightYAML(code)
+        default:
+            return escapeHTML(code)
+        }
+    }
+
+    /// Wraps code lines in spans and generates line numbers HTML.
+    ///
+    /// - Parameter code: The highlighted code string (may contain HTML).
+    /// - Returns: Tuple of (linesHTML, numbersHTML).
+    public func wrapWithLineNumbers(_ code: String) -> (String, String) {
+        let lines = code.components(separatedBy: .newlines)
+        let linesHTML = lines.map { "<span>\($0)</span>" }.joined(separator: "\n")
+        let numbersHTML = (1...lines.count).map { "<span>\($0)</span>" }.joined(separator: "\n")
+        return (linesHTML, numbersHTML)
+    }
+
+    /// Highlights shell script code.
+    ///
+    /// - Parameter code: The code string.
+    /// - Returns: The HTML string with shell syntax highlighting.
+    public func highlightShell(_ code: String) -> String {
+        let keywords = ["if", "then", "else", "fi", "for", "in", "do", "done", "while", "case", "esac", "function", "echo", "exit"]
+        let literals = ["true", "false", "null"]
+        let keywordPattern = "\\b(" + keywords.joined(separator: "|") + ")\\b"
+        let literalPattern = "\\b(" + literals.joined(separator: "|") + ")\\b"
+        let variablePattern = #"(\$\w+|\$\{[^}]+\})"#
+        let commentPattern = #"(?m)(#.*$)"#
+        let numberPattern = #"(?<![\w.])(\d+(\.\d+)?)(?![\w.])"#
+        let operatorPattern = #"(\|\||&&|==|!=|<=|>=|<|>|\||&|=|\+|-|\*|/|%)"#
+        var html = escapeHTML(code)
+        html = html.replacingOccurrences(of: commentPattern, with: "<span class=\"hl-comment\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: variablePattern, with: "<span class=\"hl-variable\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: keywordPattern, with: "<span class=\"hl-keyword\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: literalPattern, with: "<span class=\"hl-literal\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: numberPattern, with: "<span class=\"hl-number\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: operatorPattern, with: "<span class=\"hl-operator\">$1</span>", options: .regularExpression)
+        return html
+    }
+
+    /// Highlights Swift code.
+    ///
+    /// - Parameter code: The code string.
+    /// - Returns: The HTML string with Swift syntax highlighting.
+    public func highlightSwift(_ code: String) -> String {
+        let keywords = [
+            "let", "var", "func", "if", "else", "for", "while", "return", "struct", "class", "enum", "import", "public", "private", "internal", "extension", "protocol", "guard", "in", "do", "try", "catch", "switch", "case", "break", "continue", "default", "where", "throw", "throws", "rethrows", "defer", "init", "self", "super", "static", "subscript", "associatedtype", "typealias", "open", "final", "lazy", "weak", "unowned", "override", "mutating", "nonmutating", "convenience", "required", "optional", "nil", "true", "false", "as", "is", "inout", "operator", "precedence", "infix", "prefix", "postfix", "dynamic", "didSet", "willSet", "get", "set", "Type", "Any", "some"
+        ]
+        let literals = ["true", "false", "nil"]
+        let builtins = ["print", "abs", "min", "max", "map", "filter", "reduce", "append", "remove", "count", "contains"]
+        let keywordPattern = "\\b(" + keywords.joined(separator: "|") + ")\\b"
+        let literalPattern = "\\b(" + literals.joined(separator: "|") + ")\\b"
+        let builtinPattern = "\\b(" + builtins.joined(separator: "|") + ")\\b"
+        let typePattern = #"(?<![.\w])([A-Z][A-Za-z0-9_]*)\b"#
+        let stringPattern = #"("[^"]*"|'[^']*')"#
+        let commentPattern = #"(?m)(\/\/.*$|\/\*[\s\S]*?\*\/)"#
+        let numberPattern = #"(?<![\w.])(\d+(\.\d+)?)(?![\w.])"#
+        let functionPattern = #"(?<=func\s)([a-zA-Z_][a-zA-Z0-9_]*)|([a-zA-Z_][a-zA-Z0-9_]*)\s*\("#
+        let operatorPattern = #"(\+|-|\*|/|=|==|!=|<=|>=|<|>|\|\||&&|!|\?|:|\.\.\.|\.|%)"#
+        var html = escapeHTML(code)
+        html = html.replacingOccurrences(of: commentPattern, with: "<span class=\"hl-comment\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: stringPattern, with: "<span class=\"hl-string\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: typePattern, with: "<span class=\"hl-type\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: keywordPattern, with: "<span class=\"hl-keyword\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: literalPattern, with: "<span class=\"hl-literal\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: builtinPattern, with: "<span class=\"hl-built_in\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: numberPattern, with: "<span class=\"hl-number\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: functionPattern, with: "<span class=\"hl-function\">$1$2</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: operatorPattern, with: "<span class=\"hl-operator\">$1</span>", options: .regularExpression)
+        return html
+    }
+
+    /// Highlights YAML code.
+    ///
+    /// - Parameter code: The code string.
+    /// - Returns: The HTML string with YAML syntax highlighting.
+    public func highlightYAML(_ code: String) -> String {
+        let keyPattern = #"(?m)^(\s*[\w\-\.]+:)"#
+        let stringPattern = #"("[^"]*"|'[^']*')"#
+        let commentPattern = #"(?m)(#.*$)"#
+        let numberPattern = #"(?<![\w.])(\d+(\.\d+)?)(?![\w.])"#
+        let literalPattern = #"(?<![\w.])(\btrue\b|\bfalse\b|\bnull\b)(?![\w.])"#
+        var html = escapeHTML(code)
+        html = html.replacingOccurrences(of: commentPattern, with: "<span class=\"hl-comment\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: stringPattern, with: "<span class=\"hl-string\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: keyPattern, with: "<span class=\"hl-attribute\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: numberPattern, with: "<span class=\"hl-number\">$1</span>", options: .regularExpression)
+        html = html.replacingOccurrences(of: literalPattern, with: "<span class=\"hl-literal\">$1</span>", options: .regularExpression)
+        return html
     }
 }
