@@ -13,6 +13,7 @@ enum InitError: Error, CustomStringConvertible {
     case downloadFailed
     case templateNotFound(String)
     case fileReplacementFailed(String)
+    case contentReplacementFailed(Error)
 
     var description: String {
         switch self {
@@ -27,6 +28,8 @@ enum InitError: Error, CustomStringConvertible {
             return "Template not found at: \(path)"
         case .fileReplacementFailed(let path):
             return "Couldn't update content in '\(path)'"
+        case .contentReplacementFailed(let error):
+            return "Failed to replace content: \(error)"
         }
     }
 }
@@ -106,16 +109,13 @@ func replaceContentIn(file path: String, projectName: String) {
         content = content.replacingOccurrences(of: "example", with: projectName)
         try content.write(to: url, atomically: true, encoding: .utf8)
     } catch {
-        // Silently fail as in original
+        throw InitError.contentReplacementFailed(error)
     }
 }
 
 // Main execution
 do {
     let (template, projectName) = try parseArgs()
-
-    // Both templates are now supported
-    // No need for early exit
 
     // Create temp directory
     let tmpDir = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString)

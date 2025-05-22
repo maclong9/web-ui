@@ -67,7 +67,7 @@ With WebUI, you can:
 ### Responsive Design
 
 - <doc:responsive-styling>
-- ``Element/responsive(_:)``
+- ``Element/on(_:)``
 - ``ResponsiveBuilder``
 
 ### Tutorials

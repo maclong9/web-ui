@@ -195,8 +195,8 @@ import Testing
     @Test("Element with responsive padding EdgeInsets")
     func testElementWithResponsivePaddingEdgeInsets() async throws {
         let element = Element(tag: "div").responsive {
-            $0.md {
-                $0.padding(EdgeInsets(top: 2, leading: 4, bottom: 6, trailing: 8))
+            md {
+                padding(EdgeInsets(top: 2, leading: 4, bottom: 6, trailing: 8))
             }
         }
         let rendered = element.render()
@@ -209,8 +209,8 @@ import Testing
     @Test("Element with responsive margins EdgeInsets")
     func testElementWithResponsiveMarginsEdgeInsets() async throws {
         let element = Element(tag: "div").responsive {
-            $0.sm {
-                $0.margins(EdgeInsets(all: 5))
+            sm {
+                margins(EdgeInsets(all: 5))
             }
         }
         let rendered = element.render()
@@ -223,8 +223,8 @@ import Testing
     @Test("Element with responsive auto margins EdgeInsets")
     func testElementWithResponsiveAutoMarginsEdgeInsets() async throws {
         let element = Element(tag: "div").responsive {
-            $0.lg {
-                $0.margins(EdgeInsets(vertical: 0, horizontal: 0), auto: true)
+            lg {
+                margins(EdgeInsets(vertical: 0, horizontal: 0), auto: true)
             }
         }
         let rendered = element.render()
@@ -237,8 +237,8 @@ import Testing
     @Test("Element with responsive border EdgeInsets")
     func testElementWithResponsiveBorderEdgeInsets() async throws {
         let element = Element(tag: "div").responsive {
-            $0.xl {
-                $0.border(EdgeInsets(top: 1, leading: 2, bottom: 3, trailing: 4), style: .solid, color: .gray(._300))
+            xl {
+                border(EdgeInsets(top: 1, leading: 2, bottom: 3, trailing: 4), style: .solid, color: .gray(._300))
             }
         }
         let rendered = element.render()
@@ -253,8 +253,8 @@ import Testing
     @Test("Element with responsive position EdgeInsets")
     func testElementWithResponsivePositionEdgeInsets() async throws {
         let element = Element(tag: "div").responsive {
-            $0.lg {
-                $0.position(.fixed, insets: EdgeInsets(all: 0))
+            lg {
+                position(.fixed, insets: EdgeInsets(all: 0))
             }
         }
         let rendered = element.render()

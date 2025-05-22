@@ -48,13 +48,13 @@ The new block-based approach allows defining responsive styles for multiple brea
 Text { "Responsive Text" }
   .font(size: .sm)
   .responsive {
-    $0.md {
-      $0.font(size: .base)
-      $0.margins(of: 4)
+    md {
+      font(size: .base)
+      margins(of: 4)
     }
-    $0.lg {
-      $0.font(size: .lg)
-      $0.margins(of: 6)
+    lg {
+      font(size: .lg)
+      margins(of: 6)
     }
   }
 ```
@@ -76,15 +76,15 @@ Stack(classes: ["card"])
   .shadow(of: .sm)
   .rounded(.md)
   .responsive {
-    $0.md {
+    md {
       // Uniform padding using EdgeInsets
-      $0.padding(EdgeInsets(all: 6))
-      $0.shadow(of: .md)
+      padding(EdgeInsets(all: 6))
+      shadow(of: .md)
     }
-    $0.lg {
+    lg {
       // Different vertical/horizontal padding with EdgeInsets
-      $0.padding(EdgeInsets(vertical: 8, horizontal: 12))
-      $0.flex(direction: .row)
+      padding(EdgeInsets(vertical: 8, horizontal: 12))
+      flex(direction: .row)
     }
   }
 ```
@@ -96,8 +96,8 @@ Navigation {
   // Mobile navigation (hamburger menu)
   Stack(classes: ["hamburger-menu"])
     .responsive {
-      $0.lg {
-        $0.hidden()  // Hide on large screens
+      lg {
+        hidden()  // Hide on large screens
       }
     }
     
@@ -105,9 +105,9 @@ Navigation {
   Stack(classes: ["desktop-menu"])
     .hidden()  // Hidden by default on mobile
     .responsive {
-      $0.lg {
-        $0.hidden(false)  // Show on large screens
-        $0.flex(direction: .row, justify: .between)
+      lg {
+        hidden(false)  // Show on large screens
+        flex(direction: .row, justify: .between)
       }
     }
 }
@@ -120,11 +120,11 @@ Navigation {
 Heading(.largeTitle) { "Welcome to WebUI" }
   .font(size: .xl3, weight: .bold)
   .responsive {
-    $0.md {
-      $0.font(size: .xl4)
+    md {
+      font(size: .xl4)
     }
-    $0.lg {
-      $0.font(size: .xl5)
+    lg {
+      font(size: .xl5)
     }
   }
 
@@ -134,10 +134,10 @@ Heading(.title) { "Key Features" }
   // Add margins with EdgeInsets
   .margins(EdgeInsets(top: 4, leading: 0, bottom: 2, trailing: 0))
   .responsive {
-    $0.md {
-      $0.font(size: .xl2)
+    md {
+      font(size: .xl2)
       // Different margins at medium breakpoint
-      $0.margins(EdgeInsets(top: 6, leading: 0, bottom: 3, trailing: 0))
+      margins(EdgeInsets(top: 6, leading: 0, bottom: 3, trailing: 0))
     }
   }
 ```
@@ -156,14 +156,14 @@ Button { "Sign Up" }
   .rounded(.full, on: .lg)
   // Block of related responsive adjustments
   .responsive {
-    $0.md {
+    md {
       // Combining EdgeInsets with responsive design
-      $0.padding(EdgeInsets(vertical: 3, horizontal: 6))
+      padding(EdgeInsets(vertical: 3, horizontal: 6))
     }
-    $0.lg {
-      $0.background(color: .blue(._600))
+    lg {
+      background(color: .blue(._600))
       // Advanced EdgeInsets with different values for each edge
-      $0.padding(EdgeInsets(top: 3, leading: 8, bottom: 3, trailing: 8))
+      padding(EdgeInsets(top: 3, leading: 8, bottom: 3, trailing: 8))
     }
   }
 ```

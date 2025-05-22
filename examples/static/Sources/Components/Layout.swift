@@ -52,9 +52,9 @@ struct Layout: HTML {
         .frame(minHeight: .screen)
         .flex(direction: .column)
         .padding()
-        .responsive {
-            $0.md {
-                $0.font(size: .lg)
+        .on {
+            md {
+                font(size: .lg)
             }
         }
         .render()

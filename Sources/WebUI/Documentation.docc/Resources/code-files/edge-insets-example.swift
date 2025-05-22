@@ -53,15 +53,15 @@ struct CardComponent: HTML {
         .shadow(of: .md)
         // Responsive styling with EdgeInsets
         .responsive {
-            $0.md {
+            md {
                 // Uniform margins on medium screens
-                $0.margins(EdgeInsets(all: 4))
+                margins(EdgeInsets(all: 4))
             }
-            $0.lg {
+            lg {
                 // Custom margins on large screens - centered with auto horizontal margins
-                $0.margins(EdgeInsets(vertical: 6, horizontal: 0), auto: true)
+                margins(EdgeInsets(vertical: 6, horizontal: 0), auto: true)
                 // Override width on large screens
-                $0.frame(maxWidth: 600)
+                frame(maxWidth: 600)
             }
         }
         .render()
