@@ -15,7 +15,9 @@ jobs:
   release:
     if: |
       startsWith(github.event.head_commit.message, 'feat') ||
-      startsWith(github.event.head_commit.message, 'fix')
+      startsWith(github.event.head_commit.message, 'Feature') ||
+      startsWith(github.event.head_commit.message, 'fix')  ||
+      startsWith(github.event.head_commit.message, 'Fixes')
     runs-on: macos-latest
     steps:
       - name: Checkout code
