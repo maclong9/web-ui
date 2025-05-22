@@ -22,7 +22,7 @@ struct Layout: HTML {
                     .transition(of: .colors)
                     .frame(width: 8, height: 8)
                     .flex(justify: .center, align: .center)
-                }.flex(align: .center).spacing(of: 2, along: .x)
+                }.flex(align: .center).spacing(of: 2, along: .vertical)
             }
             .flex(justify: .between, align: .center)
             .frame(width: .screen, maxWidth: .character(100))
@@ -40,7 +40,7 @@ struct Layout: HTML {
             .frame(maxWidth: .custom("99vw"))
             .frame(maxWidth: .character(76), on: .sm)
             .padding()
-            .spacing(of: 4, along: .y)
+            .spacing(of: 4, along: .horizontal)
 
             Footer {
                 Text {

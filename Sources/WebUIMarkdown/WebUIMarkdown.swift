@@ -308,10 +308,10 @@ public struct HtmlRenderer: MarkupWalker {
     public mutating func visitCodeBlock(_ codeBlock: CodeBlock) {
         let language = codeBlock.language ?? ""
         logger.trace("Rendering code block with language: \(language)")
-        
+
         // Simply extract the code content
         let code = escapeHTML(codeBlock.code)
-        
+
         // Build the basic HTML for the code block
         html += "<pre><code>"
         html += code
@@ -450,11 +450,10 @@ public struct HtmlRenderer: MarkupWalker {
             .replacingOccurrences(of: "\"", with: "&quot;")
             .replacingOccurrences(of: "'", with: "&#39;")
     }
-    
+
     /// Unescapes HTML span tags used for syntax highlighting while keeping other HTML escaping intact
     /// - Parameter string: The string containing escaped HTML span tags
     /// - Returns: A string with span tags unescaped but other HTML escaping intact
-
 
     /// Extracts a filename from the first line of the code block if it matches a comment convention for the language.
     ///
@@ -479,8 +478,13 @@ public struct HtmlRenderer: MarkupWalker {
             pattern = ""
         }
         if let regex = try? NSRegularExpression(pattern: pattern, options: []),
-           let match = regex.firstMatch(in: trimmed, options: [], range: NSRange(location: 0, length: trimmed.utf16.count)),
-           let range = Range(match.range(at: 1), in: trimmed) {
+            let match = regex.firstMatch(
+                in: trimmed,
+                options: [],
+                range: NSRange(location: 0, length: trimmed.utf16.count)
+            ),
+            let range = Range(match.range(at: 1), in: trimmed)
+        {
             filename = String(trimmed[range])
             let codeWithoutFilename = lines.dropFirst().joined(separator: "\n")
             return (filename, codeWithoutFilename)
@@ -488,7 +492,5 @@ public struct HtmlRenderer: MarkupWalker {
         return (nil, code)
     }
 
-
-    
     // Removed syntax highlighting functions
 }

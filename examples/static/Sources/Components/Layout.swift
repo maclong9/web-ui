@@ -22,7 +22,7 @@ struct Layout: HTML {
                             .font(size: .base, on: .md)
                             .font(decoration: .underline, on: .hover)
                     }
-                }.flex(align: .center).spacing(of: 2, along: .x)
+                }.flex(align: .center).spacing(of: 2, along: .vertical)
             }
             .flex(justify: .between, align: .center)
             .frame(width: .full, maxWidth: .character(86))
@@ -52,9 +52,9 @@ struct Layout: HTML {
         .frame(minHeight: .screen)
         .flex(direction: .column)
         .padding()
-        .responsive {
-            $0.md {
-                $0.font(size: .lg)
+        .on {
+            md {
+                font(size: .lg)
             }
         }
         .render()
