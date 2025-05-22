@@ -1,9 +1,0 @@
-Sources/
-    WebUI/
-        Components/
-            Layout.swift
-        Pages/
-            Home.swift
-            About.swift
-        Public/
-        Application.swift

@@ -31,6 +31,7 @@ assignees: ''
 - [ ] Extension to Existing Element
 - [ ] Performance Improvement
 - [ ] Documentation Enhancement
+- [ ] Developer Experience Enhancement
 - [ ] Other (please specify)
 
 ## Example Code

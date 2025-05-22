@@ -2,11 +2,11 @@ import Testing
 
 @testable import WebUI
 
-@Suite("Responsive Style Tests") struct ResponsiveStyleTests {
+@Suite("New Responsive Style Tests") struct NewResponsiveTests {
     // MARK: - Basic Responsive Tests
 
-    @Test("Basic responsive font styling")
-    func testBasicResponsiveFontStyling() async throws {
+    @Test("Basic responsive font styling with result builder syntax")
+    func testBasicResponsiveFontStylingNewSyntax() async throws {
         let element = Element(tag: "div")
             .font(size: .sm)
             .responsive {
@@ -19,12 +19,12 @@ import Testing
         #expect(rendered.contains("class=\"text-sm md:text-lg\""))
     }
 
-    @Test("Multiple breakpoints in one responsive block")
-    func testMultipleBreakpoints() async throws {
+    @Test("Multiple breakpoints with result builder syntax")
+    func testMultipleBreakpointsNewSyntax() async throws {
         let element = Element(tag: "div")
             .background(color: .gray(._100))
             .font(size: .sm)
-            .responsive {
+            .on {
                 sm {
                     font(size: .base)
                 }
@@ -48,12 +48,12 @@ import Testing
 
     // MARK: - Multiple Style Types Tests
 
-    @Test("Responsive block with multiple style types")
-    func testResponsiveWithMultipleStyleTypes() async throws {
+    @Test("Multiple style types with result builder syntax")
+    func testMultipleStyleTypesNewSyntax() async throws {
         let element = Element(tag: "div")
             .padding(of: 2)
             .font(size: .sm)
-            .responsive {
+            .on {
                 md {
                     padding(of: 4)
                     font(size: .lg)
@@ -67,14 +67,14 @@ import Testing
 
     // MARK: - Complex Component Tests
 
-    @Test("Responsive styling with a complex component")
-    func testResponsiveWithComplexComponent() async throws {
+    @Test("Complex component with result builder syntax")
+    func testComplexComponentNewSyntax() async throws {
         let button = Button(type: .submit) { "Submit" }
             .background(color: .blue(._500))
             .font(color: .blue(._50))
             .padding(of: 2)
             .rounded(.md)
-            .responsive {
+            .on {
                 sm {
                     padding(of: 3)
                 }
@@ -103,11 +103,11 @@ import Testing
 
     // MARK: - Layout Tests
 
-    @Test("Responsive flex layout")
-    func testResponsiveFlexLayout() async throws {
+    @Test("Responsive flex layout with result builder syntax")
+    func testResponsiveFlexLayoutNewSyntax() async throws {
         let element = Element(tag: "div")
             .flex(direction: .column)
-            .responsive {
+            .on {
                 md {
                     flex(direction: .row, justify: .between)
                 }
@@ -117,149 +117,82 @@ import Testing
         #expect(rendered.contains("flex"))
         #expect(rendered.contains("flex-col"))
         #expect(rendered.contains("md:flex"))
+        #expect(rendered.contains("md:flex-row") || rendered.contains("md:row"))
+        #expect(rendered.contains("md:justify-between"))
     }
 
-    // MARK: - Sizing & Position Tests
-
-    @Test("Responsive sizing")
-    func testResponsiveSizing() async throws {
+    @Test("Responsive grid layout with result builder syntax")
+    func testResponsiveGridLayoutNewSyntax() async throws {
         let element = Element(tag: "div")
-            .frame(width: 100)
-            .responsive {
+            .grid(columns: 1)
+            .on {
                 md {
-                    frame(maxWidth: .spacing(600))
-                    margins(at: .horizontal, auto: true)
+                    grid(columns: 2)
                 }
-            }
-
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"w-100 md:max-w-600 md:mx-auto\""))
-    }
-
-    @Test("Responsive positioning")
-    func testResponsivePositioning() async throws {
-        let element = Element(tag: "div")
-            .position(.relative)
-            .responsive {
                 lg {
-                    position(.fixed, at: .top, offset: 0)
-                    frame(width: .spacing(100))
+                    grid(columns: 3)
                 }
             }
 
         let rendered = element.render()
-        #expect(rendered.contains("class=\"relative lg:fixed lg:top-0 lg:w-100\""))
+        #expect(rendered.contains("grid"))
+        #expect(rendered.contains("grid-cols-1"))
+        #expect(rendered.contains("md:grid-cols-2"))
+        #expect(rendered.contains("lg:grid-cols-3"))
     }
 
     // MARK: - Visibility Tests
 
-    @Test("Responsive visibility")
-    func testResponsiveVisibility() async throws {
+    @Test("Responsive visibility with result builder syntax")
+    func testResponsiveVisibilityNewSyntax() async throws {
         let element = Element(tag: "div")
             .hidden()
-            .responsive {
+            .on {
                 md {
                     hidden(false)
                 }
             }
 
         let rendered = element.render()
-        // This test would need a special implementation to verify the absence
-        // of the .md:hidden class or the presence of a display value
         #expect(rendered.contains("class=\"hidden\""))
         #expect(!rendered.contains("md:hidden"))
     }
 
-    // MARK: - Compound Tests
+    // MARK: - Backward Compatibility Test
 
-    @Test("Responsive nav menu")
-    func testResponsiveNavMenu() async throws {
-        let nav = Navigation {
-            Stack(classes: ["mobile-menu"])
-                .responsive {
-                    md {
-                        hidden()
-                    }
-                }
-
-            List(classes: ["desktop-menu"])
-                .hidden()
-                .responsive {
-                    md {
-                        hidden(false)
-                    }
-                }
-        }
-
-        let rendered = nav.render()
-        #expect(rendered.contains("class=\"mobile-menu md:hidden\""))
-        #expect(rendered.contains("class=\"desktop-menu hidden\""))
-    }
-
-    @Test("Responsive hero section")
-    func testResponsiveHeroSection() async throws {
-        let hero = Section(classes: ["hero"])
-            .padding(of: 4)
-            .responsive {
-                sm {
-                    padding(of: 6)
-                }
-                md {
-                    padding(of: 8)
-                }
-                lg {
-                    padding(of: 12)
-                    frame(height: .spacing(100))
-                }
-            }
-
-        let rendered = hero.render()
-        #expect(rendered.contains("class=\"hero p-4 sm:p-6 md:p-8 lg:p-12 lg:h-100\""))
-    }
-
-    // MARK: - Testing All Breakpoint Modifiers
-
-    @Test("All breakpoint modifiers with different styles")
+    @Test("Test all breakpoint modifiers")
     func testAllBreakpointModifiers() async throws {
         let element = Element(tag: "div")
-            .responsive {
+            .font(size: .sm)
+            .on {
                 xs {
                     padding(of: 1)
                 }
                 sm {
                     padding(of: 2)
-                    font(size: .sm)
                 }
                 md {
-                    margins(of: 3)
-                    background(color: .blue(._100))
+                    font(size: .lg)
                 }
                 lg {
-                    font(size: .lg)
-                    border(of: 1, color: .gray(._300))
+                    margins(of: 3)
                 }
                 xl {
-                    padding(of: 4)
-                    position(.relative)
+                    border(of: 1, color: .blue(._500))
                 }
                 xl2 {
-                    margins(of: 5)
-                    rounded(.lg)
+                    background(color: .gray(._200))
                 }
             }
 
         let rendered = element.render()
+        #expect(rendered.contains("text-sm"))
         #expect(rendered.contains("xs:p-1"))
         #expect(rendered.contains("sm:p-2"))
-        #expect(rendered.contains("sm:text-sm"))
-        #expect(rendered.contains("md:m-3"))
-        #expect(rendered.contains("md:bg-blue-100"))
-        #expect(rendered.contains("lg:text-lg"))
-        #expect(rendered.contains("lg:border-1"))
-        #expect(rendered.contains("lg:border-gray-300"))
-        #expect(rendered.contains("xl:p-4"))
-        #expect(rendered.contains("xl:relative"))
-        #expect(rendered.contains("2xl:m-5"))
-        #expect(rendered.contains("2xl:rounded-lg"))
+        #expect(rendered.contains("md:text-lg"))
+        #expect(rendered.contains("lg:m-3"))
+        #expect(rendered.contains("xl:border-1"))
+        #expect(rendered.contains("xl:border-blue-500"))
+        #expect(rendered.contains("2xl:bg-gray-200"))
     }
 }

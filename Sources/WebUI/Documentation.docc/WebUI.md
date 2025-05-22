@@ -62,13 +62,12 @@ With WebUI, you can:
 - ``BorderStyle``
 - ``Modifier``
 - ``Edge``
-- ``EdgeInsets``
 - ``ResponsiveBuilder``
 
 ### Responsive Design
 
 - <doc:responsive-styling>
-- ``Element/responsive(_:)``
+- ``Element/on(_:)``
 - ``ResponsiveBuilder``
 
 ### Tutorials

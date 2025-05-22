@@ -29,11 +29,11 @@ struct HomeView: HTML {
                         "Read Documentation"
                     }
                     .button(primary: true)
-                }.spacing(of: 2, along: .x).margins(at: .top)
+                }.spacing(of: 2, along: .vertical).margins(at: .top)
             }
             .frame(maxWidth: .fraction(3, 4))
             .margins(at: .horizontal, auto: true)
-            .spacing(along: .y)
+            .spacing(along: .horizontal)
 
             // Information Section
             Stack {
@@ -53,13 +53,11 @@ struct HomeView: HTML {
             Form(action: "/", method: .post) {
                 Label(for: "name") { "Enter your name" }.font(weight: .bold)
                 Input(name: "name", type: .text, placeholder: "Your name...")
-                    .border(EdgeInsets(all: 1))
-                    .padding(EdgeInsets(vertical: 2, horizontal: 4))
                     .rounded(.lg)
                 Button(type: .submit) { "Enter" }.button(primary: true)
             }
             .flex(direction: .column)
-            .spacing(of: 2, along: .y)
+            .spacing(of: 2, along: .horizontal)
             .frame(maxWidth: .fraction(3, 4))
             .margins(at: .horizontal, auto: true)
             if let greeting {
