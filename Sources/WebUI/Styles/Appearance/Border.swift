@@ -277,11 +277,11 @@ extension Element {
     /// .shadow(of: .xl, on: .hover)
     /// ```
     public func shadow(
-        of size: ShadowSize,
         color: Color? = nil,
+        radius: ShadowSize,
         on modifiers: Modifier...
     ) -> Element {
-        var baseClasses: [String] = ["shadow-\(size.rawValue)"]
+        var baseClasses: [String] = ["shadow-\(radius.rawValue)"]
         if let colorValue = color?.rawValue {
             baseClasses.append("shadow-\(colorValue)")
         }
