@@ -309,9 +309,6 @@ public struct HtmlRenderer: MarkupWalker {
         let language = codeBlock.language ?? ""
         logger.trace("Rendering code block with language: \(language)")
         let (filename, codeWithoutFilename) = extractFilename(from: codeBlock.code, language: language)
-
-        // Escape HTML in the code to prevent injection
-        let escapedCode = escapeHTML(codeWithoutFilename)
         
         // Count the number of lines for line numbers
         let lines = codeWithoutFilename.components(separatedBy: .newlines)
@@ -339,16 +336,14 @@ public struct HtmlRenderer: MarkupWalker {
             html += "<pre>"
         }
         
-        // Add the code with basic syntax highlighting
+        // Add the code with syntax highlighting
         html += "<code class=\"language-\(language)\">"
         
-        // For now, we'll use a very simple approach to avoid HTML escaping issues
-        // Just display the escaped code without syntax highlighting
         if enableSyntaxHighlighting {
-            // In a future version, implement proper syntax highlighting
-            html += escapedCode
+            html += applySyntaxHighlighting(codeWithoutFilename, language: language)
         } else {
-            html += escapedCode
+            // Escape HTML in the code to prevent injection if not highlighting
+            html += escapeHTML(codeWithoutFilename)
         }
         
         html += "</code></pre>"
@@ -525,25 +520,18 @@ public struct HtmlRenderer: MarkupWalker {
         return (nil, code)
     }
 
-    /// Applies basic regex-based syntax highlighting for sh, swift, and yml.
-    ///
-    /// - Parameters:
-    ///   - code: The code string.
-    ///   - language: The language identifier.
-    /// - Returns: The HTML string with syntax highlighting.
-    /// This function will be implemented in a future version
-    /// to provide proper syntax highlighting for Swift code
-    private func applySwiftHighlighting(_ code: String) -> String {
-        // Placeholder for future implementation
-        return code
-    }
+
     
-    /// For future implementation of proper syntax highlighting
-    /// Currently, this is a placeholder that will be implemented in a future version
+    /// Applies syntax highlighting to the given code in the given language.
+    /// Apply syntax highlighting based on the language type
     private func applySyntaxHighlighting(_ code: String, language: String) -> String {
-        // This is a placeholder for future syntax highlighting implementation
-        // Currently, we just return the code as-is to avoid HTML escaping issues
-        return code
+        switch language.lowercased() {
+        case "swift": return highlightSwift(code)
+        case "sh", "bash", "shell": return highlightShell(code)
+        case "js", "javascript": return applyJavaScriptHighlighting(code)
+        case "yaml", "yml": return highlightYAML(code)
+        default: return escapeHTML(code)
+        }
     }
 
     /// Wraps code lines in spans and generates line numbers HTML.
@@ -557,11 +545,68 @@ public struct HtmlRenderer: MarkupWalker {
         return (linesHTML, numbersHTML)
     }
     
-    /// This function will be implemented in a future version
-    /// to provide proper syntax highlighting for JavaScript code
+    /// Applies JavaScript syntax highlighting to the code.
+    ///
+    /// - Parameter code: The code to highlight.
+    /// - Returns: The HTML string with syntax highlighting.
     private func applyJavaScriptHighlighting(_ code: String) -> String {
-        // Placeholder for future implementation
-        return code
+        let keywords = ["var", "let", "const", "function", "class", "if", "else", "for", "while", "do", "switch", "case", "default", "break", "continue", "return", "try", "catch", "finally", "throw", "new", "this", "super", "extends", "static", "import", "export", "from", "as", "async", "await", "yield"]
+        let types = ["String", "Number", "Boolean", "Object", "Array", "Symbol", "undefined", "null", "true", "false"]
+        
+        var highlighted = escapeHTML(code)
+        
+        // Highlight keywords
+        for keyword in keywords {
+            let pattern = "\\b\(keyword)\\b"
+            highlighted = highlighted.replacingOccurrences(
+                of: pattern,
+                with: "<span class=\"hl-keyword\">\(keyword)</span>",
+                options: [.regularExpression]
+            )
+        }
+        
+        // Highlight types
+        for type in types {
+            let pattern = "\\b\(type)\\b"
+            highlighted = highlighted.replacingOccurrences(
+                of: pattern,
+                with: "<span class=\"hl-type\">\(type)</span>",
+                options: [.regularExpression]
+            )
+        }
+        
+        // Highlight string literals (handle both single and double quotes)
+        let doubleQuotePattern = "&quot;[^&quot;\\\\]*(\\\\.[^&quot;\\\\]*)*&quot;"
+        highlighted = highlighted.replacingOccurrences(
+            of: doubleQuotePattern,
+            with: "<span class=\"hl-string\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        let singleQuotePattern = "&#39;[^&#39;\\\\]*(\\\\.[^&#39;\\\\]*)*&#39;"
+        highlighted = highlighted.replacingOccurrences(
+            of: singleQuotePattern,
+            with: "<span class=\"hl-string\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight numbers
+        let numberPattern = "\\b\\d+(\\.\\d+)?\\b"
+        highlighted = highlighted.replacingOccurrences(
+            of: numberPattern,
+            with: "<span class=\"hl-number\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight comments
+        let lineCommentPattern = "//.*?$"
+        highlighted = highlighted.replacingOccurrences(
+            of: lineCommentPattern,
+            with: "<span class=\"hl-comment\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        return highlighted
     }
 
     /// Highlights shell script code.
@@ -571,31 +616,114 @@ public struct HtmlRenderer: MarkupWalker {
     public func highlightShell(_ code: String) -> String {
         let keywords = ["if", "then", "else", "fi", "for", "in", "do", "done", "while", "case", "esac", "function", "echo", "exit"]
         let literals = ["true", "false", "null"]
-        let keywordPattern = "\\b(" + keywords.joined(separator: "|") + ")\\b"
-        let literalPattern = "\\b(" + literals.joined(separator: "|") + ")\\b"
-        let variablePattern = #"(\$\w+|\$\{[^}]+\})"#
-        let commentPattern = #"(?m)(#.*$)"#
-        let numberPattern = #"(?<![\w.])(\d+(\.\d+)?)(?![\w.])"#
-        let operatorPattern = #"(\|\||&&|==|!=|<=|>=|<|>|\||&|=|\+|-|\*|/|%)"#
-        var html = code // Code is already escaped in highlightCode
-        html = html.replacingOccurrences(of: commentPattern, with: "<span class=\"hl-comment\">$1</span>", options: .regularExpression)
-        html = html.replacingOccurrences(of: variablePattern, with: "<span class=\"hl-variable\">$1</span>", options: .regularExpression)
-        html = html.replacingOccurrences(of: keywordPattern, with: "<span class=\"hl-keyword\">$1</span>", options: .regularExpression)
-        html = html.replacingOccurrences(of: literalPattern, with: "<span class=\"hl-literal\">$1</span>", options: .regularExpression)
-        html = html.replacingOccurrences(of: numberPattern, with: "<span class=\"hl-number\">$1</span>", options: .regularExpression)
-        html = html.replacingOccurrences(of: operatorPattern, with: "<span class=\"hl-operator\">$1</span>", options: .regularExpression)
-        return html
+        let commands = ["cd", "pwd", "ls", "mkdir", "rm", "cp", "mv", "cat", "grep", "find", "sed", "awk", "curl", "wget", "sudo", "chmod", "chown", "export", "source", "touch", "git", "ssh", "tar", "unzip"]
+        
+        var highlighted = escapeHTML(code)
+        
+        // Highlight keywords
+        for keyword in keywords {
+            let pattern = "\\b\(keyword)\\b"
+            highlighted = highlighted.replacingOccurrences(
+                of: pattern,
+                with: "<span class=\"hl-keyword\">\(keyword)</span>",
+                options: [.regularExpression]
+            )
+        }
+        
+        // Highlight literals
+        for literal in literals {
+            let pattern = "\\b\(literal)\\b"
+            highlighted = highlighted.replacingOccurrences(
+                of: pattern,
+                with: "<span class=\"hl-literal\">\(literal)</span>",
+                options: [.regularExpression]
+            )
+        }
+        
+        // Highlight commands
+        for command in commands {
+            let pattern = "\\b\(command)\\b"
+            highlighted = highlighted.replacingOccurrences(
+                of: pattern,
+                with: "<span class=\"hl-command\">\(command)</span>",
+                options: [.regularExpression]
+            )
+        }
+        
+        // Highlight variables
+        let variablePattern = "\\$\\{?[A-Za-z0-9_]+\\}?"
+        highlighted = highlighted.replacingOccurrences(
+            of: variablePattern,
+            with: "<span class=\"hl-variable\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight comments
+        let commentPattern = "#.*?$"
+        highlighted = highlighted.replacingOccurrences(
+            of: commentPattern,
+            with: "<span class=\"hl-comment\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        return highlighted
     }
 
     /// Highlights Swift code.
     ///
     /// - Parameter code: The code string.
     /// - Returns: The HTML string with Swift syntax highlighting.
-    /// Highlights Swift code
-    /// This will be implemented properly in a future version
     public func highlightSwift(_ code: String) -> String {
-        // Return the code as-is for now to avoid HTML escaping issues
-        return code
+        let keywords = ["class", "struct", "enum", "protocol", "extension", "func", "var", "let", "if", "else", "guard", "return", "for", "while", "in", "switch", "case", "break", "default", "where", "self", "init", "deinit", "get", "set", "public", "private", "internal", "fileprivate", "open", "import", "typealias", "associatedtype", "try", "catch", "throws", "rethrows", "throw", "async", "await", "actor"]
+        let types = ["String", "Int", "Double", "Float", "Bool", "Character", "Array", "Dictionary", "Set", "Optional", "Any", "AnyObject", "Void", "Never", "Result", "Date", "URL", "Data", "Error"]
+        
+        var highlighted = escapeHTML(code)
+        
+        // Highlight keywords
+        for keyword in keywords {
+            let pattern = "\\b\(keyword)\\b"
+            highlighted = highlighted.replacingOccurrences(
+                of: pattern,
+                with: "<span class=\"hl-keyword\">\(keyword)</span>",
+                options: [.regularExpression]
+            )
+        }
+        
+        // Highlight types
+        for type in types {
+            let pattern = "\\b\(type)\\b"
+            highlighted = highlighted.replacingOccurrences(
+                of: pattern,
+                with: "<span class=\"hl-type\">\(type)</span>",
+                options: [.regularExpression]
+            )
+        }
+        
+        // Highlight string literals
+        let stringPattern = "&quot;[^&quot;\\\\]*(\\\\.[^&quot;\\\\]*)*&quot;"
+        highlighted = highlighted.replacingOccurrences(
+            of: stringPattern,
+            with: "<span class=\"hl-string\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight numbers
+        let numberPattern = "\\b\\d+(\\.\\d+)?\\b"
+        highlighted = highlighted.replacingOccurrences(
+            of: numberPattern,
+            with: "<span class=\"hl-number\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight comments
+        let commentPattern = "//.*?$"
+        highlighted = highlighted.replacingOccurrences(
+            of: commentPattern,
+            with: "<span class=\"hl-comment\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        return highlighted
     }
 
     /// Highlights YAML code.
@@ -603,17 +731,55 @@ public struct HtmlRenderer: MarkupWalker {
     /// - Parameter code: The code string.
     /// - Returns: The HTML string with YAML syntax highlighting.
     public func highlightYAML(_ code: String) -> String {
-        let keyPattern = #"(?m)^(\s*[\w\-\.]+:)"#
-        let stringPattern = #"("[^"]*"|'[^']*')"#
-        let commentPattern = #"(?m)(#.*$)"#
-        let numberPattern = #"(?<![\w.])(\d+(\.\d+)?)(?![\w.])"#
-        let literalPattern = #"(?<![\w.])(\btrue\b|\bfalse\b|\bnull\b)(?![\w.])"#
-        var html = code // Code is already escaped in highlightCode
-        html = html.replacingOccurrences(of: commentPattern, with: "<span class=\"hl-comment\">$1</span>", options: .regularExpression)
-        html = html.replacingOccurrences(of: stringPattern, with: "<span class=\"hl-string\">$1</span>", options: .regularExpression)
-        html = html.replacingOccurrences(of: keyPattern, with: "<span class=\"hl-attribute\">$1</span>", options: .regularExpression)
-        html = html.replacingOccurrences(of: numberPattern, with: "<span class=\"hl-number\">$1</span>", options: .regularExpression)
-        html = html.replacingOccurrences(of: literalPattern, with: "<span class=\"hl-literal\">$1</span>", options: .regularExpression)
-        return html
+        var highlighted = escapeHTML(code)
+        
+        // Highlight keys
+        let keyPattern = "^\\s*([\\w\\-\\.]+):"
+        highlighted = highlighted.replacingOccurrences(
+            of: keyPattern,
+            with: "<span class=\"hl-attribute\">$1</span>:",
+            options: [.regularExpression]
+        )
+        
+        // Highlight string literals
+        let doubleQuotePattern = "&quot;[^&quot;\\\\]*(\\\\.[^&quot;\\\\]*)*&quot;"
+        highlighted = highlighted.replacingOccurrences(
+            of: doubleQuotePattern,
+            with: "<span class=\"hl-string\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        let singleQuotePattern = "&#39;[^&#39;\\\\]*(\\\\.[^&#39;\\\\]*)*&#39;"
+        highlighted = highlighted.replacingOccurrences(
+            of: singleQuotePattern,
+            with: "<span class=\"hl-string\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight numbers
+        let numberPattern = "\\b\\d+(\\.\\d+)?\\b"
+        highlighted = highlighted.replacingOccurrences(
+            of: numberPattern,
+            with: "<span class=\"hl-number\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight booleans and null
+        let literalPattern = "\\b(true|false|null)\\b"
+        highlighted = highlighted.replacingOccurrences(
+            of: literalPattern,
+            with: "<span class=\"hl-literal\">$0</span>",
+            options: [.regularExpression, .caseInsensitive]
+        )
+        
+        // Highlight comments
+        let commentPattern = "#.*?$"
+        highlighted = highlighted.replacingOccurrences(
+            of: commentPattern,
+            with: "<span class=\"hl-comment\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        return highlighted
     }
 }
