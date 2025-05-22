@@ -273,8 +273,8 @@ extension Element {
     ///   Heading(.title) { "Card Title" }
     ///   Text { "Card content" }
     /// }
-    /// .shadow(of: .md)
-    /// .shadow(of: .xl, on: .hover)
+    /// .shadow(radius: .md)
+    /// .shadow(color: .gray(._500), radius: .xl, on: .hover)
     /// ```
     public func shadow(
         color: Color? = nil,
