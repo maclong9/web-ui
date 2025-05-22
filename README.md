@@ -40,6 +40,7 @@
 - [Development](#development)
   - [Quick Reference](#quick-reference)
 - [Contributing](#contributing)
+- [Funding](#funding)
 - [Support](#support)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
@@ -139,6 +140,14 @@ learn, inspire, and create. Any contributions you make will benefit everybody
 else and are greatly appreciated.
 
 Please see our [CONTRIBUTING.md](CONTRIBUTING.md) document for detailed guidelines on how to contribute to this project. All contributors are expected to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
+
+## Funding
+
+WebUI is an independent open-source project that relies on community support. If you find it useful, please consider supporting its development:
+
+- [GitHub Sponsors](https://github.com/sponsors/maclong9) - Direct support for maintainers
+
+Your support helps ensure WebUI remains actively maintained and continuously improved. Organizations using WebUI in production are especially encouraged to contribute financially to ensure the project's long-term sustainability.
 
 ## Support
 
