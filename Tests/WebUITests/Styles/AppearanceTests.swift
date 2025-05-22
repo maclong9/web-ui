@@ -116,6 +116,41 @@ import Testing
         #expect(rendered.contains("class=\"focus:outline-dashed\""))
     }
 
+<<<<<<< HEAD
+=======
+    // MARK: - Shadow Tests
+
+    @Test("Shadow with size")
+    func testShadowWithSize() async throws {
+        let element = Element(tag: "div").shadow(radius: .lg)
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"shadow-lg\""))
+    }
+
+    @Test("Shadow with color and modifier")
+    func testShadowWithColorAndModifier() async throws {
+        let element = Element(tag: "div").shadow(color: .gray(._500), radius: .md, on: .hover)
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"hover:shadow-md hover:shadow-gray-500\""))
+    }
+
+    // MARK: - Ring Tests
+
+    @Test("Ring with default size")
+    func testRingWithDefaultSize() async throws {
+        let element = Element(tag: "div").ring()
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"ring-1\""))
+    }
+
+    @Test("Ring with color and modifier")
+    func testRingWithColorAndModifier() async throws {
+        let element = Element(tag: "div").ring(of: 2, color: .pink(._400), on: .focus)
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"focus:ring-2 focus:ring-pink-400\""))
+    }
+
+>>>>>>> origin/development
     // MARK: - Flex Tests
 
     @Test("Flex with direction and justify")
@@ -192,6 +227,10 @@ import Testing
         let element = Element(tag: "div")
             .background(color: .blue(._600))
             .border(of: 1, style: .solid, color: .blue(._800))
+<<<<<<< HEAD
+=======
+            .shadow(radius: .md)
+>>>>>>> origin/development
             .opacity(90, on: .hover)
             .flex(direction: .row, justify: .center)
         let rendered = element.render()
