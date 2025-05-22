@@ -8,7 +8,9 @@ on:
 
 jobs:
   publish-docs:
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, 'docs:')
+    if: github.event_name == 'workflow_dispatch' || 
+      contains(github.event.head_commit.message, 'docs:') ||
+      contains(github.event.head_commit.message, 'Documentation')
     runs-on: macos-latest
 
     steps:
