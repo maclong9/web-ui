@@ -628,7 +628,7 @@ public struct HtmlRenderer: MarkupWalker {
         highlighted = highlighted.replacingOccurrences(
             of: commentPattern,
             with: "<span class=\"hl-comment\">$0</span>",
-            options: [.regularExpression, .anchorsMatchLines]
+            options: [.regularExpression]
         )
         
         // Highlight strings (single and double quotes)
@@ -661,7 +661,7 @@ public struct HtmlRenderer: MarkupWalker {
             highlighted = highlighted.replacingOccurrences(
                 of: pattern,
                 with: "$1<span class=\"hl-command\">$2</span>",
-                options: [.regularExpression, .anchorsMatchLines]
+                options: [.regularExpression]
             )
         }
         
@@ -703,7 +703,7 @@ public struct HtmlRenderer: MarkupWalker {
         highlighted = highlighted.replacingOccurrences(
             of: commentPattern,
             with: "<span class=\"hl-comment\">$0</span>",
-            options: [.regularExpression, .anchorsMatchLines]
+            options: [.regularExpression]
         )
         
         // Highlight string literals with better regex
