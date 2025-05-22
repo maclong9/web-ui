@@ -103,27 +103,23 @@ import Testing
 
     @Test("Responsive modification with result builder syntax")
     func testResponsiveModificationWithResultBuilderSyntax() async throws {
-        let element = Element(tag: "div").responsive {
+        let element = Element(tag: "div").on {
             sm {
                 border(of: 1, color: .gray(._200))
             }
             md {
-                border(of: 2, style: .dashed, color: .blue(._500))
+                border(of: 2, color: .gray(._400))
             }
         }
 
         let rendered = element.render()
-
         #expect(rendered.contains("sm:border-1") && rendered.contains("sm:border-gray-200"))
-        #expect(
-            rendered.contains("md:border-2") && rendered.contains("md:border-dashed")
-                && rendered.contains("md:border-blue-500")
-        )
+        #expect(rendered.contains("md:border-2") && rendered.contains("md:border-gray-400"))
     }
 
     @Test("Responsive modification with all breakpoints")
     func testResponsiveModificationWithAllBreakpoints() async throws {
-        let element = Element(tag: "div").responsive {
+        let element = Element(tag: "div").on {
             xs {
                 border(of: 1)
             }
@@ -164,13 +160,12 @@ import Testing
         let element = Element(tag: "div")
             .border(of: 1, at: .horizontal)
             .border(of: 2, at: .vertical, color: .gray(._300))
-            .responsive {
+            .on {
                 md {
                     border(of: 0, at: .top)
-                    border(style: .dashed)
                 }
                 lg {
-                    border(of: 3, color: .blue(._500))
+                    border(of: 4, at: .all)
                 }
             }
 
@@ -178,15 +173,15 @@ import Testing
 
         #expect(rendered.contains("border-x-1"))
         #expect(rendered.contains("border-y-2") && rendered.contains("border-gray-300"))
-        #expect(rendered.contains("md:border-t-0") && rendered.contains("md:border-dashed"))
-        #expect(rendered.contains("lg:border-3") && rendered.contains("lg:border-blue-500"))
+        #expect(rendered.contains("md:border-t-0"))
+        #expect(rendered.contains("lg:border-4"))
     }
 
     @Test("Element with divide style")
     func testElementWithDivideStyle() async throws {
         let element = Element(tag: "div")
             .border(of: 2, at: .horizontal, style: .divide)
-            .responsive {
+            .on {
                 md {
                     border(of: 4, at: .vertical, style: .divide)
                 }

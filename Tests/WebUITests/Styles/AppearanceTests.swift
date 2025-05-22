@@ -175,16 +175,16 @@ import Testing
 
     @Test("Grid with columns and justify")
     func testGridWithColumnsAndJustify() async throws {
-        let element = Element(tag: "div").grid(justify: .center, columns: 3)
+        let element = Element(tag: "div").grid(columns: 3).flex(justify: .center)
         let rendered = element.render()
-        #expect(rendered.contains("class=\"grid justify-center grid-cols-3\""))
+        #expect(rendered.contains("class=\"grid grid-cols-3 flex justify-center\""))
     }
 
     @Test("Grid with align and modifier")
     func testGridWithAlignAndModifier() async throws {
-        let element = Element(tag: "div").grid(align: .stretch, on: .lg)
+        let element = Element(tag: "div").grid(on: .lg).flex(align: .stretch, on: .lg)
         let rendered = element.render()
-        #expect(rendered.contains("class=\"lg:grid lg:items-stretch\""))
+        #expect(rendered.contains("class=\"lg:grid lg:flex lg:items-stretch\""))
     }
 
     // MARK: - Hidden Tests
