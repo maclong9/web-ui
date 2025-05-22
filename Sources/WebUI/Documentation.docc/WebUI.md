@@ -78,7 +78,3 @@ With WebUI, you can:
 ### Examples
 
 - [Portfolio](https://github.com/maclong9/portfolio) - A personal portfolio website built with WebUI
-
-### Project
-
-- <doc:funding>

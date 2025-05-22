@@ -146,10 +146,6 @@ Please see our [CONTRIBUTING.md](CONTRIBUTING.md) document for detailed guidelin
 WebUI is an independent open-source project that relies on community support. If you find it useful, please consider supporting its development:
 
 - [GitHub Sponsors](https://github.com/sponsors/maclong9) - Direct support for maintainers
-- [Open Collective](https://opencollective.com/web-ui) - Transparent fund management for the community
-- [Ko-fi](https://ko-fi.com/maclong9) - One-time donations
-- [Patreon](https://patreon.com/maclong9) - Recurring monthly support
-- [Buy Me a Coffee](https://www.buymeacoffee.com/maclong9) - Quick one-time support
 
 Your support helps ensure WebUI remains actively maintained and continuously improved. Organizations using WebUI in production are especially encouraged to contribute financially to ensure the project's long-term sustainability.
 
