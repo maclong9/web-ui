@@ -278,7 +278,7 @@ extension Element {
     /// ```
     public func shadow(
         color: Color? = nil,
-        radius: ShadowSize,
+        radius: ShadowSize = .md,
         on modifiers: Modifier...
     ) -> Element {
         var baseClasses: [String] = ["shadow-\(radius.rawValue)"]
