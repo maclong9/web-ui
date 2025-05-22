@@ -22,6 +22,7 @@ With WebUI, you can:
 
 - <doc:getting-started>
 - <doc:responsive-styling>
+- <doc:funding>
 
 ### Tutorials
 
