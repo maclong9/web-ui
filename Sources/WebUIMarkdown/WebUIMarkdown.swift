@@ -310,9 +310,10 @@ public struct HtmlRenderer: MarkupWalker {
         logger.trace("Rendering code block with language: \(language)")
         let (filename, codeWithoutFilename) = extractFilename(from: codeBlock.code, language: language)
         
-        // Count the number of lines for line numbers
+        // Count the number of lines for line numbers - ensure we count the right number of lines
+        // Handle empty lines at the end properly
         let lines = codeWithoutFilename.components(separatedBy: .newlines)
-        let lineCount = lines.count
+        let lineCount = codeWithoutFilename.isEmpty ? 0 : (codeWithoutFilename.hasSuffix("\n") ? lines.count - 1 : lines.count)
         
         // Build the HTML for the code block
         html += "<div class=\"code-block-wrapper\">"
@@ -328,8 +329,10 @@ public struct HtmlRenderer: MarkupWalker {
         }
         
         if showLineNumbers {
-            // Generate line numbers HTML
-            let lineNumbersHTML = (1...lineCount).map { "<span>\($0)</span>" }.joined(separator: "\n")
+            // Generate line numbers HTML - ensure we have the right count
+            let lineNumbersHTML = lineCount > 0 
+                ? (1...lineCount).map { "<span>\($0)</span>" }.joined(separator: "\n")
+                : "<span>1</span>" // At least one line number for empty blocks
             
             html += "<pre class=\"line-numbers\"><div class=\"line-numbers-container\">\(lineNumbersHTML)</div>"
         } else {
@@ -616,9 +619,51 @@ public struct HtmlRenderer: MarkupWalker {
     public func highlightShell(_ code: String) -> String {
         let keywords = ["if", "then", "else", "fi", "for", "in", "do", "done", "while", "case", "esac", "function", "echo", "exit"]
         let literals = ["true", "false", "null"]
-        let commands = ["cd", "pwd", "ls", "mkdir", "rm", "cp", "mv", "cat", "grep", "find", "sed", "awk", "curl", "wget", "sudo", "chmod", "chown", "export", "source", "touch", "git", "ssh", "tar", "unzip"]
+        let commands = ["cd", "pwd", "ls", "mkdir", "rm", "cp", "mv", "cat", "grep", "find", "sed", "awk", "curl", "wget", "sudo", "chmod", "chown", "export", "source", "touch", "git", "ssh", "tar", "unzip", "ssh-keygen", "ssh-add", "eval", "printf", "cat", "pbcopy"]
         
         var highlighted = escapeHTML(code)
+        
+        // First handle comments to avoid highlighting inside them
+        let commentPattern = "#.*?$"
+        highlighted = highlighted.replacingOccurrences(
+            of: commentPattern,
+            with: "<span class=\"hl-comment\">$0</span>",
+            options: [.regularExpression, .anchorsMatchLines]
+        )
+        
+        // Highlight strings (single and double quotes)
+        let doubleQuotePattern = "(&quot;)(?:[^&quot;\\\\]|\\\\.|\\\\\\n)*?(&quot;)"
+        highlighted = highlighted.replacingOccurrences(
+            of: doubleQuotePattern,
+            with: "<span class=\"hl-string\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        let singleQuotePattern = "(&apos;)(?:[^&apos;\\\\]|\\\\.|\\\\\\n)*?(&apos;)"
+        highlighted = highlighted.replacingOccurrences(
+            of: singleQuotePattern,
+            with: "<span class=\"hl-string\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight variables (do this before commands to avoid issues)
+        let variablePattern = "\\$\\{?[A-Za-z0-9_]+\\}?"
+        highlighted = highlighted.replacingOccurrences(
+            of: variablePattern,
+            with: "<span class=\"hl-variable\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight commands - only at beginning of lines or after specific shell operators
+        for command in commands {
+            // Match command only at start of line or after pipe, semicolon, ampersand, or parentheses
+            let pattern = "(^|\\s|;|\\||&|\\(|\\`|\\$\\()\\s*\\b(\(command))\\b"
+            highlighted = highlighted.replacingOccurrences(
+                of: pattern,
+                with: "$1<span class=\"hl-command\">$2</span>",
+                options: [.regularExpression, .anchorsMatchLines]
+            )
+        }
         
         // Highlight keywords
         for keyword in keywords {
@@ -640,32 +685,6 @@ public struct HtmlRenderer: MarkupWalker {
             )
         }
         
-        // Highlight commands
-        for command in commands {
-            let pattern = "\\b\(command)\\b"
-            highlighted = highlighted.replacingOccurrences(
-                of: pattern,
-                with: "<span class=\"hl-command\">\(command)</span>",
-                options: [.regularExpression]
-            )
-        }
-        
-        // Highlight variables
-        let variablePattern = "\\$\\{?[A-Za-z0-9_]+\\}?"
-        highlighted = highlighted.replacingOccurrences(
-            of: variablePattern,
-            with: "<span class=\"hl-variable\">$0</span>",
-            options: [.regularExpression]
-        )
-        
-        // Highlight comments
-        let commentPattern = "#.*?$"
-        highlighted = highlighted.replacingOccurrences(
-            of: commentPattern,
-            with: "<span class=\"hl-comment\">$0</span>",
-            options: [.regularExpression]
-        )
-        
         return highlighted
     }
 
@@ -674,10 +693,34 @@ public struct HtmlRenderer: MarkupWalker {
     /// - Parameter code: The code string.
     /// - Returns: The HTML string with Swift syntax highlighting.
     public func highlightSwift(_ code: String) -> String {
-        let keywords = ["class", "struct", "enum", "protocol", "extension", "func", "var", "let", "if", "else", "guard", "return", "for", "while", "in", "switch", "case", "break", "default", "where", "self", "init", "deinit", "get", "set", "public", "private", "internal", "fileprivate", "open", "import", "typealias", "associatedtype", "try", "catch", "throws", "rethrows", "throw", "async", "await", "actor"]
+        let keywords = ["class", "struct", "enum", "protocol", "extension", "func", "var", "let", "if", "else", "guard", "return", "for", "while", "in", "switch", "case", "break", "default", "where", "self", "init", "deinit", "get", "set", "public", "private", "internal", "fileprivate", "open", "import", "typealias", "associatedtype", "try", "catch", "throws", "rethrows", "throw", "async", "await", "actor", "main"]
         let types = ["String", "Int", "Double", "Float", "Bool", "Character", "Array", "Dictionary", "Set", "Optional", "Any", "AnyObject", "Void", "Never", "Result", "Date", "URL", "Data", "Error"]
         
         var highlighted = escapeHTML(code)
+        
+        // Process comments first to avoid highlighting inside comments
+        let commentPattern = "//.*?$"
+        highlighted = highlighted.replacingOccurrences(
+            of: commentPattern,
+            with: "<span class=\"hl-comment\">$0</span>",
+            options: [.regularExpression, .anchorsMatchLines]
+        )
+        
+        // Highlight string literals with better regex
+        let stringPattern = "(&quot;)(?:[^&quot;\\\\]|\\\\.|\\\\\\n)*?(&quot;)"
+        highlighted = highlighted.replacingOccurrences(
+            of: stringPattern,
+            with: "<span class=\"hl-string\">$0</span>",
+            options: [.regularExpression]
+        )
+        
+        // Highlight numbers
+        let numberPattern = "\\b\\d+(\\.\\d+)?\\b"
+        highlighted = highlighted.replacingOccurrences(
+            of: numberPattern,
+            with: "<span class=\"hl-number\">$0</span>",
+            options: [.regularExpression]
+        )
         
         // Highlight keywords
         for keyword in keywords {
@@ -699,27 +742,27 @@ public struct HtmlRenderer: MarkupWalker {
             )
         }
         
-        // Highlight string literals
-        let stringPattern = "&quot;[^&quot;\\\\]*(\\\\.[^&quot;\\\\]*)*&quot;"
+        // Highlight symbol names (after struct, class, enum declarations)
+        let symbolPattern = "(?<=\\b(?:struct|class|enum|protocol|typealias|actor)\\s+)\\b([A-Za-z][A-Za-z0-9_]*)\\b"
         highlighted = highlighted.replacingOccurrences(
-            of: stringPattern,
-            with: "<span class=\"hl-string\">$0</span>",
+            of: symbolPattern,
+            with: "<span class=\"hl-type\">$1</span>",
             options: [.regularExpression]
         )
         
-        // Highlight numbers
-        let numberPattern = "\\b\\d+(\\.\\d+)?\\b"
+        // Highlight function names
+        let functionPattern = "(?<=\\bfunc\\s+)\\b([A-Za-z][A-Za-z0-9_]*)\\b"
         highlighted = highlighted.replacingOccurrences(
-            of: numberPattern,
-            with: "<span class=\"hl-number\">$0</span>",
+            of: functionPattern,
+            with: "<span class=\"hl-function\">$1</span>",
             options: [.regularExpression]
         )
         
-        // Highlight comments
-        let commentPattern = "//.*?$"
+        // Highlight conformance types (after : in declarations)
+        let conformancePattern = "(?<=:\\s*)([A-Za-z][A-Za-z0-9_]*(?:\\s*,\\s*[A-Za-z][A-Za-z0-9_]*)*)"
         highlighted = highlighted.replacingOccurrences(
-            of: commentPattern,
-            with: "<span class=\"hl-comment\">$0</span>",
+            of: conformancePattern,
+            with: "<span class=\"hl-type\">$1</span>",
             options: [.regularExpression]
         )
         
