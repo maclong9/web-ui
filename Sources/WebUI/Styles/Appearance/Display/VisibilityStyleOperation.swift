@@ -9,14 +9,14 @@ public struct VisibilityStyleOperation: StyleOperation, @unchecked Sendable {
     public struct Parameters {
         /// Whether the element should be hidden
         public let isHidden: Bool
-        
+
         /// Creates parameters for visibility styling
         ///
         /// - Parameter isHidden: Whether the element should be hidden
         public init(isHidden: Bool = true) {
             self.isHidden = isHidden
         }
-        
+
         /// Creates parameters from a StyleParameters container
         ///
         /// - Parameter params: The style parameters container
@@ -27,7 +27,7 @@ public struct VisibilityStyleOperation: StyleOperation, @unchecked Sendable {
             )
         }
     }
-    
+
     /// Applies the visibility style and returns the appropriate CSS classes
     ///
     /// - Parameter params: The parameters for visibility styling
@@ -39,10 +39,10 @@ public struct VisibilityStyleOperation: StyleOperation, @unchecked Sendable {
             return []
         }
     }
-    
+
     /// Shared instance for use across the framework
     public static let shared = VisibilityStyleOperation()
-    
+
     /// Private initializer to enforce singleton usage
     private init() {}
 }
@@ -75,7 +75,7 @@ extension Element {
         on modifiers: Modifier...
     ) -> Element {
         let params = VisibilityStyleOperation.Parameters(isHidden: isHidden)
-        
+
         return VisibilityStyleOperation.shared.applyToElement(
             self,
             params: params,
@@ -93,7 +93,7 @@ extension ResponsiveBuilder {
     @discardableResult
     public func hidden(_ isHidden: Bool = true) -> ResponsiveBuilder {
         let params = VisibilityStyleOperation.Parameters(isHidden: isHidden)
-        
+
         return VisibilityStyleOperation.shared.applyToBuilder(self, params: params)
     }
 }
@@ -105,6 +105,6 @@ extension ResponsiveBuilder {
 /// - Returns: A responsive modification for visibility.
 public func hidden(_ isHidden: Bool = true) -> ResponsiveModification {
     let params = VisibilityStyleOperation.Parameters(isHidden: isHidden)
-    
+
     return VisibilityStyleOperation.shared.asModification(params: params)
 }

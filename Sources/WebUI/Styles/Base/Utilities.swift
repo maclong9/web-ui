@@ -77,62 +77,62 @@ public enum Modifier: String {
     ///
     /// Use to style the first item in a list or container.
     case first
-    
+
     /// Applies the style to the last child element.
     ///
     /// Use to style the last item in a list or container.
     case last
-    
+
     /// Applies the style when the element is disabled.
     ///
     /// Use to provide visual feedback for disabled form elements and controls.
     case disabled
-    
+
     /// Applies the style when the user prefers reduced motion.
     ///
     /// Use to create alternative animations or transitions for users who prefer reduced motion.
     case motionReduce = "motion-reduce"
-    
+
     /// Applies the style when the element has aria-busy="true".
     ///
     /// Use to style elements that are in a busy or loading state.
     case ariaBusy = "aria-busy"
-    
+
     /// Applies the style when the element has aria-checked="true".
     ///
     /// Use to style elements that represent a checked state, like checkboxes.
     case ariaChecked = "aria-checked"
-    
+
     /// Applies the style when the element has aria-disabled="true".
     ///
     /// Use to style elements that are disabled via ARIA attributes.
     case ariaDisabled = "aria-disabled"
-    
+
     /// Applies the style when the element has aria-expanded="true".
     ///
     /// Use to style elements that can be expanded, like accordions or dropdowns.
     case ariaExpanded = "aria-expanded"
-    
+
     /// Applies the style when the element has aria-hidden="true".
     ///
     /// Use to style elements that are hidden from screen readers.
     case ariaHidden = "aria-hidden"
-    
+
     /// Applies the style when the element has aria-pressed="true".
     ///
     /// Use to style elements that represent a pressed state, like toggle buttons.
     case ariaPressed = "aria-pressed"
-    
+
     /// Applies the style when the element has aria-readonly="true".
     ///
     /// Use to style elements that are in a read-only state.
     case ariaReadonly = "aria-readonly"
-    
+
     /// Applies the style when the element has aria-required="true".
     ///
     /// Use to style elements that are required, like form inputs.
     case ariaRequired = "aria-required"
-    
+
     /// Applies the style when the element has aria-selected="true".
     ///
     /// Use to style elements that are in a selected state, like tabs or menu items.

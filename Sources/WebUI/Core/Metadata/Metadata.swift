@@ -142,6 +142,8 @@ public struct Metadata {
     ///   - locale: Override for the language locale.
     ///   - type: Override for the content type.
     ///   - themeColor: Override for the theme color.
+    ///   - favicons: Override for the favicons.
+    ///   - structuredData: Override for the structured data.
     ///
     /// - Example:
     ///   ```swift

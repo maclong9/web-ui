@@ -1,79 +1,77 @@
 # ``WebUI``
 
-Create beautiful static and dynamic websites using Swift.
+A Swift framework for building static websites with a type-safe, declarative syntax.
 
 ## Overview
 
-WebUI is a Swift library for creating websites with a declarative, component-based approach. It allows you to write HTML using Swift's type-safe syntax, with built-in support for styling, accessibility, and optimization. You can use WebUI for both static site generation and dynamic server-rendered content.
+WebUI enables you to build static websites using Swift with a powerful, type-safe API that generates clean HTML. It provides built-in support for:
 
-The library is built on a modular architecture that organizes functionality into focused components, making it easy to use only what you need and to extend the library in a consistent way.
+- SEO optimization with metadata and structured data
+- Responsive design with type-safe styling
+- Component-based architecture
+- Built-in sitemap and robots.txt generation
+- Theme customization
+- Favicons and metadata handling
 
-With WebUI, you can:
-- Build type-safe HTML using Swift
-- Apply styling using a Tailwind CSS-inspired API
-- Create reusable components
-- Generate static sites with optimized markup
-- Create dynamic server-rendered content
-- Add Markdown content with front matter support
+## Basic Usage
+
+```swift
+let app = Website(
+    routes: [
+        Document(
+            path: "index",
+            metadata: .init(
+                title: "Hello",
+                description: "Welcome to my site"
+            )
+        ) {
+            Header {
+                Text { "Logo" }
+                Navigation {
+                    Link(to: "about") { "About" }
+                }
+            }
+            Main {
+                Stack {
+                    Heading(.largeTitle) { "Welcome" }
+                    Text { "Built with WebUI" }
+                }
+            }
+        }
+    ]
+)
+
+try app.build(to: URL(fileURLWithPath: "build"))
+```
 
 ## Topics
 
 ### Essentials
 
-- <doc:getting-started>
-- <doc:responsive-styling>
-- <doc:funding>
+- <doc:GettingStarted>
+- <doc:CoreConcepts>
 
-### Tutorials
-
-- <doc:creating-a-static-site>
-
-### Creating Content
+### Website Structure
 
 - ``Document``
 - ``Website``
-- ``Element``
-- ``HTMLBuilder``
+- ``Theme``
 
-### Building Elements
+### Metadata and SEO
 
-- ``Text``
-- ``Heading``
-- ``Link``
-- ``Button``
-- ``Image``
-- ``List``
-- ``Stack``
-- ``Fragment``
-
-### Layout
-
-- ``Header``
-- ``Main``
-- ``Footer``
-- ``Navigation``
-- ``Section``
-- ``Article``
-- ``Aside``
+- ``Metadata``
+- ``StructuredData``
+- ``SitemapEntry``
+- ``RobotsRule``
 
 ### Styling
 
-- ``Color``
-- ``BorderStyle``
-- ``Modifier``
-- ``Edge``
-- ``ResponsiveBuilder``
+- <doc:StylingGuide>
+- ``Style``
+- <doc:ResponsiveDesign>
 
-### Responsive Design
+### Advanced Topics
 
-- <doc:responsive-styling>
-- ``Element/on(_:)``
-- ``ResponsiveBuilder``
-
-### Tutorials
-
-- <doc:creating-a-static-site>
-
-### Examples
-
-- [Portfolio](https://github.com/maclong9/portfolio) - A personal portfolio website built with WebUI
+- <doc:CustomElements>
+- ``HTML``
+- ``Children``

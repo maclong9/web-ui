@@ -77,9 +77,7 @@ extension Element {
     /// Adds rings with custom width, style, and color to specified edges of an element.
     ///
     /// - Parameters:
-    ///   - width: The ring width in pixels.
-    ///   - edges: One or more edges to apply the ring to. Defaults to `.all`.
-    ///   - style: The ring style (solid, dashed, etc.).
+    ///   - size: The width of the ring.
     ///   - color: The ring color.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
     /// - Returns: A new element with updated ring classes.

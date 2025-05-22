@@ -9,16 +9,16 @@ public struct FlexStyleOperation: StyleOperation, @unchecked Sendable {
     public struct Parameters {
         /// The flex direction (row, column, etc.)
         public let direction: FlexDirection?
-        
+
         /// The justify content property (start, center, between, etc.)
         public let justify: FlexJustify?
-        
+
         /// The align items property (start, center, end, etc.)
         public let align: FlexAlign?
-        
+
         /// The flex grow property
         public let grow: FlexGrow?
-        
+
         /// Creates parameters for flex styling
         ///
         /// - Parameters:
@@ -37,7 +37,7 @@ public struct FlexStyleOperation: StyleOperation, @unchecked Sendable {
             self.align = align
             self.grow = grow
         }
-        
+
         /// Creates parameters from a StyleParameters container
         ///
         /// - Parameter params: The style parameters container
@@ -51,36 +51,36 @@ public struct FlexStyleOperation: StyleOperation, @unchecked Sendable {
             )
         }
     }
-    
+
     /// Applies the flex style and returns the appropriate CSS classes
     ///
     /// - Parameter params: The parameters for flex styling
     /// - Returns: An array of CSS class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes = ["flex"]
-        
+
         if let direction = params.direction {
             classes.append("flex-\(direction.rawValue)")
         }
-        
+
         if let justify = params.justify {
             classes.append("justify-\(justify.rawValue)")
         }
-        
+
         if let align = params.align {
             classes.append("items-\(align.rawValue)")
         }
-        
+
         if let grow = params.grow {
             classes.append("flex-\(grow.rawValue)")
         }
-        
+
         return classes
     }
-    
+
     /// Shared instance for use across the framework
     public static let shared = FlexStyleOperation()
-    
+
     /// Private initializer to enforce singleton usage
     private init() {}
 }
@@ -89,13 +89,13 @@ public struct FlexStyleOperation: StyleOperation, @unchecked Sendable {
 public enum FlexDirection: String {
     /// Items are arranged horizontally (left to right)
     case row
-    
+
     /// Items are arranged horizontally in reverse (right to left)
     case rowReverse = "row-reverse"
-    
+
     /// Items are arranged vertically (top to bottom)
     case column = "col"
-    
+
     /// Items are arranged vertically in reverse (bottom to top)
     case columnReverse = "col-reverse"
 }
@@ -104,19 +104,19 @@ public enum FlexDirection: String {
 public enum FlexJustify: String {
     /// Items are packed at the start of the container
     case start
-    
+
     /// Items are packed at the end of the container
     case end
-    
+
     /// Items are centered along the line
     case center
-    
+
     /// Items are evenly distributed with equal space between them
     case between
-    
+
     /// Items are evenly distributed with equal space around them
     case around
-    
+
     /// Items are evenly distributed with equal space between and around them
     case evenly
 }
@@ -125,16 +125,16 @@ public enum FlexJustify: String {
 public enum FlexAlign: String {
     /// Items are aligned at the start of the cross axis
     case start
-    
+
     /// Items are aligned at the end of the cross axis
     case end
-    
+
     /// Items are centered along the cross axis
     case center
-    
+
     /// Items are stretched to fill the container
     case stretch
-    
+
     /// Items are aligned at the baseline
     case baseline
 }
@@ -143,19 +143,19 @@ public enum FlexAlign: String {
 public enum FlexGrow: String {
     /// No growing
     case none = "0"
-    
+
     /// Grow with factor 1
     case one = "1"
-    
+
     /// Grow with factor 2
     case two = "2"
-    
+
     /// Grow with factor 3
     case three = "3"
-    
+
     /// Grow with factor 4
     case four = "4"
-    
+
     /// Grow with factor 5
     case five = "5"
 }
@@ -196,7 +196,7 @@ extension Element {
             align: align,
             grow: grow
         )
-        
+
         return FlexStyleOperation.shared.applyToElement(
             self,
             params: params,
@@ -228,7 +228,7 @@ extension ResponsiveBuilder {
             align: align,
             grow: grow
         )
-        
+
         return FlexStyleOperation.shared.applyToBuilder(self, params: params)
     }
 }
@@ -254,6 +254,6 @@ public func flex(
         align: align,
         grow: grow
     )
-    
+
     return FlexStyleOperation.shared.asModification(params: params)
 }

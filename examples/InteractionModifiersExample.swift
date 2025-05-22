@@ -9,7 +9,7 @@ struct InteractiveButton: HTML {
     var isPrimary: Bool = true
     var isDisabled: Bool = false
     var onClick: String? = nil
-    
+
     func render() -> String {
         Button(disabled: isDisabled, onClick: onClick) { label }
             // Base styles
@@ -17,7 +17,7 @@ struct InteractiveButton: HTML {
             .rounded(.md)
             .transition(of: .all, for: 150)
             .font(weight: .medium)
-            
+
             // Conditional primary/secondary styles
             .on {
                 if isPrimary {
@@ -29,7 +29,7 @@ struct InteractiveButton: HTML {
                     border(of: 1, color: .gray(._300))
                 }
             }
-            
+
             // Interactive state modifiers
             .on {
                 // Hover state
@@ -41,7 +41,7 @@ struct InteractiveButton: HTML {
                     }
                     transform(scale: (x: 102, y: 102))
                 }
-                
+
                 // Focus state (accessibility)
                 focus {
                     if isPrimary {
@@ -52,7 +52,7 @@ struct InteractiveButton: HTML {
                     outline(style: .solid)
                     transform(translateY: -1)
                 }
-                
+
                 // Active state (when pressing)
                 active {
                     if isPrimary {
@@ -62,7 +62,7 @@ struct InteractiveButton: HTML {
                     }
                     transform(scale: (x: 98, y: 98))
                 }
-                
+
                 // Disabled state
                 disabled {
                     if isPrimary {
@@ -90,7 +90,7 @@ struct FormInput: HTML {
     var isRequired: Bool = false
     var isInvalid: Bool = false
     var value: String? = nil
-    
+
     func render() -> String {
         Div {
             Label(for: id) { label }
@@ -104,7 +104,7 @@ struct FormInput: HTML {
                         }
                     }
                 }
-            
+
             Input(id: id, value: value, placeholder: placeholder, required: isRequired)
                 .padding(of: 3)
                 .rounded(.md)
@@ -112,7 +112,7 @@ struct FormInput: HTML {
                 .width(.full)
                 .font(size: .sm)
                 .transition(of: .all, for: 150)
-                
+
                 // Interactive state styling
                 .on {
                     // Placeholder styling
@@ -120,24 +120,24 @@ struct FormInput: HTML {
                         font(color: .gray(._400))
                         font(weight: .light)
                     }
-                    
+
                     // Focus state
                     focus {
                         border(of: 1, color: .blue(._500))
                         shadow(of: .sm, color: .blue(._100))
                     }
-                    
+
                     // When the field is invalid
                     if isInvalid {
                         border(of: 1, color: .red(._500))
-                        
+
                         // Invalid + focus state
                         focus {
                             border(of: 1, color: .red(._500))
                             shadow(of: .sm, color: .red(._100))
                         }
                     }
-                    
+
                     // ARIA required state
                     ariaRequired {
                         border(of: 1, style: .solid)
@@ -156,14 +156,14 @@ struct NavMenuItem: HTML {
     var label: String
     var href: String
     var isSelected: Bool = false
-    
+
     func render() -> String {
         Link(to: href) { label }
             .padding(vertical: 2, horizontal: 4)
             .rounded(.md)
             .font(size: .sm)
             .transition(of: .all, for: 150)
-            
+
             // Base state
             .on {
                 if isSelected {
@@ -175,7 +175,7 @@ struct NavMenuItem: HTML {
                     font(color: .gray(._700))
                 }
             }
-            
+
             // Interactive states
             .on {
                 // Hover state
@@ -186,14 +186,14 @@ struct NavMenuItem: HTML {
                         background(color: .blue(._100))
                     }
                 }
-                
+
                 // Focus state for keyboard navigation
                 focus {
                     outline(of: 2, color: .blue(._300))
                     outline(style: .solid)
                     outline(offset: 1)
                 }
-                
+
                 // Active state (when pressing)
                 active {
                     if !isSelected {
@@ -203,7 +203,7 @@ struct NavMenuItem: HTML {
                     }
                     transform(scale: (x: 98, y: 98))
                 }
-                
+
                 // ARIA selected state for screen readers
                 ariaSelected {
                     font(weight: .semibold)
@@ -216,18 +216,18 @@ struct NavMenuItem: HTML {
 /// Example usage in a page context
 struct InteractiveComponentsDemo: HTML {
     func render() -> String {
-        return Document(title: "Interactive Components Demo") {
+        Document(title: "Interactive Components Demo") {
             Section {
                 Heading(level: 1) { "Interactive Components Demo" }
                     .font(size: .xl2)
                     .padding(bottom: 6)
-                
+
                 // Buttons section
                 Div {
                     Heading(level: 2) { "Buttons" }
                         .font(size: .xl)
                         .padding(bottom: 4)
-                    
+
                     Div {
                         InteractiveButton(label: "Primary Button")
                         InteractiveButton(label: "Secondary Button", isPrimary: false)
@@ -237,28 +237,33 @@ struct InteractiveComponentsDemo: HTML {
                     .display(.flex)
                 }
                 .padding(bottom: 8)
-                
+
                 // Form section
                 Div {
                     Heading(level: 2) { "Form Inputs" }
                         .font(size: .xl)
                         .padding(bottom: 4)
-                    
+
                     Div {
                         FormInput(id: "name", label: "Name", placeholder: "Enter your name")
                         FormInput(id: "email", label: "Email", placeholder: "Enter your email", isRequired: true)
-                        FormInput(id: "password", label: "Password", placeholder: "Enter your password", isInvalid: true)
+                        FormInput(
+                            id: "password",
+                            label: "Password",
+                            placeholder: "Enter your password",
+                            isInvalid: true
+                        )
                     }
                     .spacing(of: 4, along: .vertical)
                 }
                 .padding(bottom: 8)
-                
+
                 // Navigation section
                 Div {
                     Heading(level: 2) { "Navigation" }
                         .font(size: .xl)
                         .padding(bottom: 4)
-                    
+
                     Nav {
                         Div {
                             NavMenuItem(label: "Home", href: "/", isSelected: true)

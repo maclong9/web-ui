@@ -155,7 +155,7 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
 
         return classes
     }
-    
+
     public func applyFrameClasses(params: FrameParameters) -> [String] {
         applyClasses(params: params)
     }

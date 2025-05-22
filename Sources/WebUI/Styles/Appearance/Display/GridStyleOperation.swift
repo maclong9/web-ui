@@ -9,19 +9,19 @@ public struct GridStyleOperation: StyleOperation, @unchecked Sendable {
     public struct Parameters {
         /// The number of grid columns
         public let columns: Int?
-        
+
         /// The number of grid rows
         public let rows: Int?
-        
+
         /// The grid flow direction
         public let flow: GridFlow?
-        
+
         /// The column span value
         public let columnSpan: Int?
-        
+
         /// The row span value
         public let rowSpan: Int?
-        
+
         /// Creates parameters for grid styling
         ///
         /// - Parameters:
@@ -43,7 +43,7 @@ public struct GridStyleOperation: StyleOperation, @unchecked Sendable {
             self.columnSpan = columnSpan
             self.rowSpan = rowSpan
         }
-        
+
         /// Creates parameters from a StyleParameters container
         ///
         /// - Parameter params: The style parameters container
@@ -58,40 +58,40 @@ public struct GridStyleOperation: StyleOperation, @unchecked Sendable {
             )
         }
     }
-    
+
     /// Applies the grid style and returns the appropriate CSS classes
     ///
     /// - Parameter params: The parameters for grid styling
     /// - Returns: An array of CSS class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes = ["grid"]
-        
+
         if let columns = params.columns {
             classes.append("grid-cols-\(columns)")
         }
-        
+
         if let rows = params.rows {
             classes.append("grid-rows-\(rows)")
         }
-        
+
         if let flow = params.flow {
             classes.append("grid-flow-\(flow.rawValue)")
         }
-        
+
         if let columnSpan = params.columnSpan {
             classes.append("col-span-\(columnSpan)")
         }
-        
+
         if let rowSpan = params.rowSpan {
             classes.append("row-span-\(rowSpan)")
         }
-        
+
         return classes
     }
-    
+
     /// Shared instance for use across the framework
     public static let shared = GridStyleOperation()
-    
+
     /// Private initializer to enforce singleton usage
     private init() {}
 }
@@ -100,13 +100,13 @@ public struct GridStyleOperation: StyleOperation, @unchecked Sendable {
 public enum GridFlow: String {
     /// Items flow row by row
     case row
-    
+
     /// Items flow column by column
     case col
-    
+
     /// Items flow row by row, dense packing
     case rowDense = "row-dense"
-    
+
     /// Items flow column by column, dense packing
     case colDense = "col-dense"
 }
@@ -150,7 +150,7 @@ extension Element {
             columnSpan: columnSpan,
             rowSpan: rowSpan
         )
-        
+
         return GridStyleOperation.shared.applyToElement(
             self,
             params: params,
@@ -185,7 +185,7 @@ extension ResponsiveBuilder {
             columnSpan: columnSpan,
             rowSpan: rowSpan
         )
-        
+
         return GridStyleOperation.shared.applyToBuilder(self, params: params)
     }
 }
@@ -214,6 +214,6 @@ public func grid(
         columnSpan: columnSpan,
         rowSpan: rowSpan
     )
-    
+
     return GridStyleOperation.shared.asModification(params: params)
 }
