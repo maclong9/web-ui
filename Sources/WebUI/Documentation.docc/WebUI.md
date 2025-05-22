@@ -22,6 +22,7 @@ With WebUI, you can:
 
 - <doc:getting-started>
 - <doc:responsive-styling>
+- <doc:funding>
 
 ### Tutorials
 
@@ -77,3 +78,7 @@ With WebUI, you can:
 ### Examples
 
 - [Portfolio](https://github.com/maclong9/portfolio) - A personal portfolio website built with WebUI
+
+### Project
+
+- <doc:funding>
