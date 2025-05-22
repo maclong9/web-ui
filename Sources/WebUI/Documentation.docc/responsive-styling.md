@@ -73,13 +73,13 @@ Stack(classes: ["card"])
   // Using EdgeInsets for different padding on each side
   .padding(EdgeInsets(top: 4, leading: 6, bottom: 4, trailing: 6))
   .background(color: .white)
-  .shadow(of: .sm)
+  .shadow(radius: .sm)
   .rounded(.md)
   .responsive {
     $0.md {
       // Uniform padding using EdgeInsets
       $0.padding(EdgeInsets(all: 6))
-      $0.shadow(of: .md)
+      $0.shadow(radius: .md)
     }
     $0.lg {
       // Different vertical/horizontal padding with EdgeInsets
@@ -100,7 +100,7 @@ Navigation {
         $0.hidden()  // Hide on large screens
       }
     }
-    
+
   // Desktop navigation links
   Stack(classes: ["desktop-menu"])
     .hidden()  // Hidden by default on mobile

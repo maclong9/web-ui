@@ -273,15 +273,15 @@ extension Element {
     ///   Heading(.title) { "Card Title" }
     ///   Text { "Card content" }
     /// }
-    /// .shadow(of: .md)
-    /// .shadow(of: .xl, on: .hover)
+    /// .shadow(radius: .md)
+    /// .shadow(color: .gray(._500), radius: .xl, on: .hover)
     /// ```
     public func shadow(
-        of size: ShadowSize,
         color: Color? = nil,
+        radius: ShadowSize = .md,
         on modifiers: Modifier...
     ) -> Element {
-        var baseClasses: [String] = ["shadow-\(size.rawValue)"]
+        var baseClasses: [String] = ["shadow-\(radius.rawValue)"]
         if let colorValue = color?.rawValue {
             baseClasses.append("shadow-\(colorValue)")
         }

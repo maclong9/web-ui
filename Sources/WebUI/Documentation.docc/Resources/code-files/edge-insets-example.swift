@@ -50,7 +50,7 @@ struct CardComponent: HTML {
         }
         .background(color: .white)
         .rounded(.lg)
-        .shadow(of: .md)
+        .shadow(radius: .md)
         // Responsive styling with EdgeInsets
         .responsive {
             $0.md {
