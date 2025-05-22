@@ -51,9 +51,8 @@ struct About: HTML {
                 }
                 .background(color: .blue(._500))
                 .font(color: .custom("white"))
-                .padding(EdgeInsets(vertical: 2, horizontal: 4))
                 .rounded(.md)
-            }.spacing(of: 4, along: .y)
+            }.spacing(of: 4, along: .horizontal)
         }.render()
     }
 }

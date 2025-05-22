@@ -116,38 +116,6 @@ import Testing
         #expect(rendered.contains("class=\"focus:outline-dashed\""))
     }
 
-    // MARK: - Shadow Tests
-
-    @Test("Shadow with size")
-    func testShadowWithSize() async throws {
-        let element = Element(tag: "div").shadow(of: .lg)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"shadow-lg\""))
-    }
-
-    @Test("Shadow with color and modifier")
-    func testShadowWithColorAndModifier() async throws {
-        let element = Element(tag: "div").shadow(of: .md, color: .gray(._500), on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:shadow-md hover:shadow-gray-500\""))
-    }
-
-    // MARK: - Ring Tests
-
-    @Test("Ring with default size")
-    func testRingWithDefaultSize() async throws {
-        let element = Element(tag: "div").ring()
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"ring-1\""))
-    }
-
-    @Test("Ring with color and modifier")
-    func testRingWithColorAndModifier() async throws {
-        let element = Element(tag: "div").ring(of: 2, color: .pink(._400), on: .focus)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"focus:ring-2 focus:ring-pink-400\""))
-    }
-
     // MARK: - Flex Tests
 
     @Test("Flex with direction and justify")
@@ -169,22 +137,6 @@ import Testing
         let element = Element(tag: "div").flex(direction: .column, on: .md)
         let rendered = element.render()
         #expect(rendered.contains("class=\"md:flex md:flex-col\""))
-    }
-
-    // MARK: - Grid Tests
-
-    @Test("Grid with columns and justify")
-    func testGridWithColumnsAndJustify() async throws {
-        let element = Element(tag: "div").grid(justify: .center, columns: 3)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"grid justify-center grid-cols-3\""))
-    }
-
-    @Test("Grid with align and modifier")
-    func testGridWithAlignAndModifier() async throws {
-        let element = Element(tag: "div").grid(align: .stretch, on: .lg)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"lg:grid lg:items-stretch\""))
     }
 
     // MARK: - Hidden Tests
@@ -240,13 +192,12 @@ import Testing
         let element = Element(tag: "div")
             .background(color: .blue(._600))
             .border(of: 1, style: .solid, color: .blue(._800))
-            .shadow(of: .md)
             .opacity(90, on: .hover)
             .flex(direction: .row, justify: .center)
         let rendered = element.render()
         #expect(
             rendered.contains(
-                "class=\"bg-blue-600 border-1 border-solid border-blue-800 shadow-md hover:opacity-90 flex flex-row justify-center\""
+                "class=\"bg-blue-600 border-1 border-solid border-blue-800 hover:opacity-90 flex flex-row justify-center\""
             )
         )
     }

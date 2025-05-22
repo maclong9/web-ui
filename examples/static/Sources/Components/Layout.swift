@@ -22,7 +22,7 @@ struct Layout: HTML {
                             .font(size: .base, on: .md)
                             .font(decoration: .underline, on: .hover)
                     }
-                }.flex(align: .center).spacing(of: 2, along: .x)
+                }.flex(align: .center).spacing(of: 2, along: .vertical)
             }
             .flex(justify: .between, align: .center)
             .frame(width: .full, maxWidth: .character(86))

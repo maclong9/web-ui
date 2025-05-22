@@ -69,7 +69,7 @@ extension Element {
     /// ## Example
     /// ```swift
     /// Stack(classes: ["content-container"])
-    ///   .overflow(.scroll, axis: .y)
+    ///   .overflow(.scroll, axis: .horizontal)
     ///   .frame(height: .spacing(300))
     ///
     /// Stack(classes: ["image-container"])

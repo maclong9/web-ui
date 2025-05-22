@@ -1,6 +1,6 @@
 import Foundation
 
-/// Provides the implementation for breakpoint modifiers in the responsive DSL.
+/// Provides the implementation for breakpoint and interactive state modifiers in the responsive DSL.
 ///
 /// These functions are available in the context of a responsive closure, allowing
 /// for a more natural, SwiftUI-like syntax without requiring `$0` references.
@@ -39,10 +39,78 @@ public struct BreakpointModification: ResponsiveModification {
             builder.xl2 { innerBuilder in
                 styleModification.apply(to: innerBuilder)
             }
-        default:
-            // Other modifiers like .hover, .focus, etc. are not breakpoints
-            // They would be handled separately if needed
-            break
+        case .hover:
+            builder.hover { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .focus:
+            builder.focus { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .active:
+            builder.active { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .placeholder:
+            builder.placeholder { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .dark:
+            builder.dark { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .first:
+            builder.first { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .last:
+            builder.last { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .disabled:
+            builder.disabled { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .motionReduce:
+            builder.motionReduce { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .ariaBusy:
+            builder.ariaBusy { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .ariaChecked:
+            builder.ariaChecked { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .ariaDisabled:
+            builder.ariaDisabled { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .ariaExpanded:
+            builder.ariaExpanded { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .ariaHidden:
+            builder.ariaHidden { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .ariaPressed:
+            builder.ariaPressed { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .ariaReadonly:
+            builder.ariaReadonly { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .ariaRequired:
+            builder.ariaRequired { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
+        case .ariaSelected:
+            builder.ariaSelected { innerBuilder in
+                styleModification.apply(to: innerBuilder)
+            }
         }
     }
 }
@@ -61,6 +129,7 @@ public struct StyleModification: ResponsiveModification {
 }
 
 // MARK: - Breakpoint Functions
+// Note: Interactive state functions like hover, focus, etc. are defined in InteractionModifiers.swift
 
 /// Creates an extra-small breakpoint (480px+) responsive modification.
 ///
@@ -139,3 +208,7 @@ public func xl2(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -
 // Hidden styling is implemented in ResponsiveBuilder.swift
 
 // Border radius styling is now implemented in BorderRadiusStyleOperation.swift
+
+// Interactive state modifiers like hover, focus, etc. are implemented in InteractionModifiers.swift
+
+// ARIA state modifiers are implemented in InteractionModifiers.swift

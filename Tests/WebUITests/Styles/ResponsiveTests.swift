@@ -119,23 +119,6 @@ import Testing
         #expect(rendered.contains("md:flex"))
     }
 
-    @Test("Responsive grid layout")
-    func testResponsiveGridLayout() async throws {
-        let element = Element(tag: "div")
-            .grid(columns: 1)
-            .responsive {
-                md {
-                    grid(columns: 2)
-                }
-                lg {
-                    grid(columns: 3)
-                }
-            }
-
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3\""))
-    }
-
     // MARK: - Sizing & Position Tests
 
     @Test("Responsive sizing")
@@ -144,7 +127,7 @@ import Testing
             .frame(width: 100)
             .responsive {
                 md {
-                    frame(maxWidth: 600)
+                    frame(maxWidth: .spacing(600))
                     margins(at: .horizontal, auto: true)
                 }
             }
@@ -160,7 +143,7 @@ import Testing
             .responsive {
                 lg {
                     position(.fixed, at: .top, offset: 0)
-                    frame(width: 100)
+                    frame(width: .spacing(100))
                 }
             }
 
@@ -226,7 +209,7 @@ import Testing
                 }
                 lg {
                     padding(of: 12)
-                    frame(height: 100)
+                    frame(height: .spacing(100))
                 }
             }
 

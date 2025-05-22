@@ -298,21 +298,21 @@ import Testing
 
     @Test("Spacing with horizontal direction")
     func testSpacingWithHorizontalDirection() async throws {
-        let element = Element(tag: "div").spacing(of: 6, along: .x)
+        let element = Element(tag: "div").spacing(of: 6, along: .horizontal)
         let rendered = element.render()
         #expect(rendered.contains("class=\"space-x-6\""))
     }
 
     @Test("Spacing with along parameter only")
     func testSpacingWithAlongParameterOnly() async throws {
-        let element = Element(tag: "div").spacing(along: .y)
+        let element = Element(tag: "div").spacing(along: .vertical)
         let rendered = element.render()
         #expect(rendered.contains("class=\"space-y-4\""))
     }
 
     @Test("Spacing with modifier")
     func testSpacingWithModifier() async throws {
-        let element = Element(tag: "div").spacing(of: 2, along: .y, on: .lg)
+        let element = Element(tag: "div").spacing(of: 2, along: .vertical, on: .lg)
         let rendered = element.render()
         #expect(rendered.contains("class=\"lg:space-y-2\""))
     }
@@ -433,7 +433,7 @@ import Testing
 
     @Test("Spacing with nil length")
     func testSpacingWithNilLength() async throws {
-        let element = Element(tag: "div").spacing(of: nil, along: .x)
+        let element = Element(tag: "div").spacing(of: nil, along: .vertical)
         let rendered = element.render()
         #expect(!rendered.contains("class="))
     }

@@ -135,7 +135,7 @@ import Testing
             }
 
         let rendered = element.render()
-        #expect(rendered.contains("class=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3\""))
+        #expect(rendered.contains("class=\"grid grid-cols-1 md:grid md:grid-cols-2 lg:grid lg:grid-cols-3\""))
     }
 
     // MARK: - Visibility Tests

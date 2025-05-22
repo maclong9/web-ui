@@ -112,14 +112,14 @@ import Testing
 
     @Test("Overflow with specific axis")
     func testOverflowWithSpecificAxis() async throws {
-        let element = Element(tag: "div").overflow(.scroll, axis: .x)
+        let element = Element(tag: "div").overflow(.scroll, axis: .horizontal)
         let rendered = element.render()
         #expect(rendered.contains("class=\"overflow-x-scroll\""))
     }
 
     @Test("Overflow with modifier")
     func testOverflowWithModifier() async throws {
-        let element = Element(tag: "div").overflow(.auto, axis: .y, on: .lg)
+        let element = Element(tag: "div").overflow(.auto, axis: .vertical, on: .lg)
         let rendered = element.render()
         #expect(rendered.contains("class=\"lg:overflow-y-auto\""))
     }
@@ -144,7 +144,7 @@ import Testing
     func testTransformWithNegativeTranslate() async throws {
         let element = Element(tag: "div").transform(translate: (x: -10, y: 20))
         let rendered = element.render()
-        #expect(rendered.contains("class=\"transform translate-x-10 translate-y-20\""))
+        #expect(rendered.contains("class=\"transform -translate-x-10 translate-y-20\""))
     }
 
     @Test("Transform with skew and modifier")
@@ -163,7 +163,7 @@ import Testing
             skew: (x: nil, y: 10)
         )
         let rendered = element.render()
-        #expect(rendered.contains("class=\"transform scale-x-90 rotate-30 translate-x-5 skew-y-10\""))
+        #expect(rendered.contains("class=\"transform scale-x-90 -rotate-30 translate-x-5 skew-y-10\""))
     }
 
     // MARK: - Scroll Tests
@@ -237,7 +237,7 @@ import Testing
             .transition(of: .transform, for: 200, easing: .out)
             .zIndex(30)
             .position(.absolute, at: .top, .trailing, offset: 4)
-            .overflow(.hidden, axis: .y)
+            .overflow(.hidden, axis: .vertical)
             .transform(scale: (x: 95, y: 95), rotate: 15)
         let rendered = element.render()
         #expect(

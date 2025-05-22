@@ -72,9 +72,9 @@ public class ResponsiveBuilder {
     /// The current element being modified
     var element: Element
     /// Keep track of responsive styles for each breakpoint
-    private var pendingClasses: [String] = []
+    internal var pendingClasses: [String] = []
     /// The current breakpoint being modified
-    private var currentBreakpoint: Modifier?
+    internal var currentBreakpoint: Modifier?
 
     /// Creates a new responsive builder for the given element.
     ///
@@ -156,7 +156,7 @@ public class ResponsiveBuilder {
     }
 
     /// Applies the breakpoint prefix to all pending classes and add them to the element
-    private func applyBreakpoint() {
+    internal func applyBreakpoint() {
         guard let breakpoint = currentBreakpoint else { return }
 
         // Apply the breakpoint prefix to all pending classes
