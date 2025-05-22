@@ -28,38 +28,59 @@ extension Element {
     /// Applies responsive styling across different breakpoints.
     ///
     /// This method provides a clean, declarative way to define styles for multiple
-    /// breakpoints in a single block, improving code readability and maintainability
-    /// compared to chaining multiple individual responsive modifiers.
-    ///
-    /// The configuration closure accepts a `ResponsiveBuilder` that provides methods
-    /// for each breakpoint (e.g., `.md`, `.lg`). Within each breakpoint block, you can
-    /// apply multiple style modifications that will only be applied at that breakpoint.
+    /// breakpoints in a single block, improving code readability and maintainability.
     ///
     /// - Parameter configuration: A closure defining responsive style configurations.
     /// - Returns: An element with responsive styles applied.
     ///
-    /// ## Example
+    /// ## Example with traditional syntax
     /// ```swift
     /// Button { "Submit" }
     ///   .background(color: .blue(._500))
-    ///   .responsive {
+    ///   .responsive { $0 in
     ///     $0.sm {
     ///       $0.padding(of: 2)
     ///       $0.font(size: .sm)
-    ///     }
-    ///     $0.md {
-    ///       $0.padding(of: 4)
-    ///       $0.font(size: .base)
-    ///     }
-    ///     $0.lg {
-    ///       $0.padding(of: 6)
-    ///       $0.font(size: .lg)
     ///     }
     ///   }
     /// ```
     public func responsive(_ configuration: (ResponsiveBuilder) -> Void) -> Element {
         let builder = ResponsiveBuilder(element: self)
         configuration(builder)
+        return builder.element
+    }
+    
+    /// Applies responsive styling across different breakpoints with a SwiftUI-like syntax.
+    ///
+    /// This method provides a clean, declarative way to define styles for multiple
+    /// breakpoints in a single block, improving code readability and maintainability.
+    ///
+    /// - Parameter configuration: A closure defining responsive style configurations using the result builder.
+    /// - Returns: An element with responsive styles applied.
+    ///
+    /// ## Example with SwiftUI-like syntax
+    /// ```swift
+    /// Button { "Submit" }
+    ///   .background(color: .blue(._500))
+    ///   .responsive {
+    ///     sm {
+    ///       padding(of: 2)
+    ///       font(size: .sm)
+    ///     }
+    ///     md {
+    ///       padding(of: 4)
+    ///       font(size: .base)
+    ///     }
+    ///     lg {
+    ///       padding(of: 6)
+    ///       font(size: .lg)
+    ///     }
+    ///   }
+    /// ```
+    public func responsive(@ResponsiveStyleBuilder _ configuration: () -> ResponsiveModification) -> Element {
+        let builder = ResponsiveBuilder(element: self)
+        let modification = configuration()
+        modification.apply(to: builder)
         return builder.element
     }
 }
@@ -196,7 +217,7 @@ public class ResponsiveBuilder {
     }
 
     /// Add a class to the pending list of classes
-    private func addClass(_ className: String) {
+    public func addClass(_ className: String) {
         pendingClasses.append(className)
     }
 }
