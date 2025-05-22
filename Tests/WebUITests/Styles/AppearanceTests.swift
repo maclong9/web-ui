@@ -120,14 +120,14 @@ import Testing
 
     @Test("Shadow with size")
     func testShadowWithSize() async throws {
-        let element = Element(tag: "div").shadow(of: .lg)
+        let element = Element(tag: "div").shadow(radius: .lg)
         let rendered = element.render()
         #expect(rendered.contains("class=\"shadow-lg\""))
     }
 
     @Test("Shadow with color and modifier")
     func testShadowWithColorAndModifier() async throws {
-        let element = Element(tag: "div").shadow(of: .md, color: .gray(._500), on: .hover)
+        let element = Element(tag: "div").shadow(color: .gray(._500), radius: .md, on: .hover)
         let rendered = element.render()
         #expect(rendered.contains("class=\"hover:shadow-md hover:shadow-gray-500\""))
     }
@@ -240,7 +240,7 @@ import Testing
         let element = Element(tag: "div")
             .background(color: .blue(._600))
             .border(of: 1, style: .solid, color: .blue(._800))
-            .shadow(of: .md)
+            .shadow(radius: .md)
             .opacity(90, on: .hover)
             .flex(direction: .row, justify: .center)
         let rendered = element.render()
