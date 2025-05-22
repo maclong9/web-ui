@@ -318,7 +318,7 @@ public struct HtmlRenderer: MarkupWalker {
         let lineCount = lines.count
         
         // Build the HTML for the code block
-        html += "<div class=\"code-block-wrapper\" style=\"position:relative;\">"
+        html += "<div class=\"code-block-wrapper\">"
         
         // Add filename if available and enabled
         if showCodeFilename, let filename = filename {
@@ -334,13 +334,13 @@ public struct HtmlRenderer: MarkupWalker {
             // Generate line numbers HTML
             let lineNumbersHTML = (1...lineCount).map { "<span>\($0)</span>" }.joined(separator: "\n")
             
-            html += "<pre class=\"line-numbers\" style=\"display:flex;\"><div class=\"line-numbers\" style=\"text-align:right;user-select:none;color:#888;padding-right:8px;\">\(lineNumbersHTML)</div>"
+            html += "<pre class=\"line-numbers\"><div class=\"line-numbers-container\">\(lineNumbersHTML)</div>"
         } else {
             html += "<pre>"
         }
         
         // Add the code with basic syntax highlighting
-        html += "<code class=\"language-\(language)\" style=\"flex:1;\">"
+        html += "<code class=\"language-\(language)\">"
         
         // For now, we'll use a very simple approach to avoid HTML escaping issues
         // Just display the escaped code without syntax highlighting
@@ -552,8 +552,8 @@ public struct HtmlRenderer: MarkupWalker {
     /// - Returns: A tuple containing the wrapped code lines and the HTML for line numbers.
     public func wrapWithLineNumbers(_ code: String) -> (String, String) {
         let lines = code.components(separatedBy: .newlines)
-        let linesHTML = lines.map { "<span>\($0)</span>" }.joined(separator: "\n")
-        let numbersHTML = (1...lines.count).map { "<span>\($0)</span>" }.joined(separator: "\n")
+        let linesHTML = lines.map { "<span class=\"code-line\">\($0)</span>" }.joined(separator: "\n")
+        let numbersHTML = (1...lines.count).map { "<span class=\"line-number\">\($0)</span>" }.joined(separator: "\n")
         return (linesHTML, numbersHTML)
     }
     
