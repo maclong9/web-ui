@@ -21,11 +21,8 @@ With WebUI, you can:
 ### Essentials
 
 - <doc:getting-started>
-- <doc:responsive-styling>
 
 ### Tutorials
-
-- <doc:creating-a-static-site>
 
 ### Creating Content
 
@@ -61,7 +58,6 @@ With WebUI, you can:
 - ``BorderStyle``
 - ``Modifier``
 - ``Edge``
-- ``EdgeInsets``
 - ``ResponsiveBuilder``
 
 ### Responsive Design

@@ -1,8 +1,6 @@
 # WebUI Style System
 
-## Overview
-
-The WebUI Style System provides a unified approach to defining and applying styles across different contexts in the framework. It eliminates code duplication by defining each style operation once and reusing it in multiple places.
+The WebUI style system is a powerful and flexible framework for defining and applying styles to UI elements. It provides a set of core components that enable developers to create custom styles across multiple breakpoints and modifiers, and apply them to their applications.
 
 ## Core Components
 
@@ -40,7 +38,7 @@ Style operations are automatically available in two contexts:
 
 2. **Declaritive DSL**: Use in result builder context with a clean, declarative syntax
    ```swift
-   element.responsive {
+   element.on {
      sm {
        border(of: 1, at: .top)
      }

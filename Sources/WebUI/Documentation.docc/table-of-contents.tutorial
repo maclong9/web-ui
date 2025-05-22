@@ -8,6 +8,5 @@
 
         @Image(source: intro-image.png, alt: "Screenshot of a WebUI static site")
 
-        @TutorialReference(tutorial: "doc:creating-a-static-site")
     }
 }
