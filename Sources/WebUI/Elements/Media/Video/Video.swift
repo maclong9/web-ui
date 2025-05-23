@@ -27,7 +27,7 @@ public struct Video: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    
+
     /// Creates a new HTML video player.
     ///
     /// - Parameters:
@@ -79,11 +79,11 @@ public struct Video: Element {
         self.label = label
         self.data = data
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         var attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -92,25 +92,36 @@ public struct Video: Element {
             label: label,
             data: data
         )
-        if let controls = controls, controls {
+        if let controls, controls {
             attributes.append("controls")
         }
-        if let autoplay = autoplay, autoplay {
+        if let autoplay, autoplay {
             attributes.append("autoplay")
         }
-        if let loop = loop, loop {
+        if let loop, loop {
             attributes.append("loop")
         }
-        if let width = size?.width {
-            attributes.append("width=\"\(width)\"")
+        if let width = size?.width, let widthAttr = Attribute.string("width", "\(width)") {
+            attributes.append(widthAttr)
         }
-        if let height = size?.height {
-            attributes.append("height=\"\(height)\"")
+        if let height = size?.height, let heightAttr = Attribute.string("height", "\(height)") {
+            attributes.append(heightAttr)
         }
         let sourceElements = sources.map { source in
-            let type = source.type?.rawValue
-            return "<source src=\"\(source.src)\"\(type != nil ? " type=\"\(type!)\"" : "")>"
+            var sourceAttributes: [String] = []
+            if let srcAttr = Attribute.string("src", source.src) {
+                sourceAttributes.append(srcAttr)
+            }
+            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+                sourceAttributes.append(typeAttr)
+            }
+            let attrs = sourceAttributes.joined(separator: " ")
+            return "<source \(attrs)>"
         }.joined()
-        return AttributeBuilder.renderTag("video", attributes: attributes, content: "\(sourceElements)Your browser does not support the video tag.")
+        return AttributeBuilder.renderTag(
+            "video",
+            attributes: attributes,
+            content: "\(sourceElements)Your browser does not support the video tag."
+        )
     }
 }

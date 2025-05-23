@@ -58,19 +58,23 @@ public struct Label: Element {
         self.data = data
         self.contentBuilder = content
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
+        var additional: [String] = []
+        if let forAttr = Attribute.string("for", forAttribute) {
+            additional.append(forAttr)
+        }
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data,
-            additional: [Attribute.string("for", forAttribute)!]
+            additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.renderTag("label", attributes: attributes, content: content)

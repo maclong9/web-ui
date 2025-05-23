@@ -66,7 +66,7 @@ extension HTML {
     public func display(
         _ type: DisplayType,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = DisplayStyleOperation.Parameters(type: type)
 
         return DisplayStyleOperation.shared.applyTo(

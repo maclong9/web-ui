@@ -11,7 +11,7 @@ public struct Code: Element {
     private let label: String?
     private let data: [String: String]?
     private let contentBuilder: () -> [any HTML]
-    
+
     /// Creates a new HTML code element.
     ///
     /// - Parameters:
@@ -43,11 +43,11 @@ public struct Code: Element {
         self.data = data
         self.contentBuilder = content
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,

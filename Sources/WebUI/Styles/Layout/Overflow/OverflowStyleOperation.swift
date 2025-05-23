@@ -80,7 +80,7 @@ extension HTML {
         _ type: OverflowType,
         axis: Axis = .both,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = OverflowStyleOperation.Parameters(
             type: type,
             axis: axis

@@ -202,7 +202,7 @@ extension HTML {
         minHeight: SizingValue? = nil,
         maxHeight: SizingValue? = nil,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = SizingStyleOperation.FrameParameters(
             width: width,
             height: height,
@@ -238,7 +238,7 @@ extension HTML {
         maxWidth: CGFloat? = nil,
         minHeight: CGFloat? = nil,
         maxHeight: CGFloat? = nil
-    ) -> any Element {
+    ) -> some HTML {
         frame(
             width: width.map { .spacing(Int($0)) },
             height: height.map { .spacing(Int($0)) },
@@ -257,7 +257,7 @@ extension HTML {
     ///   - size: The size value to apply to both width and height.
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with updated sizing classes.
-    public func size(_ size: SizingValue, on modifiers: Modifier...) -> any Element {
+    public func size(_ size: SizingValue, on modifiers: Modifier...) -> some HTML {
         let params = SizingStyleOperation.SizeParameters(value: size)
         let classes = SizingStyleOperation.shared.applySizeClasses(params: params)
         let newClasses = combineClasses(classes, withModifiers: modifiers)
@@ -273,7 +273,7 @@ extension HTML {
     ///   - height: The height for the aspect ratio calculation.
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with aspect ratio classes.
-    public func aspectRatio(_ width: CGFloat, _ height: CGFloat, on modifiers: Modifier...) -> any Element {
+    public func aspectRatio(_ width: CGFloat, _ height: CGFloat, on modifiers: Modifier...) -> some HTML {
         let params = SizingStyleOperation.AspectRatioParameters(width: width, height: height)
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
         let newClasses = combineClasses(classes, withModifiers: modifiers)
@@ -285,7 +285,7 @@ extension HTML {
     /// - Parameters:
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with square aspect ratio.
-    public func aspectRatio(on modifiers: Modifier...) -> any Element {
+    public func aspectRatio(on modifiers: Modifier...) -> some HTML {
         let params = SizingStyleOperation.AspectRatioParameters(isSquare: true)
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
         let newClasses = combineClasses(classes, withModifiers: modifiers)
@@ -297,7 +297,7 @@ extension HTML {
     /// - Parameters:
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with video aspect ratio.
-    public func aspectRatioVideo(on modifiers: Modifier...) -> any Element {
+    public func aspectRatioVideo(on modifiers: Modifier...) -> some HTML {
         let params = SizingStyleOperation.AspectRatioParameters(isVideo: true)
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
         let newClasses = combineClasses(classes, withModifiers: modifiers)

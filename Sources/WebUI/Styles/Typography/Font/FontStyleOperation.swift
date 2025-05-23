@@ -163,7 +163,7 @@ extension HTML {
         color: Color? = nil,
         family: String? = nil,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = FontStyleOperation.Parameters(
             size: size,
             weight: weight,

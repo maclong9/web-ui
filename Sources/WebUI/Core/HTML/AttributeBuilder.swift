@@ -24,34 +24,34 @@ public enum AttributeBuilder {
         additional: [String] = []
     ) -> [String] {
         var attributes: [String] = []
-        
+
         if let id = id {
             attributes.append(Attribute.string("id", id)!)
         }
-        
+
         if let classes = classes, !classes.isEmpty {
             attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
         }
-        
+
         if let role = role {
             attributes.append(Attribute.typed("role", role)!)
         }
-        
+
         if let label = label {
             attributes.append(Attribute.string("aria-label", label)!)
         }
-        
+
         if let data = data {
             for (key, value) in data {
                 attributes.append(Attribute.string("data-\(key)", value)!)
             }
         }
-        
+
         attributes.append(contentsOf: additional)
-        
+
         return attributes
     }
-    
+
     /// Renders a complete HTML tag with attributes and content
     ///
     /// - Parameters:
@@ -67,7 +67,7 @@ public enum AttributeBuilder {
         isSelfClosing: Bool = false
     ) -> String {
         let attributeString = attributes.isEmpty ? "" : " " + attributes.joined(separator: " ")
-        
+
         if isSelfClosing {
             return "<\(tag)\(attributeString) />"
         } else {

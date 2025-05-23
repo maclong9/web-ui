@@ -60,12 +60,10 @@ public struct Button: Element {
 
     private func renderTag() -> String {
         var additional: [String] = []
-        if let type = type {
-            if let typeAttr = Attribute.typed("type", type) {
-                additional.append(typeAttr)
-            }
+        if let type, let typeAttr = Attribute.typed("type", type) {
+            additional.append(typeAttr)
         }
-        if let autofocus = autofocus, autofocus {
+        if let autofocus, autofocus {
             additional.append("autofocus")
         }
         let attributes = AttributeBuilder.buildAttributes(

@@ -24,8 +24,8 @@ public struct Script: Element {
         if let srcAttr = Attribute.string("src", src) {
             additional.append(srcAttr)
         }
-        if let attribute, let attr = Attribute.string(attribute.rawValue, attribute.rawValue) {
-            additional.append(attr)
+        if let attribute, let attributeAttr = Attribute.string(attribute.rawValue, attribute.rawValue) {
+            additional.append(attributeAttr)
         }
         let attributes = AttributeBuilder.buildAttributes(
             additional: additional

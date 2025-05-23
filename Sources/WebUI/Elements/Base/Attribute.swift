@@ -53,4 +53,3 @@ public enum Attribute {
         return stringValue.isEmpty ? nil : "\(name)=\"\(stringValue)\""
     }
 }
-

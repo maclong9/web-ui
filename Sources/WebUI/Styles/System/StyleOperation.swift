@@ -54,7 +54,7 @@ public struct StyleParameters {
 }
 
 /// A modifier to add classes to an HTML element
-public struct StyleModifier<T: HTML>: Element {
+public struct StyleModifier<T: HTML>: HTML {
     private let content: T
     private let classes: [String]
 
@@ -64,8 +64,7 @@ public struct StyleModifier<T: HTML>: Element {
     }
 
     public var body: some HTML {
-        HTMLContainer(content)
-            .addingClasses(classes)
+        content.addingClasses(classes)
     }
 }
 
@@ -92,10 +91,9 @@ extension StyleOperation {
     ///   - params: The parameters for this style operation
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
     /// - Returns: A new element with the styles applied
-    public func applyToElement<T: HTML>(_ element: T, params: Parameters, modifiers: Modifier...) -> any Element {
-        return applyTo(element, params: params, modifiers: modifiers)
+    public func applyToElement<T: HTML>(_ element: T, params: Parameters, modifiers: Modifier...) -> StyleModifier<T> {
+        applyTo(element, params: params, modifiers: modifiers)
     }
-
 
     /// Internal adapter for use with the responsive builder
     ///

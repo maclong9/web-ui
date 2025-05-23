@@ -164,7 +164,7 @@ extension HTML {
         snapStop: ScrollSnapStop? = nil,
         snapType: ScrollSnapType? = nil,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = ScrollStyleOperation.Parameters(
             behavior: behavior,
             margin: margin,

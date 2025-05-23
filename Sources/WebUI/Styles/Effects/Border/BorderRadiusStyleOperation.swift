@@ -87,7 +87,7 @@ extension HTML {
         _ size: RadiusSize? = .md,
         _ sides: RadiusSide...,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = BorderRadiusStyleOperation.Parameters(
             size: size,
             sides: sides

@@ -23,7 +23,7 @@ public struct Figure: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    
+
     /// Creates a new HTML figure element containing a picture and figcaption.
     ///
     /// - Parameters:
@@ -69,11 +69,11 @@ public struct Figure: Element {
         self.label = label
         self.data = data
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -91,25 +91,34 @@ public struct Figure: Element {
     private func renderPictureElement() -> String {
         var content = ""
         for source in sources {
-            let sourceAttributes = source.type != nil ? [Attribute.string("type", source.type!.rawValue)!] : []
+            var sourceAttributes: [String] = []
+            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+                sourceAttributes.append(typeAttr)
+            }
+            if let srcsetAttr = Attribute.string("srcset", source.src) {
+                sourceAttributes.append(srcsetAttr)
+            }
             content += AttributeBuilder.renderTag(
                 "source",
-                attributes: sourceAttributes + [Attribute.string("srcset", source.src)!],
+                attributes: sourceAttributes,
                 isSelfClosing: true
             )
         }
 
-        var imgAttributes = [
-            Attribute.string("src", sources.first?.src ?? ""),
-            Attribute.string("alt", description)
-        ].compactMap { $0 }
+        var imgAttributes: [String] = []
+        if let srcAttr = Attribute.string("src", sources.first?.src ?? "") {
+            imgAttributes.append(srcAttr)
+        }
+        if let altAttr = Attribute.string("alt", description) {
+            imgAttributes.append(altAttr)
+        }
 
         if let size = size {
-            if let width = size.width {
-                imgAttributes.append(Attribute.string("width", "\(width)")!)
+            if let width = size.width, let widthAttr = Attribute.string("width", "\(width)") {
+                imgAttributes.append(widthAttr)
             }
-            if let height = size.height {
-                imgAttributes.append(Attribute.string("height", "\(height)")!)
+            if let height = size.height, let heightAttr = Attribute.string("height", "\(height)") {
+                imgAttributes.append(heightAttr)
             }
         }
 

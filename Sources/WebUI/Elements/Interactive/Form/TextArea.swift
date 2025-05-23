@@ -75,25 +75,35 @@ public struct TextArea: Element {
         self.label = label
         self.data = data
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
+        var additional: [String] = []
+        if let nameAttr = Attribute.string("name", name) {
+            additional.append(nameAttr)
+        }
+        if let type, let typeAttr = Attribute.typed("type", type) {
+            additional.append(typeAttr)
+        }
+        if let placeholder, let placeholderAttr = Attribute.string("placeholder", placeholder) {
+            additional.append(placeholderAttr)
+        }
+        if let autofocusAttr = Attribute.bool("autofocus", autofocus) {
+            additional.append(autofocusAttr)
+        }
+        if let requiredAttr = Attribute.bool("required", required) {
+            additional.append(requiredAttr)
+        }
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data,
-            additional: [
-                Attribute.string("name", name),
-                Attribute.typed("type", type),
-                Attribute.string("placeholder", placeholder),
-                Attribute.bool("autofocus", autofocus),
-                Attribute.bool("required", required)
-            ].compactMap { $0 }
+            additional: additional
         )
         let content = value ?? ""
         return AttributeBuilder.renderTag("textarea", attributes: attributes, content: content)

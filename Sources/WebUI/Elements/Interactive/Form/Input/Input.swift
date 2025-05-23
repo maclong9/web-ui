@@ -87,11 +87,11 @@ public struct Input: Element {
         self.data = data
         self.on = on
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         var attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -100,23 +100,25 @@ public struct Input: Element {
             label: label,
             data: data
         )
-        attributes.append(Attribute.string("name", name)!)
-        if let type = type {
-            attributes.append(Attribute.typed("type", type)!)
+        if let nameAttr = Attribute.string("name", name) {
+            attributes.append(nameAttr)
         }
-        if let value = value {
-            attributes.append(Attribute.string("value", value)!)
+        if let type, let typeAttr = Attribute.typed("type", type) {
+            attributes.append(typeAttr)
         }
-        if let placeholder = placeholder {
-            attributes.append(Attribute.string("placeholder", placeholder)!)
+        if let value, let valueAttr = Attribute.string("value", value) {
+            attributes.append(valueAttr)
         }
-        if let autofocus = autofocus, autofocus {
+        if let placeholder, let placeholderAttr = Attribute.string("placeholder", placeholder) {
+            attributes.append(placeholderAttr)
+        }
+        if let autofocus, autofocus {
             attributes.append("autofocus")
         }
-        if let required = required, required {
+        if let required, required {
             attributes.append("required")
         }
-        if let checked = checked, checked {
+        if let checked, checked {
             attributes.append("checked")
         }
         if let on = on {

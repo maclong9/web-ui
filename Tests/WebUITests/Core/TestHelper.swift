@@ -1,4 +1,5 @@
 import Foundation
+
 @testable import WebUI
 
 /// A simple test element implementation for testing the Element protocol
@@ -12,7 +13,7 @@ struct TestElement: Element {
     let isSelfClosing: Bool
     let customAttributes: [Attribute]?
     let contentBuilder: () -> [any HTML]
-    
+
     init(
         tag: String,
         id: String? = nil,
@@ -34,11 +35,11 @@ struct TestElement: Element {
         self.customAttributes = customAttributes
         self.contentBuilder = content
     }
-    
+
     var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -48,9 +49,9 @@ struct TestElement: Element {
             data: data,
             additional: customAttributes?.map { $0.toString() } ?? []
         )
-        
+
         let content = contentBuilder().map { $0.render() }.joined()
-        
+
         return AttributeBuilder.renderTag(
             tag,
             attributes: attributes,

@@ -56,22 +56,26 @@ public struct Progress: Element {
         self.label = label
         self.data = data
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
+        var additional: [String] = []
+        if let value, let valueAttr = Attribute.string("value", "\(value)") {
+            additional.append(valueAttr)
+        }
+        if let max, let maxAttr = Attribute.string("max", "\(max)") {
+            additional.append(maxAttr)
+        }
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data,
-            additional: [
-                value != nil ? Attribute.string("value", value!.description)! : nil,
-                max != nil ? Attribute.string("max", max!.description)! : nil
-            ].compactMap { $0 }
+            additional: additional
         )
         return AttributeBuilder.renderTag("progress", attributes: attributes)
     }

@@ -73,7 +73,7 @@ extension HTML {
     public func cursor(
         _ type: CursorType,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = CursorStyleOperation.Parameters(type: type)
 
         return CursorStyleOperation.shared.applyTo(

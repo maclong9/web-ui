@@ -59,43 +59,48 @@ public struct Time: Element {
         self.data = data
         self.contentBuilder = content
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         let attributes = buildAttributes()
         let content = contentBuilder().map { $0.render() }.joined()
-        
+
         return "<time \(attributes.joined(separator: " "))>\(content)</time>"
     }
-    
+
     private func buildAttributes() -> [String] {
-        var attributes = [Attribute.string("datetime", datetime)].compactMap { $0 }
-        
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
+        var attributes: [String] = []
+        if let datetimeAttr = Attribute.string("datetime", datetime) {
+            attributes.append(datetimeAttr)
         }
-        
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
+
+        if let id, let idAttr = Attribute.string("id", id) {
+            attributes.append(idAttr)
         }
-        
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
+
+        if let classes, !classes.isEmpty, let classAttr = Attribute.string("class", classes.joined(separator: " ")) {
+            attributes.append(classAttr)
         }
-        
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
+
+        if let role, let roleAttr = Attribute.typed("role", role) {
+            attributes.append(roleAttr)
         }
-        
-        if let data = data {
+
+        if let label, let labelAttr = Attribute.string("aria-label", label) {
+            attributes.append(labelAttr)
+        }
+
+        if let data {
             for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
+                if let dataAttr = Attribute.string("data-\(key)", value) {
+                    attributes.append(dataAttr)
+                }
             }
         }
-        
+
         return attributes
     }
 }

@@ -2,7 +2,7 @@ import Foundation
 
 /// Provides common styling utilities for HTML elements
 public enum ElementStyling {
-    
+
     /// Applies CSS classes to HTML content
     ///
     /// - Parameters:
@@ -12,7 +12,7 @@ public enum ElementStyling {
     public static func applyClasses<T: HTML>(_ content: T, classes: [String]) -> some HTML {
         content.addingClasses(classes)
     }
-    
+
     /// Combines base classes with modifier classes
     ///
     /// - Parameters:
@@ -23,47 +23,47 @@ public enum ElementStyling {
         guard !modifiers.isEmpty else {
             return baseClasses
         }
-        
+
         var result: [String] = []
-        
+
         for baseClass in baseClasses {
             result.append(baseClass)
-            
+
             for modifier in modifiers {
                 let modifierPrefix = modifier.rawValue
                 result.append("\(modifierPrefix):\(baseClass)")
             }
         }
-        
+
         return result
     }
 }
 
 /// Extension to provide styling helpers for HTML protocol
-public extension HTML {
+extension HTML {
     /// Adds CSS classes to an HTML element
     ///
     /// - Parameter classNames: The CSS class names to add
     /// - Returns: HTML with the classes applied
-    func addClass(_ classNames: String...) -> some HTML {
+    public func addClass(_ classNames: String...) -> some HTML {
         addingClasses(classNames)
     }
-    
+
     /// Adds CSS classes to an HTML element
     ///
     /// - Parameter classNames: The CSS class names to add
     /// - Returns: HTML with the classes applied
-    func addClasses(_ classNames: [String]) -> some HTML {
+    public func addClasses(_ classNames: [String]) -> some HTML {
         addingClasses(classNames)
     }
-    
+
     /// Applies a style with modifier to the element
     ///
     /// - Parameters:
     ///   - baseClasses: The base CSS classes to apply
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
     /// - Returns: HTML with the styled classes applied
-    func applyStyle(baseClasses: [String], modifiers: [Modifier] = []) -> some HTML {
+    public func applyStyle(baseClasses: [String], modifiers: [Modifier] = []) -> some HTML {
         let classes = ElementStyling.combineClasses(baseClasses, withModifiers: modifiers)
         return addingClasses(classes)
     }

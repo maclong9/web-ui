@@ -116,7 +116,7 @@ extension HTML {
         translate: (x: Int?, y: Int?)? = nil,
         skew: (x: Int?, y: Int?)? = nil,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = TransformStyleOperation.Parameters(
             scale: scale,
             rotate: rotate,

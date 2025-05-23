@@ -104,7 +104,7 @@ extension HTML {
         at edges: Edge...,
         offset length: Int? = nil,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = PositionStyleOperation.Parameters(
             type: type,
             edges: edges,

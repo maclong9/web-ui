@@ -297,7 +297,7 @@ import Testing
             method: .post,
             id: "contact-form",
         ) {
-            Element(tag: "input")
+            Input(name: "test")
         }
 
         let rendered = form.render()
@@ -665,17 +665,10 @@ import Testing
 
     @Test("Element with ARIA attributes")
     func testElementWithAriaAttributes() async throws {
-        let element = Element(
-            tag: "div",
-            role: .tabpanel,
-            label: "Panel Description",
-            ariaAttributes: [
-                "expanded": "true",
-                "controls": "content-1",
-                "selected": "true",
-                "hidden": "false",
-            ]
-        )
+        let element = Stack(
+            role: AriaRole.tabpanel,
+            label: "Panel Description"
+        ) { "Tab panel content" }
 
         let rendered = element.render()
         #expect(rendered.contains("role=\"tabpanel\""))
@@ -688,29 +681,17 @@ import Testing
 
     @Test("Interactive element with ARIA roles")
     func testInteractiveElementWithAriaRoles() async throws {
-        let tabContainer = Element(
-            tag: "div",
-            role: .tablist,
-            ariaAttributes: ["orientation": "horizontal"]
+        let tabContainer = Stack(
+            role: AriaRole.tablist
         ) {
-            Element(
-                tag: "button",
-                role: .tab,
-                label: "First tab",
-                ariaAttributes: [
-                    "selected": "true",
-                    "controls": "panel-1",
-                ]
+            Button(
+                role: AriaRole.tab,
+                label: "First tab"
             ) { "Tab 1" }
 
-            Element(
-                tag: "button",
-                role: .tab,
-                label: "Second tab",
-                ariaAttributes: [
-                    "selected": "false",
-                    "controls": "panel-2",
-                ]
+            Button(
+                role: AriaRole.tab,
+                label: "Second tab"
             ) { "Tab 2" }
         }
 
@@ -796,14 +777,13 @@ import Testing
 
     @Test("Element with multiple data attributes")
     func testMultipleDatAttributes() async throws {
-        let element = Element(
-            tag: "span",
+        let element = Text(
             data: [
                 "user-id": "123",
                 "theme": "dark",
                 "status": "active",
             ]
-        )
+        ) { "Content" }
 
         let rendered = element.render()
         #expect(rendered.contains("data-user-id=\"123\""))
@@ -813,16 +793,15 @@ import Testing
 
     @Test("Element with data attributes and other attributes")
     func testDatAttributesWithOtheAttributes() async throws {
-        let element = Element(
-            tag: "section",
+        let element = Section(
             id: "content",
             classes: ["container"],
-            role: .contentinfo,
+            role: AriaRole.contentinfo,
             data: [
                 "page": "home",
                 "version": "1.0",
             ]
-        )
+        ) {}
 
         let rendered = element.render()
         #expect(rendered.contains("id=\"content\""))
@@ -856,12 +835,10 @@ import Testing
 
     @Test("Element with data attributes in nested structure")
     func testDatAttributesInNestedStructure() async throws {
-        let element = Element(
-            tag: "div",
+        let element = Stack(
             data: ["container": "main"]
         ) {
-            Element(
-                tag: "span",
+            Text(
                 data: ["item": "child"]
             ) {
                 "Nested content"

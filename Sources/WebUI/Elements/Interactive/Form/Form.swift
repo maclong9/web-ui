@@ -75,26 +75,26 @@ public struct Form: Element {
         self.data = data
         self.contentBuilder = content
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
+        var additional: [String] = []
+        if let action, let actionAttr = Attribute.string("action", action) {
+            additional.append(actionAttr)
+        }
+        if let methodAttr = Attribute.typed("method", method) {
+            additional.append(methodAttr)
+        }
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data,
-            additional: {
-                var attrs: [String] = []
-                if let action = action {
-                    if let attr = Attribute.string("action", action) { attrs.append(attr) }
-                }
-                if let attr = Attribute.typed("method", method) { attrs.append(attr) }
-                return attrs
-            }()
+            additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.renderTag("form", attributes: attributes, content: content)

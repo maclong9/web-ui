@@ -17,7 +17,7 @@ public struct RobotsRule: Equatable, Hashable {
 
     /// The delay between successive crawls in seconds.
     public let crawlDelay: Int?
-    
+
     /// Creates a new robots.txt rule.
     ///
     /// - Parameters:
@@ -46,7 +46,7 @@ public struct RobotsRule: Equatable, Hashable {
         self.allow = allow
         self.crawlDelay = crawlDelay
     }
-    
+
     /// Creates a rule that allows all crawlers to access the entire site.
     ///
     /// - Returns: A rule that allows all paths for all user agents.
@@ -58,7 +58,7 @@ public struct RobotsRule: Equatable, Hashable {
     public static func allowAll() -> RobotsRule {
         RobotsRule(userAgent: "*", allow: ["/"])
     }
-    
+
     /// Creates a rule that disallows all crawlers from accessing the entire site.
     ///
     /// - Returns: A rule that disallows all paths for all user agents.
@@ -70,7 +70,7 @@ public struct RobotsRule: Equatable, Hashable {
     public static func disallowAll() -> RobotsRule {
         RobotsRule(userAgent: "*", disallow: ["/"])
     }
-    
+
     /// Creates a rule for a specific crawler with custom access permissions.
     ///
     /// - Parameters:
@@ -83,8 +83,8 @@ public struct RobotsRule: Equatable, Hashable {
     /// - Example:
     ///   ```swift
     ///   let googleRule = RobotsRule.forAgent(
-    ///     "Googlebot", 
-    ///     disallow: ["/private/"], 
+    ///     "Googlebot",
+    ///     disallow: ["/private/"],
     ///     allow: ["/public/"]
     ///   )
     ///   ```

@@ -58,19 +58,23 @@ public struct Abbreviation: Element {
         self.data = data
         self.contentBuilder = content
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
+        var additional: [String] = []
+        if let titleAttr = Attribute.string("title", fullTitle) {
+            additional.append(titleAttr)
+        }
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data,
-            additional: [Attribute.string("title", fullTitle)!]
+            additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.renderTag("abbr", attributes: attributes, content: content)

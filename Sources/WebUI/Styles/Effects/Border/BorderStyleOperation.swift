@@ -123,7 +123,7 @@ extension HTML {
         at edges: Edge...,
         color: Color? = nil,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = BorderStyleOperation.Parameters(
             width: width,
             edges: edges,

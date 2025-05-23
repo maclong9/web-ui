@@ -31,9 +31,9 @@ public protocol Element: HTML {
 
 // MARK: - Default Implementations
 
-public extension Element {
+extension Element {
     /// Default implementation that renders the body content.
-    func render() -> String {
+    public func render() -> String {
         body.render()
     }
 }

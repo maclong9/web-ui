@@ -22,7 +22,7 @@ public struct Section: Element {
     private let label: String?
     private let data: [String: String]?
     private let contentBuilder: () -> [any HTML]
-    
+
     /// Creates a new HTML section element for thematic content grouping.
     ///
     /// - Parameters:
@@ -55,11 +55,11 @@ public struct Section: Element {
         self.data = data
         self.contentBuilder = content
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -69,7 +69,7 @@ public struct Section: Element {
             data: data
         )
         let content = contentBuilder().map { $0.render() }.joined()
-        
+
         return AttributeBuilder.renderTag("section", attributes: attributes, content: content)
     }
 }

@@ -73,14 +73,14 @@ public struct AnyHTML: HTML {
 /// Primitive HTML string content.
 ///
 /// Used internally to represent raw HTML string content within the HTML hierarchy.
-internal struct HTMLString: HTML {
+public struct HTMLString: HTML {
     let content: String
 
-    var body: HTMLString {
+    public var body: HTMLString {
         self
     }
 
-    func render() -> String {
+    public func render() -> String {
         content
     }
 }
@@ -89,89 +89,84 @@ internal struct HTMLString: HTML {
 
 // MARK: - Default Implementations
 
-public extension HTML {
+extension HTML {
     /// Default render implementation that delegates to the body.
-    func render() -> String {
+    public func render() -> String {
         body.render()
     }
-    
+
     /// Adds CSS classes to an HTML element
     ///
     /// - Parameter classes: The CSS classes to add
     /// - Returns: A container with the HTML content and additional classes
-    func addingClasses(_ classes: [String]) -> some HTML {
+    public func addingClasses(_ classes: [String]) -> some HTML {
         HTMLClassContainer(content: self, classes: classes)
     }
 }
 
 /// A container that adds CSS classes to HTML content
-public struct HTMLClassContainer<Content: HTML>: Element {
+public struct HTMLClassContainer<Content: HTML>: HTML {
     private let content: Content
     private let classes: [String]
-    
+
     public init(content: Content, classes: [String]) {
         self.content = content
         self.classes = classes
     }
-    
-    public var body: some HTML {
+
+    public var body: HTMLString {
         HTMLString(content: renderWithClasses())
     }
-    
+
     private func renderWithClasses() -> String {
         // Get the rendered content
         let renderedContent = content.render()
-        
+
         // If there are no classes to add, return the content as is
         if classes.isEmpty {
             return renderedContent
         }
-        
+
         // Check if content starts with an HTML tag
         guard let tagRange = renderedContent.range(of: "<[^>]+>", options: .regularExpression) else {
             // If not, wrap the content in a span with the classes
             return "<span class=\"\(classes.joined(separator: " "))\">\(renderedContent)</span>"
         }
-        
+
         // Extract the tag
         let tag = renderedContent[tagRange]
-        
+
         // Check if the tag already has a class attribute
         if tag.contains(" class=\"") {
-            // Replace the existing class attribute
-            let modifiedTag = tag.replacingOccurrences(
-                of: " class=\"([^\"]*)\"",
-                with: { match in
-                    let existingClasses = match.range(at: 1).map { String(tag[$0]) } ?? ""
-                    let allClasses = existingClasses.isEmpty ? 
-                        classes.joined(separator: " ") : 
-                        "\(existingClasses) \(classes.joined(separator: " "))"
-                    return " class=\"\(allClasses)\""
-                },
-                options: .regularExpression
+            // Extract existing classes using string manipulation
+            let tagString = String(tag)
+
+            guard let classStart = tagString.range(of: " class=\""),
+                let classEnd = tagString.range(of: "\"", range: classStart.upperBound..<tagString.endIndex)
+            else {
+                return renderedContent
+            }
+
+            let existingClasses = String(tagString[classStart.upperBound..<classEnd.lowerBound])
+            let allClasses =
+                existingClasses.isEmpty
+                ? classes.joined(separator: " ") : "\(existingClasses) \(classes.joined(separator: " "))"
+
+            let modifiedTag = tagString.replacingCharacters(
+                in: classStart.upperBound..<classEnd.lowerBound,
+                with: allClasses
             )
-            
+
             return renderedContent.replacingCharacters(in: tagRange, with: modifiedTag)
         } else {
             // Insert a class attribute before the closing >
-            let modifiedTag = tag.replacingOccurrences(
+            let modifiedTag = String(tag).replacingOccurrences(
                 of: ">$",
-                with: " class=\"\(classes.joined(separator: " "))\">"
+                with: " class=\"\(classes.joined(separator: " "))\">",
+                options: .regularExpression
             )
-            
+
             return renderedContent.replacingCharacters(in: tagRange, with: modifiedTag)
         }
-    }
-}
-
-// MARK: - Legacy Support
-
-extension HTML {
-    /// Converts the HTML to its string representation for rendering.
-    ///
-    /// This method provides backward compatibility with existing code
-    /// that uses toString() instead of render().
-    internal func toString() -> String {
-        render()
     }
 }

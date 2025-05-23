@@ -35,7 +35,7 @@ public struct SitemapEntry: Equatable, Hashable {
 
     /// The priority of this URL relative to other URLs on your site (0.0 to 1.0).
     public let priority: Double?
-    
+
     /// Creates a new sitemap entry for a URL.
     ///
     /// - Parameters:
@@ -62,7 +62,7 @@ public struct SitemapEntry: Equatable, Hashable {
         self.url = url
         self.lastModified = lastModified
         self.changeFrequency = changeFrequency
-        
+
         // Ensure priority is within valid range
         if let priority = priority {
             self.priority = min(1.0, max(0.0, priority))
@@ -70,7 +70,7 @@ public struct SitemapEntry: Equatable, Hashable {
             self.priority = nil
         }
     }
-    
+
     /// Creates a homepage sitemap entry with recommended settings.
     ///
     /// - Parameters:
@@ -90,7 +90,7 @@ public struct SitemapEntry: Equatable, Hashable {
             priority: 1.0
         )
     }
-    
+
     /// Creates a content page sitemap entry with recommended settings.
     ///
     /// - Parameters:

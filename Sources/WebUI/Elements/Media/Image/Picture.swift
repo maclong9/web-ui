@@ -63,11 +63,11 @@ public struct Picture: Element {
         self.label = label
         self.data = data
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -76,19 +76,25 @@ public struct Picture: Element {
             label: label,
             data: data
         )
-        
+
         var content = ""
-        
+
         // Add source elements
         for source in sources {
-            let sourceAttributes = source.type != nil ? [Attribute.string("type", source.type!.rawValue)!] : []
+            var sourceAttributes: [String] = []
+            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+                sourceAttributes.append(typeAttr)
+            }
+            if let srcsetAttr = Attribute.string("srcset", source.src) {
+                sourceAttributes.append(srcsetAttr)
+            }
             content += AttributeBuilder.renderTag(
-                "source", 
-                attributes: sourceAttributes + [Attribute.string("srcset", source.src)!],
+                "source",
+                attributes: sourceAttributes,
                 isSelfClosing: true
             )
         }
-        
+
         // Add fallback image
         content += Image(
             source: sources.first?.src ?? "",
@@ -100,7 +106,7 @@ public struct Picture: Element {
             label: label,
             data: data
         ).render()
-        
+
         return AttributeBuilder.renderTag("picture", attributes: attributes, content: content)
     }
 }

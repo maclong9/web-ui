@@ -25,7 +25,7 @@ public struct Image: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    
+
     /// Creates a new HTML image element.
     ///
     /// - Parameters:
@@ -59,11 +59,11 @@ public struct Image: Element {
         self.label = label
         self.data = data
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         var attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -72,17 +72,21 @@ public struct Image: Element {
             label: label,
             data: data
         )
-        attributes.insert(Attribute.string("src", source)!, at: 0)
-        attributes.insert(Attribute.string("alt", description)!, at: 1)
-        if let type = type {
-            attributes.append(Attribute.string("type", type.rawValue)!)
+        if let srcAttr = Attribute.string("src", source) {
+            attributes.insert(srcAttr, at: 0)
+        }
+        if let altAttr = Attribute.string("alt", description) {
+            attributes.insert(altAttr, at: 1)
+        }
+        if let type, let typeAttr = Attribute.string("type", type.rawValue) {
+            attributes.append(typeAttr)
         }
         if let size = size {
-            if let width = size.width {
-                attributes.append(Attribute.string("width", "\(width)")!)
+            if let width = size.width, let widthAttr = Attribute.string("width", "\(width)") {
+                attributes.append(widthAttr)
             }
-            if let height = size.height {
-                attributes.append(Attribute.string("height", "\(height)")!)
+            if let height = size.height, let heightAttr = Attribute.string("height", "\(height)") {
+                attributes.append(heightAttr)
             }
         }
         return AttributeBuilder.renderTag("img", attributes: attributes, isSelfClosing: true)

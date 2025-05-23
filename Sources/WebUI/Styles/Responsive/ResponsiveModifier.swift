@@ -159,14 +159,27 @@ public class ResponsiveBuilder {
     private struct AnyElement: Element {
         private let base: any Element
         private let bodyProvider: () -> any HTML
-        
+
         init(_ base: any Element) {
             self.base = base
             self.bodyProvider = { base.body }
         }
-        
+
         var body: HTMLContainer<AnyHTML> {
             HTMLContainer(AnyHTML(bodyProvider()))
+        }
+    }
+
+    /// Wrapper to convert HTML back to Element
+    private struct ElementWrapper<T: HTML>: Element {
+        private let htmlContent: T
+
+        init(_ htmlContent: T) {
+            self.htmlContent = htmlContent
+        }
+
+        var body: T {
+            htmlContent
         }
     }
 
@@ -189,7 +202,8 @@ public class ResponsiveBuilder {
 
         // Create a concrete wrapper that preserves Element conformance
         let wrapped = AnyElement(self.element)
-        self.element = StyleModifier(content: wrapped, classes: responsiveClasses)
+        let styledModifier = StyleModifier(content: wrapped, classes: responsiveClasses)
+        self.element = ElementWrapper(styledModifier)
 
         // Clear pending classes for the next breakpoint
         pendingClasses = []

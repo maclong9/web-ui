@@ -24,7 +24,7 @@ public struct Aside: Element {
     private let label: String?
     private let data: [String: String]?
     private let contentBuilder: () -> [any HTML]
-    
+
     /// Creates a new HTML aside element.
     ///
     /// - Parameters:
@@ -57,11 +57,11 @@ public struct Aside: Element {
         self.data = data
         self.contentBuilder = content
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -71,7 +71,7 @@ public struct Aside: Element {
             data: data
         )
         let content = contentBuilder().map { $0.render() }.joined()
-        
+
         return AttributeBuilder.renderTag("aside", attributes: attributes, content: content)
     }
 }

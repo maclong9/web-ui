@@ -53,22 +53,22 @@ public struct Source: Element {
         self.type = type
         self.data = data
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         var attributes = AttributeBuilder.buildAttributes(data: data)
-        
-        if !src.isEmpty {
-            attributes.append(Attribute.string("src", src)!)
+
+        if let srcAttr = Attribute.string("src", src) {
+            attributes.append(srcAttr)
         }
-        
-        if let type = type {
-            attributes.append(Attribute.string("type", type)!)
+
+        if let type, let typeAttr = Attribute.string("type", type) {
+            attributes.append(typeAttr)
         }
-        
+
         return AttributeBuilder.renderTag("source", attributes: attributes, isSelfClosing: true)
     }
 }

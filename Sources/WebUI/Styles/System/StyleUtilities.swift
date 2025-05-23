@@ -50,16 +50,16 @@ public enum StyleUtilities {
         }
 
         var result: [String] = []
-    
+
         for baseClass in baseClasses {
             result.append(baseClass)
-        
+
             for modifier in modifiers {
                 let modifierPrefix = modifier.rawValue
                 result.append("\(modifierPrefix):\(baseClass)")
             }
         }
-    
+
         return result
     }
 }

@@ -106,7 +106,7 @@ extension HTML {
         easing: Easing? = nil,
         delay: Int? = nil,
         on modifiers: Modifier...
-    ) -> any Element {
+    ) -> some HTML {
         let params = TransitionStyleOperation.Parameters(
             property: property,
             duration: duration,

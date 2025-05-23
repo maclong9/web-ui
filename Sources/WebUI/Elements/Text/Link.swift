@@ -14,7 +14,7 @@ public struct Link: Element {
     private let label: String?
     private let data: [String: String]?
     private let contentBuilder: () -> [any HTML]
-    
+
     /// Creates a new HTML anchor link.
     ///
     /// - Parameters:
@@ -52,7 +52,7 @@ public struct Link: Element {
         self.data = data
         self.contentBuilder = content
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
@@ -65,7 +65,9 @@ public struct Link: Element {
             label: label,
             data: data
         )
-        attributes.insert(Attribute.string("href", destination)!, at: 0)
+        if let hrefAttr = Attribute.string("href", destination) {
+            attributes.insert(hrefAttr, at: 0)
+        }
         if newTab == true {
             attributes.append("target=\"_blank\"")
             attributes.append("rel=\"noreferrer\"")

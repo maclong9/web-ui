@@ -72,11 +72,11 @@ public struct Audio: Element {
         self.label = label
         self.data = data
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         var attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -85,19 +85,30 @@ public struct Audio: Element {
             label: label,
             data: data
         )
-        if let controls = controls, controls {
+        if let controls, controls {
             attributes.append("controls")
         }
-        if let autoplay = autoplay, autoplay {
+        if let autoplay, autoplay {
             attributes.append("autoplay")
         }
-        if let loop = loop, loop {
+        if let loop, loop {
             attributes.append("loop")
         }
         let sourceElements = sources.map { source in
-            let type = source.type?.rawValue
-            return "<source src=\"\(source.src)\"\(type != nil ? " type=\"\(type!)\"" : "")>"
+            var sourceAttributes: [String] = []
+            if let srcAttr = Attribute.string("src", source.src) {
+                sourceAttributes.append(srcAttr)
+            }
+            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+                sourceAttributes.append(typeAttr)
+            }
+            let attrs = sourceAttributes.joined(separator: " ")
+            return "<source \(attrs)>"
         }.joined()
-        return AttributeBuilder.renderTag("audio", attributes: attributes, content: "\(sourceElements)Your browser does not support the audio element.")
+        return AttributeBuilder.renderTag(
+            "audio",
+            attributes: attributes,
+            content: "\(sourceElements)Your browser does not support the audio element."
+        )
     }
 }
