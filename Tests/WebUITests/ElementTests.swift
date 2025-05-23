@@ -544,11 +544,11 @@ import Testing
 
     @Test("Main element")
     func testMainElement() async throws {
-        let main = Main(id: "content") {
+        let mainElement = Main(id: "content") {
             Text { "Main content" }
         }
 
-        let rendered = main.render()
+        let rendered = mainElement.render()
         #expect(rendered.contains("<main"))
         #expect(rendered.contains("id=\"content\""))
         #expect(rendered.contains("Main content"))

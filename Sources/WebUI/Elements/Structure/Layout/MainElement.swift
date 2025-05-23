@@ -9,13 +9,13 @@
 /// ```swift
 /// Main {
 ///     Heading(.largeTitle) { "Welcome to Our Website" }
-///     Text { "This is the main content of our homepage." }
+///     Text { "This is the main content of our heomepage." }
 ///     Article {
 ///       // Article content
 ///     }
 ///   }
 ///   ```
-public final class Main: Element {
+public final class MainElement: Element {
     /// Creates a new HTML main element.
     ///
     /// - Parameters:
