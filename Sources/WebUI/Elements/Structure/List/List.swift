@@ -14,9 +14,15 @@
 /// }
 /// // Renders: <ol><li>First item</li><li>Second item</li><li>Third item</li></ol>
 /// ```
-public final class List: Element {
-    let type: ListType
-    let style: ListStyle
+public struct List: Element {
+    private let type: ListType
+    private let style: ListStyle
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: () -> [any HTML]
 
     /// Creates a new HTML list element (`<ul>` or `<ol>`).
     ///
@@ -49,14 +55,31 @@ public final class List: Element {
     ) {
         self.type = type
         self.style = style
-        super.init(
-            tag: type.rawValue,
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let combinedClasses = (classes ?? []) + (style != .none ? ["list-\(style.rawValue)"] : [])
+        
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
-            classes: (classes ?? []) + (style != .none ? ["list-\(style.rawValue)"] : []),
+            classes: combinedClasses,
             role: role,
             label: label,
-            data: data,
-            content: content
+            data: data
         )
+        
+        let content = contentBuilder().map { $0.render() }.joined()
+        
+        return AttributeBuilder.renderTag(type.rawValue, attributes: attributes, content: content)
     }
 }

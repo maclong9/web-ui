@@ -15,9 +15,10 @@ import Foundation
 ///   "Your browser does not support the video tag."
 /// }
 /// ```
-public final class Source: Element {
-    let src: String
-    let type: String?
+public struct Source: Element {
+    private let src: String
+    private let type: String?
+    private let data: [String: String]?
 
     /// Creates a new HTML source element.
     ///
@@ -50,15 +51,24 @@ public final class Source: Element {
     ) {
         self.src = src
         self.type = type
-        let customAttributes = [
-            Attribute.string("src", src),
-            Attribute.string("type", type),
-        ].compactMap { $0 }
-        super.init(
-            tag: "source",
-            data: data,
-            isSelfClosing: true,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes
-        )
+        self.data = data
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        var attributes = AttributeBuilder.buildAttributes(data: data)
+        
+        if !src.isEmpty {
+            attributes.append(Attribute.string("src", src)!)
+        }
+        
+        if let type = type {
+            attributes.append(Attribute.string("type", type)!)
+        }
+        
+        return AttributeBuilder.renderTag("source", attributes: attributes, isSelfClosing: true)
     }
 }

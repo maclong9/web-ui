@@ -20,7 +20,14 @@
 /// }
 /// // Renders: <style>.custom-heading { color: blue; font-size: 24px; margin-bottom: 16px; }</style>
 /// ```
-public final class Style: Element {
+public struct Style: Element {
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: () -> [any HTML]
+    
     /// Creates a new HTML style element.
     ///
     /// - Parameters:
@@ -46,14 +53,28 @@ public final class Style: Element {
         data: [String: String]? = nil,
         @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
     ) {
-        super.init(
-            tag: "style",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            content: content
+            data: data
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+        
+        return AttributeBuilder.renderTag("style", attributes: attributes, content: content)
     }
 }

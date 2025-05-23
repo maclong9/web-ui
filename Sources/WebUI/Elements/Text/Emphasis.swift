@@ -5,7 +5,14 @@ import Foundation
 /// Represents emphasized text with semantic importance, typically displayed in italics.
 /// Emphasis elements are used to draw attention to text within another body of text
 /// and provide semantic meaning that enhances accessibility and comprehension.
-public final class Emphasis: Element {
+public struct Emphasis: Element {
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: () -> [any HTML]
+    
     /// Creates a new HTML emphasis element.
     ///
     /// - Parameters:
@@ -18,8 +25,8 @@ public final class Emphasis: Element {
     ///
     /// ## Example
     /// ```swift
-    /// Emphasis {
-    ///   "This text is emphasized"
+    /// Emphasis(classes: ["highlight"]) {
+    ///   "Important information"
     /// }
     /// ```
     public init(
@@ -30,14 +37,28 @@ public final class Emphasis: Element {
         data: [String: String]? = nil,
         @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
     ) {
-        super.init(
-            tag: "em",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            content: content
+            data: data
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+        
+        return AttributeBuilder.renderTag("em", attributes: attributes, content: content)
     }
 }

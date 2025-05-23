@@ -5,7 +5,15 @@ import Foundation
 /// Represents section headings of different levels, with `<h1>` being the highest (most important)
 /// and `<h6>` the lowest. Headings provide document structure and are essential for accessibility,
 /// SEO, and reader comprehension.
-public final class Heading: Element {
+public struct Heading: Element {
+    private let level: HeadingLevel
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: () -> [any HTML]
+    
     /// Creates a new HTML heading element.
     ///
     /// - Parameters:
@@ -32,14 +40,29 @@ public final class Heading: Element {
         data: [String: String]? = nil,
         @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
     ) {
-        super.init(
-            tag: level.rawValue,
+        self.level = level
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            content: content
+            data: data
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+        
+        return AttributeBuilder.renderTag(level.rawValue, attributes: attributes, content: content)
     }
 }

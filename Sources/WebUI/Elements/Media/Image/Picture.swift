@@ -11,10 +11,15 @@
 ///   description: "Website banner image"
 /// )
 /// ```
-public final class Picture: Element {
-    let sources: [(src: String, type: ImageType?)]
-    let description: String
-    let size: MediaSize?
+public struct Picture: Element {
+    private let sources: [(src: String, type: ImageType?)]
+    private let description: String
+    private let size: MediaSize?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
 
     /// Creates a new HTML picture element.
     ///
@@ -28,19 +33,15 @@ public final class Picture: Element {
     ///   - label: ARIA label to describe the element.
     ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
     ///
-    /// All style attributes (id, classes, role, label, data) are passed to the nested Image element
-    /// to ensure proper styling, as the Picture element itself is invisible in the rendered output.
-    ///
     /// ## Example
     /// ```swift
     /// Picture(
-    ///   sources: [
-    ///     ("hero-large.webp", .webp),
-    ///     ("hero-large.jpg", .jpeg)
-    ///   ],
-    ///   description: "Hero Banner",
-    ///   id: "hero-image",
-    ///   classes: ["responsive-image"]
+    ///     sources: [
+    ///         (src: "/images/photo.webp", type: .webp),
+    ///         (src: "/images/photo.jpg", type: .jpeg)
+    ///     ],
+    ///     description: "Mountain landscape",
+    ///     size: MediaSize(width: 800, height: 600)
     /// )
     /// ```
     public init(
@@ -56,24 +57,50 @@ public final class Picture: Element {
         self.sources = sources
         self.description = description
         self.size = size
-        super.init(
-            tag: "picture",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            content: {
-                for source in sources {
-                    Source(src: source.src, type: source.type?.rawValue)
-                }
-                Image(
-                    source: sources[0].src,
-                    description: description,
-                    size: size,
-                    data: data
-                )
-            }
+            data: data
         )
+        
+        var content = ""
+        
+        // Add source elements
+        for source in sources {
+            let sourceAttributes = source.type != nil ? [Attribute.string("type", source.type!.rawValue)!] : []
+            content += AttributeBuilder.renderTag(
+                "source", 
+                attributes: sourceAttributes + [Attribute.string("srcset", source.src)!],
+                isSelfClosing: true
+            )
+        }
+        
+        // Add fallback image
+        content += Image(
+            source: sources.first?.src ?? "",
+            description: description,
+            size: size,
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data
+        ).render()
+        
+        return AttributeBuilder.renderTag("picture", attributes: attributes, content: content)
     }
 }
