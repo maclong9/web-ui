@@ -10,6 +10,6 @@ extension Element {
     /// - Parameter content: A closure defining responsive style configurations using the result builder.
     /// - Returns: An element with responsive styles applied.
     public func responsive(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> Element {
-        return on(content)
+        on(content)
     }
 }

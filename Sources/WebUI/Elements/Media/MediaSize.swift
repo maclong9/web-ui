@@ -16,7 +16,7 @@ public struct MediaSize {
     public let width: Int?
     /// The height of the media in pixels.
     public let height: Int?
-    
+
     /// Creates a new media size specification.
     ///
     /// - Parameters:

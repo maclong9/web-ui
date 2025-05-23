@@ -15,7 +15,7 @@
 ///     }
 ///   }
 ///   ```
-public final class MainElement: Element {
+public final class Main: Element {
     /// Creates a new HTML main element.
     ///
     /// - Parameters:

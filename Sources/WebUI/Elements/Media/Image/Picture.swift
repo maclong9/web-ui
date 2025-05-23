@@ -1,38 +1,51 @@
-import Foundation
-
-/// Creates HTML picture elements for responsive images.
-///
-/// Represents a container for multiple image sources, allowing browsers to choose the most appropriate
-/// image format and resolution based on device capabilities. Picture elements enhance website performance
-/// by optimizing image delivery based on screen size, resolution, and supported formats.
+/// Generates an HTML picture element with multiple source tags.
+/// Styles and attributes applied to this element are also passed to the nested Image element.
 ///
 /// ## Example
 /// ```swift
 /// Picture(
 ///   sources: [
-///     (src: "image.webp", type: .webp),
-///     (src: "image.jpg", type: .jpeg)
+///     ("banner.webp", .webp),
+///     ("banner.jpg", .jpeg)
 ///   ],
-///   description: "A responsive image",
-///   fallback: "fallback.jpg"
+///   description: "Website banner image"
 /// )
+/// ```
 public final class Picture: Element {
+    let sources: [(src: String, type: ImageType?)]
+    let description: String
+    let size: MediaSize?
+
     /// Creates a new HTML picture element.
     ///
     /// - Parameters:
-    ///   - sources: Array of tuples containing source URL and image MIME type.
-    ///   - description: The alt text for the image for accessibility and SEO.
-    ///   - fallback: Fallback image source URL, optional.
-    ///   - size: The size of the image in pixels, optional.
-    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the picture container.
-    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
-    ///   - label: ARIA label to describe the element for accessibility when alt text isn't sufficient.
-    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the picture element.
+    ///   - sources: Array of tuples containing source URL and optional image MIME type.
+    ///   - description: Alt text for accessibility.
+    ///   - size: Picture size dimensions, optional.
+    ///   - id: Unique identifier for the HTML element.
+    ///   - classes: An array of CSS classnames.
+    ///   - role: ARIA role of the element for accessibility.
+    ///   - label: ARIA label to describe the element.
+    ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+    ///
+    /// All style attributes (id, classes, role, label, data) are passed to the nested Image element
+    /// to ensure proper styling, as the Picture element itself is invisible in the rendered output.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Picture(
+    ///   sources: [
+    ///     ("hero-large.webp", .webp),
+    ///     ("hero-large.jpg", .jpeg)
+    ///   ],
+    ///   description: "Hero Banner",
+    ///   id: "hero-image",
+    ///   classes: ["responsive-image"]
+    /// )
+    /// ```
     public init(
-        sources: [(src: String, type: ImageType)],
+        sources: [(src: String, type: ImageType?)],
         description: String,
-        fallback: String? = nil,
         size: MediaSize? = nil,
         id: String? = nil,
         classes: [String]? = nil,
@@ -40,18 +53,9 @@ public final class Picture: Element {
         label: String? = nil,
         data: [String: String]? = nil
     ) {
-        let sourceElements = sources.map { (src, type) in
-            "<source srcset=\"\(src)\" type=\"\(type.rawValue)\" />"
-        }.joined()
-        let imgTag: String
-        if let fallback = fallback {
-            imgTag = "<img src=\"\(fallback)\" alt=\"\(description)\" />"
-        } else {
-            imgTag = "<img alt=\"\(description)\" />"
-        }
-        let content: () -> [any HTML] = {
-            [RawHTML(sourceElements + imgTag)]
-        }
+        self.sources = sources
+        self.description = description
+        self.size = size
         super.init(
             tag: "picture",
             id: id,
@@ -59,7 +63,17 @@ public final class Picture: Element {
             role: role,
             label: label,
             data: data,
-            content: content
+            content: {
+                for source in sources {
+                    Source(src: source.src, type: source.type?.rawValue)
+                }
+                Image(
+                    source: sources[0].src,
+                    description: description,
+                    size: size,
+                    data: data
+                )
+            }
         )
     }
 }

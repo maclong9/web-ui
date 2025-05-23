@@ -9,16 +9,16 @@ public struct OutlineStyleOperation: StyleOperation, @unchecked Sendable {
     public struct Parameters {
         /// The outline width
         public let width: Int?
-        
+
         /// The outline style (solid, dashed, etc.)
         public let style: BorderStyle?
-        
+
         /// The outline color
         public let color: Color?
-        
+
         /// The outline offset
         public let offset: Int?
-        
+
         /// Creates parameters for outline styling
         ///
         /// - Parameters:
@@ -37,7 +37,7 @@ public struct OutlineStyleOperation: StyleOperation, @unchecked Sendable {
             self.color = color
             self.offset = offset
         }
-        
+
         /// Creates parameters from a StyleParameters container
         ///
         /// - Parameter params: The style parameters container
@@ -51,40 +51,40 @@ public struct OutlineStyleOperation: StyleOperation, @unchecked Sendable {
             )
         }
     }
-    
+
     /// Applies the outline style and returns the appropriate CSS classes
     ///
     /// - Parameter params: The parameters for outline styling
     /// - Returns: An array of CSS class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes = [String]()
-        
+
         if let width = params.width {
             classes.append("outline-\(width)")
         }
-        
+
         if let style = params.style {
             classes.append("outline-\(style.rawValue)")
         }
-        
+
         if let color = params.color {
             classes.append("outline-\(color.rawValue)")
         }
-        
+
         if let offset = params.offset {
             classes.append("outline-offset-\(offset)")
         }
-        
+
         if classes.isEmpty {
             classes.append("outline")
         }
-        
+
         return classes
     }
-    
+
     /// Shared instance for use across the framework
     public static let shared = OutlineStyleOperation()
-    
+
     /// Private initializer to enforce singleton usage
     private init() {}
 }
@@ -125,7 +125,7 @@ extension Element {
             color: color,
             offset: offset
         )
-        
+
         return OutlineStyleOperation.shared.applyToElement(
             self,
             params: params,
@@ -157,7 +157,7 @@ extension ResponsiveBuilder {
             color: color,
             offset: offset
         )
-        
+
         return OutlineStyleOperation.shared.applyToBuilder(self, params: params)
     }
 }
@@ -183,6 +183,6 @@ public func outline(
         color: color,
         offset: offset
     )
-    
+
     return OutlineStyleOperation.shared.asModification(params: params)
 }

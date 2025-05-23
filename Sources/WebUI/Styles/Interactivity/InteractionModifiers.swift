@@ -17,7 +17,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has keyboard focus.
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -29,7 +29,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element is being actively pressed or clicked.
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -41,7 +41,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles to input placeholders within the element.
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -53,7 +53,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when dark mode is active.
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -65,7 +65,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles to the first child element.
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -77,7 +77,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles to the last child element.
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -89,7 +89,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element is disabled.
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -101,7 +101,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the user prefers reduced motion.
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -113,7 +113,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has aria-busy="true".
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -125,7 +125,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has aria-checked="true".
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -137,7 +137,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has aria-disabled="true".
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -149,7 +149,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has aria-expanded="true".
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -161,7 +161,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has aria-hidden="true".
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -173,7 +173,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has aria-pressed="true".
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -185,7 +185,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has aria-readonly="true".
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -197,7 +197,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has aria-required="true".
     ///
     /// - Parameter modifications: A closure containing style modifications.
@@ -209,7 +209,7 @@ extension ResponsiveBuilder {
         applyBreakpoint()
         return self
     }
-    
+
     /// Applies styles when the element has aria-selected="true".
     ///
     /// - Parameter modifications: A closure containing style modifications.

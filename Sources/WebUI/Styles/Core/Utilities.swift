@@ -519,6 +519,10 @@ public enum Color {
         }
 
         switch self {
+        case .white(let opacity):
+            return "white-\(formatOpacity(opacity))"
+        case .black(let opacity):
+            return "black-\(formatOpacity(opacity))"
         case .slate(let shade, let opacity):
             return "slate-\(shade.rawValue)\(formatOpacity(opacity))"
         case .gray(let shade, let opacity):
