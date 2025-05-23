@@ -1,11 +1,11 @@
 import Foundation
 
-/// Generates an HTML abbreviation element (`<abbr>`) for displaying abbreviations or acronyms.
+/// Creates HTML abbreviation elements for displaying abbreviations or acronyms.
 ///
-/// The abbreviation element allows you to define the full term for an abbreviation or acronym,
-/// which helps with accessibility and provides a visual indication to users (typically shown
-/// with a dotted underline). When users hover over the abbreviation, browsers typically
-/// display the full term as a tooltip.
+/// Represents the full form of an abbreviation or acronym, enhancing accessibility and usability.
+/// Abbreviation elements provide a visual indication to users (typically shown with a dotted underline)
+/// and display the full term as a tooltip when users hover over them. This improves content comprehension
+/// and assists screen reader users.
 ///
 /// ## Example
 /// ```swift
@@ -19,11 +19,11 @@ public final class Abbreviation: Element {
     ///
     /// - Parameters:
     ///   - title: The full term or explanation of the abbreviation.
-    ///   - id: Unique identifier for the HTML element.
+    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
     ///   - classes: An array of CSS classnames for styling the abbreviation.
-    ///   - role: ARIA role of the element for accessibility.
-    ///   - label: ARIA label to describe the element for screen readers.
-    ///   - data: Dictionary of `data-*` attributes for storing element-specific data.
+    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
+    ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the abbreviation.
     ///   - content: Closure providing the content (typically the abbreviated term).
     ///
     /// ## Example

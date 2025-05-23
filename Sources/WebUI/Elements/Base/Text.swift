@@ -42,6 +42,7 @@ public final class Text: Element {
         )
     }
 }
+<<<<<<< Updated upstream:Sources/WebUI/Elements/Base/Text.swift
 
 /// Defines levels for HTML heading tags from h1 to h6.
 public enum HeadingLevel: String {
@@ -322,3 +323,5 @@ public final class Preformatted: Element {
         )
     }
 }
+=======
+>>>>>>> Stashed changes:Sources/WebUI/Elements/Text/Text.swift

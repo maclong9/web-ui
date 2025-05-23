@@ -292,6 +292,16 @@ public func combineClasses(_ baseClasses: [String], withModifiers modifiers: [Mo
 ///   .font(color: .white)
 /// ```
 public enum Color {
+    /// Pure white #ffffff color with optional opacity.
+    ///
+    /// A bright white color with no hue or saturatio
+    case white(opacity: Double? = nil)
+
+    /// Pure black #000000 color with optional opacity.
+    ///
+    /// A deep black color with no hue or saturation.
+    case black(opacity: Double? = nil)
+
     /// A slate gray color with varying intensity shades and optional opacity.
     ///
     /// A cool gray with subtle blue undertones.
