@@ -57,12 +57,12 @@ public struct StyleParameters {
 public struct StyleModifier<T: HTML>: Element {
     private let content: T
     private let classes: [String]
-    
+
     public init(content: T, classes: [String]) {
         self.content = content
         self.classes = classes
     }
-    
+
     public var body: some HTML {
         HTMLContainer(content)
             .addingClasses(classes)
@@ -81,10 +81,10 @@ extension StyleOperation {
     public func applyTo<T: HTML>(_ content: T, params: Parameters, modifiers: [Modifier] = []) -> StyleModifier<T> {
         let classes = applyClasses(params: params)
         let newClasses = StyleUtilities.combineClasses(classes, withModifiers: modifiers)
-        
+
         return StyleModifier(content: content, classes: newClasses)
     }
-    
+
     /// Applies style to an element and returns the modified element
     ///
     /// - Parameters:
@@ -95,6 +95,7 @@ extension StyleOperation {
     public func applyToElement<T: HTML>(_ element: T, params: Parameters, modifiers: Modifier...) -> any Element {
         return applyTo(element, params: params, modifiers: modifiers)
     }
+
 
     /// Internal adapter for use with the responsive builder
     ///

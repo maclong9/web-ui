@@ -1,7 +1,7 @@
 import Foundation
 
 /// Provides a backward compatibility alias for the new responsive styling API
-extension HTML {
+extension Element {
     /// Alias for the `.on` method to maintain backward compatibility with existing code
     ///
     /// This method provides a backward-compatible way to use the new `.on` method

@@ -81,43 +81,22 @@ public struct Form: Element {
     }
     
     private func renderTag() -> String {
-        let attributes = buildAttributes()
+        let attributes = AttributeBuilder.buildAttributes(
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data,
+            additional: {
+                var attrs: [String] = []
+                if let action = action {
+                    if let attr = Attribute.string("action", action) { attrs.append(attr) }
+                }
+                if let attr = Attribute.typed("method", method) { attrs.append(attr) }
+                return attrs
+            }()
+        )
         let content = contentBuilder().map { $0.render() }.joined()
-        
-        return "<form \(attributes.joined(separator: " "))>\(content)</form>"
-    }
-    
-    private func buildAttributes() -> [String] {
-        var attributes: [String] = []
-        
-        if let action = action {
-            attributes.append(Attribute.string("action", action)!)
-        }
-        
-        attributes.append(Attribute.typed("method", method)!)
-        
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
-        }
-        
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
-        }
-        
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
-        }
-        
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
-        }
-        
-        if let data = data {
-            for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
-            }
-        }
-        
-        return attributes
+        return AttributeBuilder.renderTag("form", attributes: attributes, content: content)
     }
 }

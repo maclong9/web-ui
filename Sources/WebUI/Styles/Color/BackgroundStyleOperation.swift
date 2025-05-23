@@ -70,7 +70,7 @@ extension HTML {
     public func background(
         color: Color,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> any Element {
         let params = BackgroundStyleOperation.Parameters(color: color)
 
         return BackgroundStyleOperation.shared.applyTo(

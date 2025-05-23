@@ -24,7 +24,7 @@ import Foundation
 ///     }
 ///   }
 /// ```
-extension HTML {
+extension Element {
     /// Applies responsive styling across different breakpoints with a declarative syntax.
     ///
     /// This method provides a clean, declarative way to define styles for multiple
@@ -155,7 +155,21 @@ public class ResponsiveBuilder {
         return self
     }
 
-    /// Applies the breakpoint prefix to all pending classes and add them to the element
+    /// A concrete wrapper that preserves Element conformance
+    private struct AnyElement: Element {
+        private let base: any Element
+        private let bodyProvider: () -> any HTML
+        
+        init(_ base: any Element) {
+            self.base = base
+            self.bodyProvider = { base.body }
+        }
+        
+        var body: HTMLContainer<AnyHTML> {
+            HTMLContainer(AnyHTML(bodyProvider()))
+        }
+    }
+
     internal func applyBreakpoint() {
         guard let breakpoint = currentBreakpoint else { return }
 
@@ -173,8 +187,9 @@ public class ResponsiveBuilder {
             }
         }
 
-        // Add the responsive classes to the element
-        self.element = StyleModifier(content: self.element, classes: responsiveClasses)
+        // Create a concrete wrapper that preserves Element conformance
+        let wrapped = AnyElement(self.element)
+        self.element = StyleModifier(content: wrapped, classes: responsiveClasses)
 
         // Clear pending classes for the next breakpoint
         pendingClasses = []

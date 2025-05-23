@@ -52,16 +52,3 @@ public struct HTMLContainer<Content: HTML>: Element {
         content
     }
 }
-
-/// Type eraser for HTML content to help with type safety.
-public struct AnyElement: Element {
-    private let content: AnyHTML
-
-    public init<T: HTML>(_ content: T) {
-        self.content = AnyHTML(content)
-    }
-
-    public var body: AnyHTML {
-        content
-    }
-}

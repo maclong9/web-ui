@@ -78,52 +78,26 @@ public struct Audio: Element {
     }
     
     private func renderTag() -> String {
-        let attributes = buildAttributes()
+        var attributes = AttributeBuilder.buildAttributes(
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data
+        )
+        if let controls = controls, controls {
+            attributes.append("controls")
+        }
+        if let autoplay = autoplay, autoplay {
+            attributes.append("autoplay")
+        }
+        if let loop = loop, loop {
+            attributes.append("loop")
+        }
         let sourceElements = sources.map { source in
             let type = source.type?.rawValue
             return "<source src=\"\(source.src)\"\(type != nil ? " type=\"\(type!)\"" : "")>"
         }.joined()
-        
-        return "<audio \(attributes.joined(separator: " "))>\(sourceElements)Your browser does not support the audio element.</audio>"
-    }
-    
-    private func buildAttributes() -> [String] {
-        var attributes: [String] = []
-        
-        if let controls = controls, controls {
-            attributes.append("controls")
-        }
-        
-        if let autoplay = autoplay, autoplay {
-            attributes.append("autoplay")
-        }
-        
-        if let loop = loop, loop {
-            attributes.append("loop")
-        }
-        
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
-        }
-        
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
-        }
-        
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
-        }
-        
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
-        }
-        
-        if let data = data {
-            for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
-            }
-        }
-        
-        return attributes
+        return AttributeBuilder.renderTag("audio", attributes: attributes, content: "\(sourceElements)Your browser does not support the audio element.")
     }
 }

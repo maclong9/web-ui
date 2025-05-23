@@ -1,30 +1,23 @@
 import CoreGraphics
 import Foundation
 
-/// Style operation for sizing elements
+/// Style operation for sizing styling
 ///
-/// Provides a unified implementation for element sizing that can be used across
+/// Provides a unified implementation for sizing styling that can be used across
 /// Element methods and the Declarative DSL functions.
 public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
-    /// Default parameter type used for the StyleOperation protocol conformance
-    public typealias Parameters = FrameParameters
     /// Parameters for frame styling
     public struct FrameParameters {
         /// The width value
         public let width: SizingValue?
-
         /// The height value
         public let height: SizingValue?
-
         /// The minimum width value
         public let minWidth: SizingValue?
-
         /// The maximum width value
         public let maxWidth: SizingValue?
-
         /// The minimum height value
         public let minHeight: SizingValue?
-
         /// The maximum height value
         public let maxHeight: SizingValue?
 
@@ -96,13 +89,10 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
     public struct AspectRatioParameters {
         /// The width component of the aspect ratio
         public let width: CGFloat?
-
         /// The height component of the aspect ratio
         public let height: CGFloat?
-
         /// Whether to use a square (1:1) aspect ratio
         public let isSquare: Bool
-
         /// Whether to use a video (16:9) aspect ratio
         public let isVideo: Bool
 
@@ -143,7 +133,7 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
     ///
     /// - Parameter params: The parameters for frame styling
     /// - Returns: An array of CSS class names to be applied to elements
-    public func applyClasses(params: Parameters) -> [String] {
+    public func applyClasses(params: FrameParameters) -> [String] {
         var classes: [String] = []
 
         if let width = params.width { classes.append("w-\(width.rawValue)") }
@@ -154,10 +144,6 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
         if let maxHeight = params.maxHeight { classes.append("max-h-\(maxHeight.rawValue)") }
 
         return classes
-    }
-
-    public func applyFrameClasses(params: FrameParameters) -> [String] {
-        applyClasses(params: params)
     }
 
     /// Applies the size style and returns the appropriate CSS classes
@@ -191,7 +177,7 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide frame styling
+// Extension for Element to provide sizing and layout styling
 extension HTML {
     /// Sets the width and height of the element with comprehensive SwiftUI-like API.
     ///
@@ -226,10 +212,11 @@ extension HTML {
             maxHeight: maxHeight
         )
 
-        let classes = SizingStyleOperation.shared.applyFrameClasses(params: params)
-        let newClasses = combineClasses(classes, withModifiers: modifiers)
-
-        return StyleModifier(content: self, classes: newClasses)
+        return SizingStyleOperation.shared.applyTo(
+            self,
+            params: params,
+            modifiers: Array(modifiers)
+        )
     }
 
     /// Sets the width and height of the element using numeric values.
@@ -272,20 +259,9 @@ extension HTML {
     /// - Returns: A new element with updated sizing classes.
     public func size(_ size: SizingValue, on modifiers: Modifier...) -> any Element {
         let params = SizingStyleOperation.SizeParameters(value: size)
-
         let classes = SizingStyleOperation.shared.applySizeClasses(params: params)
         let newClasses = combineClasses(classes, withModifiers: modifiers)
-
-        return Element(
-            tag: self.tag,
-            id: self.id,
-            classes: (self.classes ?? []) + newClasses,
-            role: self.role,
-            label: self.label,
-            isSelfClosing: self.isSelfClosing,
-            customAttributes: self.customAttributes,
-            content: self.contentBuilder
-        )
+        return StyleModifier(content: self, classes: newClasses)
     }
 
     /// Creates a frame that maintains the specified aspect ratio.
@@ -299,20 +275,9 @@ extension HTML {
     /// - Returns: A new element with aspect ratio classes.
     public func aspectRatio(_ width: CGFloat, _ height: CGFloat, on modifiers: Modifier...) -> any Element {
         let params = SizingStyleOperation.AspectRatioParameters(width: width, height: height)
-
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
         let newClasses = combineClasses(classes, withModifiers: modifiers)
-
-        return Element(
-            tag: self.tag,
-            id: self.id,
-            classes: (self.classes ?? []) + newClasses,
-            role: self.role,
-            label: self.label,
-            isSelfClosing: self.isSelfClosing,
-            customAttributes: self.customAttributes,
-            content: self.contentBuilder
-        )
+        return StyleModifier(content: self, classes: newClasses)
     }
 
     /// Sets the aspect ratio to square (1:1).
@@ -322,20 +287,9 @@ extension HTML {
     /// - Returns: A new element with square aspect ratio.
     public func aspectRatio(on modifiers: Modifier...) -> any Element {
         let params = SizingStyleOperation.AspectRatioParameters(isSquare: true)
-
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
         let newClasses = combineClasses(classes, withModifiers: modifiers)
-
-        return Element(
-            tag: self.tag,
-            id: self.id,
-            classes: (self.classes ?? []) + newClasses,
-            role: self.role,
-            label: self.label,
-            isSelfClosing: self.isSelfClosing,
-            customAttributes: self.customAttributes,
-            content: self.contentBuilder
-        )
+        return StyleModifier(content: self, classes: newClasses)
     }
 
     /// Sets the aspect ratio to video dimensions (16:9).
@@ -345,24 +299,13 @@ extension HTML {
     /// - Returns: A new element with video aspect ratio.
     public func aspectRatioVideo(on modifiers: Modifier...) -> any Element {
         let params = SizingStyleOperation.AspectRatioParameters(isVideo: true)
-
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
         let newClasses = combineClasses(classes, withModifiers: modifiers)
-
-        return Element(
-            tag: self.tag,
-            id: self.id,
-            classes: (self.classes ?? []) + newClasses,
-            role: self.role,
-            label: self.label,
-            isSelfClosing: self.isSelfClosing,
-            customAttributes: self.customAttributes,
-            content: self.contentBuilder
-        )
+        return StyleModifier(content: self, classes: newClasses)
     }
 }
 
-// Extension for ResponsiveBuilder to provide sizing styling
+// Extension for ResponsiveBuilder to provide sizing and layout styling
 extension ResponsiveBuilder {
     /// Applies frame styling in a responsive context.
     ///
@@ -392,12 +335,7 @@ extension ResponsiveBuilder {
             maxHeight: maxHeight
         )
 
-        let classes = SizingStyleOperation.shared.applyFrameClasses(params: params)
-        for className in classes {
-            addClass(className)
-        }
-
-        return self
+        return SizingStyleOperation.shared.applyToBuilder(self, params: params)
     }
 
     /// Applies size styling in a responsive context.
@@ -407,12 +345,10 @@ extension ResponsiveBuilder {
     @discardableResult
     public func size(_ value: SizingValue) -> ResponsiveBuilder {
         let params = SizingStyleOperation.SizeParameters(value: value)
-
         let classes = SizingStyleOperation.shared.applySizeClasses(params: params)
         for className in classes {
             addClass(className)
         }
-
         return self
     }
 
@@ -425,12 +361,10 @@ extension ResponsiveBuilder {
     @discardableResult
     public func aspectRatio(_ width: CGFloat, _ height: CGFloat) -> ResponsiveBuilder {
         let params = SizingStyleOperation.AspectRatioParameters(width: width, height: height)
-
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
         for className in classes {
             addClass(className)
         }
-
         return self
     }
 
@@ -440,12 +374,10 @@ extension ResponsiveBuilder {
     @discardableResult
     public func aspectRatio() -> ResponsiveBuilder {
         let params = SizingStyleOperation.AspectRatioParameters(isSquare: true)
-
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
         for className in classes {
             addClass(className)
         }
-
         return self
     }
 
@@ -455,17 +387,16 @@ extension ResponsiveBuilder {
     @discardableResult
     public func aspectRatioVideo() -> ResponsiveBuilder {
         let params = SizingStyleOperation.AspectRatioParameters(isVideo: true)
-
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
         for className in classes {
             addClass(className)
         }
-
         return self
     }
 }
 
 // Global functions for Declarative DSL
+
 /// Applies frame styling in the responsive context.
 ///
 /// - Parameters:
@@ -484,16 +415,15 @@ public func frame(
     minHeight: SizingValue? = nil,
     maxHeight: SizingValue? = nil
 ) -> ResponsiveModification {
-    StyleModification { builder in
-        _ = builder.frame(
-            width: width,
-            height: height,
-            minWidth: minWidth,
-            maxWidth: maxWidth,
-            minHeight: minHeight,
-            maxHeight: maxHeight
-        )
-    }
+    let params = SizingStyleOperation.FrameParameters(
+        width: width,
+        height: height,
+        minWidth: minWidth,
+        maxWidth: maxWidth,
+        minHeight: minHeight,
+        maxHeight: maxHeight
+    )
+    return SizingStyleOperation.shared.asModification(params: params)
 }
 
 /// Applies size styling in the responsive context.
@@ -501,8 +431,12 @@ public func frame(
 /// - Parameter value: The size value.
 /// - Returns: A responsive modification for size styling.
 public func size(_ value: SizingValue) -> ResponsiveModification {
-    StyleModification { builder in
-        _ = builder.size(value)
+    let params = SizingStyleOperation.SizeParameters(value: value)
+    return StyleModification { builder in
+        let classes = SizingStyleOperation.shared.applySizeClasses(params: params)
+        for className in classes {
+            builder.addClass(className)
+        }
     }
 }
 
@@ -513,8 +447,12 @@ public func size(_ value: SizingValue) -> ResponsiveModification {
 ///   - height: The height for the aspect ratio calculation.
 /// - Returns: A responsive modification for aspect ratio styling.
 public func aspectRatio(_ width: CGFloat, _ height: CGFloat) -> ResponsiveModification {
-    StyleModification { builder in
-        _ = builder.aspectRatio(width, height)
+    let params = SizingStyleOperation.AspectRatioParameters(width: width, height: height)
+    return StyleModification { builder in
+        let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
+        for className in classes {
+            builder.addClass(className)
+        }
     }
 }
 
@@ -522,8 +460,12 @@ public func aspectRatio(_ width: CGFloat, _ height: CGFloat) -> ResponsiveModifi
 ///
 /// - Returns: A responsive modification for square aspect ratio styling.
 public func aspectRatio() -> ResponsiveModification {
-    StyleModification { builder in
-        _ = builder.aspectRatio()
+    let params = SizingStyleOperation.AspectRatioParameters(isSquare: true)
+    return StyleModification { builder in
+        let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
+        for className in classes {
+            builder.addClass(className)
+        }
     }
 }
 
@@ -531,7 +473,11 @@ public func aspectRatio() -> ResponsiveModification {
 ///
 /// - Returns: A responsive modification for video aspect ratio styling.
 public func aspectRatioVideo() -> ResponsiveModification {
-    StyleModification { builder in
-        _ = builder.aspectRatioVideo()
+    let params = SizingStyleOperation.AspectRatioParameters(isVideo: true)
+    return StyleModification { builder in
+        let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
+        for className in classes {
+            builder.addClass(className)
+        }
     }
 }

@@ -93,47 +93,35 @@ public struct Input: Element {
     }
     
     private func renderTag() -> String {
-        let attributes = buildAttributes()
-        return "<input \(attributes.joined(separator: " "))>"
-    }
-    
-    private func buildAttributes() -> [String] {
-        var attributes = [
-            Attribute.string("name", name),
-            Attribute.typed("type", type),
-            Attribute.string("value", value),
-            Attribute.string("placeholder", placeholder),
-            Attribute.bool("autofocus", autofocus),
-            Attribute.bool("required", required),
-            Attribute.bool("checked", checked),
-        ].compactMap { $0 }
-        
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
+        var attributes = AttributeBuilder.buildAttributes(
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data
+        )
+        attributes.append(Attribute.string("name", name)!)
+        if let type = type {
+            attributes.append(Attribute.typed("type", type)!)
         }
-        
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
+        if let value = value {
+            attributes.append(Attribute.string("value", value)!)
         }
-        
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
+        if let placeholder = placeholder {
+            attributes.append(Attribute.string("placeholder", placeholder)!)
         }
-        
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
+        if let autofocus = autofocus, autofocus {
+            attributes.append("autofocus")
         }
-        
-        if let data = data {
-            for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
-            }
+        if let required = required, required {
+            attributes.append("required")
         }
-        
+        if let checked = checked, checked {
+            attributes.append("checked")
+        }
         if let on = on {
             attributes.append(on)
         }
-        
-        return attributes
+        return AttributeBuilder.renderTag("input", attributes: attributes, isSelfClosing: true)
     }
 }

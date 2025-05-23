@@ -238,7 +238,7 @@ struct ContactForm: Element {
                 }
                 .padding()
                 .background(color: .blue(._600))
-                .font(color: .white)
+                .font(color: .white())
                 .font(weight: .medium)
                 .rounded(.md)
                 .margins(of: 4, at: .top)

@@ -1,16 +1,5 @@
 import Foundation
 
-/// Defines types of HTML button elements.
-///
-/// Specifies the purpose and behavior of buttons within forms.
-public enum ButtonType: String {
-    /// Submits the form data to the server.
-    case submit
-
-    /// Resets all form controls to their initial values.
-    case reset
-}
-
 /// Creates HTML button elements.
 ///
 /// Represents a clickable element that triggers an action or event when pressed.
@@ -70,45 +59,24 @@ public struct Button: Element {
     }
 
     private func renderTag() -> String {
-        let attributes = buildAttributes()
-        let content = contentBuilder().map { $0.render() }.joined()
-
-        return "<button \(attributes.joined(separator: " "))>\(content)</button>"
-    }
-
-    private func buildAttributes() -> [String] {
-        var attributes: [String] = []
-
+        var additional: [String] = []
         if let type = type {
-            attributes.append(Attribute.typed("type", type)!)
-        }
-
-        if let autofocus = autofocus, autofocus {
-            attributes.append("autofocus")
-        }
-
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
-        }
-
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
-        }
-
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
-        }
-
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
-        }
-
-        if let data = data {
-            for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
+            if let typeAttr = Attribute.typed("type", type) {
+                additional.append(typeAttr)
             }
         }
-
-        return attributes
+        if let autofocus = autofocus, autofocus {
+            additional.append("autofocus")
+        }
+        let attributes = AttributeBuilder.buildAttributes(
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data,
+            additional: additional
+        )
+        let content = contentBuilder().map { $0.render() }.joined()
+        return AttributeBuilder.renderTag("button", attributes: attributes, content: content)
     }
 }

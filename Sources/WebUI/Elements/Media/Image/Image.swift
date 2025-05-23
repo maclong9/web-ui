@@ -65,49 +65,26 @@ public struct Image: Element {
     }
     
     private func renderTag() -> String {
-        let attributes = buildAttributes()
-        
-        return "<img \(attributes.joined(separator: " "))>"
-    }
-    
-    private func buildAttributes() -> [String] {
-        var attributes = ["src=\"\(source)\"", "alt=\"\(description)\""]
-        
-        if let type = type { 
-            attributes.append("type=\"\(type.rawValue)\"") 
+        var attributes = AttributeBuilder.buildAttributes(
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data
+        )
+        attributes.insert(Attribute.string("src", source)!, at: 0)
+        attributes.insert(Attribute.string("alt", description)!, at: 1)
+        if let type = type {
+            attributes.append(Attribute.string("type", type.rawValue)!)
         }
-        
         if let size = size {
-            if let width = size.width { 
-                attributes.append("width=\"\(width)\"") 
+            if let width = size.width {
+                attributes.append(Attribute.string("width", "\(width)")!)
             }
-            if let height = size.height { 
-                attributes.append("height=\"\(height)\"") 
-            }
-        }
-        
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
-        }
-        
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
-        }
-        
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
-        }
-        
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
-        }
-        
-        if let data = data {
-            for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
+            if let height = size.height {
+                attributes.append(Attribute.string("height", "\(height)")!)
             }
         }
-        
-        return attributes
+        return AttributeBuilder.renderTag("img", attributes: attributes, isSelfClosing: true)
     }
 }

@@ -56,44 +56,21 @@ public struct Link: Element {
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
-        let attributes = buildAttributes()
-        let content = contentBuilder().map { $0.render() }.joined()
-        
-        return "<a \(attributes.joined(separator: " "))>\(content)</a>"
-    }
-    
-    private func buildAttributes() -> [String] {
-        var attributes = [Attribute.string("href", destination)].compactMap { $0 }
-        
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
-        }
-        
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
-        }
-        
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
-        }
-        
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
-        }
-        
-        if let data = data {
-            for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
-            }
-        }
-        
+        var attributes = AttributeBuilder.buildAttributes(
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data
+        )
+        attributes.insert(Attribute.string("href", destination)!, at: 0)
         if newTab == true {
             attributes.append("target=\"_blank\"")
             attributes.append("rel=\"noreferrer\"")
         }
-        
-        return attributes
+        let content = contentBuilder().map { $0.render() }.joined()
+        return AttributeBuilder.renderTag("a", attributes: attributes, content: content)
     }
 }

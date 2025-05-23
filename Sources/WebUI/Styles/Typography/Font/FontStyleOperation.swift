@@ -176,7 +176,7 @@ extension HTML {
             family: family
         )
 
-        return FontStyleOperation.shared.applyToElement(
+        return FontStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

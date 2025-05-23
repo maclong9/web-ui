@@ -67,37 +67,15 @@ public struct Stack: Element {
     }
     
     private func renderTag() -> String {
-        let attributes = buildAttributes()
+        let attributes = AttributeBuilder.buildAttributes(
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data
+        )
         let content = contentBuilder().map { $0.render() }.joined()
         
-        return "<div \(attributes.joined(separator: " "))>\(content)</div>"
-    }
-    
-    private func buildAttributes() -> [String] {
-        var attributes: [String] = []
-        
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
-        }
-        
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
-        }
-        
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
-        }
-        
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
-        }
-        
-        if let data = data {
-            for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
-            }
-        }
-        
-        return attributes
+        return AttributeBuilder.renderTag("div", attributes: attributes, content: content)
     }
 }

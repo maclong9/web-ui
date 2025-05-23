@@ -75,68 +75,45 @@ public struct Figure: Element {
     }
     
     private func renderTag() -> String {
-        let attributes = buildAttributes()
-        
-        // Render the picture element with sources
+        let attributes = AttributeBuilder.buildAttributes(
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data
+        )
+
         let pictureElement = renderPictureElement()
-        
-        // Render the figcaption element
-        let figcaptionElement = "<figcaption>\(description)</figcaption>"
-        
-        return "<figure \(attributes.joined(separator: " "))>\(pictureElement)\(figcaptionElement)</figure>"
+        let figcaptionElement = AttributeBuilder.renderTag("figcaption", attributes: [], content: description)
+        return AttributeBuilder.renderTag("figure", attributes: attributes, content: pictureElement + figcaptionElement)
     }
-    
+
     private func renderPictureElement() -> String {
-        let sourceElements = sources.map { source in
-            let type = source.type?.rawValue
-            return "<source src=\"\(source.src)\"\(type != nil ? " type=\"\(type!)\"" : "")>"
-        }.joined()
-        
-        // Render the img element
-        let imgAttributes = [
-            "src=\"\(sources[0].src)\"",
-            "alt=\"\(description)\""
-        ]
-        
+        var content = ""
+        for source in sources {
+            let sourceAttributes = source.type != nil ? [Attribute.string("type", source.type!.rawValue)!] : []
+            content += AttributeBuilder.renderTag(
+                "source",
+                attributes: sourceAttributes + [Attribute.string("srcset", source.src)!],
+                isSelfClosing: true
+            )
+        }
+
+        var imgAttributes = [
+            Attribute.string("src", sources.first?.src ?? ""),
+            Attribute.string("alt", description)
+        ].compactMap { $0 }
+
         if let size = size {
-            var sizeAttributes: [String] = []
             if let width = size.width {
-                sizeAttributes.append("width=\"\(width)\"")
+                imgAttributes.append(Attribute.string("width", "\(width)")!)
             }
             if let height = size.height {
-                sizeAttributes.append("height=\"\(height)\"")
-            }
-            return "<picture>\(sourceElements)<img \((imgAttributes + sizeAttributes).joined(separator: " "))></picture>"
-        } else {
-            return "<picture>\(sourceElements)<img \(imgAttributes.joined(separator: " "))></picture>"
-        }
-    }
-    
-    private func buildAttributes() -> [String] {
-        var attributes: [String] = []
-        
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
-        }
-        
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
-        }
-        
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
-        }
-        
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
-        }
-        
-        if let data = data {
-            for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
+                imgAttributes.append(Attribute.string("height", "\(height)")!)
             }
         }
-        
-        return attributes
+
+        content += AttributeBuilder.renderTag("img", attributes: imgAttributes, isSelfClosing: true)
+        return AttributeBuilder.renderTag("picture", attributes: [], content: content)
     }
 }
