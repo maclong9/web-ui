@@ -34,7 +34,7 @@ public struct Sitemap {
     ///   in the sitemap. Priority is set based on the path depth (home page gets 1.0).
     public static func generateXML(
         baseURL: String,
-        routes: [Document],
+        routes: [any Document],
         customEntries: [SitemapEntry]? = nil
     ) -> String {
         let dateFormatter = ISO8601DateFormatter()

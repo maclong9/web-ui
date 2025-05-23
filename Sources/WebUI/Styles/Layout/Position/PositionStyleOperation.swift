@@ -88,7 +88,7 @@ public struct PositionStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide position styling
-extension Element {
+extension HTML {
     /// Applies positioning styling to the element with one or more edges.
     ///
     /// Sets the position type and optional inset values for specified edges, scoped to modifiers if provided.
@@ -104,17 +104,17 @@ extension Element {
         at edges: Edge...,
         offset length: Int? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> any Element {
         let params = PositionStyleOperation.Parameters(
             type: type,
             edges: edges,
             offset: length
         )
 
-        return PositionStyleOperation.shared.applyToElement(
+        return PositionStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

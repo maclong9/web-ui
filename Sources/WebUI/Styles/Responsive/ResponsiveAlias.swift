@@ -1,7 +1,7 @@
 import Foundation
 
 /// Provides a backward compatibility alias for the new responsive styling API
-extension Element {
+extension HTML {
     /// Alias for the `.on` method to maintain backward compatibility with existing code
     ///
     /// This method provides a backward-compatible way to use the new `.on` method
@@ -9,7 +9,7 @@ extension Element {
     ///
     /// - Parameter content: A closure defining responsive style configurations using the result builder.
     /// - Returns: An element with responsive styles applied.
-    public func responsive(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> Element {
+    public func responsive(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> any Element {
         on(content)
     }
 }

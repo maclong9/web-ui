@@ -24,7 +24,7 @@ import Foundation
 ///     }
 ///   }
 /// ```
-extension Element {
+extension HTML {
     /// Applies responsive styling across different breakpoints with a declarative syntax.
     ///
     /// This method provides a clean, declarative way to define styles for multiple
@@ -52,7 +52,7 @@ extension Element {
     ///     }
     ///   }
     /// ```
-    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> Element {
+    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> any Element {
         let builder = ResponsiveBuilder(element: self)
         let modification = content()
         modification.apply(to: builder)
@@ -70,7 +70,7 @@ extension Element {
 /// `Element.on(_:)` method.
 public class ResponsiveBuilder {
     /// The current element being modified
-    var element: Element
+    var element: any Element
     /// Keep track of responsive styles for each breakpoint
     internal var pendingClasses: [String] = []
     /// The current breakpoint being modified
@@ -79,7 +79,7 @@ public class ResponsiveBuilder {
     /// Creates a new responsive builder for the given element.
     ///
     /// - Parameter element: The element to apply responsive styles to.
-    init(element: Element) {
+    init(element: any Element) {
         self.element = element
     }
 
@@ -174,17 +174,7 @@ public class ResponsiveBuilder {
         }
 
         // Add the responsive classes to the element
-        self.element = Element(
-            tag: self.element.tag,
-            id: self.element.id,
-            classes: (self.element.classes ?? []) + responsiveClasses,
-            role: self.element.role,
-            label: self.element.label,
-            data: self.element.data,
-            isSelfClosing: self.element.isSelfClosing,
-            customAttributes: self.element.customAttributes,
-            content: self.element.contentBuilder
-        )
+        self.element = StyleModifier(content: self.element, classes: responsiveClasses)
 
         // Clear pending classes for the next breakpoint
         pendingClasses = []

@@ -47,36 +47,36 @@ public struct VisibilityStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide visibility styling
-extension Element {
+// Extension for HTML to provide visibility styling
+extension HTML {
     /// Controls the visibility of an element with optional modifiers.
     ///
     /// - Parameters:
     ///   - isHidden: Whether the element should be hidden (default: true).
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated visibility classes.
+    /// - Returns: HTML with updated visibility classes.
     ///
     /// ## Example
     /// ```swift
     /// // Hide an element
-    /// Element(tag: "div").hidden()
+    /// TestElement(tag: "div").hidden()
     ///
     /// // Show an element on hover
-    /// Element(tag: "div").hidden(on: .hover)
+    /// TestElement(tag: "div").hidden(on: .hover)
     ///
     /// // Hide an element on medium screens and up
-    /// Element(tag: "div").hidden(on: .md)
+    /// TestElement(tag: "div").hidden(on: .md)
     ///
     /// // Make visible on medium screens
-    /// Element(tag: "div").hidden(false, on: .md)
+    /// TestElement(tag: "div").hidden(false, on: .md)
     /// ```
     public func hidden(
         _ isHidden: Bool = true,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = VisibilityStyleOperation.Parameters(isHidden: isHidden)
 
-        return VisibilityStyleOperation.shared.applyToElement(
+        return VisibilityStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

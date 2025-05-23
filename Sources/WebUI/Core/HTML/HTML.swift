@@ -94,6 +94,74 @@ public extension HTML {
     func render() -> String {
         body.render()
     }
+    
+    /// Adds CSS classes to an HTML element
+    ///
+    /// - Parameter classes: The CSS classes to add
+    /// - Returns: A container with the HTML content and additional classes
+    func addingClasses(_ classes: [String]) -> some HTML {
+        HTMLClassContainer(content: self, classes: classes)
+    }
+}
+
+/// A container that adds CSS classes to HTML content
+public struct HTMLClassContainer<Content: HTML>: Element {
+    private let content: Content
+    private let classes: [String]
+    
+    public init(content: Content, classes: [String]) {
+        self.content = content
+        self.classes = classes
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderWithClasses())
+    }
+    
+    private func renderWithClasses() -> String {
+        // Get the rendered content
+        let renderedContent = content.render()
+        
+        // If there are no classes to add, return the content as is
+        if classes.isEmpty {
+            return renderedContent
+        }
+        
+        // Check if content starts with an HTML tag
+        guard let tagRange = renderedContent.range(of: "<[^>]+>", options: .regularExpression) else {
+            // If not, wrap the content in a span with the classes
+            return "<span class=\"\(classes.joined(separator: " "))\">\(renderedContent)</span>"
+        }
+        
+        // Extract the tag
+        let tag = renderedContent[tagRange]
+        
+        // Check if the tag already has a class attribute
+        if tag.contains(" class=\"") {
+            // Replace the existing class attribute
+            let modifiedTag = tag.replacingOccurrences(
+                of: " class=\"([^\"]*)\"",
+                with: { match in
+                    let existingClasses = match.range(at: 1).map { String(tag[$0]) } ?? ""
+                    let allClasses = existingClasses.isEmpty ? 
+                        classes.joined(separator: " ") : 
+                        "\(existingClasses) \(classes.joined(separator: " "))"
+                    return " class=\"\(allClasses)\""
+                },
+                options: .regularExpression
+            )
+            
+            return renderedContent.replacingCharacters(in: tagRange, with: modifiedTag)
+        } else {
+            // Insert a class attribute before the closing >
+            let modifiedTag = tag.replacingOccurrences(
+                of: ">$",
+                with: " class=\"\(classes.joined(separator: " "))\">"
+            )
+            
+            return renderedContent.replacingCharacters(in: tagRange, with: modifiedTag)
+        }
+    }
 }
 
 // MARK: - Legacy Support

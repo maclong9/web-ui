@@ -97,7 +97,7 @@ public struct TransformStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide transform styling
-extension Element {
+extension HTML {
     /// Applies transformation styling to the element.
     ///
     /// Adds classes for scaling, rotating, translating, and skewing, optionally scoped to modifiers.
@@ -116,7 +116,7 @@ extension Element {
         translate: (x: Int?, y: Int?)? = nil,
         skew: (x: Int?, y: Int?)? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> any Element {
         let params = TransformStyleOperation.Parameters(
             scale: scale,
             rotate: rotate,
@@ -124,10 +124,10 @@ extension Element {
             skew: skew
         )
 
-        return TransformStyleOperation.shared.applyToElement(
+        return TransformStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

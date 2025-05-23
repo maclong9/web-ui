@@ -115,7 +115,7 @@ public struct FontStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide font styling
-extension Element {
+extension HTML {
     /// Applies font styling to the element with optional modifiers.
     ///
     /// This comprehensive method allows controlling all aspects of typography including
@@ -163,7 +163,7 @@ extension Element {
         color: Color? = nil,
         family: String? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> any Element {
         let params = FontStyleOperation.Parameters(
             size: size,
             weight: weight,

@@ -64,8 +64,8 @@ public struct PaddingStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide padding styling
-extension Element {
+// Extension for HTML to provide padding styling
+extension HTML {
     /// Applies padding styling to the element with one or more edges.
     ///
     /// - Parameters:
@@ -77,13 +77,13 @@ extension Element {
         of length: Int? = 4,
         at edges: Edge...,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = PaddingStyleOperation.Parameters(
             length: length,
             edges: edges
         )
 
-        return PaddingStyleOperation.shared.applyToElement(
+        return PaddingStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

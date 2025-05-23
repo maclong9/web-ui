@@ -44,7 +44,7 @@ public struct DisplayStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide display styling
-extension Element {
+extension HTML {
     /// Sets the CSS display property with optional modifiers.
     ///
     /// - Parameters:
@@ -66,13 +66,13 @@ extension Element {
     public func display(
         _ type: DisplayType,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> any Element {
         let params = DisplayStyleOperation.Parameters(type: type)
 
-        return DisplayStyleOperation.shared.applyToElement(
+        return DisplayStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

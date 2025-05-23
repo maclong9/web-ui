@@ -88,7 +88,7 @@ public struct TransitionStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide transition styling
-extension Element {
+extension HTML {
     /// Applies transition styling to the element.
     ///
     /// Adds classes for animating properties with duration, easing, and delay.
@@ -106,7 +106,7 @@ extension Element {
         easing: Easing? = nil,
         delay: Int? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> any Element {
         let params = TransitionStyleOperation.Parameters(
             property: property,
             duration: duration,
@@ -114,10 +114,10 @@ extension Element {
             delay: delay
         )
 
-        return TransitionStyleOperation.shared.applyToElement(
+        return TransitionStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

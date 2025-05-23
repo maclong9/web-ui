@@ -192,7 +192,7 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide frame styling
-extension Element {
+extension HTML {
     /// Sets the width and height of the element with comprehensive SwiftUI-like API.
     ///
     /// This method provides control over all width and height properties, supporting
@@ -216,7 +216,7 @@ extension Element {
         minHeight: SizingValue? = nil,
         maxHeight: SizingValue? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> any Element {
         let params = SizingStyleOperation.FrameParameters(
             width: width,
             height: height,
@@ -229,16 +229,7 @@ extension Element {
         let classes = SizingStyleOperation.shared.applyFrameClasses(params: params)
         let newClasses = combineClasses(classes, withModifiers: modifiers)
 
-        return Element(
-            tag: self.tag,
-            id: self.id,
-            classes: (self.classes ?? []) + newClasses,
-            role: self.role,
-            label: self.label,
-            isSelfClosing: self.isSelfClosing,
-            customAttributes: self.customAttributes,
-            content: self.contentBuilder
-        )
+        return StyleModifier(content: self, classes: newClasses)
     }
 
     /// Sets the width and height of the element using numeric values.
@@ -260,7 +251,7 @@ extension Element {
         maxWidth: CGFloat? = nil,
         minHeight: CGFloat? = nil,
         maxHeight: CGFloat? = nil
-    ) -> Element {
+    ) -> any Element {
         frame(
             width: width.map { .spacing(Int($0)) },
             height: height.map { .spacing(Int($0)) },
@@ -279,7 +270,7 @@ extension Element {
     ///   - size: The size value to apply to both width and height.
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with updated sizing classes.
-    public func size(_ size: SizingValue, on modifiers: Modifier...) -> Element {
+    public func size(_ size: SizingValue, on modifiers: Modifier...) -> any Element {
         let params = SizingStyleOperation.SizeParameters(value: size)
 
         let classes = SizingStyleOperation.shared.applySizeClasses(params: params)
@@ -306,7 +297,7 @@ extension Element {
     ///   - height: The height for the aspect ratio calculation.
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with aspect ratio classes.
-    public func aspectRatio(_ width: CGFloat, _ height: CGFloat, on modifiers: Modifier...) -> Element {
+    public func aspectRatio(_ width: CGFloat, _ height: CGFloat, on modifiers: Modifier...) -> any Element {
         let params = SizingStyleOperation.AspectRatioParameters(width: width, height: height)
 
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
@@ -329,7 +320,7 @@ extension Element {
     /// - Parameters:
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with square aspect ratio.
-    public func aspectRatio(on modifiers: Modifier...) -> Element {
+    public func aspectRatio(on modifiers: Modifier...) -> any Element {
         let params = SizingStyleOperation.AspectRatioParameters(isSquare: true)
 
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)
@@ -352,7 +343,7 @@ extension Element {
     /// - Parameters:
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with video aspect ratio.
-    public func aspectRatioVideo(on modifiers: Modifier...) -> Element {
+    public func aspectRatioVideo(on modifiers: Modifier...) -> any Element {
         let params = SizingStyleOperation.AspectRatioParameters(isVideo: true)
 
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(params: params)

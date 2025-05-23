@@ -45,7 +45,7 @@ public struct BackgroundStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide background styling
-extension Element {
+extension HTML {
     /// Applies background color to the element.
     ///
     /// Adds a background color class based on the provided color and optional modifiers.
@@ -73,10 +73,10 @@ extension Element {
     ) -> Element {
         let params = BackgroundStyleOperation.Parameters(color: color)
 
-        return BackgroundStyleOperation.shared.applyToElement(
+        return BackgroundStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

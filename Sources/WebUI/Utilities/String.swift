@@ -3,6 +3,7 @@
 /// These extensions enable strings to be used directly in HTML content and provide
 /// utility methods for common string transformations needed in web development.
 extension String: HTML {
+    public var body: some HTML { self }
     /// Renders the string as HTML content.
     ///
     /// This implementation allows plain strings to be used directly in HTML content builders,

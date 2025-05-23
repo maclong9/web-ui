@@ -55,7 +55,7 @@ public struct OverflowStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide overflow styling
-extension Element {
+extension HTML {
     /// Applies overflow styling to the element.
     ///
     /// Sets how overflowing content is handled, optionally on a specific axis and with modifiers.
@@ -80,16 +80,16 @@ extension Element {
         _ type: OverflowType,
         axis: Axis = .both,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> any Element {
         let params = OverflowStyleOperation.Parameters(
             type: type,
             axis: axis
         )
 
-        return OverflowStyleOperation.shared.applyToElement(
+        return OverflowStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

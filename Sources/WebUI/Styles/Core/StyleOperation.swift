@@ -53,30 +53,47 @@ public struct StyleParameters {
     }
 }
 
+/// A modifier to add classes to an HTML element
+public struct StyleModifier<T: HTML>: Element {
+    private let content: T
+    private let classes: [String]
+    
+    public init(content: T, classes: [String]) {
+        self.content = content
+        self.classes = classes
+    }
+    
+    public var body: some HTML {
+        HTMLContainer(content)
+            .addingClasses(classes)
+    }
+}
+
 /// A utility for adapting style operations to Element extensions
 extension StyleOperation {
     /// Adapts this style operation for use with Element extensions
+    ///
+    /// - Parameters:
+    ///   - content: The HTML content to apply styles to
+    ///   - params: The parameters for this style operation
+    ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
+    /// - Returns: A new element with the styles applied
+    public func applyTo<T: HTML>(_ content: T, params: Parameters, modifiers: [Modifier] = []) -> StyleModifier<T> {
+        let classes = applyClasses(params: params)
+        let newClasses = StyleUtilities.combineClasses(classes, withModifiers: modifiers)
+        
+        return StyleModifier(content: content, classes: newClasses)
+    }
+    
+    /// Applies style to an element and returns the modified element
     ///
     /// - Parameters:
     ///   - element: The element to apply styles to
     ///   - params: The parameters for this style operation
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
     /// - Returns: A new element with the styles applied
-    public func applyToElement(_ element: Element, params: Parameters, modifiers: [Modifier] = []) -> Element {
-        let classes = applyClasses(params: params)
-        let newClasses = combineClasses(classes, withModifiers: modifiers)
-
-        return Element(
-            tag: element.tag,
-            id: element.id,
-            classes: (element.classes ?? []) + newClasses,
-            role: element.role,
-            label: element.label,
-            data: element.data,
-            isSelfClosing: element.isSelfClosing,
-            customAttributes: element.customAttributes,
-            content: element.contentBuilder
-        )
+    public func applyToElement<T: HTML>(_ element: T, params: Parameters, modifiers: Modifier...) -> any Element {
+        return applyTo(element, params: params, modifiers: modifiers)
     }
 
     /// Internal adapter for use with the responsive builder

@@ -12,16 +12,13 @@ import Foundation
 /// struct Card: Element {
 ///   var title: String
 ///   var body: some HTML {
-///     Stack { 
+///     Stack {
 ///       Text { title }
 ///     }
 ///   }
 /// }
 /// ```
 public protocol Element: HTML {
-    /// The type of HTML content this element produces.
-    associatedtype Body: HTML
-    
     /// The content and structure of this element.
     ///
     /// The `body` property defines the element's layout and content hierarchy.
@@ -46,11 +43,11 @@ public extension Element {
 /// A container that wraps arbitrary HTML content.
 public struct HTMLContainer<Content: HTML>: Element {
     private let content: Content
-    
+
     public init(_ content: Content) {
         self.content = content
     }
-    
+
     public var body: Content {
         content
     }
@@ -59,11 +56,11 @@ public struct HTMLContainer<Content: HTML>: Element {
 /// Type eraser for HTML content to help with type safety.
 public struct AnyElement: Element {
     private let content: AnyHTML
-    
+
     public init<T: HTML>(_ content: T) {
         self.content = AnyHTML(content)
     }
-    
+
     public var body: AnyHTML {
         content
     }

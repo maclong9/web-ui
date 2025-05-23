@@ -63,8 +63,8 @@ public struct ShadowStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide shadow styling
-extension Element {
+// Extension for HTML to provide shadow styling
+extension HTML {
     /// Applies shadow styling to the element with specified attributes.
     ///
     /// Adds shadows with custom size and color to an element.
@@ -73,7 +73,7 @@ extension Element {
     ///   - size: The shadow size (sm, md, lg).
     ///   - color: The shadow color.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated shadow classes.
+    /// - Returns: HTML with updated shadow classes.
     ///
     /// ## Example
     /// ```swift
@@ -85,13 +85,13 @@ extension Element {
         size: ShadowSize,
         color: Color? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = ShadowStyleOperation.Parameters(
             size: size,
             color: color
         )
 
-        return ShadowStyleOperation.shared.applyToElement(
+        return ShadowStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

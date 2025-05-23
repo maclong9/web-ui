@@ -160,8 +160,8 @@ public enum FlexGrow: String {
     case five = "5"
 }
 
-// Extension for Element to provide flex styling
-extension Element {
+// Extension for HTML to provide flex styling
+extension HTML {
     /// Sets flex container properties with optional modifiers.
     ///
     /// - Parameters:
@@ -170,18 +170,18 @@ extension Element {
     ///   - align: How to align items along the cross axis.
     ///   - grow: The flex grow factor.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated flex classes.
+    /// - Returns: HTML with updated flex classes.
     ///
     /// ## Example
     /// ```swift
     /// // Create a flex container with column layout
-    /// Element(tag: "div").flex(direction: .column)
+    /// TestElement(tag: "div").flex(direction: .column)
     ///
     /// // Create a flex container with row layout and centered content
-    /// Element(tag: "div").flex(direction: .row, justify: .center, align: .center)
+    /// TestElement(tag: "div").flex(direction: .row, justify: .center, align: .center)
     ///
     /// // Apply flex layout only on medium screens and up
-    /// Element(tag: "div").flex(direction: .row, on: .md)
+    /// TestElement(tag: "div").flex(direction: .row, on: .md)
     /// ```
     public func flex(
         direction: FlexDirection? = nil,
@@ -189,7 +189,7 @@ extension Element {
         align: FlexAlign? = nil,
         grow: FlexGrow? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = FlexStyleOperation.Parameters(
             direction: direction,
             justify: justify,
@@ -197,7 +197,7 @@ extension Element {
             grow: grow
         )
 
-        return FlexStyleOperation.shared.applyToElement(
+        return FlexStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

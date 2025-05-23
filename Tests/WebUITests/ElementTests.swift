@@ -17,9 +17,9 @@ import Testing
 
     // MARK: - Element Base Class Tests
 
-    @Test("Element base class with basic attributes")
+    @Test("TestElement with basic attributes")
     func testElementBasAttributes() async throws {
-        let element = Element(
+        let element = TestElement(
             tag: "div",
             id: "test-id",
             classes: ["class1", "class2"],
@@ -46,10 +46,10 @@ import Testing
 
     @Test("Self-closing element")
     func testSelfClosingElement() async throws {
-        let element = Element(tag: "input", isSelfClosing: true)
+        let element = TestElement(tag: "img", isSelfClosing: true)
 
         let rendered = element.render()
-        #expect(rendered == "<input>")
+        #expect(rendered == "<img />")
     }
 
     @Test("Attribute helper functions")
@@ -108,19 +108,6 @@ import Testing
         #expect(rendered.contains("type=\"submit\""))
         #expect(rendered.contains("autofocus"))
         #expect(rendered.contains(">Submit</button>"))
-    }
-
-    // MARK: - Fragment Tests
-
-    @Test("Fragment with content")
-    func testFragmentWithContent() async throws {
-        let fragment = Fragment {
-            Element(tag: "p") { "First paragraph" }
-            Element(tag: "p") { "Second paragraph" }
-        }
-
-        let rendered = fragment.render()
-        #expect(rendered == "<p>First paragraph</p><p>Second paragraph</p>")
     }
 
     // MARK: - List Tests
@@ -681,7 +668,7 @@ import Testing
 
     @Test("Page layout with multiple sections")
     func testPageLayout() async throws {
-        let page = Fragment {
+        let page = Stack {
             Header(id: "main-header") {
                 Heading(.largeTitle) { "My Website" }
                 Navigation {
@@ -881,7 +868,7 @@ import Testing
 
     @Test("Element with single data attribute")
     func testSingleDatAttribute() async throws {
-        let element = Element(
+        let element = TestElement(
             tag: "div",
             data: ["test": "value"]
         )
@@ -930,7 +917,7 @@ import Testing
 
     @Test("Element with empty data attributes")
     func testEmptyDatAttributes() async throws {
-        let element = Element(
+        let element = TestElement(
             tag: "div",
             data: [:]
         )
@@ -941,7 +928,7 @@ import Testing
 
     @Test("Element with nil data attributes")
     func testNilDatAttributes() async throws {
-        let element = Element(
+        let element = TestElement(
             tag: "div",
             data: nil
         )

@@ -64,51 +64,51 @@ public struct Button: Element {
         self.data = data
         self.contentBuilder = content
     }
-    
+
     public var body: some HTML {
         HTMLString(content: renderTag())
     }
-    
+
     private func renderTag() -> String {
         let attributes = buildAttributes()
         let content = contentBuilder().map { $0.render() }.joined()
-        
+
         return "<button \(attributes.joined(separator: " "))>\(content)</button>"
     }
-    
+
     private func buildAttributes() -> [String] {
         var attributes: [String] = []
-        
+
         if let type = type {
             attributes.append(Attribute.typed("type", type)!)
         }
-        
+
         if let autofocus = autofocus, autofocus {
             attributes.append("autofocus")
         }
-        
+
         if let id = id {
             attributes.append(Attribute.string("id", id)!)
         }
-        
+
         if let classes = classes, !classes.isEmpty {
             attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
         }
-        
+
         if let role = role {
             attributes.append(Attribute.typed("role", role)!)
         }
-        
+
         if let label = label {
             attributes.append(Attribute.string("aria-label", label)!)
         }
-        
+
         if let data = data {
             for (key, value) in data {
                 attributes.append(Attribute.string("data-\(key)", value)!)
             }
         }
-        
+
         return attributes
     }
 }

@@ -72,7 +72,7 @@ public extension Document {
     var head: String? { nil }
     
     /// Creates a concrete Document instance for rendering.
-    func document() -> WebUI.Document {
+    func document() -> any Document {
         WebUI.Document(
             path: path,
             metadata: metadata,
