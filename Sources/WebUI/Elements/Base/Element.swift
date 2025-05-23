@@ -148,6 +148,14 @@ public class Element: HTML {
     var content: [any HTML] {
         contentBuilder() ?? []
     }
+    
+    /// The body of this HTML element.
+    ///
+    /// For the base Element class, the body is a string representation
+    /// of the rendered element to avoid infinite recursion.
+    public var body: HTMLString {
+        HTMLString(content: renderElementContent())
+    }
 
     /// Creates a new HTML element.
     ///
@@ -203,7 +211,6 @@ public class Element: HTML {
         self.contentBuilder = content
     }
 
-    /// Namespace containing helper methods for HTML attribute creation.
     /// Renders the element as an HTML string.
     ///
     /// This method generates the complete HTML representation of the element,
@@ -221,6 +228,11 @@ public class Element: HTML {
     ///   let imgHtml = img.render() // Returns `<img src="image.jpg">`
     ///   ```
     public func render() -> String {
+        renderElementContent()
+    }
+    
+    /// Internal method to render element content without recursion.
+    private func renderElementContent() -> String {
         // Standard attributes
         var baseAttributes: [String] = [
             Attribute.string("id", id),
@@ -252,5 +264,10 @@ public class Element: HTML {
 
         let contentString = content.map { $0.render() }.joined()
         return "<\(tag)\(attributesString)>\(contentString)</\(tag)>"
+    }
+    
+    /// Backwards compatibility method for existing toString() calls
+    internal func renderElement() -> String {
+        renderElementContent()
     }
 }
