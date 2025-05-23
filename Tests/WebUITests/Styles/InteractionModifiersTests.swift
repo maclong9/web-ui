@@ -1,4 +1,5 @@
 import Testing
+
 @testable import WebUI
 
 @Suite("Interaction Modifiers Tests")
@@ -12,12 +13,12 @@ struct InteractionModifiersTests {
                     font(color: .gray(._50))
                 }
             }
-        
+
         let rendered = element.render()
         #expect(rendered.contains("hover:bg-blue-500"))
         #expect(rendered.contains("hover:text-gray-50"))
     }
-    
+
     @Test("Focus state modifier")
     func testFocusStateModifier() async throws {
         let element = Element(tag: "div")
@@ -27,13 +28,13 @@ struct InteractionModifiersTests {
                     outline(of: 0)
                 }
             }
-        
+
         let rendered = element.render()
         #expect(rendered.contains("focus:border-2"))
         #expect(rendered.contains("focus:border-blue-500"))
         #expect(rendered.contains("focus:outline-0"))
     }
-    
+
     @Test("Multiple state modifiers")
     func testMultipleStateModifiers() async throws {
         let element = Element(tag: "div")
@@ -51,7 +52,7 @@ struct InteractionModifiersTests {
                     background(color: .blue(._200))
                 }
             }
-        
+
         let rendered = element.render()
         #expect(rendered.contains("bg-gray-100"))
         #expect(rendered.contains("p-4"))
@@ -61,7 +62,7 @@ struct InteractionModifiersTests {
         #expect(rendered.contains("focus:border-blue-500"))
         #expect(rendered.contains("active:bg-blue-200"))
     }
-    
+
     @Test("ARIA state modifiers")
     func testAriaStateModifiers() async throws {
         let element = Element(tag: "div")
@@ -74,14 +75,14 @@ struct InteractionModifiersTests {
                     font(weight: .bold)
                 }
             }
-        
+
         let rendered = element.render()
         #expect(rendered.contains("aria-expanded:border-1"))
         #expect(rendered.contains("aria-expanded:border-gray-300"))
         #expect(rendered.contains("aria-selected:bg-blue-100"))
         #expect(rendered.contains("aria-selected:font-bold"))
     }
-    
+
     @Test("Placeholder modifier")
     func testPlaceholderModifier() async throws {
         let element = Element(tag: "input")
@@ -91,12 +92,12 @@ struct InteractionModifiersTests {
                     font(weight: .light)
                 }
             }
-        
+
         let rendered = element.render()
         #expect(rendered.contains("placeholder:text-gray-400"))
         #expect(rendered.contains("placeholder:font-light"))
     }
-    
+
     @Test("First and last child modifiers")
     func testFirstLastChildModifiers() async throws {
         let element = Element(tag: "ul")
@@ -108,12 +109,12 @@ struct InteractionModifiersTests {
                     border(of: 0, at: .bottom)
                 }
             }
-        
+
         let rendered = element.render()
         #expect(rendered.contains("first:border-t-0"))
         #expect(rendered.contains("last:border-b-0"))
     }
-    
+
     @Test("Disabled state modifier")
     func testDisabledStateModifier() async throws {
         let element = Element(tag: "button")
@@ -123,12 +124,12 @@ struct InteractionModifiersTests {
                     cursor(.notAllowed)
                 }
             }
-        
+
         let rendered = element.render()
         #expect(rendered.contains("disabled:opacity-50"))
         #expect(rendered.contains("disabled:cursor-not-allowed"))
     }
-    
+
     @Test("Motion reduce modifier")
     func testMotionReduceModifier() async throws {
         let element = Element(tag: "div")
@@ -138,13 +139,13 @@ struct InteractionModifiersTests {
                     transition(of: .transform, for: 0)
                 }
             }
-        
+
         let rendered = element.render()
         #expect(rendered.contains("transition-transform"))
         #expect(rendered.contains("duration-300"))
         #expect(rendered.contains("motion-reduce:duration-0"))
     }
-    
+
     @Test("Complex interactive button")
     func testComplexInteractiveButton() async throws {
         let button = Element(tag: "button")
@@ -172,7 +173,7 @@ struct InteractionModifiersTests {
                     cursor(.notAllowed)
                 }
             }
-        
+
         let rendered = button.render()
         #expect(rendered.contains("p-4"))
         #expect(rendered.contains("bg-blue-500"))
