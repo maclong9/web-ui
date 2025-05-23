@@ -40,10 +40,9 @@ This project and everyone participating in it is governed by the [WebUI Code of 
 ### Pull Requests
 
 1. Fork the repository
-2. Create your feature branch from the `development` branch, (`git checkout -b feature/amazing-feature`)
-3. Commit your changes following conventional commit messages (`git commit -m 'feat: add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request to the `development` branch.
+2. Create your feature branch from the `development` branch, (`git checkout -b feature-00-amazing-feature`)
+3. Push to the branch (`git push origin feature-00-amazing-feature`)
+4. Open a Pull Request to the `development` branch.
 
 ## Development Process
 
@@ -66,9 +65,9 @@ WebUI maintains three primary branches:
 
 Version bumps are triggered automatically via commit messages. Use the following prefixes:
 
-- `feat!:` - Major version increment for breaking changes (e.g., `1.0.0` → `2.0.0`).
-- `feat:` - Minor version increment for new features (e.g., `1.0.0` → `1.1.0`).
-- `fix:` or `fix!:` - Patch version increment for bug fixes (e.g., `1.0.0` → `1.0.1`).
+- `feat!:` or `Release` - Major version increment for breaking changes (e.g., `1.0.0` → `2.0.0`).
+- `feat:` or `Feature` - Minor version increment for new features (e.g., `1.0.0` → `1.1.0`).
+- `fix:`, `fix!:` or `Fixes` - Patch version increment for bug fixes (e.g., `1.0.0` → `1.0.1`).
 
 ### Release Process
 
@@ -79,23 +78,11 @@ The release workflow is fully automated:
 3. Release notes are automatically generated from the commit messages.
 4. A new tag is created and the release is published on GitHub.
 
-### Quick Fixes (Hotfixes)
-
-For urgent fixes that need to be pushed to `main` right away:
-
-1. Create a PR targeting the `main` branch.
-2. Include `fix!:` in the PR title and merge message.
-3. Once approved and merged, an action will automatically create PRs for `next` and `development` branches.
-4. This ensures all branches remain in sync when quick changes are required in the main branch.
-
-> [!WARNING]
-> Ensure the auto-generated PRs are approved and merged promptly to maintain branch synchronization.
-
 ### Testing
 
 Automated tests run on every pull request to `main` and `next` branches:
 
-1. Tests are executed in a macOS environment with Swift 6.1.
+1. Tests are executed in a macOS environment.
 2. The workflow includes caching of Swift Package Manager dependencies for faster builds.
 3. All tests must pass before a PR can be merged.
 
@@ -115,6 +102,9 @@ WebUI uses Swift DocC for documentation:
 ```sh
 swift package --disable-sandbox preview-documentation
 ```
+
+> [!NOTE]
+> You can also run `Build Documentation` inside of Xcode to view the documentation in 
 
 ### Adding New Elements
 
@@ -139,12 +129,12 @@ WebUI follows a compositional pattern for creating HTML elements. When adding a 
    /// Defines the types available for the element.
    ///
    /// Detailed documentation about the enum and its purpose.
-   public enum ElementType: String {
+   public enum ElementCustom: String {
        /// Documentation for this case.
-       case primary
+       case one
 
        /// Documentation for this case.
-       case secondary
+       case two
    }
    ```
 
@@ -155,12 +145,12 @@ WebUI follows a compositional pattern for creating HTML elements. When adding a 
    /// Detailed documentation about what this element represents and its use cases.
    public final class ElementName: Element {
        // Properties specific to this element
-       let type: ElementType?
+       let customType: ElementCustom?
 
        /// Creates a new HTML element_name.
        ///
        /// - Parameters:
-       ///   - type: Type of the element, optional.
+       ///   - custom: An example custom attribute, optional.
        ///   - id: Unique identifier, optional.
        ///   - classes: CSS class names, optional.
        ///   - role: ARIA role for accessibility, optional.
@@ -187,7 +177,7 @@ WebUI follows a compositional pattern for creating HTML elements. When adding a 
 
            // Build custom attributes using Attr namespace
            let customAttributes = [
-               Attribute.typed("type", type)
+               Attribute.typed("custom", custom) // will generate as `custom="\(custom)"`
            ].compactMap { $0 }
 
            // Initialize the parent Element class
@@ -205,13 +195,16 @@ WebUI follows a compositional pattern for creating HTML elements. When adding a 
    }
    ```
 
-4. **Testing**: Add unit tests for the new element in the `Tests` directory.
+4. **Testing**: Add unit tests for the new element in the `Tests/Styles` directory.
 
 5. **Documentation**: Include comprehensive DocC documentation with:
    - Class-level documentation explaining the element's purpose
    - Parameter documentation for all initializer parameters
    - Usage examples showing common implementations
    - Mention any accessibility considerations
+
+> [!IMPORTANT]
+> Pull requests with new elements, modifiers and utilities will be rejected or put on hold until adequate documentation is provided. This is extemely important for both the end user of the library to understand what each element does and means semantically as well as ensuring maintainability for the maintainers of the project.
 
 ## Adding New Style Modifiers
 
