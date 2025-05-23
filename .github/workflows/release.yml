@@ -16,6 +16,7 @@ jobs:
     if: |
       startsWith(github.event.head_commit.message, 'feat') ||
       startsWith(github.event.head_commit.message, 'Feature') ||
+      startsWith(github.event.head_commit.message, 'Release')  ||
       startsWith(github.event.head_commit.message, 'fix')  ||
       startsWith(github.event.head_commit.message, 'Fixes')
     runs-on: macos-latest
@@ -44,9 +45,12 @@ jobs:
 
           case "$COMMIT_MESSAGE" in
             feat!*) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+            Release*) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
             feat:*) MINOR=$((MINOR + 1)); PATCH=0 ;;
+            Feature:*) MINOR=$((MINOR + 1)); PATCH=0 ;;
             fix!:*) PATCH=$((PATCH + 1)) ;;
             fix:*)  PATCH=$((PATCH + 1)) ;;
+            Fixes:*)  PATCH=$((PATCH + 1)) ;;
           esac
 
           NEW_VERSION="$MAJOR.$MINOR.$PATCH"
