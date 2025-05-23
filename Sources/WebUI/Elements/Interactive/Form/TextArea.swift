@@ -1,3 +1,5 @@
+import Foundation
+
 /// Generates an HTML textarea element for multi-line text input.
 ///
 /// Provides a resizable, multi-line text input control for collecting longer text content
@@ -9,13 +11,18 @@
 /// TextArea(name: "comments", placeholder: "Share your thoughts...")
 /// // Renders: <textarea name="comments" placeholder="Share your thoughts..."></textarea>
 /// ```
-public final class TextArea: Element {
-    let name: String
-    let type: InputType?
-    let value: String?
-    let placeholder: String?
-    let autofocus: Bool?
-    let required: Bool?
+public struct TextArea: Element {
+    private let name: String
+    private let type: InputType?
+    private let value: String?
+    private let placeholder: String?
+    private let autofocus: Bool?
+    private let required: Bool?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
 
     /// Creates a new HTML textarea element for multi-line text input.
     ///
@@ -62,22 +69,55 @@ public final class TextArea: Element {
         self.placeholder = placeholder
         self.autofocus = autofocus
         self.required = required
-        let customAttributes = [
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = buildAttributes()
+        let content = value ?? ""
+        
+        return "<textarea \(attributes.joined(separator: " "))>\(content)</textarea>"
+    }
+    
+    private func buildAttributes() -> [String] {
+        var attributes = [
             Attribute.string("name", name),
             Attribute.typed("type", type),
-            Attribute.string("value", value),
             Attribute.string("placeholder", placeholder),
             Attribute.bool("autofocus", autofocus),
             Attribute.bool("required", required),
         ].compactMap { $0 }
-        super.init(
-            tag: "textarea",
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes
-        )
+        
+        if let id = id {
+            attributes.append(Attribute.string("id", id)!)
+        }
+        
+        if let classes = classes, !classes.isEmpty {
+            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
+        }
+        
+        if let role = role {
+            attributes.append(Attribute.typed("role", role)!)
+        }
+        
+        if let label = label {
+            attributes.append(Attribute.string("aria-label", label)!)
+        }
+        
+        if let data = data {
+            for (key, value) in data {
+                attributes.append(Attribute.string("data-\(key)", value)!)
+            }
+        }
+        
+        return attributes
     }
 }

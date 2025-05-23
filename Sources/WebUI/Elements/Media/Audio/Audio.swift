@@ -1,3 +1,5 @@
+import Foundation
+
 /// Creates HTML audio elements for playing sound content.
 ///
 /// Represents an audio player that supports multiple source formats for cross-browser compatibility.
@@ -13,11 +15,16 @@
 ///   controls: true
 /// )
 /// ```
-public final class Audio: Element {
-    let sources: [(src: String, type: AudioType?)]
-    let controls: Bool?
-    let autoplay: Bool?
-    let loop: Bool?
+public struct Audio: Element {
+    private let sources: [(src: String, type: AudioType?)]
+    private let controls: Bool?
+    private let autoplay: Bool?
+    private let loop: Bool?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
 
     /// Creates a new HTML audio player.
     ///
@@ -59,25 +66,64 @@ public final class Audio: Element {
         self.controls = controls
         self.autoplay = autoplay
         self.loop = loop
-        let customAttributes = [
-            Attribute.bool("controls", controls),
-            Attribute.bool("autoplay", autoplay),
-            Attribute.bool("loop", loop),
-        ].compactMap { $0 }
-        super.init(
-            tag: "audio",
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes,
-            content: {
-                for source in sources {
-                    Source(src: source.src, type: source.type?.rawValue)
-                }
-                "Your browser does not support the audio element."
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = buildAttributes()
+        let sourceElements = sources.map { source in
+            let type = source.type?.rawValue
+            return "<source src=\"\(source.src)\"\(type != nil ? " type=\"\(type!)\"" : "")>"
+        }.joined()
+        
+        return "<audio \(attributes.joined(separator: " "))>\(sourceElements)Your browser does not support the audio element.</audio>"
+    }
+    
+    private func buildAttributes() -> [String] {
+        var attributes: [String] = []
+        
+        if let controls = controls, controls {
+            attributes.append("controls")
+        }
+        
+        if let autoplay = autoplay, autoplay {
+            attributes.append("autoplay")
+        }
+        
+        if let loop = loop, loop {
+            attributes.append("loop")
+        }
+        
+        if let id = id {
+            attributes.append(Attribute.string("id", id)!)
+        }
+        
+        if let classes = classes, !classes.isEmpty {
+            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
+        }
+        
+        if let role = role {
+            attributes.append(Attribute.typed("role", role)!)
+        }
+        
+        if let label = label {
+            attributes.append(Attribute.string("aria-label", label)!)
+        }
+        
+        if let data = data {
+            for (key, value) in data {
+                attributes.append(Attribute.string("data-\(key)", value)!)
             }
-        )
+        }
+        
+        return attributes
     }
 }

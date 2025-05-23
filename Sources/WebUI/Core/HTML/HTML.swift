@@ -29,7 +29,7 @@ import Foundation
 public protocol HTML {
     /// The type of HTML content this component produces.
     associatedtype Body: HTML
-    
+
     /// The content and structure of this HTML component.
     ///
     /// The `body` property defines the component's layout and content hierarchy.
@@ -38,7 +38,7 @@ public protocol HTML {
     ///
     /// - Returns: A composition of HTML elements that make up this component.
     var body: Body { get }
-    
+
     /// Renders the HTML component to its string representation.
     ///
     /// This method converts the HTML component into its final HTML string representation
@@ -55,16 +55,16 @@ public protocol HTML {
 public struct AnyHTML: HTML {
     private let wrapped: any HTML
     private let renderClosure: () -> String
-    
+
     public init<T: HTML>(_ html: T) {
         self.wrapped = html
         self.renderClosure = { html.render() }
     }
-    
+
     public var body: AnyHTML {
         self
     }
-    
+
     public func render() -> String {
         renderClosure()
     }
@@ -75,11 +75,11 @@ public struct AnyHTML: HTML {
 /// Used internally to represent raw HTML string content within the HTML hierarchy.
 internal struct HTMLString: HTML {
     let content: String
-    
+
     var body: HTMLString {
         self
     }
-    
+
     func render() -> String {
         content
     }
@@ -100,7 +100,7 @@ public extension HTML {
 
 extension HTML {
     /// Converts the HTML to its string representation for rendering.
-    /// 
+    ///
     /// This method provides backward compatibility with existing code
     /// that uses toString() instead of render().
     internal func toString() -> String {

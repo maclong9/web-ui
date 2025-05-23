@@ -1,3 +1,5 @@
+import Foundation
+
 /// Defines types of HTML button elements.
 ///
 /// Specifies the purpose and behavior of buttons within forms.
@@ -13,9 +15,15 @@ public enum ButtonType: String {
 ///
 /// Represents a clickable element that triggers an action or event when pressed.
 /// Buttons are fundamental interactive elements in forms and user interfaces.
-public final class Button: Element {
-    let type: ButtonType?
-    let autofocus: Bool?
+public struct Button: Element {
+    private let type: ButtonType?
+    private let autofocus: Bool?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: () -> [any HTML]
 
     /// Creates a new HTML button.
     ///
@@ -49,19 +57,58 @@ public final class Button: Element {
     ) {
         self.type = type
         self.autofocus = autofocus
-        let customAttributes = [
-            Attribute.typed("type", type),
-            Attribute.bool("autofocus", autofocus),
-        ].compactMap { $0 }
-        super.init(
-            tag: "button",
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes,
-            content: content
-        )
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = buildAttributes()
+        let content = contentBuilder().map { $0.render() }.joined()
+        
+        return "<button \(attributes.joined(separator: " "))>\(content)</button>"
+    }
+    
+    private func buildAttributes() -> [String] {
+        var attributes: [String] = []
+        
+        if let type = type {
+            attributes.append(Attribute.typed("type", type)!)
+        }
+        
+        if let autofocus = autofocus, autofocus {
+            attributes.append("autofocus")
+        }
+        
+        if let id = id {
+            attributes.append(Attribute.string("id", id)!)
+        }
+        
+        if let classes = classes, !classes.isEmpty {
+            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
+        }
+        
+        if let role = role {
+            attributes.append(Attribute.typed("role", role)!)
+        }
+        
+        if let label = label {
+            attributes.append(Attribute.string("aria-label", label)!)
+        }
+        
+        if let data = data {
+            for (key, value) in data {
+                attributes.append(Attribute.string("data-\(key)", value)!)
+            }
+        }
+        
+        return attributes
     }
 }

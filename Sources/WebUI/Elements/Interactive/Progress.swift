@@ -1,3 +1,5 @@
+import Foundation
+
 /// Generates an HTML progress element to display task completion status.
 ///
 /// The progress element visually represents the completion state of a task or process,
@@ -9,9 +11,14 @@
 /// Progress(value: 75, max: 100)
 /// // Renders: <progress value="75" max="100"></progress>
 /// ```
-public final class Progress: Element {
-    let value: Double?
-    let max: Double?
+public struct Progress: Element {
+    private let value: Double?
+    private let max: Double?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
 
     /// Creates a new HTML progress element.
     ///
@@ -43,18 +50,55 @@ public final class Progress: Element {
     ) {
         self.value = value
         self.max = max
-        let customAttributes = [
-            Attribute.string("value", value?.description),
-            Attribute.string("max", max?.description),
-        ].compactMap { $0 }
-        super.init(
-            tag: "progress",
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes
-        )
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = buildAttributes()
+        return "<progress \(attributes.joined(separator: " "))></progress>"
+    }
+    
+    private func buildAttributes() -> [String] {
+        var attributes: [String] = []
+        
+        if let value = value {
+            attributes.append(Attribute.string("value", value.description)!)
+        }
+        
+        if let max = max {
+            attributes.append(Attribute.string("max", max.description)!)
+        }
+        
+        if let id = id {
+            attributes.append(Attribute.string("id", id)!)
+        }
+        
+        if let classes = classes, !classes.isEmpty {
+            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
+        }
+        
+        if let role = role {
+            attributes.append(Attribute.typed("role", role)!)
+        }
+        
+        if let label = label {
+            attributes.append(Attribute.string("aria-label", label)!)
+        }
+        
+        if let data = data {
+            for (key, value) in data {
+                attributes.append(Attribute.string("data-\(key)", value)!)
+            }
+        }
+        
+        return attributes
     }
 }

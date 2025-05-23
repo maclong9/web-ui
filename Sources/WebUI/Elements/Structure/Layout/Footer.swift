@@ -1,3 +1,5 @@
+import Foundation
+
 /// Generates an HTML footer element for page or section footers.
 ///
 /// The `Footer` element represents a footer for its nearest sectioning content or sectioning root
@@ -12,7 +14,14 @@
 ///     Link(to: "/terms") { "Terms of Service" }
 ///   }
 ///   ```
-public final class Footer: Element {
+public struct Footer: Element {
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: () -> [any HTML]
+    
     /// Creates a new HTML footer element.
     ///
     /// - Parameters:
@@ -41,14 +50,50 @@ public final class Footer: Element {
         data: [String: String]? = nil,
         @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
     ) {
-        super.init(
-            tag: "footer",
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data,
-            content: content
-        )
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = buildAttributes()
+        let content = contentBuilder().map { $0.render() }.joined()
+        
+        return "<footer \(attributes.joined(separator: " "))>\(content)</footer>"
+    }
+    
+    private func buildAttributes() -> [String] {
+        var attributes: [String] = []
+        
+        if let id = id {
+            attributes.append(Attribute.string("id", id)!)
+        }
+        
+        if let classes = classes, !classes.isEmpty {
+            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
+        }
+        
+        if let role = role {
+            attributes.append(Attribute.typed("role", role)!)
+        }
+        
+        if let label = label {
+            attributes.append(Attribute.string("aria-label", label)!)
+        }
+        
+        if let data = data {
+            for (key, value) in data {
+                attributes.append(Attribute.string("data-\(key)", value)!)
+            }
+        }
+        
+        return attributes
     }
 }

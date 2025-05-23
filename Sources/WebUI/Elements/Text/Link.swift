@@ -5,14 +5,20 @@ import Foundation
 /// Represents a hyperlink that connects to another web page, file, location within the same page,
 /// email address, or any other URL. Links are fundamental interactive elements that enable
 /// navigation throughout a website and to external resources.
-public final class Link: Element {
-    private let href: String
+public struct Link: Element {
+    private let destination: String
     private let newTab: Bool?
-
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: () -> [any HTML]
+    
     /// Creates a new HTML anchor link.
     ///
     /// - Parameters:
-    ///   - destination: URL or path the link points to.
+    ///   - to: URL or path the link points to.
     ///   - newTab: Opens in a new tab if true, optional.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
     ///   - classes: An array of CSS classnames for styling the link.
@@ -37,27 +43,57 @@ public final class Link: Element {
         data: [String: String]? = nil,
         @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
     ) {
-        self.href = destination
+        self.destination = destination
         self.newTab = newTab
-
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+    
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+    
+    private func renderTag() -> String {
+        let attributes = buildAttributes()
+        let content = contentBuilder().map { $0.render() }.joined()
+        
+        return "<a \(attributes.joined(separator: " "))>\(content)</a>"
+    }
+    
+    private func buildAttributes() -> [String] {
         var attributes = [Attribute.string("href", destination)].compactMap { $0 }
-
-        if newTab == true {
-            attributes.append(contentsOf: [
-                "target=\"_blank\"",
-                "rel=\"noreferrer\"",
-            ])
+        
+        if let id = id {
+            attributes.append(Attribute.string("id", id)!)
         }
-
-        super.init(
-            tag: "a",
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data,
-            customAttributes: attributes.isEmpty ? nil : attributes,
-            content: content
-        )
+        
+        if let classes = classes, !classes.isEmpty {
+            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
+        }
+        
+        if let role = role {
+            attributes.append(Attribute.typed("role", role)!)
+        }
+        
+        if let label = label {
+            attributes.append(Attribute.string("aria-label", label)!)
+        }
+        
+        if let data = data {
+            for (key, value) in data {
+                attributes.append(Attribute.string("data-\(key)", value)!)
+            }
+        }
+        
+        if newTab == true {
+            attributes.append("target=\"_blank\"")
+            attributes.append("rel=\"noreferrer\"")
+        }
+        
+        return attributes
     }
 }
