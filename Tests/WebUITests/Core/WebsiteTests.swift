@@ -134,30 +134,10 @@ struct ExperienceItem: Element {
 
     var body: some HTML {
         Stack {
-            Stack {
-                Heading(.headline) { role }
-                    .on {
-                        md {
-                            font(size: .xl4)
-                        }
-                    }
-                Stack {
-                    Text { company }
-                    Text { period }
-                }
-                .flex(align: .center)
-                .spacing(of: 2)
-                .font(size: .sm)
-                .font(color: .gray(._600))
-            }
-            .margins(of: 2, at: .bottom)
-
+            Heading(.headline) { role }
+            Text { company }
             Text { description }
         }
-        .padding()
-        .border(width: 1, color: .blue(._600))
-        .background(color: .gray(._50))
-        .rounded(.md)
     }
 }
 
@@ -167,24 +147,13 @@ struct SkillCategory: Element {
 
     var body: some HTML {
         Stack {
-            Heading(.headline) { category }
+            Heading(.subheadline) { category }
             Stack {
                 for skill in skills {
-                    Stack {
-                        Text { skill }
-                    }
-                    .padding()
-                    .background(color: .gray(._100))
-                    .font(color: .gray(._800))
-                    .rounded(.md)
-                    .border(color: .gray(._300))
+                    Text { skill }
                 }
             }
-            .grid(columns: 2)
         }
-        .padding()
-        .border(width: 1)
-        .rounded(.md)
     }
 }
 
@@ -192,51 +161,15 @@ struct ContactForm: Element {
     var body: some HTML {
         Form(action: "/submit", method: .post) {
             Stack {
-                Stack {
-                    Label(for: "name") { "Name" }
-                    Input(name: "name", type: .text, required: true, id: "name")
-                        .padding()
-                        .border()
-                        .rounded(.md)
-                        .frame(width: .full)
-                }
-                .margins(of: 4, at: .bottom)
-
-                Stack {
-                    Label(for: "email") { "Email" }
-                    Input(name: "email", type: .email, required: true, id: "email")
-                        .padding()
-                        .border()
-                        .rounded(.md)
-                        .frame(width: .full)
-                }
-                .margins(of: 4, at: .bottom)
-
-                Stack {
-                    Label(for: "message") { "Message" }
-                    TextArea(name: "message", required: true, id: "message")
-                        .padding()
-                        .border()
-                        .rounded(.md)
-                        .frame(width: .full, height: .spacing(40))
-                }
-                .margins(of: 4, at: .bottom)
-
-                Button(type: .submit) {
-                    "Send Message"
-                }
-                .padding()
-                .background(color: .blue(._600))
-                .font(color: .white())
-                .font(weight: .medium)
-                .rounded(.md)
-                .margins(of: 4, at: .top)
+                Label(for: "name") { "Name" }
+                Input(name: "name", type: .text, required: true, id: "name")
+                Label(for: "email") { "Email" }
+                Input(name: "email", type: .email, required: true, id: "email")
+                Label(for: "message") { "Message" }
+                TextArea(name: "message", required: true, id: "message")
+                Button(type: .submit) { "Send Message" }
             }
         }
-        .padding()
-        .border(width: 1)
-        .rounded(.lg)
-        .shadow(size: .md)
     }
 }
 
@@ -480,14 +413,6 @@ struct ProjectsPage: Document {
                     )
                 }
                 .grid(columns: 1)
-                .on {
-                    md {
-                        grid(columns: 2)
-                    }
-                    lg {
-                        grid(columns: 3)
-                    }
-                }
             }
         }
     }
@@ -607,9 +532,9 @@ struct Portfolio: Website {
     }
 
     @WebsiteRouteBuilder
-    var routes: [Document] {
+    var routes: [any Document] {
         HomePage()
-        AboutPageTest()
+        AboutPage()
         ProjectsPage()
         ContactPage()
     }
@@ -639,7 +564,7 @@ struct ComprehensiveWebsiteTests {
     func testWebsiteStructure() {
         let portfolio = Portfolio()
 
-        #expect(portfolio.metadata.site == "John Doe")
+        #expect(portfolio.metadata.site == "Jane Doe")
         #expect(portfolio.metadata.title == "Portfolio")
         #expect(portfolio.routes.count == 4)
 
@@ -662,7 +587,7 @@ struct ComprehensiveWebsiteTests {
 
     @Test("AboutPage renders correctly")
     func testAboutPageRendering() {
-        let about = AboutPageTest()
+        let about = AboutPage()
         let html = about.body.render()
 
         #expect(html.contains("About Me"))

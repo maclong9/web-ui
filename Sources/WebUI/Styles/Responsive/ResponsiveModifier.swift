@@ -60,6 +60,37 @@ extension Element {
     }
 }
 
+extension HTML {
+    /// Applies responsive styling across different breakpoints with a declarative syntax.
+    ///
+    /// This method provides a clean, declarative way to define styles for multiple
+    /// breakpoints in a single block, improving code readability and maintainability.
+    ///
+    /// - Parameter content: A closure defining responsive style configurations using the result builder.
+    /// - Returns: An HTML element with responsive styles applied.
+    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> AnyHTML {
+        // Wrap HTML in an Element to use responsive functionality
+        let elementWrapper = HTMLElementWrapper(self)
+        let builder = ResponsiveBuilder(element: elementWrapper)
+        let modification = content()
+        modification.apply(to: builder)
+        return AnyHTML(HTMLString(content: builder.element.render()))
+    }
+}
+
+/// A wrapper that converts HTML to Element for responsive functionality
+private struct HTMLElementWrapper<Content: HTML>: Element {
+    private let content: Content
+    
+    init(_ content: Content) {
+        self.content = content
+    }
+    
+    var body: Content {
+        content
+    }
+}
+
 /// Builds responsive style configurations for elements across different breakpoints.
 ///
 /// `ResponsiveBuilder` provides a fluent, method-chaining API for applying style
@@ -158,15 +189,13 @@ public class ResponsiveBuilder {
     /// A concrete wrapper that preserves Element conformance
     private struct AnyElement: Element {
         private let base: any Element
-        private let bodyProvider: () -> any HTML
 
         init(_ base: any Element) {
             self.base = base
-            self.bodyProvider = { base.body }
         }
 
-        var body: HTMLContainer<AnyHTML> {
-            HTMLContainer(AnyHTML(bodyProvider()))
+        var body: HTMLString {
+            HTMLString(content: base.render())
         }
     }
 
@@ -178,8 +207,8 @@ public class ResponsiveBuilder {
             self.htmlContent = htmlContent
         }
 
-        var body: T {
-            htmlContent
+        var body: HTMLString {
+            HTMLString(content: htmlContent.render())
         }
     }
 

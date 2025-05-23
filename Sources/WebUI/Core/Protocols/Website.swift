@@ -56,8 +56,10 @@ public protocol Website {
     /// Controls whether to generate a robots.txt file.
     var generateRobotsTxt: Bool { get }
 
-    /// Custom rules to include in robots.txt file.
+    /// Optional custom rules to include in robots.txt file.
     var robotsRules: [RobotsRule]? { get }
+
+
 }
 
 // MARK: - Default Implementations
@@ -89,6 +91,8 @@ extension Website {
 
     /// Default robotsRules implementation returns nil.
     public var robotsRules: [RobotsRule]? { nil }
+
+
 
     /// Builds the website to the specified output directory.
     ///
@@ -131,8 +135,8 @@ extension Website {
 /// A result builder for creating website routes.
 @resultBuilder
 public struct WebsiteRouteBuilder {
-    public static func buildBlock(_ components: any Document...) -> [any Document] {
-        components
+    public static func buildBlock(_ components: [any Document]...) -> [any Document] {
+        components.flatMap { $0 }
     }
 
     public static func buildOptional(_ component: [any Document]?) -> [any Document] {
