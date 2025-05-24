@@ -391,6 +391,7 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("transition-transform"))
         #expect(rendered.contains("duration-300"))
+        #expect(!rendered.contains("motion-reduce:transition-transform"))
         #expect(rendered.contains("motion-reduce:duration-0"))
     }
 
