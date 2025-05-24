@@ -8,43 +8,30 @@ import Foundation
 public struct Metadata {
     /// The name of the website or application.
     public var site: String?
-
     /// The title of the current page.
     public var title: String?
-
     /// The separator between the title and site name (e.g., " - " or " | ").
     public var titleSeperator: String?
-
     /// A concise description of the page content.
     public var description: String?
-
     /// The publication date of the content.
     public var date: Date?
-
     /// URL to an image representing the content (for social media sharing).
     public var image: String?
-
     /// The name of the content author.
     public var author: String?
-
     /// Keywords relevant to the content for SEO.
     public var keywords: [String]?
-
     /// Twitter handle for attribution without the @ symbol.
     public var twitter: String?
-
     /// The language locale of the content.
     public var locale: Locale
-
     /// The type of content for Open Graph categorization.
     public var type: ContentType
-
     /// The browser theme color for the document.
     public var themeColor: ThemeColor?
-
     /// The favicons for the document, supporting different sizes and modes.
     public var favicons: [Favicon]?
-
     /// The structured data for the document in JSON-LD format.
     public var structuredData: StructuredData?
 
@@ -279,7 +266,6 @@ public struct Metadata {
                 )
             }
         }
-
         return baseTags
     }
 }

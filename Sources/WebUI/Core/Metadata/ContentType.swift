@@ -10,4 +10,12 @@ public enum ContentType: String {
     case video
     /// Personal or organizational profile content type.
     case profile
+    /// Audio content type.
+    case audio
+    /// Image content type.
+    case image
+    /// Document content type.
+    case document
+    /// File content type.
+    case file
 }
