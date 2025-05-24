@@ -220,6 +220,7 @@ public class ResponsiveBuilder {
 
         // Create a concrete wrapper that preserves Element conformance
         let wrapped = AnyElement(self.element)
+
         let styledModifier = StyleModifierWithDeduplication(content: wrapped, classes: responsiveClasses)
         self.element = ElementWrapper(styledModifier)
 
