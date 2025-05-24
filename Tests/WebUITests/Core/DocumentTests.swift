@@ -278,7 +278,7 @@ struct DocumentTests {
             )
         )
         #expect(rendered.contains("<script defer src=\"/public/script2.js\"></script>"))
-        #expect(rendered.contains("<script  src=\"/public/script3.js\"></script>"))
+        #expect(rendered.contains("<script src=\"/public/script3.js\"></script>"))
         #expect(rendered.contains("console.log(\"Hello, world!\")"))
     }
 

@@ -10,18 +10,18 @@ public struct Script: Element {
     let src: String?
     let attribute: ScriptAttribute?
     let placement: ScriptPlacement
-    let contentBuilder: HTMLContentBuilder
+    let content: () -> String
 
     public init(
         src: String? = nil,
         attribute: ScriptAttribute? = nil,
         placement: ScriptPlacement = .body,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        content: @escaping () -> String = { "" }
     ) {
         self.src = src
         self.attribute = attribute
         self.placement = placement
-        self.contentBuilder = content
+        self.content = content
     }
 
     public var body: some HTML {
@@ -30,16 +30,16 @@ public struct Script: Element {
 
     private func renderTag() -> String {
         var additional: [String] = []
+        if let attribute, let attributeAttr = Attribute.bool(attribute.rawValue, true) {
+            additional.append(attributeAttr)
+        }
         if let src, let srcAttr = Attribute.string("src", src) {
             additional.append(srcAttr)
-        }
-        if let attribute, let attributeAttr = Attribute.string(attribute.rawValue, attribute.rawValue) {
-            additional.append(attributeAttr)
         }
         let attributes = AttributeBuilder.buildAttributes(
             additional: additional
         )
-        let content = contentBuilder().map { $0.render() }.joined()
-        return AttributeBuilder.renderTag("script", attributes: attributes, content: content)
+
+        return AttributeBuilder.renderTag("script", attributes: attributes, content: content())
     }
 }

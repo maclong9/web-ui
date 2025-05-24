@@ -77,8 +77,7 @@ extension Document {
         var bodyTags: [String] = []
         if let scripts = scripts {
             for script in scripts {
-                let scriptTag =
-                    "<script \(script.attribute?.rawValue ?? "") src=\"\(script.src ?? "")\"></script>"
+                let scriptTag = script.render()
                 script.placement == .head ? optionalTags.append(scriptTag) : bodyTags.append(scriptTag)
             }
         }
