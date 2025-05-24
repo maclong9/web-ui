@@ -1,3 +1,5 @@
+import Foundation
+
 /// Generates an HTML figure element with a picture and figcaption.
 /// Styles and attributes applied to this element are passed to the nested Picture element,
 /// which further passes them to its nested Image element.
@@ -12,10 +14,15 @@
 ///   description: "Annual revenue growth chart"
 /// )
 /// ```
-public final class Figure: Element {
-    let sources: [(src: String, type: ImageType?)]
-    let description: String
-    let size: MediaSize?
+public struct Figure: Element {
+    private let sources: [(src: String, type: ImageType?)]
+    private let description: String
+    private let size: MediaSize?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
 
     /// Creates a new HTML figure element containing a picture and figcaption.
     ///
@@ -56,29 +63,66 @@ public final class Figure: Element {
         self.sources = sources
         self.description = description
         self.size = size
-        super.init(
-            tag: "figure",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            content: {
-                Picture(
-                    sources: sources,
-                    description: description,
-                    size: size,
-                    id: id,
-                    classes: classes,
-                    role: role,
-                    label: label,
-                    data: data
-                )
-                Element(
-                    tag: "figcaption",
-                    content: { description }
-                )
-            }
+            data: data
         )
+
+        let pictureElement = renderPictureElement()
+        let figcaptionElement = AttributeBuilder.renderTag("figcaption", attributes: [], content: description)
+        return AttributeBuilder.renderTag("figure", attributes: attributes, content: pictureElement + figcaptionElement)
+    }
+
+    private func renderPictureElement() -> String {
+        var content = ""
+        for source in sources {
+            var sourceAttributes: [String] = []
+            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+                sourceAttributes.append(typeAttr)
+            }
+            if let srcsetAttr = Attribute.string("srcset", source.src) {
+                sourceAttributes.append(srcsetAttr)
+            }
+            content += AttributeBuilder.renderTag(
+                "source",
+                attributes: sourceAttributes,
+                hasNoClosingTag: true
+            )
+        }
+
+        var imgAttributes: [String] = []
+        if let srcAttr = Attribute.string("src", sources.first?.src ?? "") {
+            imgAttributes.append(srcAttr)
+        }
+        if let altAttr = Attribute.string("alt", description) {
+            imgAttributes.append(altAttr)
+        }
+
+        if let size = size {
+            if let width = size.width, let widthAttr = Attribute.string("width", "\(width)") {
+                imgAttributes.append(widthAttr)
+            }
+            if let height = size.height, let heightAttr = Attribute.string("height", "\(height)") {
+                imgAttributes.append(heightAttr)
+            }
+        }
+
+        content += AttributeBuilder.renderTag("img", attributes: imgAttributes, isSelfClosing: true)
+        return AttributeBuilder.renderTag("picture", attributes: [], content: content)
     }
 }

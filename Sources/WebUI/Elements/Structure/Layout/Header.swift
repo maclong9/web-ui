@@ -1,3 +1,5 @@
+import Foundation
+
 /// Generates an HTML header element for page or section headers.
 ///
 /// The `Header` element represents a container for introductory content or a set of navigational links
@@ -14,7 +16,14 @@
 ///     }
 ///   }
 ///   ```
-public final class Header: Element {
+public struct Header: Element {
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: HTMLContentBuilder
+
     /// Creates a new HTML header element.
     ///
     /// - Parameters:
@@ -37,16 +46,30 @@ public final class Header: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
-        super.init(
-            tag: "header",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            content: content
+            data: data
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+
+        return AttributeBuilder.renderTag("header", attributes: attributes, content: content)
     }
 }

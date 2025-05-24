@@ -13,8 +13,14 @@ import Foundation
 /// Time(datetime: "2023-12-25T00:00:00Z") { "Christmas Day" }
 /// // Renders: <time datetime="2023-12-25T00:00:00Z">Christmas Day</time>
 /// ```
-public final class Time: Element {
+public struct Time: Element {
     private let datetime: String
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML time element.
     ///
@@ -43,21 +49,59 @@ public final class Time: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
         self.datetime = datetime
-        let customAttributes = [
-            Attribute.string("datetime", datetime)
-        ].compactMap { $0 }
-        super.init(
-            tag: "time",
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes,
-            content: content
-        )
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        let attributes = buildAttributes()
+        let content = contentBuilder().map { $0.render() }.joined()
+
+        return "<time \(attributes.joined(separator: " "))>\(content)</time>"
+    }
+
+    private func buildAttributes() -> [String] {
+        var attributes: [String] = []
+
+        if let datetimeAttr = Attribute.string("datetime", datetime) {
+            attributes.append(datetimeAttr)
+        }
+
+        if let id, let idAttr = Attribute.string("id", id) {
+            attributes.append(idAttr)
+        }
+
+        if let classes, !classes.isEmpty, let classAttr = Attribute.string("class", classes.joined(separator: " ")) {
+            attributes.append(classAttr)
+        }
+
+        if let role, let roleAttr = Attribute.typed("role", role) {
+            attributes.append(roleAttr)
+        }
+
+        if let label, let labelAttr = Attribute.string("aria-label", label) {
+            attributes.append(labelAttr)
+        }
+
+        if let data {
+            for (key, value) in data {
+                if let dataAttr = Attribute.string("data-\(key)", value) {
+                    attributes.append(dataAttr)
+                }
+            }
+        }
+
+        return attributes
     }
 }

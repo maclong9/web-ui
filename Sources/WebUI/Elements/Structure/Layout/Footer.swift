@@ -1,3 +1,5 @@
+import Foundation
+
 /// Generates an HTML footer element for page or section footers.
 ///
 /// The `Footer` element represents a footer for its nearest sectioning content or sectioning root
@@ -12,7 +14,14 @@
 ///     Link(to: "/terms") { "Terms of Service" }
 ///   }
 ///   ```
-public final class Footer: Element {
+public struct Footer: Element {
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: HTMLContentBuilder
+
     /// Creates a new HTML footer element.
     ///
     /// - Parameters:
@@ -39,16 +48,30 @@ public final class Footer: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
-        super.init(
-            tag: "footer",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            content: content
+            data: data
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+
+        return AttributeBuilder.renderTag("footer", attributes: attributes, content: content)
     }
 }

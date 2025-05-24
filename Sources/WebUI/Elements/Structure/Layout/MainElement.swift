@@ -15,7 +15,14 @@
 ///     }
 ///   }
 ///   ```
-public final class Main: Element {
+public struct Main: Element {
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: HTMLContentBuilder
+
     /// Creates a new HTML main element.
     ///
     /// - Parameters:
@@ -28,29 +35,43 @@ public final class Main: Element {
     ///
     /// ## Example
     /// ```swift
-    /// Main(id: "content", classes: ["container"]) {
-    ///     Section {
-    ///       Heading(.largeTitle) { "About Us" }
-    ///       Text { "Learn more about our company history..." }
+    /// Main(classes: ["site-main"]) {
+    ///     Article {
+    ///         Heading(.title) { "Welcome" }
+    ///         Text { "This is the main content of the page." }
     ///     }
-    ///   }
-    ///   ```
+    /// }
+    /// ```
     public init(
         id: String? = nil,
         classes: [String]? = nil,
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
-        super.init(
-            tag: "main",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            content: content
+            data: data
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+
+        return AttributeBuilder.renderTag("main", attributes: attributes, content: content)
     }
 }

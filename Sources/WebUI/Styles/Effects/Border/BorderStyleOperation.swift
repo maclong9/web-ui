@@ -98,7 +98,7 @@ public struct BorderStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide border styling
-extension Element {
+extension HTML {
     /// Applies border styling to the element with specified attributes.
     ///
     /// Adds borders with custom width, style, and color to specified edges of an element.
@@ -123,7 +123,7 @@ extension Element {
         style: BorderStyle? = nil,
         color: Color? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = BorderStyleOperation.Parameters(
             width: width,
             edges: edges,
@@ -131,10 +131,10 @@ extension Element {
             color: color
         )
 
-        return BorderStyleOperation.shared.applyToElement(
+        return BorderStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

@@ -89,8 +89,8 @@ public struct OutlineStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide outline styling
-extension Element {
+// Extension for HTML to provide outline styling
+extension HTML {
     /// Sets outline properties with optional modifiers.
     ///
     /// - Parameters:
@@ -99,18 +99,18 @@ extension Element {
     ///   - color: The outline color.
     ///   - offset: The outline offset in pixels.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated outline classes.
+    /// - Returns: HTML with updated outline classes.
     ///
     /// ## Example
     /// ```swift
     /// // Add a basic outline
-    /// Element(tag: "div").outline()
+    /// Stack()(tag: "div").outline()
     ///
     /// // Add a 2px outline with color
-    /// Element(tag: "div").outline(of: 2, color: .blue(._500))
+    /// Stack()(tag: "div").outline(of: 2, color: .blue(._500))
     ///
     /// // Add a dashed outline on focus
-    /// Element(tag: "div").outline(style: .dashed, on: .focus)
+    /// Stack()(tag: "div").outline(style: .dashed, on: .focus)
     /// ```
     public func outline(
         of width: Int? = nil,
@@ -118,7 +118,7 @@ extension Element {
         color: Color? = nil,
         offset: Int? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = OutlineStyleOperation.Parameters(
             width: width,
             style: style,
@@ -126,7 +126,7 @@ extension Element {
             offset: offset
         )
 
-        return OutlineStyleOperation.shared.applyToElement(
+        return OutlineStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

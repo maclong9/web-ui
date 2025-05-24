@@ -111,8 +111,8 @@ public enum GridFlow: String {
     case colDense = "col-dense"
 }
 
-// Extension for Element to provide grid styling
-extension Element {
+// Extension for HTML to provide grid styling
+extension HTML {
     /// Sets grid container properties with optional modifiers.
     ///
     /// - Parameters:
@@ -122,18 +122,18 @@ extension Element {
     ///   - columnSpan: The column span value.
     ///   - rowSpan: The row span value.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated grid classes.
+    /// - Returns: HTML with updated grid classes.
     ///
     /// ## Example
     /// ```swift
     /// // Create a grid container with 3 columns
-    /// Element(tag: "div").grid(columns: 3)
+    /// Stack()(tag: "div").grid(columns: 3)
     ///
     /// // Create a grid container with 2 columns and 3 rows
-    /// Element(tag: "div").grid(columns: 2, rows: 3)
+    /// Stack()(tag: "div").grid(columns: 2, rows: 3)
     ///
     /// // Apply grid layout only on medium screens and up
-    /// Element(tag: "div").grid(columns: 2, on: .md)
+    /// Stack()(tag: "div").grid(columns: 2, on: .md)
     /// ```
     public func grid(
         columns: Int? = nil,
@@ -142,7 +142,7 @@ extension Element {
         columnSpan: Int? = nil,
         rowSpan: Int? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = GridStyleOperation.Parameters(
             columns: columns,
             rows: rows,
@@ -151,7 +151,7 @@ extension Element {
             rowSpan: rowSpan
         )
 
-        return GridStyleOperation.shared.applyToElement(
+        return GridStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers
