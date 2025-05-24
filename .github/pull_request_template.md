@@ -35,7 +35,6 @@
 - [ ] I have added tests that prove my fix/feature works
 - [ ] All new and existing tests pass
 - [ ] I have updated the documentation accordingly
-- [ ] My commit messages follow the [commit message conventions](../CONTRIBUTING.md#commit-messages)
 
 ## Additional Notes
 <!-- Add any other context about the PR here -->
