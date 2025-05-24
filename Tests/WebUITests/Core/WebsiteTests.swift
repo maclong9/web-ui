@@ -524,7 +524,6 @@ struct Portfolio: Website {
     var metadata: Metadata {
         Metadata(
             site: "Jane Doe",
-            title: "Portfolio",
             description: "Full-stack developer portfolio",
             author: "Jane Doe",
             keywords: ["developer", "portfolio", "web development", "swift", "javascript"],
@@ -599,7 +598,6 @@ struct ComprehensiveWebsiteTests {
         let portfolio = Portfolio()
 
         #expect(portfolio.metadata.site == "Jane Doe")
-        #expect(portfolio.metadata.title == "Portfolio")
         #expect(portfolio.routes.count == 4)
         #expect(portfolio.baseURL == "https://janedoe.dev")
         #expect(portfolio.sitemapEntries?.count == 2)
@@ -634,6 +632,7 @@ struct ComprehensiveWebsiteTests {
         #expect(indexContent.contains("<img"))
 
         // Test specific meta tags
+        #expect(indexContent.contains("<title>Portfolio Jane Doe</title>"))
         #expect(indexContent.contains("<meta charset=\"utf-8\">"))
         #expect(indexContent.contains("<meta name=\"viewport\""))
         #expect(indexContent.contains("width=device-width"))

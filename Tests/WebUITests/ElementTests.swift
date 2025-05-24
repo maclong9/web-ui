@@ -89,8 +89,8 @@ import Testing
         #expect(rendered.contains("<picture"))
         #expect(rendered.contains("id=\"profile-pic\""))
         #expect(rendered.contains("class=\"rounded\""))
-        #expect(rendered.contains("<source src=\"/image.jpg\" type=\"image/jpeg\">"))
-        #expect(rendered.contains("<source src=\"/image.webp\" type=\"image/webp\">"))
+        #expect(rendered.contains("<source type=\"image/jpeg\" srcset=\"/image.jpg\" />"))
+        #expect(rendered.contains("<source type=\"image/webp\" srcset=\"/image.webp\" />"))
         #expect(rendered.contains("<img"))
         #expect(rendered.contains("alt=\"Profile picture\""))
         #expect(rendered.contains("width=\"300\""))
@@ -116,8 +116,8 @@ import Testing
         #expect(rendered.contains("id=\"mountain-fig\""))
         #expect(rendered.contains("class=\"image-figure\""))
         #expect(rendered.contains("<picture"))
-        #expect(rendered.contains("<source src=\"/large.jpg\" type=\"image/jpeg\">"))
-        #expect(rendered.contains("<source src=\"/small.webp\" type=\"image/webp\">"))
+        #expect(rendered.contains("<source type=\"image/jpeg\" srcset=\"/large.jpg\" />"))
+        #expect(rendered.contains("<source type=\"image/webp\" srcset=\"/small.webp\" />"))
         #expect(rendered.contains("<img"))
         #expect(rendered.contains("alt=\"A scenic mountain view\""))
         #expect(rendered.contains("width=\"800\""))
@@ -554,13 +554,13 @@ import Testing
         #expect(rendered.contains("<label for=\"name\">Name:</label>"))
         #expect(
             rendered.contains(
-                "<input id=\"name\" name=\"name\" type=\"text\" required>"
+                "<input id=\"name\" name=\"name\" type=\"text\" required />"
             )
         )
         #expect(rendered.contains("<label for=\"email\">Email:</label>"))
         #expect(
             rendered.contains(
-                "<input id=\"email\" name=\"email\" type=\"email\" required>"
+                "<input id=\"email\" name=\"email\" type=\"email\" required />"
             )
         )
         #expect(rendered.contains("<label for=\"message\">Message:</label>"))
@@ -571,7 +571,7 @@ import Testing
         )
         #expect(
             rendered.contains(
-                "<input id=\"subscribe\" name=\"subscribe\" type=\"checkbox\">"
+                "<input id=\"subscribe\" name=\"subscribe\" type=\"checkbox\" />"
             )
         )
         #expect(
@@ -666,7 +666,7 @@ import Testing
     @Test("Element with ARIA attributes")
     func testElementWithAriaAttributes() async throws {
         let element = Stack(
-            role: AriaRole.tabpanel,
+            role: .tabpanel,
             label: "Panel Description"
         ) { "Tab panel content" }
 
@@ -682,7 +682,7 @@ import Testing
     @Test("Interactive element with ARIA roles")
     func testInteractiveElementWithAriaRoles() async throws {
         let tabContainer = Stack(
-            role: AriaRole.tablist
+            role: .tablist
         ) {
             Button(
                 role: AriaRole.tab,
@@ -734,10 +734,8 @@ import Testing
             "Special & characters < need > to be & escaped"
         }
 
-        // Note: We're not actually testing HTML escaping here since the render method doesn't
-        // implement escaping in the provided code. This would need to be added to the Element class.
         let rendered = text.render()
-        #expect(rendered.contains("Special & characters < need > to be & escaped"))
+        #expect(rendered.contains("Special & characters &lt; need &gt; to be & escaped"))
     }
 
     @Test("Deeply nested elements")
@@ -812,7 +810,7 @@ import Testing
 
     @Test("Element with empty data attributes")
     func testEmptyDatAttributes() async throws {
-        let element = Stack( data: [:] )
+        let element = Stack(data: [:])
 
         let rendered = element.render()
         #expect(rendered == "<div></div>")

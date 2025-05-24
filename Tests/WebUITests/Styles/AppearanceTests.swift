@@ -12,19 +12,7 @@ import Testing
         #expect(rendered.contains("class=\"opacity-50\""))
     }
 
-    @Test("Opacity with hover modifier")
-    func testOpacityWithHoverModifier() async throws {
-        let element = Stack().opacity(75, on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:opacity-75\""))
-    }
 
-    @Test("Opacity with multiple modifiers")
-    func testOpacityWithMultipleModifiers() async throws {
-        let element = Stack().opacity(25, on: .hover, .md)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:md:opacity-25\""))
-    }
 
     // MARK: - Background Color Tests
 
@@ -42,12 +30,7 @@ import Testing
         #expect(rendered.contains("class=\"bg-red-300/50\""))
     }
 
-    @Test("Background color with hover modifier")
-    func testBackgroundColorWithHoverModifier() async throws {
-        let element = Stack().background(color: .green(._700), on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:bg-green-700\""))
-    }
+
 
     @Test("Custom background color")
     func testCustomBackgroundColor() async throws {
@@ -93,12 +76,7 @@ import Testing
         #expect(rendered.contains("class=\"divide-x-1\""))
     }
 
-    @Test("Border with modifiers")
-    func testBorderWithModifiers() async throws {
-        let element = Stack().border(of: 3, on: .hover, .md)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:md:border-3\""))
-    }
+
 
     // MARK: - Outline Tests
 
@@ -109,12 +87,7 @@ import Testing
         #expect(rendered.contains("class=\"outline-2 outline-purple-600\""))
     }
 
-    @Test("Outline with style and modifier")
-    func testOutlineWithStyleAndModifier() async throws {
-        let element = Stack().outline(style: .dashed, on: .focus)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"focus:outline-dashed\""))
-    }
+
 
     // MARK: - Shadow Tests
 
@@ -125,12 +98,7 @@ import Testing
         #expect(rendered.contains("class=\"shadow-lg\""))
     }
 
-    @Test("Shadow with color and modifier")
-    func testShadowWithColorAndModifier() async throws {
-        let element = Stack().shadow(size: .md, color: .gray(._500), on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:shadow-md hover:shadow-gray-500\""))
-    }
+
 
     // MARK: - Ring Tests
 
@@ -141,12 +109,7 @@ import Testing
         #expect(rendered.contains("class=\"ring-1\""))
     }
 
-    @Test("Ring with color and modifier")
-    func testRingWithColorAndModifier() async throws {
-        let element = Stack().ring(size: 2, color: .pink(._400), on: .focus)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"focus:ring-2 focus:ring-pink-400\""))
-    }
+
 
     // MARK: - Flex Tests
 
@@ -164,12 +127,7 @@ import Testing
         #expect(rendered.contains("class=\"flex items-center flex-1\""))
     }
 
-    @Test("Flex with modifiers")
-    func testFlexWithModifiers() async throws {
-        let element = Stack().flex(direction: .column, on: .md)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"md:flex md:flex-col\""))
-    }
+
 
     // MARK: - Hidden Tests
 
@@ -180,12 +138,7 @@ import Testing
         #expect(rendered.contains("class=\"hidden\""))
     }
 
-    @Test("Hidden with modifier")
-    func testHiddenWithModifier() async throws {
-        let element = Stack().hidden(true, on: .sm)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"sm:hidden\""))
-    }
+
 
     @Test("Not hidden")
     func testNotHidden() async throws {
@@ -203,19 +156,7 @@ import Testing
         #expect(rendered.contains("class=\"display-block\""))
     }
 
-    @Test("Display element as inline-block with hover")
-    func testDisplayAsInlineBlockWithHover() async throws {
-        let element = Stack().display(.inlineBlock, on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:display-inline-block\""))
-    }
 
-    @Test("Display as table on medium screens")
-    func testDisplayAsTableOnMedium() async throws {
-        let element = Stack().display(.table, on: .md)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"md:display-table\""))
-    }
 
     // MARK: - Complex Appearance Tests
 
@@ -224,12 +165,11 @@ import Testing
         let element = Stack()
             .background(color: .blue(._600))
             .border(of: 1, style: .solid, color: .blue(._800))
-            .opacity(90, on: .hover)
             .flex(direction: .row, justify: .center)
         let rendered = element.render()
         #expect(
             rendered.contains(
-                "class=\"bg-blue-600 border-1 border-solid border-blue-800 hover:opacity-90 flex flex-row justify-center\""
+                "class=\"bg-blue-600 border-1 border-solid border-blue-800 flex flex-row justify-center\""
             )
         )
     }

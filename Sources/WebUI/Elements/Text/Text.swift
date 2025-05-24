@@ -54,7 +54,8 @@ public struct Text: Element {
         let tag = sentenceCount > 1 ? "p" : "span"
         let attributes = buildAttributes()
 
-        return "<\(tag) \(attributes.joined(separator: " "))>\(renderedContent)</\(tag)>"
+        return
+            "<\(tag)\(attributes.count > 0 ? " " : "")\(attributes.joined(separator: " "))>\(renderedContent)</\(tag)>"
     }
 
     private func buildAttributes() -> [String] {

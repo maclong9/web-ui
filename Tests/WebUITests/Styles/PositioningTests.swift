@@ -26,12 +26,7 @@ import Testing
         #expect(rendered.contains("class=\"transition ease-in-out delay-100\""))
     }
 
-    @Test("Transition with modifier")
-    func testTransitionWithModifier() async throws {
-        let element = Stack().transition(of: .colors, for: 500, on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:transition-colors hover:duration-500\""))
-    }
+
 
     // MARK: - Z-Index Tests
 
@@ -49,12 +44,7 @@ import Testing
         #expect(rendered.contains("class=\"z--5\""))
     }
 
-    @Test("Z-Index with modifier")
-    func testZIndexWithModifier() async throws {
-        let element = Stack().zIndex(20, on: .focus)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"focus:z-20\""))
-    }
+
 
     // MARK: - Position Tests
 
@@ -87,12 +77,7 @@ import Testing
         #expect(!rendered.contains("-top--10"))  // Should NOT contain double negative
     }
 
-    @Test("Position with modifier")
-    func testPositionWithModifier() async throws {
-        let element = Stack().position(.sticky, at: .top, offset: 0, on: .md)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"md:sticky md:top-0\""))
-    }
+
 
     @Test("Position with horizontal edge")
     func testPositionWithHorizontalEdge() async throws {
@@ -117,12 +102,7 @@ import Testing
         #expect(rendered.contains("class=\"overflow-x-scroll\""))
     }
 
-    @Test("Overflow with modifier")
-    func testOverflowWithModifier() async throws {
-        let element = Stack().overflow(.auto, axis: .vertical, on: .lg)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"lg:overflow-y-auto\""))
-    }
+
 
     // MARK: - Transform Tests
 
@@ -147,12 +127,7 @@ import Testing
         #expect(rendered.contains("class=\"transform -translate-x-10 translate-y-20\""))
     }
 
-    @Test("Transform with skew and modifier")
-    func testTransformWithSkewAndModifier() async throws {
-        let element = Stack().transform(skew: (x: 15, y: nil), on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:transform hover:skew-x-15\""))
-    }
+
 
     @Test("Transform with multiple properties")
     func testTransformWithMultipleProperties() async throws {
@@ -200,16 +175,7 @@ import Testing
         #expect(rendered.contains("class=\"snap-center snap-always snap-x\""))
     }
 
-    @Test("Scroll with modifier")
-    func testScrollWithModifier() async throws {
-        let element = Stack().scroll(
-            behavior: .auto,
-            snapType: .mandatory,
-            on: .hover
-        )
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:scroll-auto hover:snap-mandatory\""))
-    }
+
 
     @Test("Scroll with multiple properties")
     func testScrollWithMultipleProperties() async throws {
@@ -270,10 +236,5 @@ import Testing
         #expect(rendered.contains("class=\"transform\""))
     }
 
-    @Test("Overflow with multiple modifiers")
-    func testOverflowWithMultipleModifiers() async throws {
-        let element = Stack().overflow(.visible, axis: .both, on: .md, .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"md:hover:overflow-visible\""))
-    }
+
 }

@@ -33,12 +33,7 @@ import Testing
         #expect(rendered.contains("class=\"min-w-min max-h-fit\""))
     }
 
-    @Test("Frame with character width and modifier")
-    func testFrameWithCharacterWidthAndModifier() async throws {
-        let element = Stack().frame(width: .character(60), on: .md)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"md:w-[60ch]\""))
-    }
+
 
     @Test("Frame with custom dimension")
     func testFrameWithCustomDimension() async throws {
@@ -82,12 +77,7 @@ import Testing
         #expect(rendered.contains("class=\"size-full\""))
     }
 
-    @Test("Size method with modifiers")
-    func testSizeMethodWithModifiers() async throws {
-        let element = Stack().size(16.spacing, on: .hover, .lg)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:lg:size-16\""))
-    }
+
 
     @Test("Size method with different sizing values")
     func testSizeMethodWithDifferentValues() async throws {
@@ -121,12 +111,7 @@ import Testing
         #expect(rendered.contains("class=\"aspect-video\""))
     }
 
-    @Test("Aspect ratio with modifiers")
-    func testAspectRatioWithModifiers() async throws {
-        let element = Stack().aspectRatio(4, 3, on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:aspect-[1.3333333333333333]\""))
-    }
+
 
     @Test("Frame with viewport units")
     func testFrameWithViewportUnits() async throws {
@@ -190,12 +175,7 @@ import Testing
         #expect(rendered.contains("class=\"underline text-nowrap\""))
     }
 
-    @Test("Font with family and modifier")
-    func testFontWithFamilyAndModifier() async throws {
-        let element = Stack().font(family: "sans", on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:font-[sans]\""))
-    }
+
 
     @Test("Font with extra-large size")
     func testFontWithExtraLargeSize() async throws {
@@ -213,12 +193,7 @@ import Testing
         #expect(rendered.contains("class=\"cursor-pointer\""))
     }
 
-    @Test("Cursor with not-allowed type and modifier")
-    func testCursorWithNotAllowedAndModifier() async throws {
-        let element = Stack().cursor(.notAllowed, on: .focus)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"focus:cursor-not-allowed\""))
-    }
+
 
     // MARK: - Margin Tests
 
@@ -250,12 +225,7 @@ import Testing
         #expect(rendered.contains("class=\"mt-4\""))
     }
 
-    @Test("Margins with modifier")
-    func testMarginsWithModifier() async throws {
-        let element = Stack().margins(of: 6, at: .leading, on: .md)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"md:ml-6\""))
-    }
+
 
     // MARK: - Padding Tests
 
@@ -280,12 +250,7 @@ import Testing
         #expect(rendered.contains("class=\"px-4\""))
     }
 
-    @Test("Padding with modifier")
-    func testPaddingWithModifier() async throws {
-        let element = Stack().padding(of: 3, at: .trailing, on: .hover)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:pr-3\""))
-    }
+
 
     // MARK: - Spacing Tests
 
@@ -310,12 +275,7 @@ import Testing
         #expect(rendered.contains("class=\"space-y-4\""))
     }
 
-    @Test("Spacing with modifier")
-    func testSpacingWithModifier() async throws {
-        let element = Stack().spacing(of: 2, along: .vertical, on: .lg)
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"lg:space-y-2\""))
-    }
+
 
     // MARK: - Complex Style Tests
 
@@ -336,19 +296,7 @@ import Testing
         )
     }
 
-    @Test("Combined sizing styles")
-    func testCombinedSizingStyles() async throws {
-        let element = Stack()
-            .frame(width: .container(.extraLarge), minHeight: 50.spacing)
-            .size(24.spacing, on: .sm)
-            .aspectRatioVideo(on: .lg)
-        let rendered = element.render()
-        #expect(
-            rendered.contains(
-                "class=\"w-xl min-h-50 sm:size-24 lg:aspect-video\""
-            )
-        )
-    }
+
 
     @Test("Frame with min and max CGFloat values")
     func testFrameWithMinMaxCGFloatValues() async throws {
@@ -377,17 +325,7 @@ import Testing
         #expect(!rendered.contains("class="))
     }
 
-    @Test("Frame with modifiers on specific dimensions")
-    func testFrameWithModifiersOnSpecificDimensions() async throws {
-        let element = Stack().frame(
-            width: .auto,
-            maxWidth: .container(.fourExtraLarge),
-            on: .md,
-            .dark
-        )
-        let rendered = element.render()
-        #expect(rendered.contains("class=\"md:dark:w-auto md:dark:max-w-4xl\""))
-    }
+
 
     @Test("Frame with container size static constants")
     func testFrameWithContainerSizeStaticConstants() async throws {

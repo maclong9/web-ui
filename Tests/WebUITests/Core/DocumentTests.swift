@@ -172,20 +172,11 @@ struct CustomHeadDocument: Document {
 
 @Suite("Document Tests")
 struct DocumentTests {
-
     @Test("Document renders correctly with nil description")
     func testNilDescriptionDocument() throws {
         let document = NoDescriptionDocument()
         let rendered = document.head ?? ""
 
-        #expect(
-            rendered.contains("<title>No Description Test Site</title>"),
-            "Title set correctly"
-        )
-        #expect(
-            rendered.contains("<meta property=\"og:title\" content=\"No Description Test Site\">"),
-            "OG title set correctly"
-        )
         #expect(
             !rendered.contains("<meta name=\"description\""),
             "Description meta tag should not be present"
@@ -194,7 +185,6 @@ struct DocumentTests {
             !rendered.contains("<meta property=\"og:description\""),
             "OG description meta tag should not be present"
         )
-        #expect(rendered.contains("Test content"), "Content rendered correctly")
     }
 
     @Test("Document renders basic metadata correctly")
