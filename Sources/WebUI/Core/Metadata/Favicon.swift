@@ -11,7 +11,7 @@ public struct Favicon {
     public let dark: String?
 
     /// The type of the favicon (e.g., "image/png").
-    public let type: String
+    public let type: ImageType
 
     /// The size of the favicon (e.g., "32x32").
     public let size: String?
@@ -28,7 +28,7 @@ public struct Favicon {
     ///   ```swift
     ///   let icon = Favicon("/icons/favicon.png", dark: "/icons/favicon-dark.png", size: "32x32")
     ///   ```
-    public init(_ light: String, dark: String? = nil, type: String = "image/png", size: String? = nil) {
+    public init(_ light: String, dark: String? = nil, type: ImageType = .png, size: String? = nil) {
         self.light = light
         self.dark = dark
         self.type = type
