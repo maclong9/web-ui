@@ -72,8 +72,8 @@ public struct MarginsStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide margin styling
-extension Element {
+// Extension for HTML to provide margin styling
+extension HTML {
     /// Applies margin styling to the element with one or more edges.
     ///
     /// - Parameters:
@@ -81,20 +81,20 @@ extension Element {
     ///   - edges: One or more edges to apply the margin to. Defaults to `.all`.
     ///   - auto: Whether to use automatic margins instead of a specific length.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated margin classes.
+    /// - Returns: HTML with updated margin classes.
     public func margins(
         of length: Int? = 4,
         at edges: Edge...,
         auto: Bool = false,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = MarginsStyleOperation.Parameters(
             length: length,
             edges: edges,
             auto: auto
         )
 
-        return MarginsStyleOperation.shared.applyToElement(
+        return MarginsStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

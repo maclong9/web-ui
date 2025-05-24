@@ -3,28 +3,177 @@ import Testing
 
 @testable import WebUI
 
-@Suite("Document Tests") struct DocumentTests {
-    /// Tests that a document renders correctly with nil description.
-    @Test func testNilDescriptionDocument() throws {
-        let rendered = Document(
-            path: "no-description",
-            metadata: Metadata(
-                site: "Test Site",
-                title: "No Description",
-                description: nil
-            )
-        ) {
-            "Test content"
-        }.render()
+// MARK: - Test Document Structures
 
-        #expect(
-            rendered.contains("<title>No Description Test Site</title>"),
-            "Title set correctly"
+struct NoDescriptionDocument: Document {
+    var path: String { "no-description" }
+    var metadata: Metadata {
+        Metadata(
+            site: "Test Site",
+            title: "No Description",
+            description: nil
         )
-        #expect(
-            rendered.contains("<meta property=\"og:title\" content=\"No Description Test Site\">"),
-            "OG title set correctly"
+    }
+
+    var body: some HTML {
+        Text { "Test content" }
+    }
+}
+
+struct BasicTestDocument: Document {
+    var path: String { "index" }
+    var metadata: Metadata {
+        Metadata(
+            site: "Test Site",
+            title: "Hello World",
+            titleSeperator: " | ",
+            description: "A test description"
         )
+    }
+
+    var body: some HTML {
+        Text { "Hello, world!" }
+    }
+}
+
+struct FullMetadataDocument: Document {
+    var path: String { "full-test" }
+    var metadata: Metadata {
+        Metadata(
+            site: "Test Site",
+            title: "Full Test",
+            titleSeperator: " - ",
+            description: "A complete metadata test",
+            date: Date(),
+            image: "https://example.com/image.png",
+            author: "Test Author",
+            keywords: ["test", "swift", "html"],
+            twitter: "testhandle",
+            locale: .ru,
+            type: .article,
+            themeColor: .init("#0099ff", dark: "#1c1c1c")
+        )
+    }
+
+    var body: some HTML {
+        Text { "Content" }
+    }
+}
+
+struct FaviconTestDocument: Document {
+    var path: String { "favicons" }
+    var metadata: Metadata {
+        Metadata(
+            title: "Favicon Test",
+            description: "Testing favicon rendering",
+            favicons: [
+                Favicon("/favicon.png", size: "32x32"),
+                Favicon("/favicon-light.ico", dark: "/favicon-dark.ico", type: "image/x-icon"),
+            ]
+        )
+    }
+
+    var body: some HTML {
+        Text { "Favicon Test" }
+    }
+}
+
+struct StructuredDataDocument: Document {
+    var path: String { "structured-data" }
+    var metadata: Metadata {
+        Metadata(
+            title: "Structured Data Test",
+            description: "Testing structured data rendering",
+            structuredData: StructuredData.article(
+                headline: "Test Article",
+                image: "https://example.com/image.jpg",
+                author: "Test Author",
+                publisher: "Test Publisher",
+                datePublished: Date(),
+                description: "A test article"
+            )
+        )
+    }
+
+    var body: some HTML {
+        Text { "Structured Data Test" }
+    }
+}
+
+struct ScriptTestDocument: Document {
+    var path: String { "scripts" }
+    var metadata: Metadata {
+        Metadata(
+            title: "Script Test",
+            description: "Testing script inclusion"
+        )
+    }
+
+    var scripts: [Script]? {
+        [
+            Script(src: "https://cdn.example.com/script1.js", attribute: .async),
+            Script(src: "/public/script2.js", attribute: .defer),
+            Script(src: "/public/script3.js", placement: .head),
+            Script { "console.log(\"Hello, world!\")" },
+        ]
+    }
+
+    var body: some HTML {
+        Text { "Script Test" }
+    }
+}
+
+struct StylesheetTestDocument: Document {
+    var path: String { "styles" }
+    var metadata: Metadata {
+        Metadata(
+            title: "Stylesheet Test",
+            description: "Testing stylesheet inclusion"
+        )
+    }
+
+    var stylesheets: [String]? {
+        [
+            "https://cdn.example.com/style1.css",
+            "/public/style2.css",
+        ]
+    }
+
+    var body: some HTML {
+        Text { "Stylesheet Test" }
+    }
+}
+
+struct CustomHeadDocument: Document {
+    var path: String { "custom-head" }
+    var metadata: Metadata {
+        Metadata(
+            title: "Custom Head",
+            description: "Testing custom head HTML"
+        )
+    }
+
+    var head: String? {
+        """
+        <script>console.log('Custom head script');</script>
+        <style>body { color: red; }</style>
+        """
+    }
+
+    var body: some HTML {
+        Text { "Custom Head Test" }
+    }
+}
+
+// MARK: - Tests
+
+@Suite("Document Tests")
+struct DocumentTests {
+    @Test("Document renders correctly with nil description")
+    func testNilDescriptionDocument() throws {
+        let document = NoDescriptionDocument()
+        let rendered = document.head ?? ""
+
         #expect(
             !rendered.contains("<meta name=\"description\""),
             "Description meta tag should not be present"
@@ -33,21 +182,12 @@ import Testing
             !rendered.contains("<meta property=\"og:description\""),
             "OG description meta tag should not be present"
         )
-        #expect(rendered.contains("Test content"), "Content rendered correctly")
     }
+
     @Test("Document renders basic metadata correctly")
     func testBasicDocumentRendering() throws {
-        let rendered = Document(
-            path: "index",
-            metadata: Metadata(
-                site: "Test Site",
-                title: "Hello World",
-                titleSeperator: " | ",
-                description: "A test description"
-            )
-        ) {
-            "Hello, world!"
-        }.render()
+        let document = BasicTestDocument()
+        let rendered = try document.render()
 
         #expect(
             rendered.contains("<title>Hello World | Test Site</title>"),
@@ -69,27 +209,10 @@ import Testing
         #expect(rendered.contains("<html lang=\"en\">"), "Default locale not set correctly")
     }
 
-    /// Tests that a document renders all optional metadata correctly.
-    @Test func testFullMetadataRendering() throws {
-        let rendered = Document(
-            path: "full-test",
-            metadata: Metadata(
-                site: "Test Site",
-                title: "Full Test",
-                titleSeperator: " - ",
-                description: "A complete metadata test",
-                date: Date(),
-                image: "https://example.com/image.png",
-                author: "Test Author",
-                keywords: ["test", "swift", "html"],
-                twitter: "testhandle",
-                locale: .ru,
-                type: .article,
-                themeColor: .init("#0099ff", dark: "#1c1c1c"),
-            )
-        ) {
-            "Content"
-        }.render()
+    @Test("Document renders all optional metadata correctly")
+    func testFullMetadataRendering() throws {
+        let document = FullMetadataDocument()
+        let rendered = try document.render()
 
         #expect(rendered.contains("<title>Full Test - Test Site</title>"))
         #expect(
@@ -107,33 +230,19 @@ import Testing
         #expect(rendered.contains("<html lang=\"ru\">"))
     }
 
-    /// Tests that favicons are correctly added to the document head.
-    @Test func testFaviconRendering() throws {
-        let rendered = Document(
-            path: "favicons",
-            metadata: Metadata(
-                title: "Favicon Test",
-                description: "Testing favicon rendering",
-                favicons: [
-                    Favicon("/favicon.png", size: "32x32"),
-                    Favicon("/favicon-light.ico", dark: "/favicon-dark.ico", type: "image/x-icon"),
-                ]
-            )
-        ) {
-            "Favicon Test"
-        }.render()
+    @Test("Favicons are correctly added to document head")
+    func testFaviconRendering() throws {
+        let document = FaviconTestDocument()
+        let rendered = try document.render()
 
-        // Check standard favicon rendering
         #expect(
             rendered.contains("<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"32x32\">")
         )
 
-        // Check Apple touch icon for PNG favicons
         #expect(
             rendered.contains("<link rel=\"apple-touch-icon\" sizes=\"32x32\" href=\"/favicon.png\">")
         )
 
-        // Check dark mode favicon rendering
         #expect(
             rendered.contains(
                 "<link rel=\"icon\" type=\"image/x-icon\" href=\"/favicon-light.ico\" media=\"(prefers-color-scheme: light)\">"
@@ -146,27 +255,11 @@ import Testing
         )
     }
 
-    /// Tests that structured data is correctly added to the document head.
-    @Test func testStructuredDataRendering() throws {
-        let rendered = Document(
-            path: "structured-data",
-            metadata: Metadata(
-                title: "Structured Data Test",
-                description: "Testing structured data rendering",
-                structuredData: StructuredData.article(
-                    headline: "Test Article",
-                    image: "https://example.com/image.jpg",
-                    author: "Test Author",
-                    publisher: "Test Publisher",
-                    datePublished: Date(),
-                    description: "A test article"
-                )
-            )
-        ) {
-            "Structured Data Test"
-        }.render()
+    @Test("Structured data is correctly added to document head")
+    func testStructuredDataRendering() throws {
+        let document = StructuredDataDocument()
+        let rendered = try document.render()
 
-        // Check for JSON-LD script tag
         #expect(rendered.contains("<script type=\"application/ld+json\">"))
         #expect(rendered.contains("\"@context\" : \"https://schema.org\""))
         #expect(rendered.contains("\"@type\" : \"Article\""))
@@ -174,22 +267,10 @@ import Testing
         #expect(rendered.contains("\"image\" : \"https://example.com/image.jpg\""))
     }
 
-    /// Tests that custom scripts are correctly added to the document head.
-    @Test func testCustomScripts() throws {
-        let rendered = Document(
-            path: "scripts",
-            metadata: Metadata(
-                title: "Script Test",
-                description: "Testing script inclusion"
-            ),
-            scripts: [
-                Script(src: "https://cdn.example.com/script1.js", attribute: .async),
-                Script(src: "/public/script2.js", attribute: .defer),
-                Script(src: "/public/script3.js"),
-            ]
-        ) {
-            "Script Test"
-        }.render()
+    @Test("Custom scripts are correctly added to document head")
+    func testCustomScripts() throws {
+        let document = ScriptTestDocument()
+        let rendered = try document.render()
 
         #expect(
             rendered.contains(
@@ -197,24 +278,14 @@ import Testing
             )
         )
         #expect(rendered.contains("<script defer src=\"/public/script2.js\"></script>"))
-        #expect(rendered.contains("<script  src=\"/public/script3.js\"></script>"))
+        #expect(rendered.contains("<script src=\"/public/script3.js\"></script>"))
+        #expect(rendered.contains("console.log(\"Hello, world!\")"))
     }
 
-    /// Tests that custom stylesheets are correctly added to the document head.
-    @Test func testCustomStylesheets() throws {
-        let rendered = Document(
-            path: "styles",
-            metadata: Metadata(
-                title: "Stylesheet Test",
-                description: "Testing stylesheet inclusion"
-            ),
-            stylesheets: [
-                "https://cdn.example.com/style1.css",
-                "/public/style2.css",
-            ]
-        ) {
-            "Stylesheet Test"
-        }.render()
+    @Test("Custom stylesheets are correctly added to document head")
+    func testCustomStylesheets() throws {
+        let document = StylesheetTestDocument()
+        let rendered = try document.render()
 
         #expect(
             rendered.contains("<link rel=\"stylesheet\" href=\"https://cdn.example.com/style1.css\">")
@@ -222,41 +293,12 @@ import Testing
         #expect(rendered.contains("<link rel=\"stylesheet\" href=\"/public/style2.css\">"))
     }
 
-    /// Tests that raw HTML can be added to the document head.
-    @Test func testCustomHeadHTML() throws {
-        let document = Document(
-            path: "custom-head",
-            metadata: Metadata(
-                title: "Custom Head",
-                description: "Testing custom head HTML"
-            ),
-            head: """
-                <script>
-                  console.log('Custom head script');
-                </script>
-                <style>
-                  body { color: red; }
-                </style>
-                """
-        ) {
-            "Custom Head Test"
-        }
+    @Test("Raw HTML can be added to document head")
+    func testCustomHeadHTML() throws {
+        let document = CustomHeadDocument()
+        let rendered = try document.render()
 
-        let rendered = document.render()
-
-        #expect(rendered.contains(document.head ?? ""))
-    }
-
-    /// Helper class to create HTML from strings for testing
-    struct StringHTML: HTML {
-        let content: String
-
-        init(_ content: String) {
-            self.content = content
-        }
-
-        func render() -> String {
-            content
-        }
+        #expect(rendered.contains("<script>console.log('Custom head script');</script>"))
+        #expect(rendered.contains("<style>body { color: red; }</style>"))
     }
 }

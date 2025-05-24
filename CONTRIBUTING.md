@@ -104,7 +104,7 @@ swift package --disable-sandbox preview-documentation
 ```
 
 > [!NOTE]
-> You can also run `Build Documentation` inside of Xcode to view the documentation in 
+> You can also run `Build Documentation` inside of Xcode to view the documentation in
 
 ### Adding New Elements
 
@@ -367,7 +367,7 @@ WebUI supports two different ways to apply responsive styles:
    ```swift
    Text { "Responsive Content" }
      .font(size: .sm)
-     .responsive {
+     .on {
        md {
          font(size: .lg)
          background(color: .neutral(._700))

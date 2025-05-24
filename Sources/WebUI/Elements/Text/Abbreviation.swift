@@ -12,8 +12,14 @@ import Foundation
 /// Abbreviation(title: "Hypertext Markup Language") { "HTML" }
 /// // Renders: <abbr title="Hypertext Markup Language">HTML</abbr>
 /// ```
-public final class Abbreviation: Element {
-    let fullTitle: String
+public struct Abbreviation: Element {
+    private let fullTitle: String
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML abbreviation element.
     ///
@@ -42,20 +48,35 @@ public final class Abbreviation: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
         self.fullTitle = title
-        let customAttributes = [Attribute.string("title", title)].compactMap { $0 }
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
 
-        super.init(
-            tag: "abbr",
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        var additional: [String] = []
+        if let titleAttr = Attribute.string("title", fullTitle) {
+            additional.append(titleAttr)
+        }
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes,
-            content: content
+            additional: additional
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+        return AttributeBuilder.renderTag("abbr", attributes: attributes, content: content)
     }
 }

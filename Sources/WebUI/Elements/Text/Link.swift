@@ -5,14 +5,20 @@ import Foundation
 /// Represents a hyperlink that connects to another web page, file, location within the same page,
 /// email address, or any other URL. Links are fundamental interactive elements that enable
 /// navigation throughout a website and to external resources.
-public final class Link: Element {
-    private let href: String
+public struct Link: Element {
+    private let destination: String
     private let newTab: Bool?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML anchor link.
     ///
     /// - Parameters:
-    ///   - destination: URL or path the link points to.
+    ///   - to: URL or path the link points to.
     ///   - newTab: Opens in a new tab if true, optional.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
     ///   - classes: An array of CSS classnames for styling the link.
@@ -35,29 +41,38 @@ public final class Link: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
-        self.href = destination
+        self.destination = destination
         self.newTab = newTab
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
 
-        var attributes = [Attribute.string("href", destination)].compactMap { $0 }
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
 
-        if newTab == true {
-            attributes.append(contentsOf: [
-                "target=\"_blank\"",
-                "rel=\"noreferrer\"",
-            ])
-        }
-
-        super.init(
-            tag: "a",
+    private func renderTag() -> String {
+        var attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            customAttributes: attributes.isEmpty ? nil : attributes,
-            content: content
+            data: data
         )
+        if let hrefAttr = Attribute.string("href", destination) {
+            attributes.insert(hrefAttr, at: 0)
+        }
+        if newTab == true {
+            attributes.append("target=\"_blank\"")
+            attributes.append("rel=\"noreferrer\"")
+        }
+        let content = contentBuilder().map { $0.render() }.joined()
+        return AttributeBuilder.renderTag("a", attributes: attributes, content: content)
     }
 }

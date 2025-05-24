@@ -5,89 +5,6 @@ import Testing
 // MARK: - HTML Protocol Tests
 
 @Suite("Element Tests") struct ElementTests {
-    @Test("HTML protocol render test")
-    func testHTMLProtocol() async throws {
-        // Create a simple HTML element
-        let element = Element(tag: "div", id: "test-id", classes: ["test-class"])
-
-        // Verify the rendered HTML
-        let rendered = element.render()
-        #expect(rendered == "<div id=\"test-id\" class=\"test-class\"></div>")
-    }
-
-    // MARK: - Element Base Class Tests
-
-    @Test("Element base class with basic attributes")
-    func testElementBasAttributes() async throws {
-        let element = Element(
-            tag: "div",
-            id: "test-id",
-            classes: ["class1", "class2"],
-            role: .search,
-            label: "Test Label"
-        )
-
-        let rendered = element.render()
-        #expect(rendered.contains("id=\"test-id\""))
-        #expect(rendered.contains("class=\"class1 class2\""))
-        #expect(rendered.contains("role=\"search\""))
-        #expect(rendered.contains("aria-label=\"Test Label\""))
-    }
-
-    @Test("Element with content")
-    func testElementWithContent() async throws {
-        let element = Element(tag: "div") {
-            Element(tag: "p") { "Hello World" }
-        }
-
-        let rendered = element.render()
-        #expect(rendered == "<div><p>Hello World</p></div>")
-    }
-
-    @Test("Self-closing element")
-    func testSelfClosingElement() async throws {
-        let element = Element(tag: "input", isSelfClosing: true)
-
-        let rendered = element.render()
-        #expect(rendered == "<input>")
-    }
-
-    @Test("Attribute helper functions")
-    func testElementHelperFunctions() async throws {
-        // These tests don't need an element instance anymore
-
-        // Test Attr helper namespace functions
-        let attr1 = Attribute.string("data-test", "value")
-        #expect(attr1 == "data-test=\"value\"")
-
-        let attr2 = Attribute.string("data-empty", "")
-        #expect(attr2 == nil)
-
-        let attr3 = Attribute.string("data-nil", nil as String?)
-        #expect(attr3 == nil)
-
-        // Test boolean attribute function
-        let booAttribute1 = Attribute.bool("selected", true)
-        #expect(booAttribute1 == "selected")
-
-        let booAttribute2 = Attribute.bool("selected", false)
-        #expect(booAttribute2 == nil)
-
-        let booAttribute3 = Attribute.bool("selected", nil as Bool?)
-        #expect(booAttribute3 == nil)
-
-        // Test typed attribute function
-        enum TestEnum: String {
-            case test = "test-value"
-        }
-
-        let typeAttribute1 = Attribute.typed("test", TestEnum.test)
-        #expect(typeAttribute1 == "test=\"test-value\"")
-
-        let typeAttribute2 = Attribute.typed("test", nil as TestEnum?)
-        #expect(typeAttribute2 == nil)
-    }
-
     // MARK: - Button Tests
 
     @Test("Button element with type and autofocus")
@@ -108,19 +25,6 @@ import Testing
         #expect(rendered.contains("type=\"submit\""))
         #expect(rendered.contains("autofocus"))
         #expect(rendered.contains(">Submit</button>"))
-    }
-
-    // MARK: - Fragment Tests
-
-    @Test("Fragment with content")
-    func testFragmentWithContent() async throws {
-        let fragment = Fragment {
-            Element(tag: "p") { "First paragraph" }
-            Element(tag: "p") { "Second paragraph" }
-        }
-
-        let rendered = fragment.render()
-        #expect(rendered == "<p>First paragraph</p><p>Second paragraph</p>")
     }
 
     // MARK: - List Tests
@@ -185,8 +89,8 @@ import Testing
         #expect(rendered.contains("<picture"))
         #expect(rendered.contains("id=\"profile-pic\""))
         #expect(rendered.contains("class=\"rounded\""))
-        #expect(rendered.contains("<source src=\"/image.jpg\" type=\"image/jpeg\">"))
-        #expect(rendered.contains("<source src=\"/image.webp\" type=\"image/webp\">"))
+        #expect(rendered.contains("<source type=\"image/jpeg\" srcset=\"/image.jpg\" />"))
+        #expect(rendered.contains("<source type=\"image/webp\" srcset=\"/image.webp\" />"))
         #expect(rendered.contains("<img"))
         #expect(rendered.contains("alt=\"Profile picture\""))
         #expect(rendered.contains("width=\"300\""))
@@ -212,8 +116,8 @@ import Testing
         #expect(rendered.contains("id=\"mountain-fig\""))
         #expect(rendered.contains("class=\"image-figure\""))
         #expect(rendered.contains("<picture"))
-        #expect(rendered.contains("<source src=\"/large.jpg\" type=\"image/jpeg\">"))
-        #expect(rendered.contains("<source src=\"/small.webp\" type=\"image/webp\">"))
+        #expect(rendered.contains("<source type=\"image/jpeg\" srcset=\"/large.jpg\">"))
+        #expect(rendered.contains("<source type=\"image/webp\" srcset=\"/small.webp\">"))
         #expect(rendered.contains("<img"))
         #expect(rendered.contains("alt=\"A scenic mountain view\""))
         #expect(rendered.contains("width=\"800\""))
@@ -380,7 +284,7 @@ import Testing
 
         let rendered = pre.render()
         #expect(rendered.contains("<pre>"))
-        #expect(rendered.contains("function hello() {\n  console.log(\"Hello\");\n}"))
+        #expect(rendered.contains("function hello() {\n  console.log(&quot;Hello&quot;);\n}"))
         #expect(rendered.contains("</pre>"))
     }
 
@@ -393,7 +297,7 @@ import Testing
             method: .post,
             id: "contact-form",
         ) {
-            Element(tag: "input")
+            Input(name: "test")
         }
 
         let rendered = form.render()
@@ -401,7 +305,7 @@ import Testing
         #expect(rendered.contains("id=\"contact-form\""))
         #expect(rendered.contains("action=\"/submit\""))
         #expect(rendered.contains("method=\"post\""))
-        #expect(rendered.contains("<input>"))
+        #expect(rendered.contains("<input name=\"test\" />"))
         #expect(rendered.contains("</form>"))
     }
 
@@ -650,13 +554,13 @@ import Testing
         #expect(rendered.contains("<label for=\"name\">Name:</label>"))
         #expect(
             rendered.contains(
-                "<input id=\"name\" name=\"name\" type=\"text\" required>"
+                "<input id=\"name\" name=\"name\" type=\"text\" required />"
             )
         )
         #expect(rendered.contains("<label for=\"email\">Email:</label>"))
         #expect(
             rendered.contains(
-                "<input id=\"email\" name=\"email\" type=\"email\" required>"
+                "<input id=\"email\" name=\"email\" type=\"email\" required />"
             )
         )
         #expect(rendered.contains("<label for=\"message\">Message:</label>"))
@@ -667,7 +571,7 @@ import Testing
         )
         #expect(
             rendered.contains(
-                "<input id=\"subscribe\" name=\"subscribe\" type=\"checkbox\">"
+                "<input id=\"subscribe\" name=\"subscribe\" type=\"checkbox\" />"
             )
         )
         #expect(
@@ -681,7 +585,7 @@ import Testing
 
     @Test("Page layout with multiple sections")
     func testPageLayout() async throws {
-        let page = Fragment {
+        let page = Stack {
             Header(id: "main-header") {
                 Heading(.largeTitle) { "My Website" }
                 Navigation {
@@ -761,63 +665,41 @@ import Testing
 
     @Test("Element with ARIA attributes")
     func testElementWithAriaAttributes() async throws {
-        let element = Element(
-            tag: "div",
+        let element = Stack(
             role: .tabpanel,
-            label: "Panel Description",
-            ariaAttributes: [
-                "expanded": "true",
-                "controls": "content-1",
-                "selected": "true",
-                "hidden": "false",
-            ]
-        )
+            label: "Panel Description"
+        ) { "Tab panel content" }
 
         let rendered = element.render()
         #expect(rendered.contains("role=\"tabpanel\""))
         #expect(rendered.contains("aria-label=\"Panel Description\""))
-        #expect(rendered.contains("aria-expanded=\"true\""))
-        #expect(rendered.contains("aria-controls=\"content-1\""))
-        #expect(rendered.contains("aria-selected=\"true\""))
-        #expect(rendered.contains("aria-hidden=\"false\""))
+        #expect(rendered.contains("<div"))
+        #expect(rendered.contains(">Tab panel content</div>"))
     }
 
     @Test("Interactive element with ARIA roles")
     func testInteractiveElementWithAriaRoles() async throws {
-        let tabContainer = Element(
-            tag: "div",
-            role: .tablist,
-            ariaAttributes: ["orientation": "horizontal"]
+        let tabContainer = Stack(
+            role: .tablist
         ) {
-            Element(
-                tag: "button",
-                role: .tab,
-                label: "First tab",
-                ariaAttributes: [
-                    "selected": "true",
-                    "controls": "panel-1",
-                ]
+            Button(
+                role: AriaRole.tab,
+                label: "First tab"
             ) { "Tab 1" }
 
-            Element(
-                tag: "button",
-                role: .tab,
-                label: "Second tab",
-                ariaAttributes: [
-                    "selected": "false",
-                    "controls": "panel-2",
-                ]
+            Button(
+                role: AriaRole.tab,
+                label: "Second tab"
             ) { "Tab 2" }
         }
 
         let rendered = tabContainer.render()
         #expect(rendered.contains("role=\"tablist\""))
-        #expect(rendered.contains("aria-orientation=\"horizontal\""))
         #expect(rendered.contains("role=\"tab\""))
-        #expect(rendered.contains("aria-selected=\"true\""))
-        #expect(rendered.contains("aria-selected=\"false\""))
-        #expect(rendered.contains("aria-controls=\"panel-1\""))
-        #expect(rendered.contains("aria-controls=\"panel-2\""))
+        #expect(rendered.contains("aria-label=\"First tab\""))
+        #expect(rendered.contains("aria-label=\"Second tab\""))
+        #expect(rendered.contains(">Tab 1</button>"))
+        #expect(rendered.contains(">Tab 2</button>"))
     }
 
     // MARK: - Edge Cases Tests
@@ -846,13 +728,144 @@ import Testing
     @Test("Elements with special characters")
     func testSpecialCharacters() async throws {
         let text = Text {
-            "Special & characters < need > to be & escaped"
+            "Special & characters < need > to be escaped"
         }
 
-        // Note: We're not actually testing HTML escaping here since the render method doesn't
-        // implement escaping in the provided code. This would need to be added to the Element class.
         let rendered = text.render()
-        #expect(rendered.contains("Special & characters < need > to be & escaped"))
+        // HTML characters should now be properly escaped in content
+        #expect(rendered.contains("Special &amp; characters &lt; need &gt; to be escaped"))
+
+        // Test special characters in attributes
+        let elementWithSpecialAttrs = Stack(
+            id: "test&id",
+            classes: ["class<>test"]
+        ) { "Content" }
+
+        let attrRendered = elementWithSpecialAttrs.render()
+        #expect(attrRendered.contains("id=\"test&amp;id\""))
+        #expect(attrRendered.contains("class=\"class&lt;&gt;test\""))
+
+        // Test quotes in attributes
+        let elementWithQuotes = Stack(
+            label: "User's \"favorite\" item"
+        ) { "Text with 'quotes' & <tags>" }
+
+        let quotesRendered = elementWithQuotes.render()
+        #expect(quotesRendered.contains("aria-label=\"User&#39;s &quot;favorite&quot; item\""))
+        #expect(quotesRendered.contains("Text with &#39;quotes&#39; &amp; &lt;tags&gt;"))
+    }
+
+    // MARK: - ARIA Role Tests
+
+    @Test("All landmark ARIA roles")
+    func testLandmarkAriaRoles() async throws {
+        let searchElement = Stack(role: .search) { "Search content" }
+        #expect(searchElement.render().contains("role=\"search\""))
+
+        let contentinfoElement = Stack(role: .contentinfo) { "Footer content" }
+        #expect(contentinfoElement.render().contains("role=\"contentinfo\""))
+
+        let mainElement = Stack(role: .main) { "Main content" }
+        #expect(mainElement.render().contains("role=\"main\""))
+
+        let navigationElement = Stack(role: .navigation) { "Nav content" }
+        #expect(navigationElement.render().contains("role=\"navigation\""))
+
+        let complementaryElement = Stack(role: .complementary) { "Aside content" }
+        #expect(complementaryElement.render().contains("role=\"complementary\""))
+
+        let bannerElement = Stack(role: .banner) { "Header content" }
+        #expect(bannerElement.render().contains("role=\"banner\""))
+    }
+
+    @Test("All widget ARIA roles")
+    func testWidgetAriaRoles() async throws {
+        let buttonElement = Stack(role: .button) { "Button content" }
+        #expect(buttonElement.render().contains("role=\"button\""))
+
+        let checkboxElement = Stack(role: .checkbox) { "Checkbox content" }
+        #expect(checkboxElement.render().contains("role=\"checkbox\""))
+
+        let dialogElement = Stack(role: .dialog) { "Dialog content" }
+        #expect(dialogElement.render().contains("role=\"dialog\""))
+
+        let linkElement = Stack(role: .link) { "Link content" }
+        #expect(linkElement.render().contains("role=\"link\""))
+
+        let tabElement = Stack(role: .tab) { "Tab content" }
+        #expect(tabElement.render().contains("role=\"tab\""))
+
+        let tablistElement = Stack(role: .tablist) { "Tablist content" }
+        #expect(tablistElement.render().contains("role=\"tablist\""))
+
+        let tabpanelElement = Stack(role: .tabpanel) { "Tabpanel content" }
+        #expect(tabpanelElement.render().contains("role=\"tabpanel\""))
+    }
+
+    @Test("All document structure ARIA roles")
+    func testDocumentStructureAriaRoles() async throws {
+        let articleElement = Stack(role: .article) { "Article content" }
+        #expect(articleElement.render().contains("role=\"article\""))
+
+        let headingElement = Stack(role: .heading) { "Heading content" }
+        #expect(headingElement.render().contains("role=\"heading\""))
+
+        let listElement = Stack(role: .list) { "List content" }
+        #expect(listElement.render().contains("role=\"list\""))
+
+        let listitemElement = Stack(role: .listitem) { "List item content" }
+        #expect(listitemElement.render().contains("role=\"listitem\""))
+    }
+
+    @Test("All live region ARIA roles")
+    func testLiveRegionAriaRoles() async throws {
+        let alertElement = Stack(role: .alert) { "Alert content" }
+        #expect(alertElement.render().contains("role=\"alert\""))
+
+        let statusElement = Stack(role: .status) { "Status content" }
+        #expect(statusElement.render().contains("role=\"status\""))
+    }
+
+    @Test("ARIA roles with semantic elements")
+    func testAriaRolesWithSemanticElements() async throws {
+        let semanticHeader = Header(role: .banner) { "Site header" }
+        #expect(semanticHeader.render().contains("role=\"banner\""))
+
+        let semanticNav = Navigation(role: .navigation) { "Site navigation" }
+        #expect(semanticNav.render().contains("role=\"navigation\""))
+
+        let semanticMain = Main(role: .main) { "Main content" }
+        #expect(semanticMain.render().contains("role=\"main\""))
+
+        let semanticAside = Aside(role: .complementary) { "Sidebar content" }
+        #expect(semanticAside.render().contains("role=\"complementary\""))
+
+        let semanticFooter = Footer(role: .contentinfo) { "Site footer" }
+        #expect(semanticFooter.render().contains("role=\"contentinfo\""))
+
+        let semanticArticle = Article(role: .article) { "Article content" }
+        #expect(semanticArticle.render().contains("role=\"article\""))
+
+        let semanticSection = Section(role: .search) { "Search section" }
+        #expect(semanticSection.render().contains("role=\"search\""))
+    }
+
+    @Test("Interactive elements with appropriate ARIA roles")
+    func testInteractiveElementsWithAriaRoles() async throws {
+        let buttonWithRole = Button(role: .button, label: "Custom button") { "Click me" }
+        let buttonRendered = buttonWithRole.render()
+        #expect(buttonRendered.contains("role=\"button\""))
+        #expect(buttonRendered.contains("aria-label=\"Custom button\""))
+
+        let linkWithRole = Link(to: "/test", role: .link, label: "Custom link") { "Test link" }
+        let linkRendered = linkWithRole.render()
+        #expect(linkRendered.contains("role=\"link\""))
+        #expect(linkRendered.contains("aria-label=\"Custom link\""))
+
+        let inputWithRole = Input(name: "test", role: .checkbox, label: "Custom checkbox")
+        let inputRendered = inputWithRole.render()
+        #expect(inputRendered.contains("role=\"checkbox\""))
+        #expect(inputRendered.contains("aria-label=\"Custom checkbox\""))
     }
 
     @Test("Deeply nested elements")
@@ -881,8 +894,7 @@ import Testing
 
     @Test("Element with single data attribute")
     func testSingleDatAttribute() async throws {
-        let element = Element(
-            tag: "div",
+        let element = Stack(
             data: ["test": "value"]
         )
 
@@ -892,14 +904,13 @@ import Testing
 
     @Test("Element with multiple data attributes")
     func testMultipleDatAttributes() async throws {
-        let element = Element(
-            tag: "span",
+        let element = Text(
             data: [
                 "user-id": "123",
                 "theme": "dark",
                 "status": "active",
             ]
-        )
+        ) { "Content" }
 
         let rendered = element.render()
         #expect(rendered.contains("data-user-id=\"123\""))
@@ -909,16 +920,15 @@ import Testing
 
     @Test("Element with data attributes and other attributes")
     func testDatAttributesWithOtheAttributes() async throws {
-        let element = Element(
-            tag: "section",
+        let element = Section(
             id: "content",
             classes: ["container"],
-            role: .contentinfo,
+            role: AriaRole.contentinfo,
             data: [
                 "page": "home",
                 "version": "1.0",
             ]
-        )
+        ) {}
 
         let rendered = element.render()
         #expect(rendered.contains("id=\"content\""))
@@ -930,10 +940,7 @@ import Testing
 
     @Test("Element with empty data attributes")
     func testEmptyDatAttributes() async throws {
-        let element = Element(
-            tag: "div",
-            data: [:]
-        )
+        let element = Stack(data: [:])
 
         let rendered = element.render()
         #expect(rendered == "<div></div>")
@@ -941,10 +948,7 @@ import Testing
 
     @Test("Element with nil data attributes")
     func testNilDatAttributes() async throws {
-        let element = Element(
-            tag: "div",
-            data: nil
-        )
+        let element = Stack(data: nil)
 
         let rendered = element.render()
         #expect(rendered == "<div></div>")
@@ -952,12 +956,10 @@ import Testing
 
     @Test("Element with data attributes in nested structure")
     func testDatAttributesInNestedStructure() async throws {
-        let element = Element(
-            tag: "div",
+        let element = Stack(
             data: ["container": "main"]
         ) {
-            Element(
-                tag: "span",
+            Text(
                 data: ["item": "child"]
             ) {
                 "Nested content"

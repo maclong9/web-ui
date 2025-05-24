@@ -43,8 +43,8 @@ public struct ZIndexStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide z-index styling
-extension Element {
+// Extension for HTML to provide z-index styling
+extension HTML {
     /// Applies a z-index to the element.
     ///
     /// Sets the stacking order of the element, optionally scoped to modifiers.
@@ -52,7 +52,7 @@ extension Element {
     /// - Parameters:
     ///   - value: Specifies the z-index value as an integer.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated z-index classes.
+    /// - Returns: HTML with updated z-index classes.
     ///
     /// ## Example
     /// ```swift
@@ -67,10 +67,10 @@ extension Element {
     public func zIndex(
         _ value: Int,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = ZIndexStyleOperation.Parameters(value: value)
 
-        return ZIndexStyleOperation.shared.applyToElement(
+        return ZIndexStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

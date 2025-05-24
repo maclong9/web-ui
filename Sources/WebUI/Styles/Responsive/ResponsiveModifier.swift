@@ -52,11 +52,42 @@ extension Element {
     ///     }
     ///   }
     /// ```
-    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> Element {
+    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> any Element {
         let builder = ResponsiveBuilder(element: self)
         let modification = content()
         modification.apply(to: builder)
         return builder.element
+    }
+}
+
+extension HTML {
+    /// Applies responsive styling across different breakpoints with a declarative syntax.
+    ///
+    /// This method provides a clean, declarative way to define styles for multiple
+    /// breakpoints in a single block, improving code readability and maintainability.
+    ///
+    /// - Parameter content: A closure defining responsive style configurations using the result builder.
+    /// - Returns: An HTML element with responsive styles applied.
+    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> AnyHTML {
+        // Wrap HTML in an Element to use responsive functionality
+        let elementWrapper = HTMLElementWrapper(self)
+        let builder = ResponsiveBuilder(element: elementWrapper)
+        let modification = content()
+        modification.apply(to: builder)
+        return AnyHTML(HTMLString(content: builder.element.render()))
+    }
+}
+
+/// A wrapper that converts HTML to Element for responsive functionality
+private struct HTMLElementWrapper<Content: HTML>: Element {
+    private let content: Content
+
+    init(_ content: Content) {
+        self.content = content
+    }
+
+    var body: Content {
+        content
     }
 }
 
@@ -70,7 +101,7 @@ extension Element {
 /// `Element.on(_:)` method.
 public class ResponsiveBuilder {
     /// The current element being modified
-    var element: Element
+    var element: any Element
     /// Keep track of responsive styles for each breakpoint
     internal var pendingClasses: [String] = []
     /// The current breakpoint being modified
@@ -79,7 +110,7 @@ public class ResponsiveBuilder {
     /// Creates a new responsive builder for the given element.
     ///
     /// - Parameter element: The element to apply responsive styles to.
-    init(element: Element) {
+    init(element: any Element) {
         self.element = element
     }
 
@@ -155,7 +186,32 @@ public class ResponsiveBuilder {
         return self
     }
 
-    /// Applies the breakpoint prefix to all pending classes and add them to the element
+    /// A concrete wrapper that preserves Element conformance
+    private struct AnyElement: Element {
+        private let base: any Element
+
+        init(_ base: any Element) {
+            self.base = base
+        }
+
+        var body: HTMLString {
+            HTMLString(content: base.render())
+        }
+    }
+
+    /// Wrapper to convert HTML back to Element
+    private struct ElementWrapper<T: HTML>: Element {
+        private let htmlContent: T
+
+        init(_ htmlContent: T) {
+            self.htmlContent = htmlContent
+        }
+
+        var body: HTMLString {
+            HTMLString(content: htmlContent.render())
+        }
+    }
+
     internal func applyBreakpoint() {
         guard let breakpoint = currentBreakpoint else { return }
 
@@ -173,18 +229,10 @@ public class ResponsiveBuilder {
             }
         }
 
-        // Add the responsive classes to the element
-        self.element = Element(
-            tag: self.element.tag,
-            id: self.element.id,
-            classes: (self.element.classes ?? []) + responsiveClasses,
-            role: self.element.role,
-            label: self.element.label,
-            data: self.element.data,
-            isSelfClosing: self.element.isSelfClosing,
-            customAttributes: self.element.customAttributes,
-            content: self.element.contentBuilder
-        )
+        // Create a concrete wrapper that preserves Element conformance
+        let wrapped = AnyElement(self.element)
+        let styledModifier = StyleModifier(content: wrapped, classes: responsiveClasses)
+        self.element = ElementWrapper(styledModifier)
 
         // Clear pending classes for the next breakpoint
         pendingClasses = []

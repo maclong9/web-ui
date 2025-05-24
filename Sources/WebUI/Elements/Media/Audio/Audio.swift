@@ -1,3 +1,5 @@
+import Foundation
+
 /// Creates HTML audio elements for playing sound content.
 ///
 /// Represents an audio player that supports multiple source formats for cross-browser compatibility.
@@ -13,11 +15,16 @@
 ///   controls: true
 /// )
 /// ```
-public final class Audio: Element {
-    let sources: [(src: String, type: AudioType?)]
-    let controls: Bool?
-    let autoplay: Bool?
-    let loop: Bool?
+public struct Audio: Element {
+    private let sources: [(src: String, type: AudioType?)]
+    private let controls: Bool?
+    private let autoplay: Bool?
+    private let loop: Bool?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
 
     /// Creates a new HTML audio player.
     ///
@@ -59,25 +66,48 @@ public final class Audio: Element {
         self.controls = controls
         self.autoplay = autoplay
         self.loop = loop
-        let customAttributes = [
-            Attribute.bool("controls", controls),
-            Attribute.bool("autoplay", autoplay),
-            Attribute.bool("loop", loop),
-        ].compactMap { $0 }
-        super.init(
-            tag: "audio",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        var attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes,
-            content: {
-                for source in sources {
-                    Source(src: source.src, type: source.type?.rawValue)
-                }
-                "Your browser does not support the audio element."
+            data: data
+        )
+        if let controls, controls {
+            attributes.append("controls")
+        }
+        if let autoplay, autoplay {
+            attributes.append("autoplay")
+        }
+        if let loop, loop {
+            attributes.append("loop")
+        }
+        let sourceElements = sources.map { source in
+            var sourceAttributes: [String] = []
+            if let srcAttr = Attribute.string("src", source.src) {
+                sourceAttributes.append(srcAttr)
             }
+            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+                sourceAttributes.append(typeAttr)
+            }
+            return AttributeBuilder.renderTag("source", attributes: sourceAttributes, hasNoClosingTag: true)
+        }.joined()
+        return AttributeBuilder.renderTag(
+            "audio",
+            attributes: attributes,
+            content: "\(sourceElements)Your browser does not support the audio element."
         )
     }
 }

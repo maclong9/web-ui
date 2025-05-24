@@ -1,3 +1,5 @@
+import Foundation
+
 /// Generates an HTML label element for form controls.
 ///
 /// Associates descriptive text with a form field for accessibility and usability.
@@ -13,8 +15,14 @@
 /// }
 /// // Renders: <label for="email">Email Address:</label>
 /// ```
-public final class Label: Element {
-    let `for`: String
+public struct Label: Element {
+    private let forAttribute: String
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML label element associated with a form control.
     ///
@@ -40,21 +48,35 @@ public final class Label: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
-        self.for = `for`
-        let customAttributes = [
-            Attribute.string("for", `for`)
-        ].compactMap { $0 }
-        super.init(
-            tag: "label",
+        self.forAttribute = `for`
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        var additional: [String] = []
+        if let forAttr = Attribute.string("for", forAttribute) {
+            additional.append(forAttr)
+        }
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes,
-            content: content
+            additional: additional
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+        return AttributeBuilder.renderTag("label", attributes: attributes, content: content)
     }
 }

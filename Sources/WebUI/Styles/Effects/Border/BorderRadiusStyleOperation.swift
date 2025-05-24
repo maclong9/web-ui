@@ -65,7 +65,7 @@ public struct BorderRadiusStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide border radius styling
-extension Element {
+extension HTML {
     /// Applies border radius styling to the element.
     ///
     /// - Parameters:
@@ -87,16 +87,16 @@ extension Element {
         _ size: RadiusSize? = .md,
         _ sides: RadiusSide...,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = BorderRadiusStyleOperation.Parameters(
             size: size,
             sides: sides
         )
 
-        return BorderRadiusStyleOperation.shared.applyToElement(
+        return BorderRadiusStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

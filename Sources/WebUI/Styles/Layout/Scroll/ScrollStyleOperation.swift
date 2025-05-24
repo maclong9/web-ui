@@ -142,7 +142,7 @@ public struct ScrollStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide scroll styling
-extension Element {
+extension HTML {
     /// Applies scroll-related styles to the element.
     ///
     /// Adds Tailwind CSS classes for scroll behavior, margin, padding, and snap properties.
@@ -164,7 +164,7 @@ extension Element {
         snapStop: ScrollSnapStop? = nil,
         snapType: ScrollSnapType? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = ScrollStyleOperation.Parameters(
             behavior: behavior,
             margin: margin,
@@ -174,10 +174,10 @@ extension Element {
             snapType: snapType
         )
 
-        return ScrollStyleOperation.shared.applyToElement(
+        return ScrollStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

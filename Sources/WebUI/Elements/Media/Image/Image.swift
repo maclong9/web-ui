@@ -15,7 +15,17 @@ import Foundation
 ///   size: MediaSize(width: 100, height: 100)
 /// )
 /// ```
-public final class Image: Element {
+public struct Image: Element {
+    private let source: String
+    private let description: String
+    private let type: ImageType?
+    private let size: MediaSize?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+
     /// Creates a new HTML image element.
     ///
     /// - Parameters:
@@ -39,20 +49,46 @@ public final class Image: Element {
         label: String? = nil,
         data: [String: String]? = nil
     ) {
-        var attributes: [String] = ["src=\"\(source)\"", "alt=\"\(description)\""]
-        if let type = type { attributes.append("type=\"\(type.rawValue)\"") }
-        if let size = size {
-            if let width = size.width { attributes.append("width=\"\(width)\"") }
-            if let height = size.height { attributes.append("height=\"\(height)\"") }
-        }
-        super.init(
-            tag: "img",
+        self.source = source
+        self.description = description
+        self.type = type
+        self.size = size
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        var attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            customAttributes: attributes
+            data: data
         )
+        if let srcAttr = Attribute.string("src", source) {
+            attributes.insert(srcAttr, at: 0)
+        }
+        if let altAttr = Attribute.string("alt", description) {
+            attributes.insert(altAttr, at: 1)
+        }
+        if let type, let typeAttr = Attribute.string("type", type.rawValue) {
+            attributes.append(typeAttr)
+        }
+        if let size = size {
+            if let width = size.width, let widthAttr = Attribute.string("width", "\(width)") {
+                attributes.append(widthAttr)
+            }
+            if let height = size.height, let heightAttr = Attribute.string("height", "\(height)") {
+                attributes.append(heightAttr)
+            }
+        }
+        return AttributeBuilder.renderTag("img", attributes: attributes, isSelfClosing: true)
     }
 }

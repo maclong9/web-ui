@@ -43,14 +43,14 @@ public struct OpacityStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide opacity styling
-extension Element {
+// Extension for HTML to provide opacity styling
+extension HTML {
     /// Sets the opacity of the element with optional modifiers.
     ///
     /// - Parameters:
     ///   - value: The opacity value, typically between 0 and 100.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated opacity classes including applied modifiers.
+    /// - Returns: HTML with updated opacity classes including applied modifiers.
     ///
     /// ## Example
     /// ```swift
@@ -61,10 +61,10 @@ extension Element {
     public func opacity(
         _ value: Int,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = OpacityStyleOperation.Parameters(value: value)
 
-        return OpacityStyleOperation.shared.applyToElement(
+        return OpacityStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

@@ -1,3 +1,5 @@
+import Foundation
+
 /// Defines HTTP methods for form submission.
 ///
 /// Specifies how form data should be sent to the server when the form is submitted.
@@ -20,9 +22,15 @@ public enum FormMethod: String {
 /// Represents a container for collecting user input, typically submitted to a server.
 /// Forms can contain various input elements like text fields, checkboxes, radio buttons,
 /// and submit buttons, allowing users to interact with and send data to the application.
-public final class Form: Element {
-    let action: String?
-    let method: FormMethod
+public struct Form: Element {
+    private let action: String?
+    private let method: FormMethod
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML form element.
     ///
@@ -56,23 +64,39 @@ public final class Form: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
         self.action = action
         self.method = method
-        let customAttributes = [
-            Attribute.string("action", action),
-            Attribute.typed("method", method),
-        ].compactMap { $0 }
-        super.init(
-            tag: "form",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        var additional: [String] = []
+        if let action, let actionAttr = Attribute.string("action", action) {
+            additional.append(actionAttr)
+        }
+        if let methodAttr = Attribute.typed("method", method) {
+            additional.append(methodAttr)
+        }
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes,
-            content: content
+            additional: additional
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+        return AttributeBuilder.renderTag("form", attributes: attributes, content: content)
     }
 }

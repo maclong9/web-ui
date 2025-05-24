@@ -54,7 +54,7 @@ public struct CursorStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide cursor styling
-extension Element {
+extension HTML {
     /// Sets the cursor style of the element with optional modifiers.
     ///
     /// - Parameters:
@@ -73,13 +73,13 @@ extension Element {
     public func cursor(
         _ type: CursorType,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = CursorStyleOperation.Parameters(type: type)
 
-        return CursorStyleOperation.shared.applyToElement(
+        return CursorStyleOperation.shared.applyTo(
             self,
             params: params,
-            modifiers: modifiers
+            modifiers: Array(modifiers)
         )
     }
 }

@@ -16,12 +16,17 @@ import Foundation
 ///   autoplay: false
 /// )
 /// ```
-public final class Video: Element {
-    let sources: [(src: String, type: VideoType?)]
-    let controls: Bool?
-    let autoplay: Bool?
-    let loop: Bool?
-    let size: MediaSize?
+public struct Video: Element {
+    private let sources: [(src: String, type: VideoType?)]
+    private let controls: Bool?
+    private let autoplay: Bool?
+    private let loop: Bool?
+    private let size: MediaSize?
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
 
     /// Creates a new HTML video player.
     ///
@@ -68,27 +73,54 @@ public final class Video: Element {
         self.autoplay = autoplay
         self.loop = loop
         self.size = size
-        let customAttributes = [
-            Attribute.bool("controls", controls),
-            Attribute.bool("autoplay", autoplay),
-            Attribute.bool("loop", loop),
-            Attribute.string("width", size?.width?.description),
-            Attribute.string("height", size?.height?.description),
-        ].compactMap { $0 }
-        super.init(
-            tag: "video",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        var attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            customAttributes: customAttributes.isEmpty ? nil : customAttributes,
-            content: {
-                for source in sources {
-                    Source(src: source.src, type: source.type?.rawValue)
-                }
-                "Your browser does not support the video tag."
+            data: data
+        )
+        if let controls, controls {
+            attributes.append("controls")
+        }
+        if let autoplay, autoplay {
+            attributes.append("autoplay")
+        }
+        if let loop, loop {
+            attributes.append("loop")
+        }
+        if let width = size?.width, let widthAttr = Attribute.string("width", "\(width)") {
+            attributes.append(widthAttr)
+        }
+        if let height = size?.height, let heightAttr = Attribute.string("height", "\(height)") {
+            attributes.append(heightAttr)
+        }
+        let sourceElements = sources.map { source in
+            var sourceAttributes: [String] = []
+            if let srcAttr = Attribute.string("src", source.src) {
+                sourceAttributes.append(srcAttr)
             }
+            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+                sourceAttributes.append(typeAttr)
+            }
+            return AttributeBuilder.renderTag("source", attributes: sourceAttributes, hasNoClosingTag: true)
+        }.joined()
+        return AttributeBuilder.renderTag(
+            "video",
+            attributes: attributes,
+            content: "\(sourceElements)Your browser does not support the video tag."
         )
     }
 }

@@ -70,8 +70,8 @@ public struct RingStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide ring styling
-extension Element {
+// Extension for HTML to provide ring styling
+extension HTML {
     /// Applies ring styling to the element with specified attributes.
     ///
     /// Adds rings with custom width, style, and color to specified edges of an element.
@@ -80,7 +80,7 @@ extension Element {
     ///   - size: The width of the ring.
     ///   - color: The ring color.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated ring classes.
+    /// - Returns: HTML with updated ring classes.
     ///
     /// ## Example
     /// ```swift
@@ -92,13 +92,13 @@ extension Element {
         size: Int = 1,
         color: Color? = nil,
         on modifiers: Modifier...
-    ) -> Element {
+    ) -> some HTML {
         let params = RingStyleOperation.Parameters(
             size: size,
             color: color
         )
 
-        return RingStyleOperation.shared.applyToElement(
+        return RingStyleOperation.shared.applyTo(
             self,
             params: params,
             modifiers: modifiers

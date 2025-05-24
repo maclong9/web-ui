@@ -1,3 +1,5 @@
+import Foundation
+
 /// Generates an HTML article element for self-contained content sections.
 ///
 /// Represents a self-contained, independently distributable composition like a blog post,
@@ -12,7 +14,14 @@
 ///   Text { "This is the content of the blog post..." }
 /// }
 /// ```
-public final class Article: Element {
+public struct Article: Element {
+    private let id: String?
+    private let classes: [String]?
+    private let role: AriaRole?
+    private let label: String?
+    private let data: [String: String]?
+    private let contentBuilder: HTMLContentBuilder
+
     /// Creates a new HTML article element for self-contained content.
     ///
     /// - Parameters:
@@ -36,16 +45,30 @@ public final class Article: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
-        super.init(
-            tag: "article",
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = content
+    }
+
+    public var body: some HTML {
+        HTMLString(content: renderTag())
+    }
+
+    private func renderTag() -> String {
+        let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
-            data: data,
-            content: content
+            data: data
         )
+        let content = contentBuilder().map { $0.render() }.joined()
+
+        return AttributeBuilder.renderTag("article", attributes: attributes, content: content)
     }
 }
