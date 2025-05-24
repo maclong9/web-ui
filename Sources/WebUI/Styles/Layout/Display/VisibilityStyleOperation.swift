@@ -59,16 +59,16 @@ extension HTML {
     /// ## Example
     /// ```swift
     /// // Hide an element
-    /// TestElement(tag: "div").hidden()
+    /// Stack()(tag: "div").hidden()
     ///
     /// // Show an element on hover
-    /// TestElement(tag: "div").hidden(on: .hover)
+    /// Stack()(tag: "div").hidden(on: .hover)
     ///
     /// // Hide an element on medium screens and up
-    /// TestElement(tag: "div").hidden(on: .md)
+    /// Stack()(tag: "div").hidden(on: .md)
     ///
     /// // Make visible on medium screens
-    /// TestElement(tag: "div").hidden(false, on: .md)
+    /// Stack()(tag: "div").hidden(false, on: .md)
     /// ```
     public func hidden(
         _ isHidden: Bool = true,

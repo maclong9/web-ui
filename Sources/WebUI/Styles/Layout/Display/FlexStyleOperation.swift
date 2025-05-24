@@ -175,13 +175,13 @@ extension HTML {
     /// ## Example
     /// ```swift
     /// // Create a flex container with column layout
-    /// TestElement(tag: "div").flex(direction: .column)
+    /// Stack()(tag: "div").flex(direction: .column)
     ///
     /// // Create a flex container with row layout and centered content
-    /// TestElement(tag: "div").flex(direction: .row, justify: .center, align: .center)
+    /// Stack()(tag: "div").flex(direction: .row, justify: .center, align: .center)
     ///
     /// // Apply flex layout only on medium screens and up
-    /// TestElement(tag: "div").flex(direction: .row, on: .md)
+    /// Stack()(tag: "div").flex(direction: .row, on: .md)
     /// ```
     public func flex(
         direction: FlexDirection? = nil,

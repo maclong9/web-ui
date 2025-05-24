@@ -104,13 +104,13 @@ extension HTML {
     /// ## Example
     /// ```swift
     /// // Add a basic outline
-    /// TestElement(tag: "div").outline()
+    /// Stack()(tag: "div").outline()
     ///
     /// // Add a 2px outline with color
-    /// TestElement(tag: "div").outline(of: 2, color: .blue(._500))
+    /// Stack()(tag: "div").outline(of: 2, color: .blue(._500))
     ///
     /// // Add a dashed outline on focus
-    /// TestElement(tag: "div").outline(style: .dashed, on: .focus)
+    /// Stack()(tag: "div").outline(style: .dashed, on: .focus)
     /// ```
     public func outline(
         of width: Int? = nil,

@@ -766,8 +766,7 @@ import Testing
 
     @Test("Element with single data attribute")
     func testSingleDatAttribute() async throws {
-        let element = TestElement(
-            tag: "div",
+        let element = Stack(
             data: ["test": "value"]
         )
 
@@ -813,10 +812,7 @@ import Testing
 
     @Test("Element with empty data attributes")
     func testEmptyDatAttributes() async throws {
-        let element = TestElement(
-            tag: "div",
-            data: [:]
-        )
+        let element = Stack( data: [:] )
 
         let rendered = element.render()
         #expect(rendered == "<div></div>")
@@ -824,10 +820,7 @@ import Testing
 
     @Test("Element with nil data attributes")
     func testNilDatAttributes() async throws {
-        let element = TestElement(
-            tag: "div",
-            data: nil
-        )
+        let element = Stack(data: nil)
 
         let rendered = element.render()
         #expect(rendered == "<div></div>")

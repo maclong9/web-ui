@@ -59,7 +59,6 @@ public protocol Website {
     /// Optional custom rules to include in robots.txt file.
     var robotsRules: [RobotsRule]? { get }
 
-
 }
 
 // MARK: - Default Implementations
@@ -91,8 +90,6 @@ extension Website {
 
     /// Default robotsRules implementation returns nil.
     public var robotsRules: [RobotsRule]? { nil }
-
-
 
     /// Builds the website to the specified output directory.
     ///

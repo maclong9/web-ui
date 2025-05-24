@@ -118,9 +118,9 @@ extension HTML {
     ///   .border(of: 1, at: .horizontal, color: .gray(._200), on: .hover)
     /// ```
     public func border(
-        width: Int? = nil,
-        style: BorderStyle? = nil,
+        of width: Int? = nil,
         at edges: Edge...,
+        style: BorderStyle? = nil,
         color: Color? = nil,
         on modifiers: Modifier...
     ) -> some HTML {

@@ -81,11 +81,11 @@ extension HTML {
 /// A wrapper that converts HTML to Element for responsive functionality
 private struct HTMLElementWrapper<Content: HTML>: Element {
     private let content: Content
-    
+
     init(_ content: Content) {
         self.content = content
     }
-    
+
     var body: Content {
         content
     }

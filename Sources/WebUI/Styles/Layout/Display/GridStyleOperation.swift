@@ -127,13 +127,13 @@ extension HTML {
     /// ## Example
     /// ```swift
     /// // Create a grid container with 3 columns
-    /// TestElement(tag: "div").grid(columns: 3)
+    /// Stack()(tag: "div").grid(columns: 3)
     ///
     /// // Create a grid container with 2 columns and 3 rows
-    /// TestElement(tag: "div").grid(columns: 2, rows: 3)
+    /// Stack()(tag: "div").grid(columns: 2, rows: 3)
     ///
     /// // Apply grid layout only on medium screens and up
-    /// TestElement(tag: "div").grid(columns: 2, on: .md)
+    /// Stack()(tag: "div").grid(columns: 2, on: .md)
     /// ```
     public func grid(
         columns: Int? = nil,

@@ -6,7 +6,7 @@ import Testing
 struct InteractionModifiersTests {
     @Test("Hover state modifier")
     func testHoverStateModifier() async throws {
-        let element = Element(tag: "div")
+        let element = Stack()
             .on {
                 hover {
                     background(color: .blue(._500))
@@ -21,7 +21,7 @@ struct InteractionModifiersTests {
 
     @Test("Focus state modifier")
     func testFocusStateModifier() async throws {
-        let element = Element(tag: "div")
+        let element = Stack()
             .on {
                 focus {
                     border(of: 2, color: .blue(._500))
@@ -37,7 +37,7 @@ struct InteractionModifiersTests {
 
     @Test("Multiple state modifiers")
     func testMultipleStateModifiers() async throws {
-        let element = Element(tag: "div")
+        let element = Stack()
             .background(color: .gray(._100))
             .padding(of: 4)
             .on {
@@ -65,7 +65,7 @@ struct InteractionModifiersTests {
 
     @Test("ARIA state modifiers")
     func testAriaStateModifiers() async throws {
-        let element = Element(tag: "div")
+        let element = Stack()
             .on {
                 ariaExpanded {
                     border(of: 1, color: .gray(._300))
@@ -85,7 +85,7 @@ struct InteractionModifiersTests {
 
     @Test("Placeholder modifier")
     func testPlaceholderModifier() async throws {
-        let element = Element(tag: "input")
+        let element = Input(name: "name", type: .text)
             .on {
                 placeholder {
                     font(color: .gray(._400))
@@ -100,15 +100,18 @@ struct InteractionModifiersTests {
 
     @Test("First and last child modifiers")
     func testFirstLastChildModifiers() async throws {
-        let element = Element(tag: "ul")
-            .on {
-                first {
-                    border(of: 0, at: .top)
-                }
-                last {
-                    border(of: 0, at: .bottom)
-                }
+        let element = List {
+            Item { "Item 1" }
+            Item { "Item 2" }
+        }
+        .on {
+            first {
+                border(of: 0, at: .top)
             }
+            last {
+                border(of: 0, at: .bottom)
+            }
+        }
 
         let rendered = element.render()
         #expect(rendered.contains("first:border-t-0"))
@@ -117,7 +120,7 @@ struct InteractionModifiersTests {
 
     @Test("Disabled state modifier")
     func testDisabledStateModifier() async throws {
-        let element = Element(tag: "button")
+        let element = Button { "Disabled Button" }
             .on {
                 disabled {
                     opacity(50)
@@ -132,7 +135,7 @@ struct InteractionModifiersTests {
 
     @Test("Motion reduce modifier")
     func testMotionReduceModifier() async throws {
-        let element = Element(tag: "div")
+        let element = Stack()
             .transition(of: .transform, for: 300)
             .on {
                 motionReduce {
@@ -148,7 +151,7 @@ struct InteractionModifiersTests {
 
     @Test("Complex interactive button")
     func testComplexInteractiveButton() async throws {
-        let button = Element(tag: "button")
+        let button = Button { "Hello World!" }
             .padding(of: 4)
             .background(color: .blue(._500))
             .font(color: .gray(._50))

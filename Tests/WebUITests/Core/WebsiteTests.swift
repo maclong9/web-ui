@@ -195,7 +195,7 @@ struct HomePage: Document {
                         .overflow(.hidden)
                         .margins(at: .horizontal, auto: true)
 
-                    Heading(.headline) { "Hi, I'm John Doe" }
+                    Heading(.headline) { "Hi, I'm Jane Doe" }
                         .font(alignment: .center)
 
                     Text {
@@ -444,7 +444,7 @@ struct ContactPage: Document {
                         Stack {
                             Stack {
                                 Text { "Email:" }
-                                Text { "john.doe@example.com" }
+                                Text { "jane.doe@example.com" }
                             }
                             .flex()
                             .spacing(of: 2)
@@ -540,7 +540,7 @@ struct Portfolio: Website {
     }
 
     var baseURL: String? {
-        "https://johndoe.dev"
+        "https://janedoe.dev"
     }
 
     var scripts: [Script]? {
@@ -553,6 +553,38 @@ struct Portfolio: Website {
     var stylesheets: [String]? {
         ["/css/styles.css"]
     }
+
+    var sitemapEntries: [SitemapEntry]? {
+        [
+            SitemapEntry(
+                url: "https://janedoe.dev/blog",
+                lastModified: Date(),
+                changeFrequency: .weekly,
+                priority: 0.8
+            ),
+            SitemapEntry(
+                url: "https://janedoe.dev/resume.pdf",
+                lastModified: Date(),
+                changeFrequency: .monthly,
+                priority: 0.6
+            ),
+        ]
+    }
+
+    var robotsRules: [RobotsRule]? {
+        [
+            RobotsRule(
+                userAgent: "*",
+                disallow: ["/admin/", "/private/"],
+                allow: ["/public/"],
+                crawlDelay: 10
+            ),
+            RobotsRule(
+                userAgent: "Googlebot",
+                disallow: ["/temp/"]
+            ),
+        ]
+    }
 }
 
 // MARK: - Tests
@@ -561,18 +593,97 @@ struct Portfolio: Website {
 struct ComprehensiveWebsiteTests {
 
     @Test("Website structure is correct")
-    func testWebsiteStructure() {
+    func testWebsiteStructure() throws {
         let portfolio = Portfolio()
 
         #expect(portfolio.metadata.site == "Jane Doe")
         #expect(portfolio.metadata.title == "Portfolio")
         #expect(portfolio.routes.count == 4)
+        #expect(portfolio.baseURL == "https://janedoe.dev")
+        #expect(portfolio.sitemapEntries?.count == 2)
+        #expect(portfolio.robotsRules?.count == 2)
 
         let routeTypes = portfolio.routes.map { type(of: $0) }
         #expect(routeTypes.contains { $0 == HomePage.self })
         #expect(routeTypes.contains { $0 == AboutPage.self })
         #expect(routeTypes.contains { $0 == ProjectsPage.self })
         #expect(routeTypes.contains { $0 == ContactPage.self })
+
+        // Test build generation
+        try portfolio.build(to: URL(fileURLWithPath: ".build-portfolio"))
+
+        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/index.html"))
+        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/about.html"))
+        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/projects.html"))
+        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/contact.html"))
+        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/sitemap.xml"))
+        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/robots.txt"))
+
+        // Test HTML content and structure
+        let indexContent = try String(contentsOfFile: ".build-portfolio/index.html", encoding: .utf8)
+        #expect(indexContent.contains("<html"))
+        #expect(indexContent.contains("<head>"))
+        #expect(indexContent.contains("<body>"))
+        #expect(indexContent.contains("<header"))
+        #expect(indexContent.contains("<main"))
+        #expect(indexContent.contains("<footer"))
+        #expect(indexContent.contains("<nav"))
+        #expect(indexContent.contains("<h1"))
+        #expect(indexContent.contains("<img"))
+
+        // Test specific meta tags
+        #expect(indexContent.contains("<meta charset=\"utf-8\">"))
+        #expect(indexContent.contains("<meta name=\"viewport\""))
+        #expect(indexContent.contains("width=device-width"))
+        #expect(indexContent.contains("<meta name=\"description\""))
+        #expect(indexContent.contains("<meta name=\"author\""))
+        #expect(indexContent.contains("content=\"Jane Doe\""))
+        #expect(indexContent.contains("<meta name=\"keywords\""))
+        #expect(indexContent.contains("<meta name=\"twitter:card\""))
+        #expect(indexContent.contains("<meta name=\"twitter:creator\""))
+        #expect(indexContent.contains("<meta property=\"og:title\""))
+        #expect(indexContent.contains("<meta property=\"og:description\""))
+        #expect(indexContent.contains("<meta property=\"og:type\""))
+        #expect(indexContent.contains("<meta name=\"theme-color\""))
+        #expect(indexContent.contains("content=\"#3B82F6\""))
+
+        // Test CSS classes are present
+        #expect(indexContent.contains("class="))
+        #expect(indexContent.contains("flex"))
+        #expect(indexContent.contains("padding"))
+        #expect(indexContent.contains("margin"))
+        #expect(indexContent.contains("bg-"))
+        #expect(indexContent.contains("text-"))
+        #expect(indexContent.contains("rounded"))
+
+        // Test sitemap content
+        let sitemapContent = try String(contentsOfFile: ".build-portfolio/sitemap.xml", encoding: .utf8)
+        #expect(sitemapContent.contains("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"))
+        #expect(sitemapContent.contains("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">"))
+        #expect(sitemapContent.contains("<loc>https://janedoe.dev/</loc>"))
+        #expect(sitemapContent.contains("<loc>https://janedoe.dev/about.html</loc>"))
+        #expect(sitemapContent.contains("<loc>https://janedoe.dev/projects.html</loc>"))
+        #expect(sitemapContent.contains("<loc>https://janedoe.dev/contact.html</loc>"))
+        #expect(sitemapContent.contains("<loc>https://janedoe.dev/blog</loc>"))
+        #expect(sitemapContent.contains("<loc>https://janedoe.dev/resume.pdf</loc>"))
+        #expect(sitemapContent.contains("<changefreq>weekly</changefreq>"))
+        #expect(sitemapContent.contains("<changefreq>monthly</changefreq>"))
+        #expect(sitemapContent.contains("<priority>0.8</priority>"))
+        #expect(sitemapContent.contains("<priority>0.6</priority>"))
+
+        // Test robots.txt content
+        let robotsContent = try String(contentsOfFile: ".build-portfolio/robots.txt", encoding: .utf8)
+        #expect(robotsContent.contains("User-agent: *"))
+        #expect(robotsContent.contains("Disallow: /admin/"))
+        #expect(robotsContent.contains("Disallow: /private/"))
+        #expect(robotsContent.contains("Allow: /public/"))
+        #expect(robotsContent.contains("Crawl-delay: 10"))
+        #expect(robotsContent.contains("User-agent: Googlebot"))
+        #expect(robotsContent.contains("Disallow: /temp/"))
+        #expect(robotsContent.contains("Sitemap: https://janedoe.dev/sitemap.xml"))
+
+        // Clean up
+        try FileManager.default.removeItem(atPath: ".build-portfolio")
     }
 
     @Test("HomePage renders correctly")
@@ -581,7 +692,7 @@ struct ComprehensiveWebsiteTests {
         let html = home.body.render()
 
         #expect(html.contains("Welcome to My Portfolio"))
-        #expect(html.contains("Hi, I'm John Doe"))
+        #expect(html.contains("Hi, I'm Jane Doe"))
         #expect(html.contains("Featured Projects"))
     }
 
@@ -613,7 +724,7 @@ struct ComprehensiveWebsiteTests {
 
         #expect(html.contains("Contact Me"))
         #expect(html.contains("Contact Information"))
-        #expect(html.contains("john.doe@example.com"))
+        #expect(html.contains("jane.doe@example.com"))
         #expect(html.contains("GitHub"))
         #expect(html.contains("LinkedIn"))
         #expect(html.contains("Twitter"))

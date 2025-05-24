@@ -51,6 +51,6 @@ public struct HTMLContainer<Content: HTML>: Element {
     public var body: Content {
         content
     }
-    
+
     public typealias Body = Content
 }
