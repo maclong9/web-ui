@@ -174,6 +174,8 @@ struct ContactForm: Element {
 }
 
 struct HomePage: Document {
+    var path: String? { "index" }
+
     var metadata: Metadata {
         Metadata(
             from: Portfolio().metadata,

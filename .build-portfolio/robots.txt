@@ -1,8 +1,0 @@
-User-agent: *
-Allow: /public/
-Disallow: /admin/
-Disallow: /private/
-
-User-agent: Googlebot
-Disallow: /temp/
-Sitemap: https://janedoe.dev/sitemap.xml

@@ -33,8 +33,6 @@ import Logging
 ///   </div>
 ///   ```
 public struct Theme {
-    private let logger = Logger(label: "com.webui.theme")
-
     /// Custom font definitions. Keys are font names or labels, values are CSS font strings.
     public let fonts: [String: String]
     /// Color tokens, using keys as names and values as any valid CSS color.
@@ -156,17 +154,6 @@ public struct Theme {
         self.aspect = aspect
         self.ease = ease
         self.custom = custom
-
-        let nonEmptyCount =
-            [
-                fonts, colors, spacing, breakpoints, container,
-                textSizes, fontWeights, tracking, leading, radius,
-                shadows, insetShadows, dropShadows, blur, perspective,
-                aspect, ease,
-            ].filter { !$0.isEmpty }.count + (custom.isEmpty ? 0 : 1)
-        logger.debug(
-            "Theme initialized with \(nonEmptyCount) non-empty config properties"
-        )
     }
 
     // MARK: - CSS Generation
@@ -192,7 +179,6 @@ public struct Theme {
     /// - Note: Custom categories are grouped with a comment header for better readability
     ///   in the generated CSS.
     public func generateCSS() -> String {
-        logger.debug("Generating CSS for theme")
 
         guard
             !(fonts.isEmpty && colors.isEmpty && spacing.isEmpty
@@ -205,7 +191,6 @@ public struct Theme {
                 && aspect.isEmpty
                 && ease.isEmpty && custom.isEmpty)
         else {
-            logger.trace("No CSS generated due to empty config")
             return ""
         }
 
@@ -244,7 +229,6 @@ public struct Theme {
             }
         }
 
-        logger.debug("CSS generation completed with \(propertyCount) properties")
         return css
     }
 

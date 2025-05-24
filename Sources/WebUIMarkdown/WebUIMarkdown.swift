@@ -12,42 +12,40 @@ import Markdown
 /// front matter metadata, making it suitable for content-driven websites and applications.
 /// Code block rendering features such as syntax highlighting, filename display, copy button,
 /// and line numbers can be enabled or disabled via boolean flags.
+///
+/// ## Error Handling
+///
+/// The module provides both throwing and safe variants of parsing methods:
+///
+/// ```swift
+/// let markdown = WebUIMarkdown()
+/// let content = """
+/// ---
+/// title: Example Post
+/// date: January 1, 2024
+/// ---
+/// # Hello World
+/// This is a sample post.
+/// """
+///
+/// // Throwing version - use when you need to handle errors explicitly
+/// do {
+///     let result = try markdown.parseMarkdown(content)
+///     print("Title: \(result.frontMatter["title"] ?? "Unknown")")
+///     print("HTML: \(result.htmlContent)")
+/// } catch WebUIMarkdownError.invalidFrontMatter {
+///     print("Front matter is not properly closed")
+/// } catch WebUIMarkdownError.emptyContent {
+///     print("Content is empty")
+/// } catch {
+///     print("Parsing failed: \(error)")
+/// }
+///
+/// // Safe version - returns default values on error
+/// let safeResult = markdown.parseMarkdownSafely(content)
+/// print("HTML: \(safeResult.htmlContent)")
+/// ```
 public struct WebUIMarkdown {
-    /// Logger instance for tracking events within WebUIMarkdown
-    private let logger: Logger
-
-    /// Whether to display the filename at the top of code blocks.
-    public let showCodeFilename: Bool
-    /// Whether to display a copy button for code blocks.
-    public let showCopyButton: Bool
-    /// Whether to display line numbers for code blocks.
-    public let showLineNumbers: Bool
-    /// Whether to enable syntax highlighting for code blocks.
-    public let enableSyntaxHighlighting: Bool
-
-    /// Initializes a WebUIMarkdown instance with configurable code block options and a custom or default logger.
-    ///
-    /// - Parameters:
-    ///   - logger: The logger to use for tracking events. If nil, a default logger is created.
-    ///   - showCodeFilename: Whether to display the filename at the top of code blocks. Default is true.
-    ///   - showCopyButton: Whether to display a copy button for code blocks. Default is true.
-    ///   - showLineNumbers: Whether to display line numbers for code blocks. Default is true.
-    ///   - enableSyntaxHighlighting: Whether to enable syntax highlighting for code blocks. Default is true.
-    public init(
-        logger: Logger? = nil,
-        showCodeFilename: Bool = true,
-        showCopyButton: Bool = true,
-        showLineNumbers: Bool = true,
-        enableSyntaxHighlighting: Bool = true
-    ) {
-        self.logger = logger ?? Logger(label: "com.webui.markdown")
-        self.logger.info("WebUIMarkdown initialized")
-        self.showCodeFilename = showCodeFilename
-        self.showCopyButton = showCopyButton
-        self.showLineNumbers = showLineNumbers
-        self.enableSyntaxHighlighting = enableSyntaxHighlighting
-    }
-
     /// A structure representing a parsed Markdown document, containing front matter and HTML content.
     ///
     /// Encapsulates the results of parsing a Markdown document, providing access to both
@@ -78,25 +76,44 @@ public struct WebUIMarkdown {
     ///
     /// - Parameter content: The raw Markdown string to parse.
     /// - Returns: A `ParsedMarkdown` instance containing the parsed front matter and HTML content.
-    public func parseMarkdown(_ content: String) -> ParsedMarkdown {
-        logger.debug("Starting to parse markdown content")
-        let (frontMatter, markdownContent) = extractFrontMatter(from: content)
-        logger.debug("Front matter extracted with \(frontMatter.count) key-value pairs")
+    /// - Throws: `WebUIMarkdownError` if the content cannot be parsed or `HtmlRendererError` if HTML rendering fails.
+    public func parseMarkdown(_ content: String) throws -> ParsedMarkdown {
+        guard !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            throw WebUIMarkdownError.emptyContent
+        }
+
+        let (frontMatter, markdownContent) = try extractFrontMatter(from: content)
 
         // Parse the markdown content to HTML
-        logger.debug("Converting markdown content to HTML")
         let document = Markdown.Document(parsing: markdownContent)
-        var renderer = HtmlRenderer(
-            logger: logger,
-            showCodeFilename: showCodeFilename,
-            showCopyButton: showCopyButton,
-            showLineNumbers: showLineNumbers,
-            enableSyntaxHighlighting: enableSyntaxHighlighting
-        )
-        let html = renderer.render(document)
-        logger.debug("HTML rendering complete - generated \(html.count) characters")
+        var renderer = HtmlRenderer()
+        let html = try renderer.render(document)
 
         return ParsedMarkdown(frontMatter: frontMatter, htmlContent: html)
+    }
+
+    /// Parses a Markdown string into front matter and HTML content with graceful error handling.
+    ///
+    /// This is a convenience method that handles errors gracefully by returning default values
+    /// when parsing fails. Suitable for use cases where you want to display content even if
+    /// parsing encounters errors.
+    ///
+    /// - Parameter content: The raw Markdown string to parse.
+    /// - Returns: A `ParsedMarkdown` instance containing the parsed front matter and HTML content.
+    ///           Returns empty front matter and escaped HTML content if parsing fails.
+    public func parseMarkdownSafely(_ content: String) -> ParsedMarkdown {
+        do {
+            return try parseMarkdown(content)
+        } catch {
+            // Log the error for debugging purposes
+            let logger = Logger(label: "WebUIMarkdown")
+            logger.warning("Failed to parse markdown: \(error.localizedDescription)")
+
+            // Return safe fallback content
+            let renderer = HtmlRenderer()
+            let escapedContent = renderer.escapeHTML(content)
+            return ParsedMarkdown(frontMatter: [:], htmlContent: "<pre>\(escapedContent)</pre>")
+        }
     }
 
     /// Extracts front matter and Markdown content from a raw Markdown string.
@@ -107,15 +124,14 @@ public struct WebUIMarkdown {
     ///
     /// - Parameter content: The raw Markdown string.
     /// - Returns: A tuple containing the parsed front matter as a dictionary and the remaining Markdown content.
-    public func extractFrontMatter(from content: String) -> ([String: Any], String) {
-        logger.debug("Extracting front matter from content")
+    /// - Throws: `WebUIMarkdownError.invalidFrontMatter` if front matter is not properly closed.
+    public func extractFrontMatter(from content: String) throws -> ([String: Any], String) {
         let lines = content.components(separatedBy: .newlines)
         var frontMatter: [String: Any] = [:]
         var contentStartIndex = 0
 
         // Check if the string starts with front matter (---)
         if lines.first?.trimmingCharacters(in: .whitespaces) == "---" {
-            logger.debug("Front matter delimiter found at start of content")
             var frontMatterLines: [String] = []
             var foundEndDelimiter = false
 
@@ -125,7 +141,6 @@ public struct WebUIMarkdown {
                 if trimmedLine == "---" {
                     foundEndDelimiter = true
                     contentStartIndex = index + 2  // Skip the --- line
-                    logger.debug("End front matter delimiter found at line \(index + 2)")
                     break
                 }
                 frontMatterLines.append(line)
@@ -133,18 +148,14 @@ public struct WebUIMarkdown {
 
             if foundEndDelimiter {
                 // Parse front matter lines into a dictionary
-                logger.debug("Parsing \(frontMatterLines.count) lines of front matter")
-                frontMatter = parseFrontMatterLines(frontMatterLines)
+                frontMatter = try parseFrontMatterLines(frontMatterLines)
             } else {
-                logger.warning("Front matter started but end delimiter not found")
+                throw WebUIMarkdownError.invalidFrontMatter
             }
-        } else {
-            logger.debug("No front matter found in content")
         }
 
         // Join the remaining lines for the markdown content
         let markdownContent = lines[contentStartIndex...].joined(separator: "\n")
-        logger.debug("Extracted \(markdownContent.count) characters of markdown content")
         return (frontMatter, markdownContent)
     }
 
@@ -155,43 +166,41 @@ public struct WebUIMarkdown {
     ///
     /// - Parameter lines: An array of strings representing front matter lines.
     /// - Returns: A dictionary containing the parsed key-value pairs.
-    public func parseFrontMatterLines(_ lines: [String]) -> [String: Any] {
+    /// - Throws: `WebUIMarkdownError.malformedFrontMatter` if a line doesn't follow the expected format.
+    public func parseFrontMatterLines(_ lines: [String]) throws -> [String: Any] {
         var frontMatter: [String: Any] = [:]
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM d, yyyy"
 
-        logger.debug("Parsing \(lines.count) front matter lines")
-        for (index, line) in lines.enumerated() {
+        for line in lines {
             let trimmed = line.trimmingCharacters(in: .whitespaces)
             if trimmed.isEmpty {
-                logger.trace("Skipping empty line at index \(index)")
                 continue
             }
 
             // Split on the first colon to separate key and value
             let components = trimmed.split(separator: ":", maxSplits: 1, omittingEmptySubsequences: true)
             guard components.count == 2 else {
-                logger.warning("Invalid front matter format at line \(index): \(trimmed)")
-                continue
+                throw WebUIMarkdownError.malformedFrontMatter(line: trimmed)
             }
 
             let key = components[0].trimmingCharacters(in: .whitespaces).lowercased()
             let valueString = components[1].trimmingCharacters(in: .whitespaces)
 
             // Attempt to parse the value as a date if the key suggests it
-            if key.contains("date") || key == "published",
-                let date = dateFormatter.date(from: valueString)
-            {
-                logger.trace("Parsed date value for key '\(key)': \(valueString)")
-                frontMatter[key] = date
+            if key.contains("date") || key == "published" {
+                if let date = dateFormatter.date(from: valueString) {
+                    frontMatter[key] = date
+                } else {
+                    // If date parsing fails, store as string with a warning
+                    frontMatter[key] = valueString
+                }
             } else {
                 // Store as string by default
-                logger.trace("Stored string value for key '\(key)': \(valueString)")
                 frontMatter[key] = valueString
             }
         }
 
-        logger.debug("Front matter parsing complete: \(frontMatter.count) key-value pairs extracted")
         return frontMatter
     }
 }
@@ -207,36 +216,33 @@ public struct WebUIMarkdown {
 /// HTML tags for each Markdown element, with special handling for links, code blocks,
 /// and other formatting constructs. Code block rendering features such as syntax highlighting,
 /// filename display, copy button, and line numbers can be enabled or disabled via boolean flags.
-public struct HtmlRenderer: MarkupWalker {
+///
+/// ## Error Handling
+///
+/// The renderer provides both throwing and safe variants:
+///
+/// ```swift
+/// let document = Document(parsing: markdownContent)
+/// var renderer = HtmlRenderer()
+///
+/// // Throwing version - use when you need to handle specific errors
+/// do {
+///     let html = try renderer.render(document)
+///     print("Rendered HTML: \(html)")
+/// } catch HtmlRendererError.invalidLinkDestination {
+///     print("Found a link without a destination")
+/// } catch HtmlRendererError.missingImageSource {
+///     print("Found an image without a source")
+/// } catch {
+///     print("Rendering failed: \(error)")
+/// }
+///
+/// // Safe version - continues rendering even with errors
+/// let safeHtml = renderer.renderSafely(document)
+/// print("HTML: \(safeHtml)")
+/// ```
+public struct HtmlRenderer {
     public var html = ""
-    private let logger: Logger
-    public let showCodeFilename: Bool
-    public let showCopyButton: Bool
-    public let showLineNumbers: Bool
-    public let enableSyntaxHighlighting: Bool
-
-    /// Initializes a HtmlRenderer with a logger and code block rendering options.
-    ///
-    /// - Parameters:
-    ///   - logger: The logger to use for tracking the rendering process.
-    ///   - showCodeFilename: Whether to display the filename at the top of code blocks.
-    ///   - showCopyButton: Whether to display a copy button for code blocks.
-    ///   - showLineNumbers: Whether to display line numbers for code blocks.
-    ///   - enableSyntaxHighlighting: Whether to enable syntax highlighting for code blocks.
-    public init(
-        logger: Logger = Logger(label: "com.webui.markdown.renderer"),
-        showCodeFilename: Bool = true,
-        showCopyButton: Bool = true,
-        showLineNumbers: Bool = true,
-        enableSyntaxHighlighting: Bool = true
-    ) {
-        self.logger = logger
-        self.showCodeFilename = showCodeFilename
-        self.showCopyButton = showCopyButton
-        self.showLineNumbers = showLineNumbers
-        self.enableSyntaxHighlighting = enableSyntaxHighlighting
-        logger.debug("HtmlRenderer initialized")
-    }
 
     /// Renders a Markdown document into HTML.
     ///
@@ -244,70 +250,147 @@ public struct HtmlRenderer: MarkupWalker {
     ///
     /// - Parameter document: The Markdown document to render.
     /// - Returns: The generated HTML string.
-    public mutating func render(_ document: Markdown.Document) -> String {
-        logger.debug("Starting HTML rendering")
+    /// - Throws: `HtmlRendererError` if rendering encounters invalid content.
+    public mutating func render(_ document: Markdown.Document) throws -> String {
         html = ""
-        visit(document)
-        logger.debug("HTML rendering complete, generated \(html.count) characters")
+        try renderMarkup(document)
         return html
     }
 
+    /// Renders a Markdown document into HTML with graceful error handling.
+    ///
+    /// This is a convenience method that handles errors gracefully by skipping problematic
+    /// nodes and continuing with the rest of the document.
+    ///
+    /// - Parameter document: The Markdown document to render.
+    /// - Returns: The generated HTML string. Problematic nodes are replaced with error messages.
+    public mutating func renderSafely(_ document: Markdown.Document) -> String {
+        html = ""
+        do {
+            try renderMarkup(document)
+        } catch {
+            let logger = Logger(label: "HtmlRenderer")
+            logger.warning("Failed to render markdown: \(error.localizedDescription)")
+            html += "<!-- Rendering error: \(error.localizedDescription) -->"
+        }
+        return html
+    }
+
+    /// Renders any markup node by dispatching to the appropriate visit method.
+    ///
+    /// - Parameter markup: The markup node to render.
+    /// - Throws: `HtmlRendererError` if rendering encounters invalid content.
+    private mutating func renderMarkup(_ markup: Markup) throws {
+        switch markup {
+        case let heading as Markdown.Heading:
+            try visitHeading(heading)
+        case let paragraph as Paragraph:
+            try visitParagraph(paragraph)
+        case let text as Markdown.Text:
+            try visitText(text)
+        case let link as Markdown.Link:
+            try visitLink(link)
+        case let emphasis as Markdown.Emphasis:
+            try visitEmphasis(emphasis)
+        case let strong as Markdown.Strong:
+            try visitStrong(strong)
+        case let codeBlock as CodeBlock:
+            try visitCodeBlock(codeBlock)
+        case let inlineCode as InlineCode:
+            try visitInlineCode(inlineCode)
+        case let listItem as ListItem:
+            try visitListItem(listItem)
+        case let unorderedList as UnorderedList:
+            try visitUnorderedList(unorderedList)
+        case let orderedList as OrderedList:
+            try visitOrderedList(orderedList)
+        case let blockQuote as BlockQuote:
+            try visitBlockQuote(blockQuote)
+        case let thematicBreak as ThematicBreak:
+            try visitThematicBreak(thematicBreak)
+        case let image as Markdown.Image:
+            try visitImage(image)
+        case let table as Table:
+            try visitTable(table)
+        case let tableHead as Table.Head:
+            try visitTableHead(tableHead)
+        case let tableRow as Table.Row:
+            try visitTableRow(tableRow)
+        case let tableBody as Table.Body:
+            try visitTableBody(tableBody)
+        case let tableCell as Table.Cell:
+            try visitTableCell(tableCell)
+        default:
+            try defaultVisit(markup)
+        }
+    }
+
+    /// Renders all child markup nodes of a container.
+    ///
+    /// - Parameter markup: The container markup node whose children should be rendered.
+    /// - Throws: `HtmlRendererError` if rendering encounters invalid content.
+    private mutating func renderChildren(_ markup: Markup) throws {
+        for child in markup.children {
+            try renderMarkup(child)
+        }
+    }
+
     /// Visits a heading node and generates corresponding HTML.
-    public mutating func visitHeading(_ heading: Markdown.Heading) {
+    public mutating func visitHeading(_ heading: Markdown.Heading) throws {
         let level = heading.level
-        logger.trace("Rendering h\(level) heading")
         html += "<h\(level)>"
-        descendInto(heading)
+        try renderChildren(heading)
         html += "</h\(level)>"
     }
 
     /// Visits a paragraph node and generates corresponding HTML.
-    public mutating func visitParagraph(_ paragraph: Paragraph) {
-        logger.trace("Rendering paragraph")
+    public mutating func visitParagraph(_ paragraph: Paragraph) throws {
         html += "<p>"
-        descendInto(paragraph)
+        try renderChildren(paragraph)
         html += "</p>"
     }
 
     /// Visits a text node and generates escaped HTML content.
-    public mutating func visitText(_ text: Markdown.Text) {
-        logger.trace("Rendering text: \(text.string.prefix(20))...")
+    public mutating func visitText(_ text: Markdown.Text) throws {
         html += escapeHTML(text.string)
     }
 
     /// Visits a link node and generates corresponding HTML.
-    public mutating func visitLink(_ link: Markdown.Link) {
-        let destination = escapeHTML(link.destination ?? "")
-        let isExternal = destination.hasPrefix("http://") || destination.hasPrefix("https://")
+    public mutating func visitLink(_ link: Markdown.Link) throws {
+        guard let destination = link.destination, !destination.isEmpty else {
+            throw HtmlRendererError.invalidLinkDestination
+        }
+
+        let escapedDestination = escapeHTML(destination)
+        let isExternal = escapedDestination.hasPrefix("http://") || escapedDestination.hasPrefix("https://")
         let targetAttr = isExternal ? " target=\"_blank\" rel=\"noopener noreferrer\"" : ""
-        logger.trace("Rendering link to \(destination) (external: \(isExternal))")
-        html += "<a href=\"\(destination)\"\(targetAttr)>"
-        descendInto(link)
+        html += "<a href=\"\(escapedDestination)\"\(targetAttr)>"
+        try renderChildren(link)
         html += "</a>"
     }
 
     /// Visits an emphasis node and generates corresponding HTML.
-    public mutating func visitEmphasis(_ emphasis: Markdown.Emphasis) {
-        logger.trace("Rendering emphasis")
+    public mutating func visitEmphasis(_ emphasis: Markdown.Emphasis) throws {
         html += "<em>"
-        descendInto(emphasis)
+        try renderChildren(emphasis)
         html += "</em>"
     }
 
     /// Visits a strong node and generates corresponding HTML.
-    public mutating func visitStrong(_ strong: Markdown.Strong) {
-        logger.trace("Rendering strong emphasis")
+    public mutating func visitStrong(_ strong: Markdown.Strong) throws {
         html += "<strong>"
-        descendInto(strong)
+        try renderChildren(strong)
         html += "</strong>"
     }
 
     /// Visits a code block node and generates corresponding HTML with optional syntax highlighting, filename, copy button, and line numbers.
     ///
     /// - Parameter codeBlock: The code block node to render.
-    public mutating func visitCodeBlock(_ codeBlock: CodeBlock) {
-        let language = codeBlock.language ?? ""
-        logger.trace("Rendering code block with language: \(language)")
+    /// - Throws: `HtmlRendererError.invalidCodeBlock` if the code block content is invalid.
+    public mutating func visitCodeBlock(_ codeBlock: CodeBlock) throws {
+        guard !codeBlock.code.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            throw HtmlRendererError.invalidCodeBlock
+        }
 
         // Simply extract the code content
         let code = escapeHTML(codeBlock.code)
@@ -319,77 +402,73 @@ public struct HtmlRenderer: MarkupWalker {
     }
 
     /// Visits an inline code node and generates corresponding HTML.
-    public mutating func visitInlineCode(_ inlineCode: InlineCode) {
-        logger.trace("Rendering inline code")
+    public mutating func visitInlineCode(_ inlineCode: InlineCode) throws {
         html += "<code>"
         html += escapeHTML(inlineCode.code)
         html += "</code>"
     }
 
     /// Visits a list item node and generates corresponding HTML.
-    public mutating func visitListItem(_ listItem: ListItem) {
-        logger.trace("Rendering list item")
+    public mutating func visitListItem(_ listItem: ListItem) throws {
         html += "<li>"
-        descendInto(listItem)
+        try renderChildren(listItem)
         html += "</li>"
     }
 
     /// Visits an unordered list node and generates corresponding HTML.
-    public mutating func visitUnorderedList(_ unorderedList: UnorderedList) {
-        logger.trace("Rendering unordered list")
+    public mutating func visitUnorderedList(_ unorderedList: UnorderedList) throws {
         html += "<ul>"
-        descendInto(unorderedList)
+        try renderChildren(unorderedList)
         html += "</ul>"
     }
 
     /// Visits an ordered list node and generates corresponding HTML.
-    public mutating func visitOrderedList(_ orderedList: OrderedList) {
-        logger.trace("Rendering ordered list")
+    public mutating func visitOrderedList(_ orderedList: OrderedList) throws {
         html += "<ol>"
-        descendInto(orderedList)
+        try renderChildren(orderedList)
         html += "</ol>"
     }
 
     /// Visits a block quote node and generates corresponding HTML.
-    public mutating func visitBlockQuote(_ blockQuote: BlockQuote) {
-        logger.trace("Rendering blockquote")
+    public mutating func visitBlockQuote(_ blockQuote: BlockQuote) throws {
         html += "<blockquote>"
-        descendInto(blockQuote)
+        try renderChildren(blockQuote)
         html += "</blockquote>"
     }
 
     /// Visits a thematic break node and generates corresponding HTML.
-    public mutating func visitThematicBreak(_ thematicBreak: ThematicBreak) {
-        logger.trace("Rendering horizontal rule")
+    public mutating func visitThematicBreak(_ thematicBreak: ThematicBreak) throws {
         html += "<hr />"
     }
 
     /// Visits an image node and generates corresponding HTML.
-    public mutating func visitImage(_ image: Markdown.Image) {
+    public mutating func visitImage(_ image: Markdown.Image) throws {
+        guard let source = image.source, !source.isEmpty else {
+            throw HtmlRendererError.missingImageSource
+        }
+
         let altText = image.plainText
-        let source = image.source ?? ""
-        logger.trace("Rendering image: \(source)")
-        html += "<img src=\"\(source)\" alt=\"\(altText)\" />"
+        let escapedSource = escapeHTML(source)
+        let escapedAltText = escapeHTML(altText)
+        html += "<img src=\"\(escapedSource)\" alt=\"\(escapedAltText)\" />"
     }
 
     /// Visits a table node and generates corresponding HTML.
-    public mutating func visitTable(_ table: Table) {
-        logger.trace("Rendering table")
+    public mutating func visitTable(_ table: Table) throws {
         html += "<table>"
-        descendInto(table)
+        try renderChildren(table)
         html += "</table>"
     }
 
     /// Visits a table head node and generates corresponding HTML.
-    public mutating func visitTableHead(_ tableHead: Table.Head) {
-        logger.trace("Rendering table head")
+    public mutating func visitTableHead(_ tableHead: Table.Head) throws {
         html += "<thead><tr>"
         insideTableHead = true
         for child in tableHead.children {
             if let cell = child as? Table.Cell {
-                visitTableCell(cell)
+                try visitTableCell(cell)
             } else {
-                descendInto(child)
+                try renderMarkup(child)
             }
         }
         insideTableHead = false
@@ -397,24 +476,22 @@ public struct HtmlRenderer: MarkupWalker {
     }
 
     /// Visits a table row node and generates corresponding HTML.
-    public mutating func visitTableRow(_ tableRow: Table.Row) {
-        logger.trace("Rendering table row")
+    public mutating func visitTableRow(_ tableRow: Table.Row) throws {
         html += "<tr>"
         for child in tableRow.children {
             if let cell = child as? Table.Cell {
-                visitTableCell(cell)
+                try visitTableCell(cell)
             } else {
-                descendInto(child)
+                try renderMarkup(child)
             }
         }
         html += "</tr>"
     }
 
     /// Visits a table body node and generates corresponding HTML.
-    public mutating func visitTableBody(_ tableBody: Table.Body) {
-        logger.trace("Rendering table body")
+    public mutating func visitTableBody(_ tableBody: Table.Body) throws {
         html += "<tbody>"
-        descendInto(tableBody)
+        try renderChildren(tableBody)
         html += "</tbody>"
     }
 
@@ -422,18 +499,16 @@ public struct HtmlRenderer: MarkupWalker {
     public var insideTableHead = false
 
     /// Visits a table cell node and generates corresponding HTML.
-    public mutating func visitTableCell(_ tableCell: Table.Cell) {
+    public mutating func visitTableCell(_ tableCell: Table.Cell) throws {
         let tag = insideTableHead ? "th" : "td"
-        logger.trace("Rendering table \(tag) cell")
         html += "<\(tag)>"
-        descendInto(tableCell)
+        try renderChildren(tableCell)
         html += "</\(tag)>"
     }
 
     /// A fallback method for visiting any unhandled markup nodes.
-    public mutating func defaultVisit(_ markup: Markup) {
-        logger.trace("Visiting unhandled markup node: \(type(of: markup))")
-        descendInto(markup)
+    public mutating func defaultVisit(_ markup: Markup) throws {
+        try renderChildren(markup)
     }
 
     /// Escapes special HTML characters in a string to prevent injection.
@@ -441,7 +516,6 @@ public struct HtmlRenderer: MarkupWalker {
     /// - Parameter string: The string to escape.
     /// - Returns: The escaped HTML string.
     public func escapeHTML(_ string: String) -> String {
-        logger.trace("Escaping HTML characters in string (\(string.count) characters)")
         return
             string
             .replacingOccurrences(of: "&", with: "&amp;")
@@ -450,47 +524,58 @@ public struct HtmlRenderer: MarkupWalker {
             .replacingOccurrences(of: "\"", with: "&quot;")
             .replacingOccurrences(of: "'", with: "&#39;")
     }
+}
 
-    /// Unescapes HTML span tags used for syntax highlighting while keeping other HTML escaping intact
-    /// - Parameter string: The string containing escaped HTML span tags
-    /// - Returns: A string with span tags unescaped but other HTML escaping intact
+/// Errors that can occur during WebUIMarkdown operations.
+public enum WebUIMarkdownError: Error, LocalizedError {
+    /// Front matter delimiter is opened but not properly closed.
+    case invalidFrontMatter
+    /// No front matter found in the document.
+    case noFrontMatter
+    /// Front matter contains malformed key-value pairs.
+    case malformedFrontMatter(line: String)
+    /// Date parsing failed for a front matter value.
+    case dateParsingFailed(key: String, value: String)
+    /// Markdown content is empty or invalid.
+    case emptyContent
 
-    /// Extracts a filename from the first line of the code block if it matches a comment convention for the language.
-    ///
-    /// - Parameters:
-    ///   - code: The code block string.
-    ///   - language: The language identifier.
-    /// - Returns: A tuple of (filename, codeWithoutFilename).
-    public func extractFilename(from code: String, language: String) -> (String?, String) {
-        let lines = code.components(separatedBy: .newlines)
-        guard let first = lines.first else { return (nil, code) }
-        let trimmed = first.trimmingCharacters(in: .whitespaces)
-        let filename: String?
-        let pattern: String
-        switch language {
-        case "sh":
-            pattern = #"^#\s*([\w\-.]+\.(sh|bash))$"#
-        case "swift":
-            pattern = #"^//\s*([\w\-.]+\.swift)$"#
-        case "yml", "yaml":
-            pattern = #"^#\s*([\w\-.]+\.ya?ml)$"#
-        default:
-            pattern = ""
+    public var errorDescription: String? {
+        switch self {
+        case .invalidFrontMatter:
+            return "Front matter is not properly closed with '---'"
+        case .noFrontMatter:
+            return "No front matter found in the document"
+        case .malformedFrontMatter(let line):
+            return "Malformed front matter line: '\(line)'"
+        case .dateParsingFailed(let key, let value):
+            return "Failed to parse date for key '\(key)' with value '\(value)'"
+        case .emptyContent:
+            return "Markdown content is empty or invalid"
         }
-        if let regex = try? NSRegularExpression(pattern: pattern, options: []),
-            let match = regex.firstMatch(
-                in: trimmed,
-                options: [],
-                range: NSRange(location: 0, length: trimmed.utf16.count)
-            ),
-            let range = Range(match.range(at: 1), in: trimmed)
-        {
-            filename = String(trimmed[range])
-            let codeWithoutFilename = lines.dropFirst().joined(separator: "\n")
-            return (filename, codeWithoutFilename)
-        }
-        return (nil, code)
     }
+}
 
-    // Removed syntax highlighting functions
+/// Errors that can occur during HTML rendering operations.
+public enum HtmlRendererError: Error, LocalizedError {
+    /// Link destination is missing or invalid.
+    case invalidLinkDestination
+    /// Image source is missing.
+    case missingImageSource
+    /// Table structure is malformed.
+    case malformedTable
+    /// Code block contains invalid content.
+    case invalidCodeBlock
+
+    public var errorDescription: String? {
+        switch self {
+        case .invalidLinkDestination:
+            return "Link destination is missing or invalid"
+        case .missingImageSource:
+            return "Image source is required but missing"
+        case .malformedTable:
+            return "Table structure is malformed"
+        case .invalidCodeBlock:
+            return "Code block contains invalid content"
+        }
+    }
 }
