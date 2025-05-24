@@ -109,7 +109,9 @@ public struct Input: Element {
         if let value, let valueAttr = Attribute.string("value", value) {
             attributes.append(valueAttr)
         }
-        if let placeholder, let placeholderAttr = Attribute.string("placeholder", placeholder) {
+        if let placeholder,
+            let placeholderAttr = Attribute.string("placeholder", placeholder)
+        {
             attributes.append(placeholderAttr)
         }
         if let autofocus, autofocus {
@@ -124,6 +126,7 @@ public struct Input: Element {
         if let on = on {
             attributes.append(on)
         }
-        return AttributeBuilder.renderTag("input", attributes: attributes, isSelfClosing: true)
+        return AttributeBuilder.renderTag(
+            "input", attributes: attributes, isSelfClosing: true)
     }
 }

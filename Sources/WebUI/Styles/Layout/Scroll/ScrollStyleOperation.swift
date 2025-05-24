@@ -84,16 +84,18 @@ public struct ScrollStyleOperation: StyleOperation, @unchecked Sendable {
             for edge in effectiveEdges {
                 let edgePrefix: String
                 switch edge {
-                case .all: edgePrefix = ""
-                case .top: edgePrefix = "t"
-                case .bottom: edgePrefix = "b"
-                case .leading: edgePrefix = "s"
-                case .trailing: edgePrefix = "e"
-                case .horizontal: edgePrefix = "x"
-                case .vertical: edgePrefix = "y"
+                    case .all: edgePrefix = ""
+                    case .top: edgePrefix = "t"
+                    case .bottom: edgePrefix = "b"
+                    case .leading: edgePrefix = "s"
+                    case .trailing: edgePrefix = "e"
+                    case .horizontal: edgePrefix = "x"
+                    case .vertical: edgePrefix = "y"
                 }
 
-                classes.append("scroll-m\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)")
+                classes.append(
+                    "scroll-m\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)"
+                )
             }
         }
 
@@ -103,16 +105,18 @@ public struct ScrollStyleOperation: StyleOperation, @unchecked Sendable {
             for edge in effectiveEdges {
                 let edgePrefix: String
                 switch edge {
-                case .all: edgePrefix = ""
-                case .top: edgePrefix = "t"
-                case .bottom: edgePrefix = "b"
-                case .leading: edgePrefix = "s"
-                case .trailing: edgePrefix = "e"
-                case .horizontal: edgePrefix = "x"
-                case .vertical: edgePrefix = "y"
+                    case .all: edgePrefix = ""
+                    case .top: edgePrefix = "t"
+                    case .bottom: edgePrefix = "b"
+                    case .leading: edgePrefix = "s"
+                    case .trailing: edgePrefix = "e"
+                    case .horizontal: edgePrefix = "x"
+                    case .vertical: edgePrefix = "y"
                 }
 
-                classes.append("scroll-p\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)")
+                classes.append(
+                    "scroll-p\(edgePrefix.isEmpty ? "" : "\(edgePrefix)")-\(value)"
+                )
             }
         }
 

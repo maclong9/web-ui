@@ -119,7 +119,8 @@ extension ResponsiveBuilder {
             sides: sides
         )
 
-        return BorderRadiusStyleOperation.shared.applyToBuilder(self, params: params)
+        return BorderRadiusStyleOperation.shared.applyToBuilder(
+            self, params: params)
     }
 }
 

@@ -91,7 +91,8 @@ extension ResponsiveBuilder {
     public func background(color: Color) -> ResponsiveBuilder {
         let params = BackgroundStyleOperation.Parameters(color: color)
 
-        return BackgroundStyleOperation.shared.applyToBuilder(self, params: params)
+        return BackgroundStyleOperation.shared.applyToBuilder(
+            self, params: params)
     }
 }
 

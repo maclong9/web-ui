@@ -8,11 +8,10 @@
   A library for generating websites in a simple, type-safe, and consistent manner.
   <br />
   <br />
-  <a href="https://github.com/maclong9/web-ui/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
-  ·
-  <a href="https://github.com/maclong9/web-ui/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
-  ·
+  <a href="https://github.com/maclong9/web-ui/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>·
+  <a href="https://github.com/maclong9/web-ui/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>·
   <a href="https://github.com/maclong9/web-ui/discussions">Ask a Question</a>
+  <a href="https://maclong9.github.io/web-ui">Documentation</a>
 </div>
 
 <div align="center">
@@ -21,7 +20,6 @@
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmaclong9%2Fweb-ui%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/maclong9/web-ui)
 [![license](https://img.shields.io/github/license/maclong9/web-ui.svg)](LICENSE)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/maclong9/web-ui/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
-[![Automated Release](https://github.com/maclong9/web-ui/actions/workflows/release.yml/badge.svg)](https://github.com/maclong9/web-ui/actions/workflows/release.yml)
 [![Run Tests](https://github.com/maclong9/web-ui/actions/workflows/test.yml/badge.svg)](https://github.com/maclong9/web-ui/actions/workflows/test.yml)
 
 </div>
@@ -34,11 +32,6 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Usage](#usage)
-  - [Documentation](#documentation)
-  - [Tutorials](#tutorials)
-  - [Examples](#examples)
-- [Development](#development)
-  - [Quick Reference](#quick-reference)
 - [Contributing](#contributing)
 - [Funding](#funding)
 - [Support](#support)
@@ -102,52 +95,26 @@ And then add this to your Target:
     )
 ```
 
-### Documentation
-
-Comprehensive API documentation is available on the [GitHub Pages](https://maclong9.github.io/web-ui/documentation/webui/).
-
-#### Learning Resources
-
-- [Getting Started with WebUI](https://maclong9.github.io/web-ui/documentation/webui/getting-started)
-- [Creating a Static Site](https://maclong9.github.io/web-ui/tutorials/webui/creating-a-static-site)
-- [Portfolio Example](https://github.com/maclong9/portfolio) - A personal portfolio website built with WebUI
-
-## Development
-
-WebUI follows a structured development process with automated workflows to ensure code quality and consistency across releases.
-
-For detailed information about contributing to WebUI, please refer to our [CONTRIBUTING.md](CONTRIBUTING.md) file, which includes:
-
-- Branch structure and workflow
-- Versioning system
-- Release process
-- Hotfix procedures
-- Testing guidelines
-- Documentation generation
-- Code style guidelines
-
-### Quick Reference
-
-- Version bumps are triggered by commit prefixes: `feat!:` (major), `feat:` (minor), and `fix:` (patch)
-- For hotfixes, use `fix!:` in the commit message to trigger automatic PRs to all branches
-- Run tests locally with `swift test`
-- Generate documentation with `swift package generate-documentation --target WebUI`
-
 ## Contributing
 
 Contributions are what make the open-source community such an amazing place to
 learn, inspire, and create. Any contributions you make will benefit everybody
 else and are greatly appreciated.
 
-Please see our [CONTRIBUTING.md](CONTRIBUTING.md) document for detailed guidelines on how to contribute to this project. All contributors are expected to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
+Please see our [CONTRIBUTING.md](CONTRIBUTING.md) document for detailed
+guidelines on how to contribute to this project. All contributors are expected
+to adhere to our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Funding
 
-WebUI is an independent open-source project that relies on community support. If you find it useful, please consider supporting its development:
+WebUI is an independent open-source project that relies on community support. If
+you find it useful, please consider supporting its development:
 
 - [GitHub Sponsors](https://github.com/sponsors/maclong9) - Direct support for maintainers
 
-Your support helps ensure WebUI remains actively maintained and continuously improved. Organizations using WebUI in production are especially encouraged to contribute financially to ensure the project's long-term sustainability.
+Your support helps ensure WebUI remains actively maintained and continuously
+improved. Organizations using WebUI in production are especially encouraged to
+contribute financially to ensure the project's long-term sustainability.
 
 ## Support
 
@@ -158,8 +125,8 @@ Reach out to the maintainer at one of the following places:
 
 ## License
 
-This project is licensed under the **Apache 2.0 license**. See [LICENSE](LICENSE) for
-more information.
+This project is licensed under the **Apache 2.0 license**. See
+[LICENSE](LICENSE) for more information.
 
 ## Acknowledgements
 

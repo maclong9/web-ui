@@ -37,20 +37,3 @@ extension Element {
         body.render()
     }
 }
-
-// MARK: - Common Element Types
-
-/// A container that wraps arbitrary HTML content.
-public struct HTMLContainer<Content: HTML>: Element {
-    private let content: Content
-
-    public init(_ content: Content) {
-        self.content = content
-    }
-
-    public var body: Content {
-        content
-    }
-
-    public typealias Body = Content
-}

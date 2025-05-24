@@ -89,8 +89,13 @@ import Testing
         #expect(rendered.contains("<picture"))
         #expect(rendered.contains("id=\"profile-pic\""))
         #expect(rendered.contains("class=\"rounded\""))
-        #expect(rendered.contains("<source type=\"image/jpeg\" srcset=\"/image.jpg\" />"))
-        #expect(rendered.contains("<source type=\"image/webp\" srcset=\"/image.webp\" />"))
+        #expect(
+            rendered.contains(
+                "<source type=\"image/jpeg\" srcset=\"/image.jpg\" />"))
+        #expect(
+            rendered.contains(
+                "<source type=\"image/webp\" srcset=\"/image.webp\" />")
+        )
         #expect(rendered.contains("<img"))
         #expect(rendered.contains("alt=\"Profile picture\""))
         #expect(rendered.contains("width=\"300\""))
@@ -116,14 +121,20 @@ import Testing
         #expect(rendered.contains("id=\"mountain-fig\""))
         #expect(rendered.contains("class=\"image-figure\""))
         #expect(rendered.contains("<picture"))
-        #expect(rendered.contains("<source type=\"image/jpeg\" srcset=\"/large.jpg\">"))
-        #expect(rendered.contains("<source type=\"image/webp\" srcset=\"/small.webp\">"))
+        #expect(
+            rendered.contains(
+                "<source type=\"image/jpeg\" srcset=\"/large.jpg\">"))
+        #expect(
+            rendered.contains(
+                "<source type=\"image/webp\" srcset=\"/small.webp\">"))
         #expect(rendered.contains("<img"))
         #expect(rendered.contains("alt=\"A scenic mountain view\""))
         #expect(rendered.contains("width=\"800\""))
         #expect(rendered.contains("height=\"600\""))
         #expect(rendered.contains("</picture>"))
-        #expect(rendered.contains("<figcaption>A scenic mountain view</figcaption>"))
+        #expect(
+            rendered.contains("<figcaption>A scenic mountain view</figcaption>")
+        )
         #expect(rendered.contains("</figure>"))
     }
 
@@ -149,9 +160,16 @@ import Testing
         #expect(rendered.contains("loop"))
         #expect(rendered.contains("width=\"800\""))
         #expect(rendered.contains("height=\"450\""))
-        #expect(rendered.contains("<source src=\"/video/intro.mp4\" type=\"video/mp4\">"))
-        #expect(rendered.contains("<source src=\"/video/intro.webm\" type=\"video/webm\">"))
-        #expect(rendered.contains(">Your browser does not support the video tag.</video>"))
+        #expect(
+            rendered.contains(
+                "<source src=\"/video/intro.mp4\" type=\"video/mp4\">"))
+        #expect(
+            rendered.contains(
+                "<source src=\"/video/intro.webm\" type=\"video/webm\">"))
+        #expect(
+            rendered.contains(
+                ">Your browser does not support the video tag.</video>")
+        )
     }
 
     @Test("Audio element")
@@ -173,9 +191,15 @@ import Testing
         #expect(rendered.contains("controls"))
         #expect(!rendered.contains("autoplay"))
         #expect(!rendered.contains("loop"))
-        #expect(rendered.contains("<source src=\"/audio/podcast.mp3\" type=\"audio/mpeg\">"))
-        #expect(rendered.contains("<source src=\"/audio/podcast.ogg\" type=\"audio/ogg\">"))
-        #expect(rendered.contains(">Your browser does not support the audio element.</audio>"))
+        #expect(
+            rendered.contains(
+                "<source src=\"/audio/podcast.mp3\" type=\"audio/mpeg\">"))
+        #expect(
+            rendered.contains(
+                "<source src=\"/audio/podcast.ogg\" type=\"audio/ogg\">"))
+        #expect(
+            rendered.contains(
+                ">Your browser does not support the audio element.</audio>"))
     }
 
     // MARK: - Style Tests
@@ -284,7 +308,9 @@ import Testing
 
         let rendered = pre.render()
         #expect(rendered.contains("<pre>"))
-        #expect(rendered.contains("function hello() {\n  console.log(&quot;Hello&quot;);\n}"))
+        #expect(
+            rendered.contains(
+                "function hello() {\n  console.log(&quot;Hello&quot;);\n}"))
         #expect(rendered.contains("</pre>"))
     }
 
@@ -524,7 +550,8 @@ import Testing
 
     @Test("Complex form with multiple elements")
     func testComplexForm() async throws {
-        let contactForm = Form(action: "/submit", method: .post, id: "contact") {
+        let contactForm = Form(action: "/submit", method: .post, id: "contact")
+        {
             Stack(classes: ["form-group"]) {
                 Label(for: "name") { "Name:" }
                 Input(name: "name", type: .text, required: true, id: "name")
@@ -579,7 +606,8 @@ import Testing
                 "<label for=\"subscribe\">Subscribe to newsletter</label>"
             )
         )
-        #expect(rendered.contains("<button type=\"submit\">Send Message</button>"))
+        #expect(
+            rendered.contains("<button type=\"submit\">Send Message</button>"))
         #expect(rendered.contains("</form>"))
     }
 
@@ -722,7 +750,8 @@ import Testing
             }
         }
 
-        #expect(nested.render() == "<div><div></div><div><div></div></div></div>")
+        #expect(
+            nested.render() == "<div><div></div><div><div></div></div></div>")
     }
 
     @Test("Elements with special characters")
@@ -733,7 +762,10 @@ import Testing
 
         let rendered = text.render()
         // HTML characters should now be properly escaped in content
-        #expect(rendered.contains("Special &amp; characters &lt; need &gt; to be escaped"))
+        #expect(
+            rendered.contains(
+                "Special &amp; characters &lt; need &gt; to be escaped")
+        )
 
         // Test special characters in attributes
         let elementWithSpecialAttrs = Stack(
@@ -751,8 +783,12 @@ import Testing
         ) { "Text with 'quotes' & <tags>" }
 
         let quotesRendered = elementWithQuotes.render()
-        #expect(quotesRendered.contains("aria-label=\"User&#39;s &quot;favorite&quot; item\""))
-        #expect(quotesRendered.contains("Text with &#39;quotes&#39; &amp; &lt;tags&gt;"))
+        #expect(
+            quotesRendered.contains(
+                "aria-label=\"User&#39;s &quot;favorite&quot; item\""))
+        #expect(
+            quotesRendered.contains(
+                "Text with &#39;quotes&#39; &amp; &lt;tags&gt;"))
     }
 
     // MARK: - ARIA Role Tests
@@ -771,8 +807,11 @@ import Testing
         let navigationElement = Stack(role: .navigation) { "Nav content" }
         #expect(navigationElement.render().contains("role=\"navigation\""))
 
-        let complementaryElement = Stack(role: .complementary) { "Aside content" }
-        #expect(complementaryElement.render().contains("role=\"complementary\""))
+        let complementaryElement = Stack(role: .complementary) {
+            "Aside content"
+        }
+        #expect(
+            complementaryElement.render().contains("role=\"complementary\""))
 
         let bannerElement = Stack(role: .banner) { "Header content" }
         #expect(bannerElement.render().contains("role=\"banner\""))
@@ -852,17 +891,23 @@ import Testing
 
     @Test("Interactive elements with appropriate ARIA roles")
     func testInteractiveElementsWithAriaRoles() async throws {
-        let buttonWithRole = Button(role: .button, label: "Custom button") { "Click me" }
+        let buttonWithRole = Button(role: .button, label: "Custom button") {
+            "Click me"
+        }
         let buttonRendered = buttonWithRole.render()
         #expect(buttonRendered.contains("role=\"button\""))
         #expect(buttonRendered.contains("aria-label=\"Custom button\""))
 
-        let linkWithRole = Link(to: "/test", role: .link, label: "Custom link") { "Test link" }
+        let linkWithRole = Link(to: "/test", role: .link, label: "Custom link")
+        {
+            "Test link"
+        }
         let linkRendered = linkWithRole.render()
         #expect(linkRendered.contains("role=\"link\""))
         #expect(linkRendered.contains("aria-label=\"Custom link\""))
 
-        let inputWithRole = Input(name: "test", role: .checkbox, label: "Custom checkbox")
+        let inputWithRole = Input(
+            name: "test", role: .checkbox, label: "Custom checkbox")
         let inputRendered = inputWithRole.render()
         #expect(inputRendered.contains("role=\"checkbox\""))
         #expect(inputRendered.contains("aria-label=\"Custom checkbox\""))
@@ -968,6 +1013,8 @@ import Testing
 
         let rendered = element.render()
         #expect(rendered.contains("<div data-container=\"main\">"))
-        #expect(rendered.contains("<span data-item=\"child\">Nested content</span>"))
+        #expect(
+            rendered.contains("<span data-item=\"child\">Nested content</span>")
+        )
     }
 }

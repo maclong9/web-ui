@@ -77,6 +77,7 @@ public struct Abbreviation: Element {
             additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()
-        return AttributeBuilder.renderTag("abbr", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "abbr", attributes: attributes, content: content)
     }
 }

@@ -68,7 +68,9 @@ struct FaviconTestDocument: Document {
             description: "Testing favicon rendering",
             favicons: [
                 Favicon("/favicon.png", size: "32x32"),
-                Favicon("/favicon-light.ico", dark: "/favicon-dark.ico", type: "image/x-icon"),
+                Favicon(
+                    "/favicon-light.ico", dark: "/favicon-dark.ico",
+                    type: "image/x-icon"),
             ]
         )
     }
@@ -111,7 +113,8 @@ struct ScriptTestDocument: Document {
 
     var scripts: [Script]? {
         [
-            Script(src: "https://cdn.example.com/script1.js", attribute: .async),
+            Script(
+                src: "https://cdn.example.com/script1.js", attribute: .async),
             Script(src: "/public/script2.js", attribute: .defer),
             Script(src: "/public/script3.js", placement: .head),
             Script { "console.log(\"Hello, world!\")" },
@@ -194,19 +197,28 @@ struct DocumentTests {
             "Title not set correctly"
         )
         #expect(
-            rendered.contains("<meta property=\"og:title\" content=\"Hello World | Test Site\">"),
+            rendered.contains(
+                "<meta property=\"og:title\" content=\"Hello World | Test Site\">"
+            ),
             "OG title not set correctly"
         )
         #expect(
-            rendered.contains("<meta name=\"description\" content=\"A test description\">"),
+            rendered.contains(
+                "<meta name=\"description\" content=\"A test description\">"),
             "Meta description not set correctly"
         )
         #expect(
-            rendered.contains("<meta property=\"og:description\" content=\"A test description\">"),
+            rendered.contains(
+                "<meta property=\"og:description\" content=\"A test description\">"
+            ),
             "OG description not set correctly"
         )
-        #expect(rendered.contains("Hello, world!"), "Content not rendered correctly")
-        #expect(rendered.contains("<html lang=\"en\">"), "Default locale not set correctly")
+        #expect(
+            rendered.contains("Hello, world!"), "Content not rendered correctly"
+        )
+        #expect(
+            rendered.contains("<html lang=\"en\">"),
+            "Default locale not set correctly")
     }
 
     @Test("Document renders all optional metadata correctly")
@@ -216,12 +228,21 @@ struct DocumentTests {
 
         #expect(rendered.contains("<title>Full Test - Test Site</title>"))
         #expect(
-            rendered.contains("<meta property=\"og:image\" content=\"https://example.com/image.png\">")
+            rendered.contains(
+                "<meta property=\"og:image\" content=\"https://example.com/image.png\">"
+            )
         )
-        #expect(rendered.contains("<meta name=\"author\" content=\"Test Author\">"))
-        #expect(rendered.contains("<meta property=\"og:type\" content=\"article\">"))
-        #expect(rendered.contains("<meta name=\"twitter:creator\" content=\"@testhandle\">"))
-        #expect(rendered.contains("<meta name=\"keywords\" content=\"test, swift, html\">"))
+        #expect(
+            rendered.contains("<meta name=\"author\" content=\"Test Author\">"))
+        #expect(
+            rendered.contains("<meta property=\"og:type\" content=\"article\">")
+        )
+        #expect(
+            rendered.contains(
+                "<meta name=\"twitter:creator\" content=\"@testhandle\">"))
+        #expect(
+            rendered.contains(
+                "<meta name=\"keywords\" content=\"test, swift, html\">"))
         #expect(
             rendered.contains(
                 "<meta name=\"theme-color\" content=\"#0099ff\" media=\"(prefers-color-scheme: light)\">"
@@ -236,11 +257,15 @@ struct DocumentTests {
         let rendered = try document.render()
 
         #expect(
-            rendered.contains("<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"32x32\">")
+            rendered.contains(
+                "<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"32x32\">"
+            )
         )
 
         #expect(
-            rendered.contains("<link rel=\"apple-touch-icon\" sizes=\"32x32\" href=\"/favicon.png\">")
+            rendered.contains(
+                "<link rel=\"apple-touch-icon\" sizes=\"32x32\" href=\"/favicon.png\">"
+            )
         )
 
         #expect(
@@ -264,7 +289,8 @@ struct DocumentTests {
         #expect(rendered.contains("\"@context\" : \"https://schema.org\""))
         #expect(rendered.contains("\"@type\" : \"Article\""))
         #expect(rendered.contains("\"headline\" : \"Test Article\""))
-        #expect(rendered.contains("\"image\" : \"https://example.com/image.jpg\""))
+        #expect(
+            rendered.contains("\"image\" : \"https://example.com/image.jpg\""))
     }
 
     @Test("Custom scripts are correctly added to document head")
@@ -277,8 +303,11 @@ struct DocumentTests {
                 "<script async src=\"https://cdn.example.com/script1.js\"></script>"
             )
         )
-        #expect(rendered.contains("<script defer src=\"/public/script2.js\"></script>"))
-        #expect(rendered.contains("<script src=\"/public/script3.js\"></script>"))
+        #expect(
+            rendered.contains(
+                "<script defer src=\"/public/script2.js\"></script>"))
+        #expect(
+            rendered.contains("<script src=\"/public/script3.js\"></script>"))
         #expect(rendered.contains("console.log(\"Hello, world!\")"))
     }
 
@@ -288,9 +317,14 @@ struct DocumentTests {
         let rendered = try document.render()
 
         #expect(
-            rendered.contains("<link rel=\"stylesheet\" href=\"https://cdn.example.com/style1.css\">")
+            rendered.contains(
+                "<link rel=\"stylesheet\" href=\"https://cdn.example.com/style1.css\">"
+            )
         )
-        #expect(rendered.contains("<link rel=\"stylesheet\" href=\"/public/style2.css\">"))
+        #expect(
+            rendered.contains(
+                "<link rel=\"stylesheet\" href=\"/public/style2.css\">")
+        )
     }
 
     @Test("Raw HTML can be added to document head")
@@ -298,7 +332,9 @@ struct DocumentTests {
         let document = CustomHeadDocument()
         let rendered = try document.render()
 
-        #expect(rendered.contains("<script>console.log('Custom head script');</script>"))
+        #expect(
+            rendered.contains(
+                "<script>console.log('Custom head script');</script>"))
         #expect(rendered.contains("<style>body { color: red; }</style>"))
     }
 }

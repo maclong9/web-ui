@@ -70,6 +70,7 @@ public struct Section: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag("section", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "section", attributes: attributes, content: content)
     }
 }

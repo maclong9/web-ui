@@ -33,8 +33,6 @@ import Testing
         #expect(rendered.contains("class=\"min-w-min max-h-fit\""))
     }
 
-
-
     @Test("Frame with custom dimension")
     func testFrameWithCustomDimension() async throws {
         let element = Stack().frame(height: .custom("50vh"))
@@ -77,8 +75,6 @@ import Testing
         #expect(rendered.contains("class=\"size-full\""))
     }
 
-
-
     @Test("Size method with different sizing values")
     func testSizeMethodWithDifferentValues() async throws {
         let element = Stack().size(.min)
@@ -110,8 +106,6 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"aspect-video\""))
     }
-
-
 
     @Test("Frame with viewport units")
     func testFrameWithViewportUnits() async throws {
@@ -175,8 +169,6 @@ import Testing
         #expect(rendered.contains("class=\"underline text-nowrap\""))
     }
 
-
-
     @Test("Font with extra-large size")
     func testFontWithExtraLargeSize() async throws {
         let element = Stack().font(size: .xl5)
@@ -192,8 +184,6 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"cursor-pointer\""))
     }
-
-
 
     // MARK: - Margin Tests
 
@@ -225,8 +215,6 @@ import Testing
         #expect(rendered.contains("class=\"mt-4\""))
     }
 
-
-
     // MARK: - Padding Tests
 
     @Test("Padding with default length")
@@ -249,8 +237,6 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"px-4\""))
     }
-
-
 
     // MARK: - Spacing Tests
 
@@ -275,8 +261,6 @@ import Testing
         #expect(rendered.contains("class=\"space-y-4\""))
     }
 
-
-
     // MARK: - Complex Style Tests
 
     @Test("Combined base styles")
@@ -295,8 +279,6 @@ import Testing
             )
         )
     }
-
-
 
     @Test("Frame with min and max CGFloat values")
     func testFrameWithMinMaxCGFloatValues() async throws {
@@ -324,8 +306,6 @@ import Testing
         let rendered = element.render()
         #expect(!rendered.contains("class="))
     }
-
-
 
     @Test("Frame with container size static constants")
     func testFrameWithContainerSizeStaticConstants() async throws {

@@ -36,7 +36,9 @@ public struct StructuredData {
     ///     ]
     ///   )
     ///   ```
-    public static func custom(type: SchemaType, data: [String: Any]) -> StructuredData {
+    public static func custom(type: SchemaType, data: [String: Any])
+        -> StructuredData
+    {
         StructuredData(type: type, data: data)
     }
 

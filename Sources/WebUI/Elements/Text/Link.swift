@@ -73,6 +73,7 @@ public struct Link: Element {
             attributes.append("rel=\"noreferrer\"")
         }
         let content = contentBuilder().map { $0.render() }.joined()
-        return AttributeBuilder.renderTag("a", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "a", attributes: attributes, content: content)
     }
 }

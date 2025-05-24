@@ -63,6 +63,7 @@ public struct Heading: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag(level.rawValue, attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            level.rawValue, attributes: attributes, content: content)
     }
 }

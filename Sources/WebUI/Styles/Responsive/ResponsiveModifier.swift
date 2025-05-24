@@ -52,7 +52,9 @@ extension Element {
     ///     }
     ///   }
     /// ```
-    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> any Element {
+    public func on(
+        @ResponsiveStyleBuilder _ content: () -> ResponsiveModification
+    ) -> any Element {
         let builder = ResponsiveBuilder(element: self)
         let modification = content()
         modification.apply(to: builder)
@@ -68,7 +70,9 @@ extension HTML {
     ///
     /// - Parameter content: A closure defining responsive style configurations using the result builder.
     /// - Returns: An HTML element with responsive styles applied.
-    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> AnyHTML {
+    public func on(
+        @ResponsiveStyleBuilder _ content: () -> ResponsiveModification
+    ) -> AnyHTML {
         // Wrap HTML in an Element to use responsive functionality
         let elementWrapper = HTMLElementWrapper(self)
         let builder = ResponsiveBuilder(element: elementWrapper)
@@ -119,7 +123,9 @@ public class ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func xs(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func xs(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .xs
         modifications(self)
         applyBreakpoint()
@@ -131,7 +137,9 @@ public class ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func sm(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func sm(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .sm
         modifications(self)
         applyBreakpoint()
@@ -143,7 +151,9 @@ public class ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func md(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func md(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .md
         modifications(self)
         applyBreakpoint()
@@ -155,7 +165,9 @@ public class ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func lg(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func lg(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .lg
         modifications(self)
         applyBreakpoint()
@@ -167,7 +179,9 @@ public class ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func xl(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func xl(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .xl
         modifications(self)
         applyBreakpoint()
@@ -179,7 +193,9 @@ public class ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func xl2(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func xl2(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .xl2
         modifications(self)
         applyBreakpoint()
@@ -216,12 +232,15 @@ public class ResponsiveBuilder {
         guard let breakpoint = currentBreakpoint else { return }
 
         // Apply the breakpoint prefix to all pending classes
-        let responsiveClasses = pendingClasses.map { "\(breakpoint.rawValue)\($0)" }
+        let responsiveClasses = pendingClasses.map {
+            "\(breakpoint.rawValue)\($0)"
+        }
 
         // Create a concrete wrapper that preserves Element conformance
         let wrapped = AnyElement(self.element)
 
-        let styledModifier = StyleModifierWithDeduplication(content: wrapped, classes: responsiveClasses)
+        let styledModifier = StyleModifierWithDeduplication(
+            content: wrapped, classes: responsiveClasses)
         self.element = ElementWrapper(styledModifier)
 
         // Clear pending classes for the next breakpoint
@@ -246,40 +265,46 @@ struct StyleModifierWithDeduplication<T: HTML>: HTML {
     }
 
     /// Removes redundant modifier classes when the same property exists in base
-    private func filterRedundantModifierClasses(_ modifierClasses: [String]) -> [String] {
+    private func filterRedundantModifierClasses(_ modifierClasses: [String])
+        -> [String]
+    {
         // Get base classes by rendering the content first
         let baseContent = content.render()
         let baseClasses = extractClassesFromHTML(baseContent)
-        
+
         return modifierClasses.filter { modifierClass in
             guard let colonIndex = modifierClass.firstIndex(of: ":") else {
-                return true // Not a modifier class, keep it
+                return true  // Not a modifier class, keep it
             }
-            
-            let baseClass = String(modifierClass[modifierClass.index(after: colonIndex)...])
-            
+
+            let baseClass = String(
+                modifierClass[modifierClass.index(after: colonIndex)...])
+
             // Remove redundant transition property declarations
-            if baseClass.hasPrefix("transition-") && 
-               !baseClass.hasPrefix("transition-duration") && 
-               !baseClass.hasPrefix("transition-delay") && 
-               !baseClass.hasPrefix("transition-timing") {
+            if baseClass.hasPrefix("transition-")
+                && !baseClass.hasPrefix("transition-duration")
+                && !baseClass.hasPrefix("transition-delay")
+                && !baseClass.hasPrefix("transition-timing")
+            {
                 return !baseClasses.contains(baseClass)
             }
-            
+
             // Keep all other modifier classes
             return true
         }
     }
-    
+
     /// Extracts classes from HTML class attribute
     private func extractClassesFromHTML(_ html: String) -> Set<String> {
         let pattern = #"class="([^"]*)"#
         guard let regex = try? NSRegularExpression(pattern: pattern),
-              let match = regex.firstMatch(in: html, range: NSRange(html.startIndex..., in: html)),
-              let range = Range(match.range(at: 1), in: html) else {
+            let match = regex.firstMatch(
+                in: html, range: NSRange(html.startIndex..., in: html)),
+            let range = Range(match.range(at: 1), in: html)
+        else {
             return Set()
         }
-        
+
         let classString = String(html[range])
         return Set(classString.split(separator: " ").map(String.init))
     }

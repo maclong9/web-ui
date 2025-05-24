@@ -146,7 +146,8 @@ extension ResponsiveBuilder {
             delay: delay
         )
 
-        return TransitionStyleOperation.shared.applyToBuilder(self, params: params)
+        return TransitionStyleOperation.shared.applyToBuilder(
+            self, params: params)
     }
 }
 

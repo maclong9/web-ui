@@ -7,7 +7,8 @@ import Foundation
 /// of its pages. Sitemaps improve SEO by ensuring all content is discoverable.
 public struct Sitemap {
     /// XML namespace for the sitemap protocol
-    private static let sitemapNamespace = "http://www.sitemaps.org/schemas/sitemap/0.9"
+    private static let sitemapNamespace =
+        "http://www.sitemaps.org/schemas/sitemap/0.9"
 
     /// Generates a sitemap.xml file content from website routes and custom entries.
     ///
@@ -53,13 +54,17 @@ public struct Sitemap {
 
             // Add lastmod if metadata has a date
             if let date = route.metadata.date {
-                urlComponents.append("    <lastmod>\(dateFormatter.string(from: date))</lastmod>")
+                urlComponents.append(
+                    "    <lastmod>\(dateFormatter.string(from: date))</lastmod>"
+                )
             }
 
             // Set priority based on path depth (home page gets higher priority)
             let depth = path.components(separatedBy: "/").count
-            let priority = path == "index" ? 1.0 : max(0.5, 1.0 - Double(depth) * 0.1)
-            urlComponents.append("    <priority>\(String(format: "%.1f", priority))</priority>")
+            let priority =
+                path == "index" ? 1.0 : max(0.5, 1.0 - Double(depth) * 0.1)
+            urlComponents.append(
+                "    <priority>\(String(format: "%.1f", priority))</priority>")
 
             // Add changefreq based on path (index and main sections change more frequently)
             let changeFreq: SitemapEntry.ChangeFrequency = {
@@ -71,7 +76,8 @@ public struct Sitemap {
                     return .yearly
                 }
             }()
-            urlComponents.append("    <changefreq>\(changeFreq.rawValue)</changefreq>")
+            urlComponents.append(
+                "    <changefreq>\(changeFreq.rawValue)</changefreq>")
 
             urlComponents.append("  </url>")
             xmlComponents.append(urlComponents.joined(separator: "\n"))
@@ -83,15 +89,20 @@ public struct Sitemap {
                 var urlComponents = ["  <url>", "    <loc>\(entry.url)</loc>"]
 
                 if let lastMod = entry.lastModified {
-                    urlComponents.append("    <lastmod>\(dateFormatter.string(from: lastMod))</lastmod>")
+                    urlComponents.append(
+                        "    <lastmod>\(dateFormatter.string(from: lastMod))</lastmod>"
+                    )
                 }
 
                 if let changeFreq = entry.changeFrequency {
-                    urlComponents.append("    <changefreq>\(changeFreq.rawValue)</changefreq>")
+                    urlComponents.append(
+                        "    <changefreq>\(changeFreq.rawValue)</changefreq>")
                 }
 
                 if let priority = entry.priority {
-                    urlComponents.append("    <priority>\(String(format: "%.1f", priority))</priority>")
+                    urlComponents.append(
+                        "    <priority>\(String(format: "%.1f", priority))</priority>"
+                    )
                 }
 
                 urlComponents.append("  </url>")

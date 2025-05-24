@@ -39,9 +39,12 @@ public enum Attribute {
     ///   - name: Attribute name (e.g., "type", "role").
     ///   - value: Enum value with String rawValue, optional.
     /// - Returns: Formatted attribute string (e.g., `type="submit"`) or nil if value is nil or empty.
-    public static func typed<T: RawRepresentable>(_ name: String, _ value: T?) -> String?
+    public static func typed<T: RawRepresentable>(_ name: String, _ value: T?)
+        -> String?
     where T.RawValue == String {
-        guard let stringValue = value?.rawValue, !stringValue.isEmpty else { return nil }
+        guard let stringValue = value?.rawValue, !stringValue.isEmpty else {
+            return nil
+        }
         let escapedValue = HTMLEscaper.escapeAttribute(stringValue)
         return "\(name)=\"\(escapedValue)\""
     }
@@ -52,7 +55,8 @@ public enum Attribute {
     ///   - name: Attribute name (e.g., "type", "role").
     ///   - value: Enum value with String rawValue.
     /// - Returns: Formatted attribute string (e.g., `type="submit"`) or nil if value is empty.
-    public static func typed<T: RawRepresentable>(_ name: String, _ value: T) -> String?
+    public static func typed<T: RawRepresentable>(_ name: String, _ value: T)
+        -> String?
     where T.RawValue == String {
         let stringValue = value.rawValue
         guard !stringValue.isEmpty else { return nil }

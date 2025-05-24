@@ -59,6 +59,7 @@ public struct Emphasis: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag("em", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "em", attributes: attributes, content: content)
     }
 }

@@ -28,7 +28,10 @@ public struct Favicon {
     ///   ```swift
     ///   let icon = Favicon("/icons/favicon.png", dark: "/icons/favicon-dark.png", size: "32x32")
     ///   ```
-    public init(_ light: String, dark: String? = nil, type: String = "image/png", size: String? = nil) {
+    public init(
+        _ light: String, dark: String? = nil, type: String = "image/png",
+        size: String? = nil
+    ) {
         self.light = light
         self.dark = dark
         self.type = type

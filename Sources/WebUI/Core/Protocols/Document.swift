@@ -78,7 +78,9 @@ extension Document {
         if let scripts = scripts {
             for script in scripts {
                 let scriptTag = script.render()
-                script.placement == .head ? optionalTags.append(scriptTag) : bodyTags.append(scriptTag)
+                script.placement == .head
+                    ? optionalTags.append(scriptTag)
+                    : bodyTags.append(scriptTag)
             }
         }
         if let stylesheets = stylesheets {

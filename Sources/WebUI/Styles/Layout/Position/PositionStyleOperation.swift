@@ -60,13 +60,13 @@ public struct PositionStyleOperation: StyleOperation, @unchecked Sendable {
             for edge in params.edges {
                 let edgePrefix: String
                 switch edge {
-                case .all: edgePrefix = "inset"
-                case .top: edgePrefix = "top"
-                case .leading: edgePrefix = "left"
-                case .trailing: edgePrefix = "right"
-                case .bottom: edgePrefix = "bottom"
-                case .horizontal: edgePrefix = "inset-x"
-                case .vertical: edgePrefix = "inset-y"
+                    case .all: edgePrefix = "inset"
+                    case .top: edgePrefix = "top"
+                    case .leading: edgePrefix = "left"
+                    case .trailing: edgePrefix = "right"
+                    case .bottom: edgePrefix = "bottom"
+                    case .horizontal: edgePrefix = "inset-x"
+                    case .vertical: edgePrefix = "inset-y"
                 }
 
                 if offset < 0 {
@@ -140,7 +140,8 @@ extension ResponsiveBuilder {
             offset: offset
         )
 
-        return PositionStyleOperation.shared.applyToBuilder(self, params: params)
+        return PositionStyleOperation.shared.applyToBuilder(
+            self, params: params)
     }
 }
 

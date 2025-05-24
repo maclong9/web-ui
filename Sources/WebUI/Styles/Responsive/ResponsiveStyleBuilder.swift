@@ -25,27 +25,37 @@ public struct ResponsiveStyleBuilder {
     }
 
     /// Builds a responsive style from multiple modifications.
-    public static func buildBlock(_ components: ResponsiveModification...) -> ResponsiveModification {
+    public static func buildBlock(_ components: ResponsiveModification...)
+        -> ResponsiveModification
+    {
         CompositeResponsiveModification(modifications: components)
     }
 
     /// Transforms an optional into a responsive modification.
-    public static func buildOptional(_ component: ResponsiveModification?) -> ResponsiveModification {
+    public static func buildOptional(_ component: ResponsiveModification?)
+        -> ResponsiveModification
+    {
         component ?? EmptyResponsiveModification()
     }
 
     /// Transforms an either-or condition into a responsive modification.
-    public static func buildEither(first component: ResponsiveModification) -> ResponsiveModification {
+    public static func buildEither(first component: ResponsiveModification)
+        -> ResponsiveModification
+    {
         component
     }
 
     /// Transforms an either-or condition into a responsive modification.
-    public static func buildEither(second component: ResponsiveModification) -> ResponsiveModification {
+    public static func buildEither(second component: ResponsiveModification)
+        -> ResponsiveModification
+    {
         component
     }
 
     /// Transforms an array of responsive modifications into a single modification.
-    public static func buildArray(_ components: [ResponsiveModification]) -> ResponsiveModification {
+    public static func buildArray(_ components: [ResponsiveModification])
+        -> ResponsiveModification
+    {
         CompositeResponsiveModification(modifications: components)
     }
 }

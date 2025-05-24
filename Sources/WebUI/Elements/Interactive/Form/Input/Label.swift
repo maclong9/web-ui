@@ -77,6 +77,7 @@ public struct Label: Element {
             additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()
-        return AttributeBuilder.renderTag("label", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "label", attributes: attributes, content: content)
     }
 }

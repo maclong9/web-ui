@@ -225,7 +225,8 @@ public struct Theme {
         if !custom.isEmpty {
             for (category, values) in custom {
                 css += "\n  /* \(category.capitalized) */\n"
-                appendVariables(prefix: category.sanitizedForCSS(), from: values)
+                appendVariables(
+                    prefix: category.sanitizedForCSS(), from: values)
             }
         }
 

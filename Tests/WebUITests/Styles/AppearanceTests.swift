@@ -12,8 +12,6 @@ import Testing
         #expect(rendered.contains("class=\"opacity-50\""))
     }
 
-
-
     // MARK: - Background Color Tests
 
     @Test("Background color without modifiers")
@@ -30,11 +28,10 @@ import Testing
         #expect(rendered.contains("class=\"bg-red-300/50\""))
     }
 
-
-
     @Test("Custom background color")
     func testCustomBackgroundColor() async throws {
-        let element = Stack().background(color: .custom("#ff0000", opacity: 0.8))
+        let element = Stack().background(
+            color: .custom("#ff0000", opacity: 0.8))
         let rendered = element.render()
         #expect(rendered.contains("class=\"bg-[#ff0000]/80\""))
     }
@@ -76,8 +73,6 @@ import Testing
         #expect(rendered.contains("class=\"divide-x-1\""))
     }
 
-
-
     // MARK: - Outline Tests
 
     @Test("Outline with width and color")
@@ -86,8 +81,6 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"outline-2 outline-purple-600\""))
     }
-
-
 
     // MARK: - Shadow Tests
 
@@ -98,8 +91,6 @@ import Testing
         #expect(rendered.contains("class=\"shadow-lg\""))
     }
 
-
-
     // MARK: - Ring Tests
 
     @Test("Ring with default size")
@@ -108,8 +99,6 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"ring-1\""))
     }
-
-
 
     // MARK: - Flex Tests
 
@@ -127,8 +116,6 @@ import Testing
         #expect(rendered.contains("class=\"flex items-center flex-1\""))
     }
 
-
-
     // MARK: - Hidden Tests
 
     @Test("Hidden element")
@@ -137,8 +124,6 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"hidden\""))
     }
-
-
 
     @Test("Not hidden")
     func testNotHidden() async throws {
@@ -155,8 +140,6 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"display-block\""))
     }
-
-
 
     // MARK: - Complex Appearance Tests
 
@@ -185,7 +168,8 @@ import Testing
 
     @Test("Border with No Width")
     func testBorderWithNoWidth() async throws {
-        let element = Stack().border(at: .bottom, color: .neutral(._800, opacity: 0.5))
+        let element = Stack().border(
+            at: .bottom, color: .neutral(._800, opacity: 0.5))
         let rendered = element.render()
         #expect(rendered.contains("class=\"border-b border-neutral-800/50\""))
     }

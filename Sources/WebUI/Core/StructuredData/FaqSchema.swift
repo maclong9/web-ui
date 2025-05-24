@@ -11,7 +11,9 @@ extension StructuredData {
     ///     ["question": "Is it open source?", "answer": "Yes, WebUI is available under the MIT license."]
     ///   ])
     ///   ```
-    public static func faqPage(_ questions: [[String: String]]) -> StructuredData {
+    public static func faqPage(_ questions: [[String: String]])
+        -> StructuredData
+    {
         let mainEntity = questions.map { question in
             [
                 "@type": "Question",

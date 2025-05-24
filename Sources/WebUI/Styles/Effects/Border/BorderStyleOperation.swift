@@ -66,7 +66,9 @@ public struct BorderStyleOperation: StyleOperation, @unchecked Sendable {
         for edge in edges {
             if let style = style, style == .divide {
                 if let width = width {
-                    let divideClass = edge == .horizontal ? "divide-x-\(width)" : "divide-y-\(width)"
+                    let divideClass =
+                        edge == .horizontal
+                        ? "divide-x-\(width)" : "divide-y-\(width)"
                     classes.append(divideClass)
                 }
             } else {
@@ -163,26 +165,6 @@ extension ResponsiveBuilder {
             color: color
         )
 
-        return BorderStyleOperation.shared.applyToBuilder(self, params: params)
-    }
-
-    /// Helper method to apply just a border style.
-    ///
-    /// - Parameter style: The border style to apply.
-    /// - Returns: The builder for method chaining.
-    @discardableResult
-    public func border(style: BorderStyle) -> ResponsiveBuilder {
-        let params = BorderStyleOperation.Parameters(style: style)
-        return BorderStyleOperation.shared.applyToBuilder(self, params: params)
-    }
-
-    /// Helper method to apply just a border color.
-    ///
-    /// - Parameter color: The border color to apply.
-    /// - Returns: The builder for method chaining.
-    @discardableResult
-    public func border(color: Color) -> ResponsiveBuilder {
-        let params = BorderStyleOperation.Parameters(color: color)
         return BorderStyleOperation.shared.applyToBuilder(self, params: params)
     }
 }

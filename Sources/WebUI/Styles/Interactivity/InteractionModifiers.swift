@@ -11,7 +11,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func hover(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func hover(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .hover
         modifications(self)
         applyBreakpoint()
@@ -23,7 +25,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func focus(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func focus(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .focus
         modifications(self)
         applyBreakpoint()
@@ -35,7 +39,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func active(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func active(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .active
         modifications(self)
         applyBreakpoint()
@@ -47,7 +53,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func placeholder(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func placeholder(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .placeholder
         modifications(self)
         applyBreakpoint()
@@ -59,7 +67,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func dark(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func dark(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .dark
         modifications(self)
         applyBreakpoint()
@@ -71,7 +81,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func first(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func first(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .first
         modifications(self)
         applyBreakpoint()
@@ -83,7 +95,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func last(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func last(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .last
         modifications(self)
         applyBreakpoint()
@@ -95,7 +109,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func disabled(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func disabled(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .disabled
         modifications(self)
         applyBreakpoint()
@@ -107,7 +123,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func motionReduce(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func motionReduce(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .motionReduce
         modifications(self)
         applyBreakpoint()
@@ -119,7 +137,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func ariaBusy(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func ariaBusy(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .ariaBusy
         modifications(self)
         applyBreakpoint()
@@ -131,7 +151,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func ariaChecked(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func ariaChecked(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .ariaChecked
         modifications(self)
         applyBreakpoint()
@@ -143,7 +165,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func ariaDisabled(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func ariaDisabled(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .ariaDisabled
         modifications(self)
         applyBreakpoint()
@@ -155,7 +179,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func ariaExpanded(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func ariaExpanded(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .ariaExpanded
         modifications(self)
         applyBreakpoint()
@@ -167,7 +193,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func ariaHidden(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func ariaHidden(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .ariaHidden
         modifications(self)
         applyBreakpoint()
@@ -179,7 +207,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func ariaPressed(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func ariaPressed(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .ariaPressed
         modifications(self)
         applyBreakpoint()
@@ -191,7 +221,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func ariaReadonly(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func ariaReadonly(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .ariaReadonly
         modifications(self)
         applyBreakpoint()
@@ -203,7 +235,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func ariaRequired(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func ariaRequired(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .ariaRequired
         modifications(self)
         applyBreakpoint()
@@ -215,7 +249,9 @@ extension ResponsiveBuilder {
     /// - Parameter modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func ariaSelected(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+    public func ariaSelected(_ modifications: (ResponsiveBuilder) -> Void)
+        -> ResponsiveBuilder
+    {
         currentBreakpoint = .ariaSelected
         modifications(self)
         applyBreakpoint()
@@ -229,7 +265,9 @@ extension ResponsiveBuilder {
 ///
 /// - Parameter content: A closure containing style modifications for hover state.
 /// - Returns: A responsive modification for the hover state.
-public func hover(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func hover(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .hover, styleModification: content())
 }
 
@@ -237,7 +275,9 @@ public func hover(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
 ///
 /// - Parameter content: A closure containing style modifications for focus state.
 /// - Returns: A responsive modification for the focus state.
-public func focus(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func focus(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .focus, styleModification: content())
 }
 
@@ -245,7 +285,9 @@ public func focus(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
 ///
 /// - Parameter content: A closure containing style modifications for active state.
 /// - Returns: A responsive modification for the active state.
-public func active(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func active(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
     BreakpointModification(breakpoint: .active, styleModification: content())
 }
 
@@ -253,15 +295,20 @@ public func active(@ResponsiveStyleBuilder content: () -> ResponsiveModification
 ///
 /// - Parameter content: A closure containing style modifications for placeholder text.
 /// - Returns: A responsive modification for placeholder text.
-public func placeholder(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .placeholder, styleModification: content())
+public func placeholder(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .placeholder, styleModification: content())
 }
 
 /// Creates a dark mode responsive modification.
 ///
 /// - Parameter content: A closure containing style modifications for dark mode.
 /// - Returns: A responsive modification for dark mode.
-public func dark(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func dark(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .dark, styleModification: content())
 }
 
@@ -269,7 +316,9 @@ public func dark(@ResponsiveStyleBuilder content: () -> ResponsiveModification) 
 ///
 /// - Parameter content: A closure containing style modifications for first child elements.
 /// - Returns: A responsive modification for first child elements.
-public func first(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func first(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .first, styleModification: content())
 }
 
@@ -277,7 +326,9 @@ public func first(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
 ///
 /// - Parameter content: A closure containing style modifications for last child elements.
 /// - Returns: A responsive modification for last child elements.
-public func last(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func last(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .last, styleModification: content())
 }
 
@@ -285,7 +336,9 @@ public func last(@ResponsiveStyleBuilder content: () -> ResponsiveModification) 
 ///
 /// - Parameter content: A closure containing style modifications for disabled state.
 /// - Returns: A responsive modification for the disabled state.
-public func disabled(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func disabled(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
     BreakpointModification(breakpoint: .disabled, styleModification: content())
 }
 
@@ -293,15 +346,20 @@ public func disabled(@ResponsiveStyleBuilder content: () -> ResponsiveModificati
 ///
 /// - Parameter content: A closure containing style modifications for when users prefer reduced motion.
 /// - Returns: A responsive modification for reduced motion preferences.
-public func motionReduce(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .motionReduce, styleModification: content())
+public func motionReduce(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .motionReduce, styleModification: content())
 }
 
 /// Creates an aria-busy responsive modification.
 ///
 /// - Parameter content: A closure containing style modifications for aria-busy="true".
 /// - Returns: A responsive modification for the aria-busy state.
-public func ariaBusy(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func ariaBusy(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
     BreakpointModification(breakpoint: .ariaBusy, styleModification: content())
 }
 
@@ -309,62 +367,86 @@ public func ariaBusy(@ResponsiveStyleBuilder content: () -> ResponsiveModificati
 ///
 /// - Parameter content: A closure containing style modifications for aria-checked="true".
 /// - Returns: A responsive modification for the aria-checked state.
-public func ariaChecked(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .ariaChecked, styleModification: content())
+public func ariaChecked(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .ariaChecked, styleModification: content())
 }
 
 /// Creates an aria-disabled responsive modification.
 ///
 /// - Parameter content: A closure containing style modifications for aria-disabled="true".
 /// - Returns: A responsive modification for the aria-disabled state.
-public func ariaDisabled(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .ariaDisabled, styleModification: content())
+public func ariaDisabled(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .ariaDisabled, styleModification: content())
 }
 
 /// Creates an aria-expanded responsive modification.
 ///
 /// - Parameter content: A closure containing style modifications for aria-expanded="true".
 /// - Returns: A responsive modification for the aria-expanded state.
-public func ariaExpanded(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .ariaExpanded, styleModification: content())
+public func ariaExpanded(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .ariaExpanded, styleModification: content())
 }
 
 /// Creates an aria-hidden responsive modification.
 ///
 /// - Parameter content: A closure containing style modifications for aria-hidden="true".
 /// - Returns: A responsive modification for the aria-hidden state.
-public func ariaHidden(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .ariaHidden, styleModification: content())
+public func ariaHidden(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .ariaHidden, styleModification: content())
 }
 
 /// Creates an aria-pressed responsive modification.
 ///
 /// - Parameter content: A closure containing style modifications for aria-pressed="true".
 /// - Returns: A responsive modification for the aria-pressed state.
-public func ariaPressed(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .ariaPressed, styleModification: content())
+public func ariaPressed(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .ariaPressed, styleModification: content())
 }
 
 /// Creates an aria-readonly responsive modification.
 ///
 /// - Parameter content: A closure containing style modifications for aria-readonly="true".
 /// - Returns: A responsive modification for the aria-readonly state.
-public func ariaReadonly(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .ariaReadonly, styleModification: content())
+public func ariaReadonly(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .ariaReadonly, styleModification: content())
 }
 
 /// Creates an aria-required responsive modification.
 ///
 /// - Parameter content: A closure containing style modifications for aria-required="true".
 /// - Returns: A responsive modification for the aria-required state.
-public func ariaRequired(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .ariaRequired, styleModification: content())
+public func ariaRequired(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .ariaRequired, styleModification: content())
 }
 
 /// Creates an aria-selected responsive modification.
 ///
 /// - Parameter content: A closure containing style modifications for aria-selected="true".
 /// - Returns: A responsive modification for the aria-selected state.
-public func ariaSelected(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
-    BreakpointModification(breakpoint: .ariaSelected, styleModification: content())
+public func ariaSelected(
+    @ResponsiveStyleBuilder content: () -> ResponsiveModification
+) -> ResponsiveModification {
+    BreakpointModification(
+        breakpoint: .ariaSelected, styleModification: content())
 }

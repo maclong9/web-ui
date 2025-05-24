@@ -52,7 +52,9 @@ import Testing
     func testShadowWithColorAndModifier() async throws {
         let element = Stack().shadow(size: .md, color: .gray(._500), on: .hover)
         let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:shadow-md hover:shadow-gray-500\""))
+        #expect(
+            rendered.contains("class=\"hover:shadow-md hover:shadow-gray-500\"")
+        )
     }
 
     // MARK: - Ring Modifier Tests
@@ -134,7 +136,8 @@ import Testing
     func testAspectRatioWithModifiers() async throws {
         let element = Stack().aspectRatio(4, 3, on: .hover)
         let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:aspect-[1.3333333333333333]\""))
+        #expect(
+            rendered.contains("class=\"hover:aspect-[1.3333333333333333]\""))
     }
 
     // MARK: - Font Modifier Tests
@@ -188,7 +191,9 @@ import Testing
     func testTransitionWithModifier() async throws {
         let element = Stack().transition(of: .colors, for: 500, on: .hover)
         let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:transition-colors hover:duration-500\""))
+        #expect(
+            rendered.contains(
+                "class=\"hover:transition-colors hover:duration-500\""))
     }
 
     // MARK: - Z-Index Modifier Tests
@@ -244,7 +249,9 @@ import Testing
             on: .hover
         )
         let rendered = element.render()
-        #expect(rendered.contains("class=\"hover:scroll-auto hover:snap-mandatory\""))
+        #expect(
+            rendered.contains(
+                "class=\"hover:scroll-auto hover:snap-mandatory\""))
     }
 
     // MARK: - Interaction State Modifier Tests
@@ -509,5 +516,42 @@ import Testing
                 "class=\"bg-blue-600 border-1 border-solid border-blue-800 hover:opacity-90 flex flex-row justify-center\""
             )
         )
+    }
+
+    @Test("Element Structure Test")
+    func elementStructureTest() async throws {
+
+        // MARK: Example Document - `.on` working
+        struct TestDocument: Document {
+            var metadata: Metadata {
+                .init(title: "Hello")
+            }
+
+            var body: some HTML {
+                Text { "Hello" }
+                    .on {
+                        placeholder {
+                            font(color: .amber(._100))
+                        }
+                    }
+            }
+        }
+        // FIXME: Example Element - `.on` not working
+        struct TestElement: Element {
+            var body: some HTML {
+                Text { "Hello" }
+                    .on {
+                        placeholder {
+                            //                            font(color: .amber(._100))
+                        }
+                    }
+            }
+        }
+
+        let renderedDoc = try TestDocument().render()
+        let renderedEle = TestElement().render()
+
+        #expect(renderedDoc.contains("placeholder:text-amber-100"))
+        #expect(!renderedEle.contains("placeholder:text-amber-100"))
     }
 }

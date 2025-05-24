@@ -30,7 +30,8 @@ public enum AttributeBuilder {
         }
 
         if let classes = classes, !classes.isEmpty {
-            attributes.append(Attribute.string("class", classes.joined(separator: " "))!)
+            attributes.append(
+                Attribute.string("class", classes.joined(separator: " "))!)
         }
 
         if let role = role {
@@ -68,7 +69,8 @@ public enum AttributeBuilder {
         isSelfClosing: Bool = false,
         hasNoClosingTag: Bool = false,
     ) -> String {
-        let attributeString = attributes.isEmpty ? "" : " " + attributes.joined(separator: " ")
+        let attributeString =
+            attributes.isEmpty ? "" : " " + attributes.joined(separator: " ")
 
         if isSelfClosing {
             return "<\(tag)\(attributeString) />"

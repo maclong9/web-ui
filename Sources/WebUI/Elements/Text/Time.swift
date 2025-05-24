@@ -82,7 +82,10 @@ public struct Time: Element {
             attributes.append(idAttr)
         }
 
-        if let classes, !classes.isEmpty, let classAttr = Attribute.string("class", classes.joined(separator: " ")) {
+        if let classes, !classes.isEmpty,
+            let classAttr = Attribute.string(
+                "class", classes.joined(separator: " "))
+        {
             attributes.append(classAttr)
         }
 

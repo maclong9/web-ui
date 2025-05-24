@@ -2,14 +2,15 @@ import Foundation
 
 /// Provides common styling utilities for HTML elements
 public enum ElementStyling {
-
     /// Applies CSS classes to HTML content
     ///
     /// - Parameters:
     ///   - content: The HTML content to apply classes to
     ///   - classes: The CSS classes to apply
     /// - Returns: HTML content with classes applied
-    public static func applyClasses<T: HTML>(_ content: T, classes: [String]) -> some HTML {
+    public static func applyClasses<T: HTML>(_ content: T, classes: [String])
+        -> some HTML
+    {
         content.addingClasses(classes)
     }
 
@@ -19,7 +20,9 @@ public enum ElementStyling {
     ///   - baseClasses: The base CSS classes
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
     /// - Returns: Combined array of CSS classes
-    public static func combineClasses(_ baseClasses: [String], withModifiers modifiers: [Modifier]) -> [String] {
+    public static func combineClasses(
+        _ baseClasses: [String], withModifiers modifiers: [Modifier]
+    ) -> [String] {
         guard !modifiers.isEmpty else {
             return baseClasses
         }
@@ -53,8 +56,11 @@ extension HTML {
     ///   - baseClasses: The base CSS classes to apply
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
     /// - Returns: HTML with the styled classes applied
-    public func applyStyle(baseClasses: [String], modifiers: [Modifier] = []) -> some HTML {
-        let classes = ElementStyling.combineClasses(baseClasses, withModifiers: modifiers)
+    public func applyStyle(baseClasses: [String], modifiers: [Modifier] = [])
+        -> some HTML
+    {
+        let classes = ElementStyling.combineClasses(
+            baseClasses, withModifiers: modifiers)
         return addingClasses(classes)
     }
 }

@@ -43,7 +43,8 @@ public struct OverflowStyleOperation: StyleOperation, @unchecked Sendable {
     /// - Parameter params: The parameters for overflow styling
     /// - Returns: An array of CSS class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
-        let axisString = params.axis.rawValue.isEmpty ? "" : "-\(params.axis.rawValue)"
+        let axisString =
+            params.axis.rawValue.isEmpty ? "" : "-\(params.axis.rawValue)"
         return ["overflow\(axisString)-\(params.type.rawValue)"]
     }
 
@@ -112,7 +113,8 @@ extension ResponsiveBuilder {
             axis: axis
         )
 
-        return OverflowStyleOperation.shared.applyToBuilder(self, params: params)
+        return OverflowStyleOperation.shared.applyToBuilder(
+            self, params: params)
     }
 }
 

@@ -15,102 +15,102 @@ public struct BreakpointModification: ResponsiveModification {
 
     public func apply(to builder: ResponsiveBuilder) {
         switch breakpoint {
-        case .xs:
-            builder.xs { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .sm:
-            builder.sm { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .md:
-            builder.md { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .lg:
-            builder.lg { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .xl:
-            builder.xl { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .xl2:
-            builder.xl2 { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .hover:
-            builder.hover { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .focus:
-            builder.focus { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .active:
-            builder.active { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .placeholder:
-            builder.placeholder { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .dark:
-            builder.dark { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .first:
-            builder.first { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .last:
-            builder.last { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .disabled:
-            builder.disabled { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .motionReduce:
-            builder.motionReduce { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .ariaBusy:
-            builder.ariaBusy { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .ariaChecked:
-            builder.ariaChecked { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .ariaDisabled:
-            builder.ariaDisabled { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .ariaExpanded:
-            builder.ariaExpanded { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .ariaHidden:
-            builder.ariaHidden { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .ariaPressed:
-            builder.ariaPressed { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .ariaReadonly:
-            builder.ariaReadonly { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .ariaRequired:
-            builder.ariaRequired { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
-        case .ariaSelected:
-            builder.ariaSelected { innerBuilder in
-                styleModification.apply(to: innerBuilder)
-            }
+            case .xs:
+                builder.xs { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .sm:
+                builder.sm { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .md:
+                builder.md { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .lg:
+                builder.lg { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .xl:
+                builder.xl { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .xl2:
+                builder.xl2 { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .hover:
+                builder.hover { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .focus:
+                builder.focus { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .active:
+                builder.active { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .placeholder:
+                builder.placeholder { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .dark:
+                builder.dark { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .first:
+                builder.first { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .last:
+                builder.last { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .disabled:
+                builder.disabled { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .motionReduce:
+                builder.motionReduce { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .ariaBusy:
+                builder.ariaBusy { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .ariaChecked:
+                builder.ariaChecked { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .ariaDisabled:
+                builder.ariaDisabled { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .ariaExpanded:
+                builder.ariaExpanded { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .ariaHidden:
+                builder.ariaHidden { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .ariaPressed:
+                builder.ariaPressed { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .ariaReadonly:
+                builder.ariaReadonly { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .ariaRequired:
+                builder.ariaRequired { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
+            case .ariaSelected:
+                builder.ariaSelected { innerBuilder in
+                    styleModification.apply(to: innerBuilder)
+                }
         }
     }
 }
@@ -135,7 +135,9 @@ public struct StyleModification: ResponsiveModification {
 ///
 /// - Parameter content: A closure containing style modifications for this breakpoint.
 /// - Returns: A responsive modification for the extra-small breakpoint.
-public func xs(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func xs(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .xs, styleModification: content())
 }
 
@@ -143,7 +145,9 @@ public func xs(@ResponsiveStyleBuilder content: () -> ResponsiveModification) ->
 ///
 /// - Parameter content: A closure containing style modifications for this breakpoint.
 /// - Returns: A responsive modification for the small breakpoint.
-public func sm(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func sm(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .sm, styleModification: content())
 }
 
@@ -151,7 +155,9 @@ public func sm(@ResponsiveStyleBuilder content: () -> ResponsiveModification) ->
 ///
 /// - Parameter content: A closure containing style modifications for this breakpoint.
 /// - Returns: A responsive modification for the medium breakpoint.
-public func md(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func md(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .md, styleModification: content())
 }
 
@@ -159,7 +165,9 @@ public func md(@ResponsiveStyleBuilder content: () -> ResponsiveModification) ->
 ///
 /// - Parameter content: A closure containing style modifications for this breakpoint.
 /// - Returns: A responsive modification for the large breakpoint.
-public func lg(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func lg(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .lg, styleModification: content())
 }
 
@@ -167,7 +175,9 @@ public func lg(@ResponsiveStyleBuilder content: () -> ResponsiveModification) ->
 ///
 /// - Parameter content: A closure containing style modifications for this breakpoint.
 /// - Returns: A responsive modification for the extra-large breakpoint.
-public func xl(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func xl(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .xl, styleModification: content())
 }
 
@@ -175,6 +185,8 @@ public func xl(@ResponsiveStyleBuilder content: () -> ResponsiveModification) ->
 ///
 /// - Parameter content: A closure containing style modifications for this breakpoint.
 /// - Returns: A responsive modification for the 2x extra-large breakpoint.
-public func xl2(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+public func xl2(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
+    -> ResponsiveModification
+{
     BreakpointModification(breakpoint: .xl2, styleModification: content())
 }

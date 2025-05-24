@@ -43,7 +43,8 @@ extension StructuredData {
         ]
 
         if let review = review {
-            data["review"] = review.merging(["@type": "Review"]) { _, new in new }
+            data["review"] = review.merging(["@type": "Review"]) { _, new in new
+            }
         }
 
         return StructuredData(type: .product, data: data)

@@ -57,7 +57,7 @@ public struct OutlineStyleOperation: StyleOperation, @unchecked Sendable {
     /// - Parameter params: The parameters for outline styling
     /// - Returns: An array of CSS class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
-        var classes = [String]()
+        var classes: [String] = []
 
         if let width = params.width {
             classes.append("outline-\(width)")
