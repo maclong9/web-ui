@@ -122,7 +122,6 @@ struct ProjectCard: Element {
         .rounded(.lg)
         .shadow(size: .md)
         .overflow(.hidden)
-        .render()
     }
 }
 
@@ -632,8 +631,8 @@ struct ComprehensiveWebsiteTests {
         #expect(indexContent.contains("<img"))
 
         // Test specific meta tags
-        #expect(indexContent.contains("<title>Portfolio Jane Doe</title>"))
-        #expect(indexContent.contains("<meta charset=\"utf-8\">"))
+        #expect(indexContent.contains("<title>Home Jane Doe</title>"))
+        #expect(indexContent.contains("<meta charset=\"UTF-8\">"))
         #expect(indexContent.contains("<meta name=\"viewport\""))
         #expect(indexContent.contains("width=device-width"))
         #expect(indexContent.contains("<meta name=\"description\""))
@@ -693,7 +692,7 @@ struct ComprehensiveWebsiteTests {
         let html = home.body.render()
 
         #expect(html.contains("Welcome to My Portfolio"))
-        #expect(html.contains("Hi, I'm Jane Doe"))
+        #expect(html.contains("Hi, I&#39;m Jane Doe"))
         #expect(html.contains("Featured Projects"))
     }
 

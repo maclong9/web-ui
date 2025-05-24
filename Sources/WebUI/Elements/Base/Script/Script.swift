@@ -7,12 +7,21 @@
 ///   let mainScript = Script(src: "/js/main.js", attribute: .defer)
 ///   ```
 public struct Script: Element {
-    private let src: String
-    private let attribute: ScriptAttribute?
+    let src: String?
+    let attribute: ScriptAttribute?
+    let placement: ScriptPlacement
+    let contentBuilder: HTMLContentBuilder
 
-    public init(src: String, attribute: ScriptAttribute? = nil) {
+    public init(
+        src: String? = nil,
+        attribute: ScriptAttribute? = nil,
+        placement: ScriptPlacement = .body,
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+    ) {
         self.src = src
         self.attribute = attribute
+        self.placement = placement
+        self.contentBuilder = content
     }
 
     public var body: some HTML {
@@ -21,7 +30,7 @@ public struct Script: Element {
 
     private func renderTag() -> String {
         var additional: [String] = []
-        if let srcAttr = Attribute.string("src", src) {
+        if let src, let srcAttr = Attribute.string("src", src) {
             additional.append(srcAttr)
         }
         if let attribute, let attributeAttr = Attribute.string(attribute.rawValue, attribute.rawValue) {
@@ -30,6 +39,7 @@ public struct Script: Element {
         let attributes = AttributeBuilder.buildAttributes(
             additional: additional
         )
-        return AttributeBuilder.renderTag("script", attributes: attributes)
+        let content = contentBuilder().map { $0.render() }.joined()
+        return AttributeBuilder.renderTag("script", attributes: attributes, content: content)
     }
 }

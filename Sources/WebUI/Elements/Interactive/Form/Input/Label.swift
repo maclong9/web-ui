@@ -22,7 +22,7 @@ public struct Label: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: () -> [any HTML]
+    private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML label element associated with a form control.
     ///
@@ -48,7 +48,7 @@ public struct Label: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
         self.forAttribute = `for`
         self.id = id

@@ -70,35 +70,4 @@ public struct RobotsRule: Equatable, Hashable {
     public static func disallowAll() -> RobotsRule {
         RobotsRule(userAgent: "*", disallow: ["/"])
     }
-
-    /// Creates a rule for a specific crawler with custom access permissions.
-    ///
-    /// - Parameters:
-    ///   - agent: The specific crawler user agent (e.g., "Googlebot").
-    ///   - disallow: Paths that should not be crawled.
-    ///   - allow: Paths that are allowed to be crawled.
-    ///   - crawlDelay: The delay between successive crawls in seconds.
-    /// - Returns: A rule configured for the specified crawler.
-    ///
-    /// - Example:
-    ///   ```swift
-    ///   let googleRule = RobotsRule.forAgent(
-    ///     "Googlebot",
-    ///     disallow: ["/private/"],
-    ///     allow: ["/public/"]
-    ///   )
-    ///   ```
-    public static func forAgent(
-        _ agent: String,
-        disallow: [String]? = nil,
-        allow: [String]? = nil,
-        crawlDelay: Int? = nil
-    ) -> RobotsRule {
-        RobotsRule(
-            userAgent: agent,
-            disallow: disallow,
-            allow: allow,
-            crawlDelay: crawlDelay
-        )
-    }
 }

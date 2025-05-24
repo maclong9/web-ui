@@ -16,11 +16,11 @@ import Testing
 
         // Test string with HTML-like content
         let htmlLikeString = "<p>Test</p>"
-        #expect(htmlLikeString.render() == "<p>Test</p>")
+        #expect(htmlLikeString.render() == "&lt;p&gt;Test&lt;/p&gt;")
 
         // Test string with special characters
         let specialChars = "Hello & <World>!"
-        #expect(specialChars.render() == "Hello & <World>!")
+        #expect(specialChars.render() == "Hello &amp; &lt;World&gt;!")
     }
 
     @Test("String path formatting")

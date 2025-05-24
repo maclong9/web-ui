@@ -101,7 +101,7 @@ public struct Figure: Element {
             content += AttributeBuilder.renderTag(
                 "source",
                 attributes: sourceAttributes,
-                isSelfClosing: true
+                hasNoClosingTag: true
             )
         }
 

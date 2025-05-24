@@ -72,15 +72,41 @@ extension Document {
     public var head: String? { nil }
 
     /// Creates a concrete Document instance for rendering.
-    public func document() -> any Document {
-        WebUI.Document(
-            path: path,
-            metadata: metadata,
-            scripts: scripts,
-            stylesheets: stylesheets,
-            theme: theme,
-            head: head,
-            content: { [AnyHTML(self.body)] }
-        )
+    public func render() throws -> String {
+        var optionalTags: [String] = metadata.tags + []
+        var bodyTags: [String] = []
+        if let scripts = scripts {
+            for script in scripts {
+                let scriptTag =
+                    "<script \(script.attribute?.rawValue ?? "") src=\"\(script.src ?? "")\"></script>"
+                script.placement == .head ? optionalTags.append(scriptTag) : bodyTags.append(scriptTag)
+            }
+        }
+        if let stylesheets = stylesheets {
+            for stylesheet in stylesheets {
+                optionalTags.append(
+                    "<link rel=\"stylesheet\" href=\"\(stylesheet)\">"
+                )
+            }
+        }
+        let html = """
+            <!DOCTYPE html>
+            <html lang="\(metadata.locale.rawValue)">
+              <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>\(metadata.pageTitle)</title>
+                \(optionalTags.joined(separator: "\n"))
+                <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+                <meta name="generator" content="WebUI" />
+                \(head ?? "")
+              </head>
+              <body>
+                \(body.render())
+                \(bodyTags.joined(separator: "\n"))
+              </body>
+            </html>
+            """
+        return HTMLMinifier.minify(html)
     }
 }

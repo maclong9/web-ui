@@ -102,8 +102,7 @@ public struct Audio: Element {
             if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
                 sourceAttributes.append(typeAttr)
             }
-            let attrs = sourceAttributes.joined(separator: " ")
-            return "<source \(attrs)>"
+            return AttributeBuilder.renderTag("source", attributes: sourceAttributes, hasNoClosingTag: true)
         }.joined()
         return AttributeBuilder.renderTag(
             "audio",

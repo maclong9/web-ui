@@ -59,17 +59,21 @@ public enum AttributeBuilder {
     ///   - attributes: Array of attribute strings
     ///   - content: Optional content to include between opening and closing tags
     ///   - isSelfClosing: Whether this is a self-closing tag
+    ///   - noClosingTag: Whether this should be rendered without a self-close and without a seperate close
     /// - Returns: Complete HTML tag as a string
     public static func renderTag(
         _ tag: String,
         attributes: [String],
         content: String = "",
-        isSelfClosing: Bool = false
+        isSelfClosing: Bool = false,
+        hasNoClosingTag: Bool = false,
     ) -> String {
         let attributeString = attributes.isEmpty ? "" : " " + attributes.joined(separator: " ")
 
         if isSelfClosing {
             return "<\(tag)\(attributeString) />"
+        } else if hasNoClosingTag {
+            return "<\(tag)\(attributeString)>"
         } else {
             return "<\(tag)\(attributeString)>\(content)</\(tag)>"
         }

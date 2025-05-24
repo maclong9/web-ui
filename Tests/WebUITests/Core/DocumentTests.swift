@@ -113,7 +113,8 @@ struct ScriptTestDocument: Document {
         [
             Script(src: "https://cdn.example.com/script1.js", attribute: .async),
             Script(src: "/public/script2.js", attribute: .defer),
-            Script(src: "/public/script3.js"),
+            Script(src: "/public/script3.js", placement: .head),
+            Script { "console.log(\"Hello, world!\")" },
         ]
     }
 
@@ -154,12 +155,8 @@ struct CustomHeadDocument: Document {
 
     var head: String? {
         """
-        <script>
-          console.log('Custom head script');
-        </script>
-        <style>
-          body { color: red; }
-        </style>
+        <script>console.log('Custom head script');</script>
+        <style>body { color: red; }</style>
         """
     }
 
@@ -190,7 +187,7 @@ struct DocumentTests {
     @Test("Document renders basic metadata correctly")
     func testBasicDocumentRendering() throws {
         let document = BasicTestDocument()
-        let rendered = document.head ?? ""
+        let rendered = try document.render()
 
         #expect(
             rendered.contains("<title>Hello World | Test Site</title>"),
@@ -215,7 +212,7 @@ struct DocumentTests {
     @Test("Document renders all optional metadata correctly")
     func testFullMetadataRendering() throws {
         let document = FullMetadataDocument()
-        let rendered = document.head ?? ""
+        let rendered = try document.render()
 
         #expect(rendered.contains("<title>Full Test - Test Site</title>"))
         #expect(
@@ -236,7 +233,7 @@ struct DocumentTests {
     @Test("Favicons are correctly added to document head")
     func testFaviconRendering() throws {
         let document = FaviconTestDocument()
-        let rendered = document.head ?? ""
+        let rendered = try document.render()
 
         #expect(
             rendered.contains("<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"32x32\">")
@@ -261,7 +258,7 @@ struct DocumentTests {
     @Test("Structured data is correctly added to document head")
     func testStructuredDataRendering() throws {
         let document = StructuredDataDocument()
-        let rendered = document.head ?? ""
+        let rendered = try document.render()
 
         #expect(rendered.contains("<script type=\"application/ld+json\">"))
         #expect(rendered.contains("\"@context\" : \"https://schema.org\""))
@@ -273,7 +270,7 @@ struct DocumentTests {
     @Test("Custom scripts are correctly added to document head")
     func testCustomScripts() throws {
         let document = ScriptTestDocument()
-        let rendered = document.head ?? ""
+        let rendered = try document.render()
 
         #expect(
             rendered.contains(
@@ -282,12 +279,13 @@ struct DocumentTests {
         )
         #expect(rendered.contains("<script defer src=\"/public/script2.js\"></script>"))
         #expect(rendered.contains("<script  src=\"/public/script3.js\"></script>"))
+        #expect(rendered.contains("console.log(\"Hello, world!\")"))
     }
 
     @Test("Custom stylesheets are correctly added to document head")
     func testCustomStylesheets() throws {
         let document = StylesheetTestDocument()
-        let rendered = document.head ?? ""
+        let rendered = try document.render()
 
         #expect(
             rendered.contains("<link rel=\"stylesheet\" href=\"https://cdn.example.com/style1.css\">")
@@ -298,8 +296,9 @@ struct DocumentTests {
     @Test("Raw HTML can be added to document head")
     func testCustomHeadHTML() throws {
         let document = CustomHeadDocument()
-        let rendered = document.head ?? ""
+        let rendered = try document.render()
 
-        #expect(rendered.contains(document.head ?? ""))
+        #expect(rendered.contains("<script>console.log('Custom head script');</script>"))
+        #expect(rendered.contains("<style>body { color: red; }</style>"))
     }
 }

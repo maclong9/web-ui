@@ -22,7 +22,7 @@ public struct Header: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: () -> [any HTML]
+    private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML header element.
     ///
@@ -46,7 +46,7 @@ public struct Header: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
         self.id = id
         self.classes = classes

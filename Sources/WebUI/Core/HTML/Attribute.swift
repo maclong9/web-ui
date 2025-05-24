@@ -6,7 +6,9 @@ public enum Attribute {
     ///   - value: Attribute value, optional.
     /// - Returns: Formatted attribute string (e.g., `id="header"`) or nil if value is empty.
     public static func string(_ name: String, _ value: String?) -> String? {
-        value?.isEmpty == false ? "\(name)=\"\(value!)\"" : nil
+        guard let value = value, !value.isEmpty else { return nil }
+        let escapedValue = HTMLEscaper.escapeAttribute(value)
+        return "\(name)=\"\(escapedValue)\""
     }
 
     /// Builds an HTML attribute string for a non-optional value.
@@ -16,7 +18,9 @@ public enum Attribute {
     ///   - value: Attribute value.
     /// - Returns: Formatted attribute string (e.g., `id="header"`) or nil if value is empty.
     public static func string(_ name: String, _ value: String) -> String? {
-        value.isEmpty == false ? "\(name)=\"\(value)\"" : nil
+        guard !value.isEmpty else { return nil }
+        let escapedValue = HTMLEscaper.escapeAttribute(value)
+        return "\(name)=\"\(escapedValue)\""
     }
 
     /// Builds a boolean HTML attribute if enabled.
@@ -38,7 +42,8 @@ public enum Attribute {
     public static func typed<T: RawRepresentable>(_ name: String, _ value: T?) -> String?
     where T.RawValue == String {
         guard let stringValue = value?.rawValue, !stringValue.isEmpty else { return nil }
-        return "\(name)=\"\(stringValue)\""
+        let escapedValue = HTMLEscaper.escapeAttribute(stringValue)
+        return "\(name)=\"\(escapedValue)\""
     }
 
     /// Builds an HTML attribute string from a non-optional typed enum value.
@@ -50,6 +55,8 @@ public enum Attribute {
     public static func typed<T: RawRepresentable>(_ name: String, _ value: T) -> String?
     where T.RawValue == String {
         let stringValue = value.rawValue
-        return stringValue.isEmpty ? nil : "\(name)=\"\(stringValue)\""
+        guard !stringValue.isEmpty else { return nil }
+        let escapedValue = HTMLEscaper.escapeAttribute(stringValue)
+        return "\(name)=\"\(escapedValue)\""
     }
 }

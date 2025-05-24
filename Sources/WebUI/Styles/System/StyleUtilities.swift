@@ -49,17 +49,7 @@ public enum StyleUtilities {
             return baseClasses
         }
 
-        var result: [String] = []
-
-        for baseClass in baseClasses {
-            result.append(baseClass)
-
-            for modifier in modifiers {
-                let modifierPrefix = modifier.rawValue
-                result.append("\(modifierPrefix):\(baseClass)")
-            }
-        }
-
-        return result
+        let modifierPrefix = modifiers.map { $0.rawValue }.joined()
+        return baseClasses.map { "\(modifierPrefix)\($0)" }
     }
 }

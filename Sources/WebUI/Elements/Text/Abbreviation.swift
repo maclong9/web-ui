@@ -19,7 +19,7 @@ public struct Abbreviation: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: () -> [any HTML]
+    private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML abbreviation element.
     ///
@@ -48,7 +48,7 @@ public struct Abbreviation: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping () -> [any HTML] = { [] }
+        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
         self.fullTitle = title
         self.id = id
