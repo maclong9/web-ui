@@ -216,22 +216,11 @@ public class ResponsiveBuilder {
         guard let breakpoint = currentBreakpoint else { return }
 
         // Apply the breakpoint prefix to all pending classes
-        let responsiveClasses = pendingClasses.map {
-            // Handle duplication for flex-*, justify-*, items-*
-            if $0.starts(with: "flex-") || $0.starts(with: "justify-") || $0.starts(with: "items-")
-                || $0.starts(with: "grid-")
-            {
-                return "\(breakpoint.rawValue)\($0)"
-            } else if $0 == "flex" || $0 == "grid" {
-                return "\(breakpoint.rawValue)\($0)"
-            } else {
-                return "\(breakpoint.rawValue)\($0)"
-            }
-        }
+        let responsiveClasses = pendingClasses.map { "\(breakpoint.rawValue)\($0)" }
 
         // Create a concrete wrapper that preserves Element conformance
         let wrapped = AnyElement(self.element)
-        let styledModifier = StyleModifier(content: wrapped, classes: responsiveClasses)
+        let styledModifier = StyleModifierWithDeduplication(content: wrapped, classes: responsiveClasses)
         self.element = ElementWrapper(styledModifier)
 
         // Clear pending classes for the next breakpoint
@@ -242,6 +231,61 @@ public class ResponsiveBuilder {
     /// Add a class to the pending list of classes
     public func addClass(_ className: String) {
         pendingClasses.append(className)
+    }
+}
+
+/// A smart style modifier that deduplicates redundant classes
+struct StyleModifierWithDeduplication<T: HTML>: HTML {
+    private let content: T
+    private let classes: [String]
+
+    init(content: T, classes: [String]) {
+        self.content = content
+        self.classes = classes
+    }
+
+    /// Removes redundant modifier classes when the same property exists in base
+    private func filterRedundantModifierClasses(_ modifierClasses: [String]) -> [String] {
+        // Get base classes by rendering the content first
+        let baseContent = content.render()
+        let baseClasses = extractClassesFromHTML(baseContent)
+        
+        return modifierClasses.filter { modifierClass in
+            guard let colonIndex = modifierClass.firstIndex(of: ":") else {
+                return true // Not a modifier class, keep it
+            }
+            
+            let baseClass = String(modifierClass[modifierClass.index(after: colonIndex)...])
+            
+            // Remove redundant transition property declarations
+            if baseClass.hasPrefix("transition-") && 
+               !baseClass.hasPrefix("transition-duration") && 
+               !baseClass.hasPrefix("transition-delay") && 
+               !baseClass.hasPrefix("transition-timing") {
+                return !baseClasses.contains(baseClass)
+            }
+            
+            // Keep all other modifier classes
+            return true
+        }
+    }
+    
+    /// Extracts classes from HTML class attribute
+    private func extractClassesFromHTML(_ html: String) -> Set<String> {
+        let pattern = #"class="([^"]*)"#
+        guard let regex = try? NSRegularExpression(pattern: pattern),
+              let match = regex.firstMatch(in: html, range: NSRange(html.startIndex..., in: html)),
+              let range = Range(match.range(at: 1), in: html) else {
+            return Set()
+        }
+        
+        let classString = String(html[range])
+        return Set(classString.split(separator: " ").map(String.init))
+    }
+
+    var body: some HTML {
+        let filteredClasses = filterRedundantModifierClasses(classes)
+        return content.addingClasses(filteredClasses)
     }
 }
 
