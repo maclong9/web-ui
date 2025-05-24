@@ -305,7 +305,7 @@ import Testing
         #expect(rendered.contains("id=\"contact-form\""))
         #expect(rendered.contains("action=\"/submit\""))
         #expect(rendered.contains("method=\"post\""))
-        #expect(rendered.contains("<input>"))
+        #expect(rendered.contains("<input name=\"test\" />"))
         #expect(rendered.contains("</form>"))
     }
 

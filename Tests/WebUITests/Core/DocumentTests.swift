@@ -176,7 +176,7 @@ struct DocumentTests {
     @Test("Document renders correctly with nil description")
     func testNilDescriptionDocument() throws {
         let document = NoDescriptionDocument()
-        let rendered = document.head?.render() ?? ""
+        let rendered = document.head ?? ""
 
         #expect(
             rendered.contains("<title>No Description Test Site</title>"),
@@ -200,7 +200,7 @@ struct DocumentTests {
     @Test("Document renders basic metadata correctly")
     func testBasicDocumentRendering() throws {
         let document = BasicTestDocument()
-        let rendered = document.head?.render() ?? ""
+        let rendered = document.head ?? ""
 
         #expect(
             rendered.contains("<title>Hello World | Test Site</title>"),
@@ -225,7 +225,7 @@ struct DocumentTests {
     @Test("Document renders all optional metadata correctly")
     func testFullMetadataRendering() throws {
         let document = FullMetadataDocument()
-        let rendered = document.head?.render() ?? ""
+        let rendered = document.head ?? ""
 
         #expect(rendered.contains("<title>Full Test - Test Site</title>"))
         #expect(
@@ -246,7 +246,7 @@ struct DocumentTests {
     @Test("Favicons are correctly added to document head")
     func testFaviconRendering() throws {
         let document = FaviconTestDocument()
-        let rendered = document.head?.render() ?? ""
+        let rendered = document.head ?? ""
 
         #expect(
             rendered.contains("<link rel=\"icon\" type=\"image/png\" href=\"/favicon.png\" sizes=\"32x32\">")
@@ -271,7 +271,7 @@ struct DocumentTests {
     @Test("Structured data is correctly added to document head")
     func testStructuredDataRendering() throws {
         let document = StructuredDataDocument()
-        let rendered = document.head?.render() ?? ""
+        let rendered = document.head ?? ""
 
         #expect(rendered.contains("<script type=\"application/ld+json\">"))
         #expect(rendered.contains("\"@context\" : \"https://schema.org\""))
@@ -283,7 +283,7 @@ struct DocumentTests {
     @Test("Custom scripts are correctly added to document head")
     func testCustomScripts() throws {
         let document = ScriptTestDocument()
-        let rendered = document.head?.render() ?? ""
+        let rendered = document.head ?? ""
 
         #expect(
             rendered.contains(
@@ -297,7 +297,7 @@ struct DocumentTests {
     @Test("Custom stylesheets are correctly added to document head")
     func testCustomStylesheets() throws {
         let document = StylesheetTestDocument()
-        let rendered = document.head?.render() ?? ""
+        let rendered = document.head ?? ""
 
         #expect(
             rendered.contains("<link rel=\"stylesheet\" href=\"https://cdn.example.com/style1.css\">")
@@ -308,7 +308,7 @@ struct DocumentTests {
     @Test("Raw HTML can be added to document head")
     func testCustomHeadHTML() throws {
         let document = CustomHeadDocument()
-        let rendered = document.head?.render() ?? ""
+        let rendered = document.head ?? ""
 
         #expect(rendered.contains(document.head ?? ""))
     }
