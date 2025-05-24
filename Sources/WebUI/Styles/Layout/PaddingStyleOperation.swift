@@ -100,7 +100,8 @@ extension HTML {
 /// - Returns: A responsive modification for padding.
 public func padding(
     of length: Int? = 4,
-    at edges: Edge...
+    at edges: Edge...,
+    on modifiers: Modifier...
 ) -> ResponsiveModification {
     let params = PaddingStyleOperation.Parameters(
         length: length,
