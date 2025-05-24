@@ -22,12 +22,15 @@ public enum StyleUtilities {
     ///   - baseClass: The base class name
     ///   - modifiers: The modifiers to apply
     /// - Returns: The combined class names
-    public static func combineClass(_ baseClass: String, withModifiers modifiers: [Modifier]) -> [String] {
+    public static func combineClass(
+        _ baseClass: String, withModifiers modifiers: [Modifier]
+    ) -> [String] {
         if modifiers.isEmpty {
             return [baseClass]
         }
 
-        let modifierPrefix = modifiers.map { modifier in modifier.rawValue }.joined()
+        let modifierPrefix = modifiers.map { modifier in modifier.rawValue }
+            .joined()
         return ["\(modifierPrefix)\(baseClass)"]
     }
 
@@ -40,7 +43,9 @@ public enum StyleUtilities {
     ///   - baseClasses: The base class names
     ///   - modifiers: The modifiers to apply
     /// - Returns: The combined class names
-    public static func combineClasses(_ baseClasses: [String], withModifiers modifiers: [Modifier]) -> [String] {
+    public static func combineClasses(
+        _ baseClasses: [String], withModifiers modifiers: [Modifier]
+    ) -> [String] {
         if baseClasses.isEmpty {
             return []
         }

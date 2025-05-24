@@ -68,7 +68,8 @@ public struct List: Element {
     }
 
     private func renderTag() -> String {
-        let combinedClasses = (classes ?? []) + (style != .none ? ["list-\(style.rawValue)"] : [])
+        let combinedClasses =
+            (classes ?? []) + (style != .none ? ["list-\(style.rawValue)"] : [])
 
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
@@ -80,6 +81,7 @@ public struct List: Element {
 
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag(type.rawValue, attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            type.rawValue, attributes: attributes, content: content)
     }
 }

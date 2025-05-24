@@ -101,10 +101,14 @@ public struct Video: Element {
         if let loop, loop {
             attributes.append("loop")
         }
-        if let width = size?.width, let widthAttr = Attribute.string("width", "\(width)") {
+        if let width = size?.width,
+            let widthAttr = Attribute.string("width", "\(width)")
+        {
             attributes.append(widthAttr)
         }
-        if let height = size?.height, let heightAttr = Attribute.string("height", "\(height)") {
+        if let height = size?.height,
+            let heightAttr = Attribute.string("height", "\(height)")
+        {
             attributes.append(heightAttr)
         }
         let sourceElements = sources.map { source in
@@ -112,15 +116,19 @@ public struct Video: Element {
             if let srcAttr = Attribute.string("src", source.src) {
                 sourceAttributes.append(srcAttr)
             }
-            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+            if let type = source.type,
+                let typeAttr = Attribute.string("type", type.rawValue)
+            {
                 sourceAttributes.append(typeAttr)
             }
-            return AttributeBuilder.renderTag("source", attributes: sourceAttributes, hasNoClosingTag: true)
+            return AttributeBuilder.renderTag(
+                "source", attributes: sourceAttributes, hasNoClosingTag: true)
         }.joined()
         return AttributeBuilder.renderTag(
             "video",
             attributes: attributes,
-            content: "\(sourceElements)Your browser does not support the video tag."
+            content:
+                "\(sourceElements)Your browser does not support the video tag."
         )
     }
 }

@@ -159,7 +159,9 @@ struct MetadataTests {
         #expect(lightFavicon.size == "32x32")
 
         // Test with both light and dark mode
-        let dualFavicon = Favicon("/favicon-light.png", dark: "/favicon-dark.png", type: "image/svg+xml")
+        let dualFavicon = Favicon(
+            "/favicon-light.png", dark: "/favicon-dark.png",
+            type: "image/svg+xml")
         #expect(dualFavicon.light == "/favicon-light.png")
         #expect(dualFavicon.dark == "/favicon-dark.png")
         #expect(dualFavicon.type == "image/svg+xml")
@@ -169,7 +171,8 @@ struct MetadataTests {
     /// Tests initialization of metadata with favicons.
     @Test func testMetadataWithFavicons() throws {
         let favicons: [Favicon] = [
-            Favicon("/favicon-32.png", dark: "/favicon-dark-32.png", size: "32x32"),
+            Favicon(
+                "/favicon-32.png", dark: "/favicon-dark-32.png", size: "32x32"),
             Favicon("/favicon-16.png", size: "16x16"),
             Favicon("/favicon.ico", type: "image/x-icon"),
         ]
@@ -257,7 +260,10 @@ struct MetadataTests {
             description: "A test product",
             sku: "PROD-123",
             brand: "Test Brand",
-            offers: ["price": "99.99", "priceCurrency": "USD", "availability": "InStock"]
+            offers: [
+                "price": "99.99", "priceCurrency": "USD",
+                "availability": "InStock",
+            ]
         )
 
         #expect(productData.type == .product)
@@ -265,7 +271,8 @@ struct MetadataTests {
         let json = productData.toJSON()
         #expect(json.contains("\"@type\" : \"Product\""))
         #expect(json.contains("\"name\" : \"Test Product\""))
-        #expect(json.contains("\"image\" : \"https://example.com/product.jpg\""))
+        #expect(
+            json.contains("\"image\" : \"https://example.com/product.jpg\""))
         #expect(json.contains("\"sku\" : \"PROD-123\""))
         #expect(json.contains("\"price\" : \"99.99\""))
         #expect(json.contains("\"priceCurrency\" : \"USD\""))
@@ -338,7 +345,9 @@ struct MetadataTests {
                 "addressCountry": "US",
             ],
             birthDate: birthDate,
-            sameAs: ["https://twitter.com/janedoe", "https://github.com/janedoe"]
+            sameAs: [
+                "https://twitter.com/janedoe", "https://github.com/janedoe",
+            ]
         )
 
         #expect(personData.type == .person)

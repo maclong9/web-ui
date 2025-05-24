@@ -1,3 +1,10 @@
+//
+//  Axis.swift
+//  web-ui
+//
+//  Created by Mac Long on 2025.05.25.
+//
+
 /// Defines axes for applying overflow, scroll, or spacing behavior.
 ///
 /// Represents the direction(s) in which various layout rules are applied,

@@ -84,15 +84,20 @@ public struct Figure: Element {
         )
 
         let pictureElement = renderPictureElement()
-        let figcaptionElement = AttributeBuilder.renderTag("figcaption", attributes: [], content: description)
-        return AttributeBuilder.renderTag("figure", attributes: attributes, content: pictureElement + figcaptionElement)
+        let figcaptionElement = AttributeBuilder.renderTag(
+            "figcaption", attributes: [], content: description)
+        return AttributeBuilder.renderTag(
+            "figure", attributes: attributes,
+            content: pictureElement + figcaptionElement)
     }
 
     private func renderPictureElement() -> String {
         var content = ""
         for source in sources {
             var sourceAttributes: [String] = []
-            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+            if let type = source.type,
+                let typeAttr = Attribute.string("type", type.rawValue)
+            {
                 sourceAttributes.append(typeAttr)
             }
             if let srcsetAttr = Attribute.string("srcset", source.src) {
@@ -114,15 +119,21 @@ public struct Figure: Element {
         }
 
         if let size = size {
-            if let width = size.width, let widthAttr = Attribute.string("width", "\(width)") {
+            if let width = size.width,
+                let widthAttr = Attribute.string("width", "\(width)")
+            {
                 imgAttributes.append(widthAttr)
             }
-            if let height = size.height, let heightAttr = Attribute.string("height", "\(height)") {
+            if let height = size.height,
+                let heightAttr = Attribute.string("height", "\(height)")
+            {
                 imgAttributes.append(heightAttr)
             }
         }
 
-        content += AttributeBuilder.renderTag("img", attributes: imgAttributes, isSelfClosing: true)
-        return AttributeBuilder.renderTag("picture", attributes: [], content: content)
+        content += AttributeBuilder.renderTag(
+            "img", attributes: imgAttributes, isSelfClosing: true)
+        return AttributeBuilder.renderTag(
+            "picture", attributes: [], content: content)
     }
 }

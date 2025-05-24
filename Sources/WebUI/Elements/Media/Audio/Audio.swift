@@ -99,15 +99,19 @@ public struct Audio: Element {
             if let srcAttr = Attribute.string("src", source.src) {
                 sourceAttributes.append(srcAttr)
             }
-            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+            if let type = source.type,
+                let typeAttr = Attribute.string("type", type.rawValue)
+            {
                 sourceAttributes.append(typeAttr)
             }
-            return AttributeBuilder.renderTag("source", attributes: sourceAttributes, hasNoClosingTag: true)
+            return AttributeBuilder.renderTag(
+                "source", attributes: sourceAttributes, hasNoClosingTag: true)
         }.joined()
         return AttributeBuilder.renderTag(
             "audio",
             attributes: attributes,
-            content: "\(sourceElements)Your browser does not support the audio element."
+            content:
+                "\(sourceElements)Your browser does not support the audio element."
         )
     }
 }

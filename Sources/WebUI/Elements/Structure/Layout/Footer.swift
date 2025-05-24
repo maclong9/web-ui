@@ -72,6 +72,7 @@ public struct Footer: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag("footer", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "footer", attributes: attributes, content: content)
     }
 }

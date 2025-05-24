@@ -63,22 +63,22 @@ public enum SizingValue: Sendable {
 
     public var rawValue: String {
         switch self {
-        case .spacing(let value):
-            return "\(value)"
-        case .fraction(let numerator, let denominator):
-            return "\(numerator)/\(denominator)"
-        case .container(let size):
-            return size.rawValue
-        case .viewport(let unit):
-            return unit.rawValue
-        case .constant(let constant):
-            return constant.rawValue
-        case .content(let content):
-            return content.rawValue
-        case .character(let value):
-            return "[\(value)ch]"
-        case .custom(let value):
-            return "[\(value)]"
+            case .spacing(let value):
+                return "\(value)"
+            case .fraction(let numerator, let denominator):
+                return "\(numerator)/\(denominator)"
+            case .container(let size):
+                return size.rawValue
+            case .viewport(let unit):
+                return unit.rawValue
+            case .constant(let constant):
+                return constant.rawValue
+            case .content(let content):
+                return content.rawValue
+            case .character(let value):
+                return "[\(value)ch]"
+            case .custom(let value):
+                return "[\(value)]"
         }
     }
 }

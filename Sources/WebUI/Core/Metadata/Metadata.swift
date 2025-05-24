@@ -209,26 +209,33 @@ public struct Metadata {
             "<meta property=\"og:type\" content=\"\(type.rawValue)\">",
             "<meta name=\"twitter:card\" content=\"summary_large_image\">",
         ]
-
+        // Description
         if let description, !description.isEmpty {
-            baseTags.append("<meta name=\"description\" content=\"\(description)\">")
-            baseTags.append("<meta property=\"og:description\" content=\"\(description)\">")
+            baseTags.append(
+                "<meta name=\"description\" content=\"\(description)\">")
+            baseTags.append(
+                "<meta property=\"og:description\" content=\"\(description)\">")
         }
-
+        // Image
         if let image, !image.isEmpty {
             baseTags.append("<meta property=\"og:image\" content=\"\(image)\">")
         }
+        // Author
         if let author, !author.isEmpty {
             baseTags.append("<meta name=\"author\" content=\"\(author)\">")
         }
+        // Twitter
         if let twitter, !twitter.isEmpty {
-            baseTags.append("<meta name=\"twitter:creator\" content=\"@\(twitter)\">")
+            baseTags.append(
+                "<meta name=\"twitter:creator\" content=\"@\(twitter)\">")
         }
+        // Keywords
         if let keywords, !keywords.isEmpty {
             baseTags.append(
                 "<meta name=\"keywords\" content=\"\(keywords.joined(separator: ", "))\">"
             )
         }
+        // Theme Color
         if let themeColor {
             baseTags.append(
                 "<meta name=\"theme-color\" content=\"\(themeColor.light)\" \(themeColor.dark != nil ? "media=\"(prefers-color-scheme: light)\"" : "")>"
@@ -239,7 +246,7 @@ public struct Metadata {
                 )
             }
         }
-
+        // Favicons
         if let favicons {
             for favicon in favicons {
                 let sizeAttr = favicon.size.map { " sizes=\"\($0)\"" } ?? ""
@@ -256,8 +263,6 @@ public struct Metadata {
                         "<link rel=\"icon\" type=\"\(favicon.type)\" href=\"\(favicon.light)\"\(sizeAttr)>"
                     )
                 }
-
-                // Add Apple touch icon if this is a PNG and has a size
                 if favicon.type == "image/png", let size = favicon.size {
                     baseTags.append(
                         "<link rel=\"apple-touch-icon\" sizes=\"\(size)\" href=\"\(favicon.light)\">"
@@ -265,8 +270,7 @@ public struct Metadata {
                 }
             }
         }
-
-        // Add structured data if available
+        // Structured Data
         if let structuredData = structuredData {
             let jsonString = structuredData.toJSON()
             if !jsonString.isEmpty {

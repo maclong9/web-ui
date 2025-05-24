@@ -26,8 +26,6 @@ import Testing
         #expect(rendered.contains("class=\"transition ease-in-out delay-100\""))
     }
 
-
-
     // MARK: - Z-Index Tests
 
     @Test("Z-Index with positive value")
@@ -43,8 +41,6 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"z--5\""))
     }
-
-
 
     // MARK: - Position Tests
 
@@ -71,13 +67,12 @@ import Testing
 
     @Test("Position with multiple negative values")
     func testPositionWithMultipleNegativeValues() async throws {
-        let element = Stack().position(.absolute, at: .top, .trailing, offset: -10)
+        let element = Stack().position(
+            .absolute, at: .top, .trailing, offset: -10)
         let rendered = element.render()
         #expect(rendered.contains("class=\"absolute -top-10 -right-10\""))
         #expect(!rendered.contains("-top--10"))  // Should NOT contain double negative
     }
-
-
 
     @Test("Position with horizontal edge")
     func testPositionWithHorizontalEdge() async throws {
@@ -102,8 +97,6 @@ import Testing
         #expect(rendered.contains("class=\"overflow-x-scroll\""))
     }
 
-
-
     // MARK: - Transform Tests
 
     @Test("Transform with scale")
@@ -124,10 +117,10 @@ import Testing
     func testTransformWithNegativeTranslate() async throws {
         let element = Stack().transform(translate: (x: -10, y: 20))
         let rendered = element.render()
-        #expect(rendered.contains("class=\"transform -translate-x-10 translate-y-20\""))
+        #expect(
+            rendered.contains(
+                "class=\"transform -translate-x-10 translate-y-20\""))
     }
-
-
 
     @Test("Transform with multiple properties")
     func testTransformWithMultipleProperties() async throws {
@@ -138,7 +131,10 @@ import Testing
             skew: (x: nil, y: 10)
         )
         let rendered = element.render()
-        #expect(rendered.contains("class=\"transform scale-x-90 -rotate-30 translate-x-5 skew-y-10\""))
+        #expect(
+            rendered.contains(
+                "class=\"transform scale-x-90 -rotate-30 translate-x-5 skew-y-10\""
+            ))
     }
 
     // MARK: - Scroll Tests
@@ -152,7 +148,8 @@ import Testing
 
     @Test("Scroll with margin and specific edges")
     func testScrollWithMarginAndEdges() async throws {
-        let element = Stack().scroll(margin: (value: 4, edges: [.top, .bottom]))
+        let element = Stack().scroll(
+            margin: (value: 4, edges: [.top, .bottom]))
         let rendered = element.render()
         #expect(rendered.contains("class=\"scroll-mt-4 scroll-mb-4\""))
     }
@@ -174,8 +171,6 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"snap-center snap-always snap-x\""))
     }
-
-
 
     @Test("Scroll with multiple properties")
     func testScrollWithMultipleProperties() async throws {
@@ -235,6 +230,5 @@ import Testing
         let rendered = element.render()
         #expect(rendered.contains("class=\"transform\""))
     }
-
 
 }

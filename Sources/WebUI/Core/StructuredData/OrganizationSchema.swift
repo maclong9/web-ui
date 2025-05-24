@@ -34,7 +34,11 @@ extension StructuredData {
         ]
 
         if let contactPoint = contactPoint {
-            data["contactPoint"] = contactPoint.merging(["@type": "ContactPoint"]) { _, new in new }
+            data["contactPoint"] = contactPoint.merging([
+                "@type": "ContactPoint"
+            ]) {
+                _, new in new
+            }
         }
 
         if let sameAs = sameAs {

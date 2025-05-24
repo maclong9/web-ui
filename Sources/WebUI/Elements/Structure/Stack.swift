@@ -76,6 +76,7 @@ public struct Stack: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag("div", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "div", attributes: attributes, content: content)
     }
 }

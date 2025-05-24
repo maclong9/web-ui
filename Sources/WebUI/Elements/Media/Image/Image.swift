@@ -82,13 +82,18 @@ public struct Image: Element {
             attributes.append(typeAttr)
         }
         if let size = size {
-            if let width = size.width, let widthAttr = Attribute.string("width", "\(width)") {
+            if let width = size.width,
+                let widthAttr = Attribute.string("width", "\(width)")
+            {
                 attributes.append(widthAttr)
             }
-            if let height = size.height, let heightAttr = Attribute.string("height", "\(height)") {
+            if let height = size.height,
+                let heightAttr = Attribute.string("height", "\(height)")
+            {
                 attributes.append(heightAttr)
             }
         }
-        return AttributeBuilder.renderTag("img", attributes: attributes, isSelfClosing: true)
+        return AttributeBuilder.renderTag(
+            "img", attributes: attributes, isSelfClosing: true)
     }
 }

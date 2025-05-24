@@ -62,7 +62,8 @@ public struct Robots {
 
         // Add disallow paths first (standard practice)
         if let disallow = rule.disallow, !disallow.isEmpty {
-            ruleComponents.append(contentsOf: disallow.map { "Disallow: \($0)" })
+            ruleComponents.append(
+                contentsOf: disallow.map { "Disallow: \($0)" })
         }
 
         // Add allow paths after disallow

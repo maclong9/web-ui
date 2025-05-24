@@ -72,6 +72,7 @@ public struct Main: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag("main", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "main", attributes: attributes, content: content)
     }
 }

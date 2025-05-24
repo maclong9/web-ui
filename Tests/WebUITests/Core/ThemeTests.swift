@@ -40,7 +40,9 @@ struct ThemeTests {
 
     @Test("Theme with Sanitized Keys")
     func testThemeWithSanitizedKeys() {
-        let theme = Theme(colors: ["primary-color": "red", "secondary_color": "blue"])
+        let theme = Theme(colors: [
+            "primary-color": "red", "secondary_color": "blue",
+        ])
         let css = theme.generateCSS()
         #expect(css.contains("--color-primary-color: red;"))
         #expect(css.contains("--color-secondary-color: blue;"))

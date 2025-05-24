@@ -65,15 +65,18 @@ public struct TransformStyleOperation: StyleOperation, @unchecked Sendable {
         }
 
         if let rotate = params.rotate {
-            classes.append(rotate < 0 ? "-rotate-\(-rotate)" : "rotate-\(rotate)")
+            classes.append(
+                rotate < 0 ? "-rotate-\(-rotate)" : "rotate-\(rotate)")
         }
 
         if let translateTuple = params.translate {
             if let x = translateTuple.x {
-                classes.append(x < 0 ? "-translate-x-\(-x)" : "translate-x-\(x)")
+                classes.append(
+                    x < 0 ? "-translate-x-\(-x)" : "translate-x-\(x)")
             }
             if let y = translateTuple.y {
-                classes.append(y < 0 ? "-translate-y-\(-y)" : "translate-y-\(y)")
+                classes.append(
+                    y < 0 ? "-translate-y-\(-y)" : "translate-y-\(y)")
             }
         }
 
@@ -156,7 +159,8 @@ extension ResponsiveBuilder {
             skew: skew
         )
 
-        return TransformStyleOperation.shared.applyToBuilder(self, params: params)
+        return TransformStyleOperation.shared.applyToBuilder(
+            self, params: params)
     }
 }
 

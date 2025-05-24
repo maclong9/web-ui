@@ -140,7 +140,8 @@ extension Website {
         // Create the full path for the HTML file
         var components = path.split(separator: "/")
         let filename = components.removeLast()
-        let fullPath = directory.appending(path: components.joined(separator: "/"))
+        let fullPath = directory.appending(
+            path: components.joined(separator: "/"))
 
         // Create intermediate directories
         try FileManager.default.createDirectory(
@@ -153,9 +154,12 @@ extension Website {
 
         // Write the HTML file
         guard let data = html.data(using: String.Encoding.utf8) else {
-            throw NSError(domain: "WebUI", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode HTML"])
+            throw NSError(
+                domain: "WebUI", code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to encode HTML"])
         }
-        try data.write(to: fullPath.appending(path: "\(filename).html"), options: .atomic)
+        try data.write(
+            to: fullPath.appending(path: "\(filename).html"), options: .atomic)
     }
 
     private func generateSitemapXML(in directory: URL, baseURL: String) throws {
@@ -196,10 +200,13 @@ extension Website {
             throw NSError(
                 domain: "WebUI",
                 code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "Failed to encode sitemap.xml"]
+                userInfo: [
+                    NSLocalizedDescriptionKey: "Failed to encode sitemap.xml"
+                ]
             )
         }
-        try data.write(to: directory.appending(path: "sitemap.xml"), options: .atomic)
+        try data.write(
+            to: directory.appending(path: "sitemap.xml"), options: .atomic)
     }
 
     private func generateRobotsTxt(in directory: URL) throws {
@@ -215,9 +222,12 @@ extension Website {
             throw NSError(
                 domain: "WebUI",
                 code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "Failed to encode robots.txt"]
+                userInfo: [
+                    NSLocalizedDescriptionKey: "Failed to encode robots.txt"
+                ]
             )
         }
-        try data.write(to: directory.appending(path: "robots.txt"), options: [.atomic])
+        try data.write(
+            to: directory.appending(path: "robots.txt"), options: [.atomic])
     }
 }

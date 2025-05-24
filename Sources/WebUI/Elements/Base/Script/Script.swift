@@ -30,7 +30,9 @@ public struct Script: Element {
 
     private func renderTag() -> String {
         var additional: [String] = []
-        if let attribute, let attributeAttr = Attribute.bool(attribute.rawValue, true) {
+        if let attribute,
+            let attributeAttr = Attribute.bool(attribute.rawValue, true)
+        {
             additional.append(attributeAttr)
         }
         if let src, let srcAttr = Attribute.string("src", src) {
@@ -40,6 +42,7 @@ public struct Script: Element {
             additional: additional
         )
 
-        return AttributeBuilder.renderTag("script", attributes: attributes, content: content())
+        return AttributeBuilder.renderTag(
+            "script", attributes: attributes, content: content())
     }
 }

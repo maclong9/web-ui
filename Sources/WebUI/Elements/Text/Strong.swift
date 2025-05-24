@@ -67,6 +67,7 @@ public struct Strong: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag("strong", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "strong", attributes: attributes, content: content)
     }
 }

@@ -78,6 +78,7 @@ public struct Preformatted: Element {
             data: data
         )
         let content = contentBuilder().map { $0.render() }.joined()
-        return AttributeBuilder.renderTag("pre", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "pre", attributes: attributes, content: content)
     }
 }

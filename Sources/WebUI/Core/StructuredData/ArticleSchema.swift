@@ -73,9 +73,13 @@ extension StructuredData {
         // Handle different publisher types
         if let publisher = publisher {
             if let publisherName = publisher as? String {
-                data["publisher"] = ["@type": "Organization", "name": publisherName]
+                data["publisher"] = [
+                    "@type": "Organization", "name": publisherName,
+                ]
             } else if let publisherData = publisher as? StructuredData {
-                if publisherData.type == .organization || publisherData.type == .person {
+                if publisherData.type == .organization
+                    || publisherData.type == .person
+                {
                     // Extract the raw data from the structured data object
                     let publisherDict = publisherData.getData()
                     var typeDict = publisherDict
@@ -86,7 +90,8 @@ extension StructuredData {
         }
 
         if let dateModified = dateModified {
-            data["dateModified"] = ISO8601DateFormatter().string(from: dateModified)
+            data["dateModified"] = ISO8601DateFormatter().string(
+                from: dateModified)
         }
 
         if let description = description {
@@ -182,7 +187,8 @@ extension StructuredData {
         }
 
         if let dateModified = dateModified {
-            data["dateModified"] = ISO8601DateFormatter().string(from: dateModified)
+            data["dateModified"] = ISO8601DateFormatter().string(
+                from: dateModified)
         }
 
         if let description = description {

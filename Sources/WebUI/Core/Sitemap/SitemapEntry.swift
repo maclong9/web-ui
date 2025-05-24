@@ -82,7 +82,9 @@ public struct SitemapEntry: Equatable, Hashable {
     ///   ```swift
     ///   let homepage = SitemapEntry.homepage(baseURL: "https://example.com")
     ///   ```
-    public static func homepage(baseURL: String, lastModified: Date? = nil) -> SitemapEntry {
+    public static func homepage(baseURL: String, lastModified: Date? = nil)
+        -> SitemapEntry
+    {
         SitemapEntry(
             url: baseURL,
             lastModified: lastModified,

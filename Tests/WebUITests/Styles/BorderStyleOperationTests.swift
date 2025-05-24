@@ -61,10 +61,12 @@ import Testing
 
     @Test("Border with nil width")
     func testBorderWithNilWidth() async throws {
-        let params = BorderStyleOperation.Parameters(width: nil, color: .blue(._500))
+        let params = BorderStyleOperation.Parameters(
+            width: nil, color: .blue(._500))
         let classes = BorderStyleOperation.shared.applyClasses(params: params)
 
-        #expect(classes.contains("border") || classes.contains("border-blue-500"))
+        #expect(
+            classes.contains("border") || classes.contains("border-blue-500"))
     }
 
     @Test("Border with empty edges")

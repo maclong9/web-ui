@@ -48,12 +48,12 @@ public struct SpacingStyleOperation: StyleOperation, @unchecked Sendable {
         }
 
         switch params.axis {
-        case .horizontal:
-            return ["space-x-\(length)"]
-        case .vertical:
-            return ["space-y-\(length)"]
-        case .both:
-            return ["space-x-\(length)", "space-y-\(length)"]
+            case .horizontal:
+                return ["space-x-\(length)"]
+            case .vertical:
+                return ["space-y-\(length)"]
+            case .both:
+                return ["space-x-\(length)", "space-y-\(length)"]
         }
     }
 

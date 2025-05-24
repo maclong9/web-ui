@@ -96,10 +96,14 @@ public struct FontStyleOperation: StyleOperation, @unchecked Sendable {
 
         if let size = params.size { classes.append(size.className) }
         if let weight = params.weight { classes.append(weight.className) }
-        if let alignment = params.alignment { classes.append(alignment.className) }
+        if let alignment = params.alignment {
+            classes.append(alignment.className)
+        }
         if let tracking = params.tracking { classes.append(tracking.className) }
         if let leading = params.leading { classes.append(leading.className) }
-        if let decoration = params.decoration { classes.append(decoration.className) }
+        if let decoration = params.decoration {
+            classes.append(decoration.className)
+        }
         if let wrapping = params.wrapping { classes.append(wrapping.className) }
         if let color = params.color { classes.append("text-\(color.rawValue)") }
         if let family = params.family { classes.append("font-[\(family)]") }

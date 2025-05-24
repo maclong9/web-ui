@@ -94,7 +94,8 @@ extension ResponsiveBuilder {
     public func hidden(_ isHidden: Bool = true) -> ResponsiveBuilder {
         let params = VisibilityStyleOperation.Parameters(isHidden: isHidden)
 
-        return VisibilityStyleOperation.shared.applyToBuilder(self, params: params)
+        return VisibilityStyleOperation.shared.applyToBuilder(
+            self, params: params)
     }
 }
 

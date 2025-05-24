@@ -88,7 +88,9 @@ public struct TextArea: Element {
         if let type, let typeAttr = Attribute.typed("type", type) {
             additional.append(typeAttr)
         }
-        if let placeholder, let placeholderAttr = Attribute.string("placeholder", placeholder) {
+        if let placeholder,
+            let placeholderAttr = Attribute.string("placeholder", placeholder)
+        {
             additional.append(placeholderAttr)
         }
         if let autofocusAttr = Attribute.bool("autofocus", autofocus) {
@@ -106,6 +108,7 @@ public struct TextArea: Element {
             additional: additional
         )
         let content = value ?? ""
-        return AttributeBuilder.renderTag("textarea", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "textarea", attributes: attributes, content: content)
     }
 }

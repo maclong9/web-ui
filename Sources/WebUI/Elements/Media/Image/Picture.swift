@@ -82,7 +82,9 @@ public struct Picture: Element {
         // Add source elements
         for source in sources {
             var sourceAttributes: [String] = []
-            if let type = source.type, let typeAttr = Attribute.string("type", type.rawValue) {
+            if let type = source.type,
+                let typeAttr = Attribute.string("type", type.rawValue)
+            {
                 sourceAttributes.append(typeAttr)
             }
             if let srcsetAttr = Attribute.string("srcset", source.src) {
@@ -107,6 +109,7 @@ public struct Picture: Element {
             data: data
         ).render()
 
-        return AttributeBuilder.renderTag("picture", attributes: attributes, content: content)
+        return AttributeBuilder.renderTag(
+            "picture", attributes: attributes, content: content)
     }
 }

@@ -77,9 +77,12 @@ extension StyleOperation {
     ///   - params: The parameters for this style operation
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
     /// - Returns: A new element with the styles applied
-    public func applyTo<T: HTML>(_ content: T, params: Parameters, modifiers: [Modifier] = []) -> StyleModifier<T> {
+    public func applyTo<T: HTML>(
+        _ content: T, params: Parameters, modifiers: [Modifier] = []
+    ) -> StyleModifier<T> {
         let classes = applyClasses(params: params)
-        let newClasses = StyleUtilities.combineClasses(classes, withModifiers: modifiers)
+        let newClasses = StyleUtilities.combineClasses(
+            classes, withModifiers: modifiers)
 
         return StyleModifier(content: content, classes: newClasses)
     }
@@ -91,7 +94,9 @@ extension StyleOperation {
     ///   - params: The parameters for this style operation
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
     /// - Returns: A new element with the styles applied
-    public func applyToElement<T: HTML>(_ element: T, params: Parameters, modifiers: Modifier...) -> StyleModifier<T> {
+    public func applyToElement<T: HTML>(
+        _ element: T, params: Parameters, modifiers: Modifier...
+    ) -> StyleModifier<T> {
         applyTo(element, params: params, modifiers: modifiers)
     }
 
@@ -101,7 +106,9 @@ extension StyleOperation {
     ///   - builder: The responsive builder to apply styles to
     ///   - params: The parameters for this style operation
     /// - Returns: The builder for method chaining
-    public func applyToBuilder(_ builder: ResponsiveBuilder, params: Parameters) -> ResponsiveBuilder {
+    public func applyToBuilder(_ builder: ResponsiveBuilder, params: Parameters)
+        -> ResponsiveBuilder
+    {
         let classes = applyClasses(params: params)
         for className in classes {
             builder.addClass(className)

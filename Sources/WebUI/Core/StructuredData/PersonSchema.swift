@@ -74,7 +74,10 @@ extension StructuredData {
         }
 
         if let address = address {
-            data["address"] = address.merging(["@type": "PostalAddress"]) { _, new in new }
+            data["address"] = address.merging(["@type": "PostalAddress"]) {
+                _, new in
+                new
+            }
         }
 
         if let birthDate = birthDate {

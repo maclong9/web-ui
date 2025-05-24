@@ -128,9 +128,13 @@ public struct HTMLClassContainer<Content: HTML>: HTML {
         }
 
         // Check if content starts with an HTML tag
-        guard let tagRange = renderedContent.range(of: "<[^>]+>", options: .regularExpression) else {
+        guard
+            let tagRange = renderedContent.range(
+                of: "<[^>]+>", options: .regularExpression)
+        else {
             // If not, wrap the content in a span with the classes
-            return "<span class=\"\(classes.joined(separator: " "))\">\(renderedContent)</span>"
+            return
+                "<span class=\"\(classes.joined(separator: " "))\">\(renderedContent)</span>"
         }
 
         // Extract the tag
@@ -142,22 +146,26 @@ public struct HTMLClassContainer<Content: HTML>: HTML {
             let tagString = String(tag)
 
             guard let classStart = tagString.range(of: " class=\""),
-                let classEnd = tagString.range(of: "\"", range: classStart.upperBound..<tagString.endIndex)
+                let classEnd = tagString.range(
+                    of: "\"", range: classStart.upperBound..<tagString.endIndex)
             else {
                 return renderedContent
             }
 
-            let existingClasses = String(tagString[classStart.upperBound..<classEnd.lowerBound])
+            let existingClasses = String(
+                tagString[classStart.upperBound..<classEnd.lowerBound])
             let allClasses =
                 existingClasses.isEmpty
-                ? classes.joined(separator: " ") : "\(existingClasses) \(classes.joined(separator: " "))"
+                ? classes.joined(separator: " ")
+                : "\(existingClasses) \(classes.joined(separator: " "))"
 
             let modifiedTag = tagString.replacingCharacters(
                 in: classStart.upperBound..<classEnd.lowerBound,
                 with: allClasses
             )
 
-            return renderedContent.replacingCharacters(in: tagRange, with: modifiedTag)
+            return renderedContent.replacingCharacters(
+                in: tagRange, with: modifiedTag)
         } else {
             // Insert a class attribute before the closing >
             let modifiedTag = String(tag).replacingOccurrences(
@@ -166,7 +174,8 @@ public struct HTMLClassContainer<Content: HTML>: HTML {
                 options: .regularExpression
             )
 
-            return renderedContent.replacingCharacters(in: tagRange, with: modifiedTag)
+            return renderedContent.replacingCharacters(
+                in: tagRange, with: modifiedTag)
         }
     }
 }

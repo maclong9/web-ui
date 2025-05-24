@@ -11,7 +11,10 @@ struct PageLayout: Element {
     var description: String
     var content: HTMLContentBuilder
 
-    init(title: String, description: String, @HTMLBuilder content: @escaping HTMLContentBuilder) {
+    init(
+        title: String, description: String,
+        @HTMLBuilder content: @escaping HTMLContentBuilder
+    ) {
         self.title = title
         self.description = description
         self.content = content
@@ -45,19 +48,31 @@ struct PageLayout: Element {
                     .padding()
                     .margins(at: .bottom)
 
-                    HTMLContainer(AnyHTML(HTMLString(content: content().map { $0.render() }.joined())))
+                    HTMLString(content: content().map { $0.render() }.joined())
                 }
                 .padding()
                 .margins(at: .horizontal, auto: true)
                 .frame(maxWidth: .container(.extraLarge))
             }
+            Stack {
+                "Placeholder content for testing responsive modifiers"
+            }
+            .background(color: .gray(._100))
+            .padding(of: 4)
+
             Footer {
                 Stack {
                     Text { "© 2024 My Portfolio. All rights reserved." }
                     Stack {
-                        Link(to: "https://github.com", newTab: true) { "GitHub" }
-                        Link(to: "https://linkedin.com", newTab: true) { "LinkedIn" }
-                        Link(to: "https://twitter.com", newTab: true) { "Twitter" }
+                        Link(to: "https://github.com", newTab: true) {
+                            "GitHub"
+                        }
+                        Link(to: "https://linkedin.com", newTab: true) {
+                            "LinkedIn"
+                        }
+                        Link(to: "https://twitter.com", newTab: true) {
+                            "Twitter"
+                        }
                     }
                     .flex()
                     .spacing(of: 4)
@@ -80,10 +95,13 @@ struct ProjectCard: Element {
 
     var body: some HTML {
         Stack {
-            Image(source: imageUrl, description: title, size: MediaSize(width: 400, height: 300))
-                .frame(width: .full)
-                .aspectRatioVideo()
-                .overflow(.hidden)
+            Image(
+                source: imageUrl, description: title,
+                size: MediaSize(width: 400, height: 300)
+            )
+            .frame(width: .full)
+            .aspectRatioVideo()
+            .overflow(.hidden)
 
             Stack {
                 Heading(.title) { title }
@@ -186,15 +204,19 @@ struct HomePage: Document {
     var body: some HTML {
         PageLayout(
             title: "Welcome to My Portfolio",
-            description: "Full-stack developer passionate about creating amazing web experiences"
+            description:
+                "Full-stack developer passionate about creating amazing web experiences"
         ) {
             Stack {
                 Stack {
-                    Image(source: "/images/profile.jpg", description: "Profile Photo")
-                        .frame(width: .spacing(60), height: .spacing(60))
-                        .rounded(.full)
-                        .overflow(.hidden)
-                        .margins(at: .horizontal, auto: true)
+                    Image(
+                        source: "/images/profile.jpg",
+                        description: "Profile Photo"
+                    )
+                    .frame(width: .spacing(60), height: .spacing(60))
+                    .rounded(.full)
+                    .overflow(.hidden)
+                    .margins(at: .horizontal, auto: true)
 
                     Heading(.headline) { "Hi, I'm Jane Doe" }
                         .font(alignment: .center)
@@ -233,7 +255,8 @@ struct HomePage: Document {
                 Stack {
                     ProjectCard(
                         title: "Portfolio Website",
-                        description: "A responsive portfolio website built with SwiftUI-like pattern.",
+                        description:
+                            "A responsive portfolio website built with SwiftUI-like pattern.",
                         technologies: ["Swift", "WebUI", "HTML", "CSS"],
                         imageUrl: "/images/project1.jpg",
                         link: "#"
@@ -241,7 +264,8 @@ struct HomePage: Document {
 
                     ProjectCard(
                         title: "Task Manager",
-                        description: "A web application for managing tasks and projects.",
+                        description:
+                            "A web application for managing tasks and projects.",
                         technologies: ["JavaScript", "React", "Node.js"],
                         imageUrl: "/images/project2.jpg",
                         link: "#"
@@ -277,9 +301,12 @@ struct AboutPage: Document {
         ) {
             Stack {
                 Stack {
-                    Image(source: "/images/profile.jpg", description: "Profile Photo")
-                        .frame(width: .full)
-                        .rounded(.lg)
+                    Image(
+                        source: "/images/profile.jpg",
+                        description: "Profile Photo"
+                    )
+                    .frame(width: .full)
+                    .rounded(.lg)
 
                     Text {
                         "I'm a full-stack developer with over 5 years of experience building web and mobile applications. I have a passion for clean code, intuitive user interfaces, and solving complex problems with elegant solutions."
@@ -299,17 +326,26 @@ struct AboutPage: Document {
                 Stack {
                     SkillCategory(
                         category: "Frontend",
-                        skills: ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Vue.js"]
+                        skills: [
+                            "HTML", "CSS", "JavaScript", "TypeScript", "React",
+                            "Vue.js",
+                        ]
                     )
 
                     SkillCategory(
                         category: "Backend",
-                        skills: ["Swift", "Node.js", "Python", "Express", "Hummingbird", "MongoDB"]
+                        skills: [
+                            "Swift", "Node.js", "Python", "Express",
+                            "Hummingbird", "MongoDB",
+                        ]
                     )
 
                     SkillCategory(
                         category: "Tools & Others",
-                        skills: ["Git", "Docker", "AWS", "CI/CD", "Figma", "Responsive Design"]
+                        skills: [
+                            "Git", "Docker", "AWS", "CI/CD", "Figma",
+                            "Responsive Design",
+                        ]
                     )
                 }
                 .grid(columns: 1)
@@ -367,7 +403,8 @@ struct ProjectsPage: Document {
                 Stack {
                     ProjectCard(
                         title: "Portfolio Website",
-                        description: "A responsive portfolio website built with SwiftUI-like pattern.",
+                        description:
+                            "A responsive portfolio website built with SwiftUI-like pattern.",
                         technologies: ["Swift", "WebUI", "HTML", "CSS"],
                         imageUrl: "/images/project1.jpg",
                         link: "#"
@@ -375,7 +412,8 @@ struct ProjectsPage: Document {
 
                     ProjectCard(
                         title: "Task Manager",
-                        description: "A web application for managing tasks and projects.",
+                        description:
+                            "A web application for managing tasks and projects.",
                         technologies: ["JavaScript", "React", "Node.js"],
                         imageUrl: "/images/project2.jpg",
                         link: "#"
@@ -383,15 +421,19 @@ struct ProjectsPage: Document {
 
                     ProjectCard(
                         title: "E-commerce Store",
-                        description: "A fully functional e-commerce store with product listings, cart, and checkout.",
-                        technologies: ["React", "Node.js", "MongoDB", "Stripe"],
+                        description:
+                            "A fully functional e-commerce store with product listings, cart, and checkout.",
+                        technologies: [
+                            "React", "Node.js", "MongoDB", "Stripe",
+                        ],
                         imageUrl: "/images/project3.jpg",
                         link: "#"
                     )
 
                     ProjectCard(
                         title: "Weather App",
-                        description: "A weather application that shows current weather and forecasts.",
+                        description:
+                            "A weather application that shows current weather and forecasts.",
                         technologies: ["Swift", "iOS", "API Integration"],
                         imageUrl: "/images/project4.jpg",
                         link: "#"
@@ -399,15 +441,19 @@ struct ProjectsPage: Document {
 
                     ProjectCard(
                         title: "Blog Platform",
-                        description: "A blogging platform with user authentication and content management.",
-                        technologies: ["Node.js", "Express", "MongoDB", "React"],
+                        description:
+                            "A blogging platform with user authentication and content management.",
+                        technologies: [
+                            "Node.js", "Express", "MongoDB", "React",
+                        ],
                         imageUrl: "/images/project5.jpg",
                         link: "#"
                     )
 
                     ProjectCard(
                         title: "Recipe App",
-                        description: "An application for browsing and saving recipes.",
+                        description:
+                            "An application for browsing and saving recipes.",
                         technologies: ["Swift", "iOS", "Core Data"],
                         imageUrl: "/images/project6.jpg",
                         link: "#"
@@ -435,7 +481,8 @@ struct ContactPage: Document {
     var body: some HTML {
         PageLayout(
             title: "Contact Me",
-            description: "Get in touch for collaborations, job opportunities, or just to say hello"
+            description:
+                "Get in touch for collaborations, job opportunities, or just to say hello"
         ) {
             Stack {
                 Stack {
@@ -471,29 +518,35 @@ struct ContactPage: Document {
                             .margins(of: 4, at: .top)
 
                         Stack {
-                            Link(to: "https://github.com", newTab: true) { "GitHub" }
-                                .padding(of: 2)
-                                .background(color: .gray(._800))
-                                .font(color: .white())
-                                .rounded(.md)
-                                .frame(width: .full)
-                                .font(alignment: .center)
+                            Link(to: "https://github.com", newTab: true) {
+                                "GitHub"
+                            }
+                            .padding(of: 2)
+                            .background(color: .gray(._800))
+                            .font(color: .white())
+                            .rounded(.md)
+                            .frame(width: .full)
+                            .font(alignment: .center)
 
-                            Link(to: "https://linkedin.com", newTab: true) { "LinkedIn" }
-                                .padding(of: 2)
-                                .background(color: .blue(._700))
-                                .font(color: .white())
-                                .rounded(.md)
-                                .frame(width: .full)
-                                .font(alignment: .center)
+                            Link(to: "https://linkedin.com", newTab: true) {
+                                "LinkedIn"
+                            }
+                            .padding(of: 2)
+                            .background(color: .blue(._700))
+                            .font(color: .white())
+                            .rounded(.md)
+                            .frame(width: .full)
+                            .font(alignment: .center)
 
-                            Link(to: "https://twitter.com", newTab: true) { "Twitter" }
-                                .padding(of: 2)
-                                .background(color: .blue(._400))
-                                .font(color: .white())
-                                .rounded(.md)
-                                .frame(width: .full)
-                                .font(alignment: .center)
+                            Link(to: "https://twitter.com", newTab: true) {
+                                "Twitter"
+                            }
+                            .padding(of: 2)
+                            .background(color: .blue(._400))
+                            .font(color: .white())
+                            .rounded(.md)
+                            .frame(width: .full)
+                            .font(alignment: .center)
                         }
                         .spacing(of: 3, along: .vertical)
                         .margins(of: 4, at: .top)
@@ -525,7 +578,10 @@ struct Portfolio: Website {
             site: "Jane Doe",
             description: "Full-stack developer portfolio",
             author: "Jane Doe",
-            keywords: ["developer", "portfolio", "web development", "swift", "javascript"],
+            keywords: [
+                "developer", "portfolio", "web development", "swift",
+                "javascript",
+            ],
             twitter: "janedoe",
             themeColor: .init("#3B82F6")
         )
@@ -611,15 +667,28 @@ struct ComprehensiveWebsiteTests {
         // Test build generation
         try portfolio.build(to: URL(fileURLWithPath: ".build-portfolio"))
 
-        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/index.html"))
-        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/about.html"))
-        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/projects.html"))
-        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/contact.html"))
-        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/sitemap.xml"))
-        #expect(FileManager.default.fileExists(atPath: ".build-portfolio/robots.txt"))
+        #expect(
+            FileManager.default.fileExists(
+                atPath: ".build-portfolio/index.html"))
+        #expect(
+            FileManager.default.fileExists(
+                atPath: ".build-portfolio/about.html"))
+        #expect(
+            FileManager.default.fileExists(
+                atPath: ".build-portfolio/projects.html"))
+        #expect(
+            FileManager.default.fileExists(
+                atPath: ".build-portfolio/contact.html"))
+        #expect(
+            FileManager.default.fileExists(
+                atPath: ".build-portfolio/sitemap.xml"))
+        #expect(
+            FileManager.default.fileExists(
+                atPath: ".build-portfolio/robots.txt"))
 
         // Test HTML content and structure
-        let indexContent = try String(contentsOfFile: ".build-portfolio/index.html", encoding: .utf8)
+        let indexContent = try String(
+            contentsOfFile: ".build-portfolio/index.html", encoding: .utf8)
         #expect(indexContent.contains("<html"))
         #expect(indexContent.contains("<head>"))
         #expect(indexContent.contains("<body>"))
@@ -657,22 +726,39 @@ struct ComprehensiveWebsiteTests {
         #expect(indexContent.contains("rounded"))
 
         // Test sitemap content
-        let sitemapContent = try String(contentsOfFile: ".build-portfolio/sitemap.xml", encoding: .utf8)
-        #expect(sitemapContent.contains("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"))
-        #expect(sitemapContent.contains("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">"))
-        #expect(sitemapContent.contains("<loc>https://janedoe.dev/index.html</loc>"))
-        #expect(sitemapContent.contains("<loc>https://janedoe.dev/about.html</loc>"))
-        #expect(sitemapContent.contains("<loc>https://janedoe.dev/projects.html</loc>"))
-        #expect(sitemapContent.contains("<loc>https://janedoe.dev/contact.html</loc>"))
+        let sitemapContent = try String(
+            contentsOfFile: ".build-portfolio/sitemap.xml", encoding: .utf8)
+        #expect(
+            sitemapContent.contains(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"))
+        #expect(
+            sitemapContent.contains(
+                "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">"
+            ))
+        #expect(
+            sitemapContent.contains("<loc>https://janedoe.dev/index.html</loc>")
+        )
+        #expect(
+            sitemapContent.contains("<loc>https://janedoe.dev/about.html</loc>")
+        )
+        #expect(
+            sitemapContent.contains(
+                "<loc>https://janedoe.dev/projects.html</loc>"))
+        #expect(
+            sitemapContent.contains(
+                "<loc>https://janedoe.dev/contact.html</loc>"))
         #expect(sitemapContent.contains("<loc>https://janedoe.dev/blog</loc>"))
-        #expect(sitemapContent.contains("<loc>https://janedoe.dev/resume.pdf</loc>"))
+        #expect(
+            sitemapContent.contains("<loc>https://janedoe.dev/resume.pdf</loc>")
+        )
         #expect(sitemapContent.contains("<changefreq>weekly</changefreq>"))
         #expect(sitemapContent.contains("<changefreq>monthly</changefreq>"))
         #expect(sitemapContent.contains("<priority>0.8</priority>"))
         #expect(sitemapContent.contains("<priority>0.6</priority>"))
 
         // Test robots.txt content
-        let robotsContent = try String(contentsOfFile: ".build-portfolio/robots.txt", encoding: .utf8)
+        let robotsContent = try String(
+            contentsOfFile: ".build-portfolio/robots.txt", encoding: .utf8)
         #expect(robotsContent.contains("User-agent: *"))
         #expect(robotsContent.contains("Disallow: /admin/"))
         #expect(robotsContent.contains("Disallow: /private/"))
@@ -680,7 +766,8 @@ struct ComprehensiveWebsiteTests {
         #expect(robotsContent.contains("Crawl-delay: 10"))
         #expect(robotsContent.contains("User-agent: Googlebot"))
         #expect(robotsContent.contains("Disallow: /temp/"))
-        #expect(robotsContent.contains("Sitemap: https://janedoe.dev/sitemap.xml"))
+        #expect(
+            robotsContent.contains("Sitemap: https://janedoe.dev/sitemap.xml"))
 
         // Clean up
         try FileManager.default.removeItem(atPath: ".build-portfolio")
