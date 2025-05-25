@@ -28,12 +28,3 @@ public protocol Element: HTML {
     /// - Returns: A composition of HTML elements that make up this component.
     var body: Body { get }
 }
-
-// MARK: - Default Implementations
-
-extension Element {
-    /// Default implementation that renders the body content.
-    public func render() -> String {
-        body.render()
-    }
-}

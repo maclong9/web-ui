@@ -60,6 +60,8 @@ public struct ResponsiveStyleBuilder {
     }
 }
 
+
+
 /// Protocol defining the interface for responsive style modifications.
 public protocol ResponsiveModification {
     /// Applies the modification to the given responsive builder.
