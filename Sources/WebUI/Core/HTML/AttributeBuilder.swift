@@ -2,8 +2,8 @@ import Foundation
 
 /// Utility for building HTML attributes
 ///
-/// The `AttributeBuilder` provides helper methods for generating HTML attribute strings
-/// in a consistent way across all elements.
+/// The `AttributeBuilder` provides helper methods for generating HTML
+/// attribute strings in a consistent way across all elements.
 public enum AttributeBuilder {
     /// Builds a collection of HTML attributes from common parameters
     ///
@@ -24,32 +24,30 @@ public enum AttributeBuilder {
         additional: [String] = []
     ) -> [String] {
         var attributes: [String] = []
-
+        // ID
         if let id = id {
             attributes.append(Attribute.string("id", id)!)
         }
-
+        // Classes
         if let classes = classes, !classes.isEmpty {
             attributes.append(
                 Attribute.string("class", classes.joined(separator: " "))!)
         }
-
+        // Aria Role
         if let role = role {
             attributes.append(Attribute.typed("role", role)!)
         }
-
+        // Aria Label
         if let label = label {
             attributes.append(Attribute.string("aria-label", label)!)
         }
-
+        // Data Attributes
         if let data = data {
             for (key, value) in data {
                 attributes.append(Attribute.string("data-\(key)", value)!)
             }
         }
-
         attributes.append(contentsOf: additional)
-
         return attributes
     }
 
@@ -71,7 +69,6 @@ public enum AttributeBuilder {
     ) -> String {
         let attributeString =
             attributes.isEmpty ? "" : " " + attributes.joined(separator: " ")
-
         if isSelfClosing {
             return "<\(tag)\(attributeString) />"
         } else if hasNoClosingTag {

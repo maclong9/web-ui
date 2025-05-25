@@ -2,12 +2,14 @@ import Logging
 
 /// A structure that defines a theme configuration for generating CSS custom properties.
 ///
-/// This is typically used to define design tokens (such as colors, spacing, and typography settings) that
-/// can be consumed by a frontend through generated CSS variables. The theme system provides a consistent
-/// way to manage design tokens across an entire application.
+/// This is typically used to define design tokens (such as colors, spacing,
+/// and typography settings) that can be consumed by a frontend through
+/// generated CSS variables. The theme system provides a consistent way to
+/// manage design tokens across an entire application.
 ///
-/// The `Theme` struct is highly customizable and supports both standard categories (like colors and spacing)
-/// and additional custom categories through the `custom` parameter.
+/// The `Theme` struct is highly customizable and supports both standard
+/// categories (like colors and spacing) and additional custom categories
+/// through the `custom` parameter.
 ///
 /// - Example:
 ///   ```swift
@@ -72,8 +74,8 @@ public struct Theme {
 
     /// Creates a new `Theme` configuration.
     ///
-    /// All parameters are optional and default to empty dictionaries. Each parameter represents
-    /// a category of design tokens that can be referenced in your CSS.
+    /// All parameters are optional and default to empty dictionaries. Each
+    /// parameter represents a category of design tokens that can be referenced in your CSS.
     ///
     /// - Parameters:
     ///   - fonts: Custom font definitions, such as font families or font stacks.
@@ -160,11 +162,13 @@ public struct Theme {
 
     /// Generates a CSS snippet containing all defined theme tokens.
     ///
-    /// This method converts all the theme tokens into CSS custom properties (variables),
-    /// organizing them by category. Each token becomes a `--variable-name: value;` line,
-    /// namespaced by its category for clarity and to prevent naming conflicts.
+    /// This method converts all the theme tokens into CSS custom properties
+    /// (variables), organizing them by category. Each token becomes a
+    /// `--variable-name: value;` line, namespaced by its category for clarity
+    /// and to prevent naming conflicts.
     ///
-    /// - Returns: A formatted `String` containing CSS variable definitions, or an empty string if no properties are defined.
+    /// - Returns: A formatted `String` containing CSS variable definitions, or
+    /// an empty string if no properties are defined.
     ///
     /// - Example output:
     ///   ```css
@@ -233,7 +237,8 @@ public struct Theme {
         return css
     }
 
-    /// Generates a complete CSS file for the theme with default breakpoints and dark mode variant.
+    /// Generates a complete CSS file for the theme with default breakpoints
+    /// and dark mode variant.
     ///
     /// This method creates a full CSS file structure that includes:
     /// - Default breakpoint definitions

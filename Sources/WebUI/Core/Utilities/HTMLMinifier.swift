@@ -2,9 +2,10 @@ import Foundation
 
 /// Provides HTML minification functionality to reduce file size and improve performance.
 ///
-/// The `HTMLMinifier` removes unnecessary whitespace, comments, and redundant formatting
-/// from HTML content while preserving the structure and functionality of the document.
-/// This optimization reduces bandwidth usage and improves page load times.
+/// The `HTMLMinifier` removes unnecessary whitespace, comments, and redundant
+/// formatting from HTML content while preserving the structure and
+/// functionality of the document.  This optimization reduces bandwidth usage
+/// and improves page load times.
 ///
 /// ## Example
 /// ```swift

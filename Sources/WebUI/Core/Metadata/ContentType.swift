@@ -1,6 +1,7 @@
 /// Defines the type of content for Open Graph metadata.
 ///
-/// Content type affects how social media platforms and search engines categorize and display the content.
+/// Content type affects how social media platforms and search engines
+/// categorize and display the content.
 public enum ContentType: String {
     /// Standard website content type.
     case website

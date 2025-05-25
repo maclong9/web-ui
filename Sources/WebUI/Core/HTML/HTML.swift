@@ -2,12 +2,12 @@ import Foundation
 
 /// Represents an HTML component or element.
 ///
-/// The `HTML` protocol is the foundation for all HTML elements in WebUI. It defines
-/// how components describe their structure and content.
+/// The `HTML` protocol is the foundation for all HTML elements in WebUI. It
+/// defines how components describe their structure and content.
 ///
-/// Elements conforming to HTML can be composed together to create complex layouts
-/// while maintaining a declarative syntax. The protocol handles both primitive HTML
-/// string content and composite element structures.
+/// Elements conforming to HTML can be composed together to create complex
+/// layouts while maintaining a declarative syntax. The protocol handles both
+/// primitive HTML string content and composite element structures.
 ///
 /// ## Example
 /// ```swift
@@ -32,9 +32,9 @@ public protocol HTML {
 
     /// The content and structure of this HTML component.
     ///
-    /// The `body` property defines the component's layout and content hierarchy.
-    /// This pattern mirrors SwiftUI's declarative syntax, making the code more
-    /// intuitive and maintainable.
+    /// The `body` property defines the component's layout and content
+    /// hierarchy.  This pattern mirrors SwiftUI's declarative syntax, making
+    /// the code more intuitive and maintainable.
     ///
     /// - Returns: A composition of HTML elements that make up this component.
     var body: Body { get }

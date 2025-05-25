@@ -2,9 +2,10 @@ import Foundation
 
 /// Provides HTML escaping functionality to prevent XSS attacks and ensure proper HTML rendering.
 ///
-/// The `HTMLEscaper` converts special characters that have meaning in HTML into their
-/// corresponding HTML entities, ensuring that user content is safely displayed without
-/// breaking HTML structure or introducing security vulnerabilities.
+/// The `HTMLEscaper` converts special characters that have meaning in HTML
+/// into their corresponding HTML entities, ensuring that user content is
+/// safely displayed without breaking HTML structure or introducing security
+/// vulnerabilities.
 ///
 /// ## Example
 /// ```swift

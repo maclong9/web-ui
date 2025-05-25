@@ -11,18 +11,6 @@ public enum Attribute {
         return "\(name)=\"\(escapedValue)\""
     }
 
-    /// Builds an HTML attribute string for a non-optional value.
-    ///
-    /// - Parameters:
-    ///   - name: Attribute name (e.g., "id", "class", "src").
-    ///   - value: Attribute value.
-    /// - Returns: Formatted attribute string (e.g., `id="header"`) or nil if value is empty.
-    public static func string(_ name: String, _ value: String) -> String? {
-        guard !value.isEmpty else { return nil }
-        let escapedValue = HTMLEscaper.escapeAttribute(value)
-        return "\(name)=\"\(escapedValue)\""
-    }
-
     /// Builds a boolean HTML attribute if enabled.
     ///
     /// - Parameters:
@@ -45,21 +33,6 @@ public enum Attribute {
         guard let stringValue = value?.rawValue, !stringValue.isEmpty else {
             return nil
         }
-        let escapedValue = HTMLEscaper.escapeAttribute(stringValue)
-        return "\(name)=\"\(escapedValue)\""
-    }
-
-    /// Builds an HTML attribute string from a non-optional typed enum value.
-    ///
-    /// - Parameters:
-    ///   - name: Attribute name (e.g., "type", "role").
-    ///   - value: Enum value with String rawValue.
-    /// - Returns: Formatted attribute string (e.g., `type="submit"`) or nil if value is empty.
-    public static func typed<T: RawRepresentable>(_ name: String, _ value: T)
-        -> String?
-    where T.RawValue == String {
-        let stringValue = value.rawValue
-        guard !stringValue.isEmpty else { return nil }
         let escapedValue = HTMLEscaper.escapeAttribute(stringValue)
         return "\(name)=\"\(escapedValue)\""
     }

@@ -2,9 +2,11 @@ import Foundation
 
 /// Represents a rule in a robots.txt file.
 ///
-/// Used to define instructions for web crawlers about which parts of the website should be crawled.
-/// Each rule specifies which user agents (crawlers) it applies to and what paths they can access.
-/// For more information about the robots.txt standard, see: https://developers.google.com/search/docs/crawling-indexing/robots/intro
+/// Used to define instructions for web crawlers about which parts of the
+/// website should be crawled.  Each rule specifies which user agents
+/// (crawlers) it applies to and what paths they can access.  For more
+/// information about the robots.txt standard, see:
+/// https://developers.google.com/search/docs/crawling-indexing/robots/intro
 public struct RobotsRule: Equatable, Hashable {
     /// The user agent the rule applies to (e.g., "Googlebot" or "*" for all crawlers).
     public let userAgent: String

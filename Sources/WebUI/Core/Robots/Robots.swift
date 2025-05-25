@@ -2,14 +2,16 @@ import Foundation
 
 /// Provides functionality for generating robots.txt files.
 ///
-/// The `Robots` struct offers methods for creating standards-compliant robots.txt files
-/// that provide instructions to web crawlers about which parts of a website they can access.
+/// The `Robots` struct offers methods for creating standards-compliant
+/// robots.txt files that provide instructions to web crawlers about which
+/// parts of a website they can access.
 public struct Robots {
 
     /// Generates a robots.txt file content.
     ///
-    /// This method creates a standard robots.txt file that includes instructions for web crawlers,
-    /// including a reference to the sitemap if one exists.
+    /// This method creates a standard robots.txt file that includes
+    /// instructions for web crawlers, including a reference to the sitemap if
+    /// one exists.
     ///
     /// - Parameters:
     ///   - baseURL: The optional base URL of the website (e.g., "https://example.com").

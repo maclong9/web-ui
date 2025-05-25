@@ -2,9 +2,10 @@ import Foundation
 
 /// A protocol for defining website pages with a SwiftUI-like pattern.
 ///
-/// The `Document` protocol allows you to define website pages using a declarative syntax
-/// similar to SwiftUI. Pages specify their metadata and content through computed properties,
-/// making the code more readable and maintainable.
+/// The `Document` protocol allows you to define website pages using a
+/// declarative syntax similar to SwiftUI. Pages specify their metadata and
+/// content through computed properties, making the code more readable and
+/// maintainable.
 ///
 /// ## Example
 /// ```swift
@@ -24,8 +25,8 @@ public protocol Document {
 
     /// The metadata configuration for this document.
     ///
-    /// Defines the page title, description, and other metadata that will appear
-    /// in the HTML head section.
+    /// Defines the page title, description, and other metadata that will
+    /// appear in the HTML head section.
     var metadata: Metadata { get }
 
     /// The main content of the document.
@@ -36,8 +37,9 @@ public protocol Document {
 
     /// The URL path for this document.
     ///
-    /// If not provided, the path will be derived from the metadata title.
-    /// Use "/" or "index" for the root page, or specify custom paths like "about" or "blog/post".
+    /// If not provided, the path will be derived from the metadata title.  Use
+    /// "/" or "index" for the root page, or specify custom paths like "about"
+    /// or "blog/post".
     var path: String? { get }
 
     /// Optional JavaScript sources specific to this document.

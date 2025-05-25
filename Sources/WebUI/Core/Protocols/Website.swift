@@ -2,8 +2,9 @@ import Foundation
 
 /// A protocol for defining complete websites with a SwiftUI-like pattern.
 ///
-/// The `Website` protocol allows you to define websites using a declarative syntax
-/// similar to SwiftUI, with computed properties for metadata and routes.
+/// The `Website` protocol allows you to define websites using a declarative
+/// syntax similar to SwiftUI, with computed properties for metadata and
+/// routes.
 ///
 /// ## Example
 /// ```swift
@@ -21,14 +22,14 @@ import Foundation
 public protocol Website {
     /// The metadata configuration for this website.
     ///
-    /// Defines the default site title, description, and other metadata that will be
-    /// applied to all routes unless overridden.
+    /// Defines the default site title, description, and other metadata that
+    /// will be applied to all routes unless overridden.
     var metadata: Metadata { get }
 
     /// The routes that make up this website.
     ///
-    /// Each route represents a page in the website. Routes can override
-    /// the website's default metadata and styling as needed.
+    /// Each route represents a page in the website. Routes can override the
+    /// website's default metadata and styling as needed.
     @WebsiteRouteBuilder
     var routes: [any Document] { get }
 

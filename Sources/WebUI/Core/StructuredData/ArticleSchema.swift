@@ -51,8 +51,8 @@ extension StructuredData {
     ///   )
     ///   ```
     ///
-    /// - Note: For more control over the publisher entity, use the overloaded version
-    ///   of this method that accepts a StructuredData object as the publisher parameter.
+    /// - Note: For more control over the publisher entity, use the overloaded
+    /// version of this method that accepts a StructuredData object as the publisher parameter.
     public static func article(
         headline: String,
         image: String,

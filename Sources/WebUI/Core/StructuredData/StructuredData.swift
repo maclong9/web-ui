@@ -2,8 +2,8 @@ import Foundation
 
 /// Represents structured data in JSON-LD format for rich snippets in search results.
 ///
-/// The `StructuredData` struct provides a type-safe way to define structured data
-/// following various schema.org schemas like Article, Product, Organization, etc.
+/// The `StructuredData` struct provides a type-safe way to define structured
+/// data following various schema.org schemas like Article, Product, Organization, etc.
 public struct StructuredData {
     /// The type of schema used for this structured data.
     public let type: SchemaType
@@ -36,9 +36,7 @@ public struct StructuredData {
     ///     ]
     ///   )
     ///   ```
-    public static func custom(type: SchemaType, data: [String: Any])
-        -> StructuredData
-    {
+    public static func custom(type: SchemaType, data: [String: Any]) -> StructuredData {
         StructuredData(type: type, data: data)
     }
 
