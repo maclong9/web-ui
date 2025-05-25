@@ -155,16 +155,15 @@ struct MetadataTests {
         let lightFavicon = Favicon("/favicon.png", size: "32x32")
         #expect(lightFavicon.light == "/favicon.png")
         #expect(lightFavicon.dark == nil)
-        #expect(lightFavicon.type == "image/png")
+        #expect(lightFavicon.type.rawValue == "image/png")
         #expect(lightFavicon.size == "32x32")
 
         // Test with both light and dark mode
         let dualFavicon = Favicon(
-            "/favicon-light.png", dark: "/favicon-dark.png",
-            type: "image/svg+xml")
+            "/favicon-light.png", dark: "/favicon-dark.png", type: .png)
         #expect(dualFavicon.light == "/favicon-light.png")
         #expect(dualFavicon.dark == "/favicon-dark.png")
-        #expect(dualFavicon.type == "image/svg+xml")
+        #expect(dualFavicon.type.rawValue == "image/png")
         #expect(dualFavicon.size == nil)
     }
 
@@ -174,7 +173,7 @@ struct MetadataTests {
             Favicon(
                 "/favicon-32.png", dark: "/favicon-dark-32.png", size: "32x32"),
             Favicon("/favicon-16.png", size: "16x16"),
-            Favicon("/favicon.ico", type: "image/x-icon"),
+            Favicon("/favicon.ico", type: .icon),
         ]
 
         let metadata = Metadata(
@@ -188,7 +187,7 @@ struct MetadataTests {
         #expect(metadata.favicons?[0].light == "/favicon-32.png")
         #expect(metadata.favicons?[0].dark == "/favicon-dark-32.png")
         #expect(metadata.favicons?[1].size == "16x16")
-        #expect(metadata.favicons?[2].type == "image/x-icon")
+        #expect(metadata.favicons?[2].type.rawValue == "image/x-icon")
     }
 
     /// Tests that favicon is preserved when extending metadata.

@@ -2,10 +2,10 @@ import Foundation
 
 /// A protocol for building reusable HTML components with a SwiftUI-like pattern.
 ///
-/// The `Element` protocol extends `HTML` to provide a body property that follows
-/// the SwiftUI pattern for building declarative user interfaces. Elements define
-/// their content through the `body` property, making it easy to compose complex
-/// layouts from simple, reusable components.
+/// The `Element` protocol extends `HTML` to provide a body property that
+/// follows the SwiftUI pattern for building declarative user interfaces.
+/// Elements define their content through the `body` property, making it easy
+/// to compose complex layouts from simple, reusable components.
 ///
 /// ## Example
 /// ```swift

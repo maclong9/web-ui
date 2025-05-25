@@ -1,7 +1,7 @@
 /// Defines supported language locale for content.
 ///
-/// Used to specify the language of the document for accessibility and SEO purposes.
-/// The codes follow the ISO 639-1 standard for language codes.
+/// Used to specify the language of the document for accessibility and SEO
+/// purposes.  The codes follow the ISO 639-1 standard for language codes.
 public struct Locale: Sendable, Equatable {
     /// The raw string value of the locale
     public let rawValue: String

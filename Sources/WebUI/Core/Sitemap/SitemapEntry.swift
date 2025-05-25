@@ -3,8 +3,9 @@ import Foundation
 /// Represents a sitemap entry for a URL with metadata.
 ///
 /// Used to define information for a URL to be included in a sitemap.xml file.
-/// Follows the Sitemap protocol as defined at https://www.sitemaps.org/protocol.html.
-/// Sitemap entries enhance SEO by providing search engines with metadata about your content.
+/// Follows the Sitemap protocol as defined at
+/// https://www.sitemaps.org/protocol.html.  Sitemap entries enhance SEO by
+/// providing search engines with metadata about your content.
 public struct SitemapEntry: Equatable, Hashable {
     /// The URL of the page.
     public let url: String

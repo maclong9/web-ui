@@ -69,8 +69,8 @@ struct FaviconTestDocument: Document {
             favicons: [
                 Favicon("/favicon.png", size: "32x32"),
                 Favicon(
-                    "/favicon-light.ico", dark: "/favicon-dark.ico",
-                    type: "image/x-icon"),
+                    "/favicon-light.ico", dark: "/favicon-dark.ico", type: .icon
+                ),
             ]
         )
     }

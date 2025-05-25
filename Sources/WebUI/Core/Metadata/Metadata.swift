@@ -240,17 +240,17 @@ public struct Metadata {
 
                 if favicon.dark != nil {
                     baseTags.append(
-                        "<link rel=\"icon\" type=\"\(favicon.type)\" href=\"\(favicon.light)\"\(sizeAttr) media=\"(prefers-color-scheme: light)\">"
+                        "<link rel=\"icon\" type=\"\(favicon.type.rawValue)\" href=\"\(favicon.light)\"\(sizeAttr) media=\"(prefers-color-scheme: light)\">"
                     )
                     baseTags.append(
-                        "<link rel=\"icon\" type=\"\(favicon.type)\" href=\"\(favicon.dark!)\"\(sizeAttr) media=\"(prefers-color-scheme: dark)\">"
+                        "<link rel=\"icon\" type=\"\(favicon.type.rawValue)\" href=\"\(favicon.dark!)\"\(sizeAttr) media=\"(prefers-color-scheme: dark)\">"
                     )
                 } else {
                     baseTags.append(
-                        "<link rel=\"icon\" type=\"\(favicon.type)\" href=\"\(favicon.light)\"\(sizeAttr)>"
+                        "<link rel=\"icon\" type=\"\(favicon.type.rawValue)\" href=\"\(favicon.light)\"\(sizeAttr)>"
                     )
                 }
-                if favicon.type == "image/png", let size = favicon.size {
+                if favicon.type == .png, let size = favicon.size {
                     baseTags.append(
                         "<link rel=\"apple-touch-icon\" sizes=\"\(size)\" href=\"\(favicon.light)\">"
                     )

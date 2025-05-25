@@ -2,9 +2,10 @@ import Foundation
 
 /// Provides functionality for generating sitemap XML files.
 ///
-/// The `Sitemap` struct offers methods for creating standards-compliant sitemap.xml files
-/// that inform search engines about the structure of a website and the relative importance
-/// of its pages. Sitemaps improve SEO by ensuring all content is discoverable.
+/// The `Sitemap` struct offers methods for creating standards-compliant
+/// sitemap.xml files that inform search engines about the structure of a
+/// website and the relative importance of its pages. Sitemaps improve SEO by
+/// ensuring all content is discoverable.
 public struct Sitemap {
     /// XML namespace for the sitemap protocol
     private static let sitemapNamespace =
@@ -12,9 +13,9 @@ public struct Sitemap {
 
     /// Generates a sitemap.xml file content from website routes and custom entries.
     ///
-    /// This method creates a standard sitemap.xml file that includes all routes in the website,
-    /// plus any additional custom sitemap entries. It follows the Sitemap protocol specification
-    /// from sitemaps.org.
+    /// This method creates a standard sitemap.xml file that includes all
+    /// routes in the website, plus any additional custom sitemap entries. It
+    /// follows the Sitemap protocol specification from sitemaps.org.
     ///
     /// - Parameters:
     ///   - baseURL: The base URL of the website (e.g., "https://example.com").
