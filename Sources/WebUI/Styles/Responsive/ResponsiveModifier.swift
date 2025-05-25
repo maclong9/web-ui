@@ -1,67 +1,5 @@
 import Foundation
 
-/// Provides a block-based responsive design API for WebUI elements.
-///
-/// The on modifier allows developers to define responsive styles
-/// across different breakpoints in a single, concise block, creating cleaner
-/// and more maintainable code for responsive designs.
-///
-/// ## Example
-/// ```swift
-/// Text { "Responsive Content" }
-///   .font(size: .sm)
-///   .background(color: .neutral(._500))
-///   .on {
-///     md {
-///       font(size: .lg)
-///       background(color: .neutral(._700))
-///       padding(of: 4)
-///     }
-///     lg {
-///       font(size: .xl)
-///       background(color: .neutral(._900))
-///       font(alignment: .center)
-///     }
-///   }
-/// ```
-extension Element {
-    /// Applies responsive styling across different breakpoints with a declarative syntax.
-    ///
-    /// This method provides a clean, declarative way to define styles for multiple
-    /// breakpoints in a single block, improving code readability and maintainability.
-    ///
-    /// - Parameter content: A closure defining responsive style configurations using the result builder.
-    /// - Returns: An element with responsive styles applied.
-    ///
-    /// ## Example
-    /// ```swift
-    /// Button { "Submit" }
-    ///   .background(color: .blue(._500))
-    ///   .on {
-    ///     sm {
-    ///       padding(of: 2)
-    ///       font(size: .sm)
-    ///     }
-    ///     md {
-    ///       padding(of: 4)
-    ///       font(size: .base)
-    ///     }
-    ///     lg {
-    ///       padding(of: 6)
-    ///       font(size: .lg)
-    ///     }
-    ///   }
-    /// ```
-    public func on(
-        @ResponsiveStyleBuilder _ content: () -> ResponsiveModification
-    ) -> any Element {
-        let builder = ResponsiveBuilder(element: self)
-        let modification = content()
-        modification.apply(to: builder)
-        return builder.element
-    }
-}
-
 extension HTML {
     /// Applies responsive styling across different breakpoints with a declarative syntax.
     ///
@@ -92,7 +30,7 @@ private struct HTMLElementWrapper<Content: HTML>: Element {
 
     var body: Content {
         content
-    }
+    } 
 }
 
 /// Builds responsive style configurations for elements across different breakpoints.

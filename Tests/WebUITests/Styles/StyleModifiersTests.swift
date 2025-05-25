@@ -520,7 +520,7 @@ import Testing
 
     @Test("Element Structure Test")
     func elementStructureTest() async throws {
-
+        // Works fine in ``Document``
         struct TestDocument: Document {
             var metadata: Metadata {
                 .init(title: "Hello")
@@ -529,19 +529,27 @@ import Testing
             var body: some HTML {
                 Text { "Hello" }
                     .on {
+                        md {
+                            font(color: .amber(._100))
+                        }
                         placeholder {
-                            WebUI.font(color: .amber(._100))
+                            font(color: .amber(._100))
                         }
                     }
             }
         }
-
+        // Breaks in Element, unless appended with `WebUI`
         struct TestElement: Element {
             var body: some HTML {
                 Text { "Hello" }
                     .on {
+                        md {
+                            WebUI.font(color: .amber(._100)) 
+                            //                            font(color: .amber(._100))
+                        }
                         placeholder {
                             WebUI.font(color: .amber(._100))
+                            //                          font(color: .amber(._100))
                         }
                     }
             }
@@ -552,5 +560,7 @@ import Testing
 
         #expect(renderedDoc.contains("placeholder:text-amber-100"))
         #expect(renderedEle.contains("placeholder:text-amber-100"))
+        #expect(renderedDoc.contains("md:text-amber-100"))
+        #expect(renderedEle.contains("md:text-amber-100"))
     }
 }
