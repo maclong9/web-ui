@@ -521,7 +521,6 @@ import Testing
     @Test("Element Structure Test")
     func elementStructureTest() async throws {
 
-        // MARK: Example Document - `.on` working
         struct TestDocument: Document {
             var metadata: Metadata {
                 .init(title: "Hello")
@@ -531,18 +530,18 @@ import Testing
                 Text { "Hello" }
                     .on {
                         placeholder {
-                            font(color: .amber(._100))
+                            WebUI.font(color: .amber(._100))
                         }
                     }
             }
         }
-        // FIXME: Example Element - `.on` not working
+
         struct TestElement: Element {
             var body: some HTML {
                 Text { "Hello" }
                     .on {
                         placeholder {
-                            //                            font(color: .amber(._100))
+                            WebUI.font(color: .amber(._100))
                         }
                     }
             }
@@ -552,6 +551,6 @@ import Testing
         let renderedEle = TestElement().render()
 
         #expect(renderedDoc.contains("placeholder:text-amber-100"))
-        #expect(!renderedEle.contains("placeholder:text-amber-100"))
+        #expect(renderedEle.contains("placeholder:text-amber-100"))
     }
 }
