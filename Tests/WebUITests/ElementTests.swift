@@ -550,8 +550,7 @@ import Testing
 
     @Test("Complex form with multiple elements")
     func testComplexForm() async throws {
-        let contactForm = Form(action: "/submit", method: .post, id: "contact")
-        {
+        let contactForm = Form(action: "/submit", method: .post, id: "contact") {
             Stack(classes: ["form-group"]) {
                 Label(for: "name") { "Name:" }
                 Input(name: "name", type: .text, required: true, id: "name")
@@ -898,8 +897,7 @@ import Testing
         #expect(buttonRendered.contains("role=\"button\""))
         #expect(buttonRendered.contains("aria-label=\"Custom button\""))
 
-        let linkWithRole = Link(to: "/test", role: .link, label: "Custom link")
-        {
+        let linkWithRole = Link(to: "/test", role: .link, label: "Custom link") {
             "Test link"
         }
         let linkRendered = linkWithRole.render()
