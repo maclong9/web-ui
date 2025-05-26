@@ -538,18 +538,16 @@ import Testing
                     }
             }
         }
-        // Breaks in Element, unless appended with `WebUI`
+        // FIXME: If possible remove `S.` prefix
         struct TestElement: Element {
             var body: some HTML {
                 Text { "Hello" }
                     .on {
                         md {
-                            WebUI.font(color: .amber(._100)) 
-                            //                            font(color: .amber(._100))
+                            S.font(color: .amber(._100))
                         }
                         placeholder {
-                            WebUI.font(color: .amber(._100))
-                            //                          font(color: .amber(._100))
+                            S.font(color: .amber(._100))
                         }
                     }
             }

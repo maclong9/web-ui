@@ -29,7 +29,7 @@ public protocol Document {
     /// appear in the HTML head section.
     var metadata: Metadata { get }
 
-    /// The main content of the document. 
+    /// The main content of the document.
     ///
     /// This property returns the HTML content that will be rendered as the
     /// body of the page.

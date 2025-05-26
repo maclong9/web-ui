@@ -174,8 +174,7 @@ public struct WebUIMarkdown {
     /// - Parameter lines: An array of strings representing front matter lines.
     /// - Returns: A dictionary containing the parsed key-value pairs.
     /// - Throws: `WebUIMarkdownError.malformedFrontMatter` if a line doesn't follow the expected format.
-    public func parseFrontMatterLines(_ lines: [String]) throws -> [String: Any]
-    {
+    public func parseFrontMatterLines(_ lines: [String]) throws -> [String: Any] {
         var frontMatter: [String: Any] = [:]
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM d, yyyy"
@@ -261,8 +260,7 @@ public struct HtmlRenderer {
     /// - Parameter document: The Markdown document to render.
     /// - Returns: The generated HTML string.
     /// - Throws: `HtmlRendererError` if rendering encounters invalid content.
-    public mutating func render(_ document: Markdown.Document) throws -> String
-    {
+    public mutating func render(_ document: Markdown.Document) throws -> String {
         html = ""
         try renderMarkup(document)
         return html
