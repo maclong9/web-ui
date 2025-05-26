@@ -20,7 +20,7 @@ extension String: HTML {
     ///     Heading(.one) { "Title" }
     ///   ]
     ///   ```
-    public func render() -> String { HTMLEscaper.escapeContent(self) }
+    public func render() -> String { self }
 
     /// Sanitizes strings for use in CSS variable names.
     ///

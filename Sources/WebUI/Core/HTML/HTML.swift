@@ -83,6 +83,10 @@ public struct HTMLString: HTML {
     public func render() -> String {
         content
     }
+
+    public init(content: String) {
+        self.content = content
+    }
 }
 
 // String extension that conforms to HTML is in Utilities/String.swift

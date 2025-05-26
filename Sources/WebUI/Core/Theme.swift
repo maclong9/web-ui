@@ -1,5 +1,3 @@
-import Logging
-
 /// A structure that defines a theme configuration for generating CSS custom properties.
 ///
 /// This is typically used to define design tokens (such as colors, spacing,

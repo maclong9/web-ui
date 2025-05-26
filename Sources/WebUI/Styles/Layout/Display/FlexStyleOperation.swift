@@ -144,20 +144,8 @@ public enum FlexGrow: String {
     /// No growing
     case none = "0"
 
-    /// Grow with factor 1
+    /// Grow
     case one = "1"
-
-    /// Grow with factor 2
-    case two = "2"
-
-    /// Grow with factor 3
-    case three = "3"
-
-    /// Grow with factor 4
-    case four = "4"
-
-    /// Grow with factor 5
-    case five = "5"
 }
 
 // Extension for HTML to provide flex styling

@@ -7,8 +7,7 @@ public enum Attribute {
     /// - Returns: Formatted attribute string (e.g., `id="header"`) or nil if value is empty.
     public static func string(_ name: String, _ value: String?) -> String? {
         guard let value = value, !value.isEmpty else { return nil }
-        let escapedValue = HTMLEscaper.escapeAttribute(value)
-        return "\(name)=\"\(escapedValue)\""
+        return "\(name)=\"\(value)\""
     }
 
     /// Builds a boolean HTML attribute if enabled.
@@ -33,7 +32,6 @@ public enum Attribute {
         guard let stringValue = value?.rawValue, !stringValue.isEmpty else {
             return nil
         }
-        let escapedValue = HTMLEscaper.escapeAttribute(stringValue)
-        return "\(name)=\"\(escapedValue)\""
+        return "\(name)=\"\(value?.rawValue ?? "")\""
     }
 }

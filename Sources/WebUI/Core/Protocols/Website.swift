@@ -30,8 +30,9 @@ public protocol Website {
     ///
     /// Each route represents a page in the website. Routes can override the
     /// website's default metadata and styling as needed.
+    /// - Throws: An error if route construction fails (e.g., when fetching dynamic routes).
     @WebsiteRouteBuilder
-    var routes: [any Document] { get }
+    var routes: [any Document] { get throws }
 
     /// Optional default theme applied to all routes unless overridden.
     var theme: Theme? { get }
@@ -59,7 +60,6 @@ public protocol Website {
 
     /// Optional custom rules to include in robots.txt file.
     var robotsRules: [RobotsRule]? { get }
-
 }
 
 // MARK: - Default Implementations
@@ -100,25 +100,43 @@ extension Website {
     /// - Parameters:
     ///   - outputDirectory: The directory to output the built website.
     ///   - assetsPath: The path to the public assets directory.
-    /// - Throws: An error if the build fails.
+    /// - Throws: A `WebsiteBuildError` if the build fails or route construction fails.
     public func build(
         to outputDirectory: URL = URL(filePath: ".output"),
-        assetsPath: String = "Sources/Public"
+        assetsPath: String = "Public"
     ) throws {
-        // Create output directory if it doesn't exist
-        try FileManager.default.createDirectory(
-            at: outputDirectory,
-            withIntermediateDirectories: true
-        )
+        // Clear previous build
+        if FileManager.default.fileExists(atPath: outputDirectory.path()) {
+            do {
+                try FileManager.default.removeItem(at: outputDirectory)
+            } catch {
+                throw WebsiteBuildError.oldOutputDirectoryDeletionFailed(path: outputDirectory.path)
+            }
+        }
+
+        // Create output directory
+        do {
+            try FileManager.default.createDirectory(
+                at: outputDirectory,
+                withIntermediateDirectories: true
+            )
+        } catch {
+            throw WebsiteBuildError.directoryCreationFailed(path: outputDirectory.path)
+        }
 
         // Copy assets if they exist
         let assetsURL = URL(filePath: assetsPath)
         if FileManager.default.fileExists(atPath: assetsURL.path()) {
             let publicURL = outputDirectory.appending(path: "public")
-            try FileManager.default.copyItem(at: assetsURL, to: publicURL)
+            do {
+                try FileManager.default.copyItem(at: assetsURL, to: publicURL)
+            } catch {
+                throw WebsiteBuildError.assetCopyFailed(source: assetsURL.path, destination: publicURL.path)
+            }
         }
 
         // Build each route
+        let routes = try self.routes  // Fetch routes, propagating errors
         for route in routes {
             try buildRoute(route, in: outputDirectory)
         }
@@ -141,30 +159,35 @@ extension Website {
         // Create the full path for the HTML file
         var components = path.split(separator: "/")
         let filename = components.removeLast()
-        let fullPath = directory.appending(
-            path: components.joined(separator: "/"))
+        let fullPath = directory.appending(path: components.joined(separator: "/"))
 
         // Create intermediate directories
-        try FileManager.default.createDirectory(
-            at: fullPath,
-            withIntermediateDirectories: true
-        )
+        do {
+            try FileManager.default.createDirectory(
+                at: fullPath,
+                withIntermediateDirectories: true
+            )
+        } catch {
+            throw WebsiteBuildError.directoryCreationFailed(path: fullPath.path)
+        }
 
         // Generate HTML content by building document tree
         let html = try route.render()
 
         // Write the HTML file
         guard let data = html.data(using: String.Encoding.utf8) else {
-            throw NSError(
-                domain: "WebUI", code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "Failed to encode HTML"])
+            throw WebsiteBuildError.htmlEncodingFailed(path: "\(filename).html")
         }
-        try data.write(
-            to: fullPath.appending(path: "\(filename).html"), options: .atomic)
+        do {
+            try data.write(
+                to: fullPath.appending(path: "\(filename).html"), options: .atomic)
+        } catch {
+            throw WebsiteBuildError.fileWriteFailed(path: fullPath.appending(path: "\(filename).html").path)
+        }
     }
 
     private func generateSitemapXML(in directory: URL, baseURL: String) throws {
-        var entries = routes.compactMap { route -> SitemapEntry? in
+        var entries = try routes.compactMap { route -> SitemapEntry? in
             guard let path = route.path else { return nil }
             return SitemapEntry(
                 url: "\(baseURL)/\(path).html",
@@ -198,16 +221,14 @@ extension Website {
 
         // Write sitemap.xml
         guard let data = sitemap.data(using: String.Encoding.utf8) else {
-            throw NSError(
-                domain: "WebUI",
-                code: 1,
-                userInfo: [
-                    NSLocalizedDescriptionKey: "Failed to encode sitemap.xml"
-                ]
-            )
+            throw WebsiteBuildError.sitemapEncodingFailed
         }
-        try data.write(
-            to: directory.appending(path: "sitemap.xml"), options: .atomic)
+        do {
+            try data.write(
+                to: directory.appending(path: "sitemap.xml"), options: .atomic)
+        } catch {
+            throw WebsiteBuildError.fileWriteFailed(path: directory.appending(path: "sitemap.xml").path)
+        }
     }
 
     private func generateRobotsTxt(in directory: URL) throws {
@@ -220,15 +241,58 @@ extension Website {
 
         // Write robots.txt
         guard let data = robotsTxt.data(using: String.Encoding.utf8) else {
-            throw NSError(
-                domain: "WebUI",
-                code: 1,
-                userInfo: [
-                    NSLocalizedDescriptionKey: "Failed to encode robots.txt"
-                ]
-            )
+            throw WebsiteBuildError.robotsTxtEncodingFailed
         }
-        try data.write(
-            to: directory.appending(path: "robots.txt"), options: [.atomic])
+        do {
+            try data.write(
+                to: directory.appending(path: "robots.txt"), options: [.atomic])
+        } catch {
+            throw WebsiteBuildError.fileWriteFailed(path: directory.appending(path: "robots.txt").path)
+        }
+    }
+}
+
+// MARK: - Error Handling
+
+/// Errors that can occur during the website build process.
+public enum WebsiteBuildError: Error, CustomStringConvertible {
+    /// Failed to delete the old output directory
+    case oldOutputDirectoryDeletionFailed(path: String)
+
+    /// Failed to create a directory at the specified path.
+    case directoryCreationFailed(path: String)
+
+    /// Failed to copy assets from source to destination.
+    case assetCopyFailed(source: String, destination: String)
+
+    /// Failed to encode HTML content for a route.
+    case htmlEncodingFailed(path: String)
+
+    /// Failed to encode sitemap.xml content.
+    case sitemapEncodingFailed
+
+    /// Failed to encode robots.txt content.
+    case robotsTxtEncodingFailed
+
+    /// Failed to write a file to the specified path.
+    case fileWriteFailed(path: String)
+
+    public var description: String {
+        switch self {
+            case .oldOutputDirectoryDeletionFailed(let path):
+                return "Failed to delete old output directory at path: \(path)"
+            case .directoryCreationFailed(let path):
+                return "Failed to create directory at path: \(path)"
+            case .assetCopyFailed(let source, let destination):
+                return "Failed to copy assets from \(source) to \(destination)"
+            case .htmlEncodingFailed(let path):
+                return "Failed to encode HTML for file: \(path)"
+            case .sitemapEncodingFailed:
+                return "Failed to encode sitemap.xml content"
+            case .robotsTxtEncodingFailed:
+                return "Failed to encode robots.txt content"
+            case .fileWriteFailed(let path):
+                return "Failed to write file at path: \(path)"
+        }
     }
 }
