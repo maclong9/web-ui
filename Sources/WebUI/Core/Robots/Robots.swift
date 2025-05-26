@@ -35,7 +35,7 @@ public struct Robots {
         generateSitemap: Bool = false,
         robotsRules: [RobotsRule]? = nil
     ) -> String {
-        var contentComponents = [""]
+        var contentComponents: [String] = []
 
         if let rules = robotsRules, !rules.isEmpty {
             // Add each custom rule

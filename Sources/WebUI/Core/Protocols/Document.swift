@@ -104,10 +104,8 @@ extension Document {
                 <meta name="generator" content="WebUI" />
                 \(head ?? "")
               </head>
-              <body>
-                \(body.render())
-                \(bodyTags.joined(separator: "\n"))
-              </body>
+              \(body.render())
+              \(bodyTags.joined(separator: "\n"))
             </html>
             """
         return HTMLMinifier.minify(html)

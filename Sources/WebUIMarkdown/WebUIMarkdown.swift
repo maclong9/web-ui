@@ -1,5 +1,4 @@
 import Foundation
-import Logging
 import Markdown
 
 /// A module for parsing and rendering Markdown content with front matter support.
@@ -46,6 +45,9 @@ import Markdown
 /// print("HTML: \(safeResult.htmlContent)")
 /// ```
 public struct WebUIMarkdown {
+    /// public init otherwise it breaks
+    public init() {}
+
     /// A structure representing a parsed Markdown document, containing front matter and HTML content.
     ///
     /// Encapsulates the results of parsing a Markdown document, providing access to both
@@ -107,11 +109,6 @@ public struct WebUIMarkdown {
         do {
             return try parseMarkdown(content)
         } catch {
-            // Log the error for debugging purposes
-            let logger = Logger(label: "WebUIMarkdown")
-            logger.warning(
-                "Failed to parse markdown: \(error.localizedDescription)")
-
             // Return safe fallback content
             let renderer = HtmlRenderer()
             let escapedContent = renderer.escapeHTML(content)
@@ -278,9 +275,6 @@ public struct HtmlRenderer {
         do {
             try renderMarkup(document)
         } catch {
-            let logger = Logger(label: "HtmlRenderer")
-            logger.warning(
-                "Failed to render markdown: \(error.localizedDescription)")
             html += "<!-- Rendering error: \(error.localizedDescription) -->"
         }
         return html
