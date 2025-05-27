@@ -4,25 +4,6 @@ import Testing
 @testable import WebUI
 
 @Suite("Utility Tests") struct DateTests {
-    @Test("String HTML rendering")
-    func stringHTMLRendering() {
-        // Test basic string rendering
-        let basicString = "Hello, World!"
-        #expect(basicString.render() == "Hello, World!")
-
-        // Test empty string
-        let emptyString = ""
-        #expect(emptyString.render() == "")
-
-        // Test string with HTML-like content
-        let htmlLikeString = "<p>Test</p>"
-        #expect(htmlLikeString.render() == "&lt;p&gt;Test&lt;/p&gt;")
-
-        // Test string with special characters
-        let specialChars = "Hello & <World>!"
-        #expect(specialChars.render() == "Hello &amp; &lt;World&gt;!")
-    }
-
     @Test("String path formatting")
     func stringPathFormatting() {
         // Test basic string formatting

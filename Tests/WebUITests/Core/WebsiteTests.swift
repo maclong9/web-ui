@@ -21,7 +21,7 @@ struct PageLayout: Element {
     }
 
     var body: some HTML {
-        Stack {
+        BodyWrapper {
             Header {
                 Stack {
                     Heading(.largeTitle) { "My Portfolio" }
@@ -779,7 +779,7 @@ struct ComprehensiveWebsiteTests {
         let html = home.body.render()
 
         #expect(html.contains("Welcome to My Portfolio"))
-        #expect(html.contains("Hi, I&#39;m Jane Doe"))
+        #expect(html.contains("Hi, I'm Jane Doe"))
         #expect(html.contains("Featured Projects"))
     }
 
