@@ -315,6 +315,226 @@ import Testing
         #expect(rendered.contains("active:bg-blue-200"))
     }
 
+    @Test("Multi-modifier block: hover and dark")
+    func testMultiModifierHoverDark() async throws {
+        let element = Stack()
+            .on {
+                modifiers(.hover, .dark) {
+                    background(color: .red(._500))
+                    font(color: .white())
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:dark:bg-red-500"))
+        #expect(rendered.contains("hover:dark:text-white"))
+    }
+
+    @Test("Multi-modifier block: md and placeholder")
+    func testMultiModifierMdPlaceholder() async throws {
+        let element = Input(name: "email", type: .email)
+            .on {
+                modifiers(.md, .placeholder) {
+                    font(color: .blue(._400))
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("md:placeholder:text-blue-400"))
+    }
+
+    @Test("Multi-modifier block: hover, dark, focus")
+    func testMultiModifierHoverDarkFocus() async throws {
+        let element = Stack()
+            .on {
+                modifiers(.hover, .dark, .focus) {
+                    opacity(80)
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:dark:focus:opacity-80"))
+    }
+
+    @Test("Nested multi-modifier blocks")
+    func testNestedMultiModifierBlocks() async throws {
+        let element = Stack()
+            .on {
+                modifiers(.hover) {
+                    modifiers(.dark, .focus) {
+                        background(color: .amber(._600))
+                    }
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:dark:focus:bg-amber-600"))
+    }
+
+    @Test("Mixed single and multi-modifier usage")
+    func testMixedSingleAndMultiModifierUsage() async throws {
+        let element = Stack()
+            .on {
+                hover {
+                    background(color: .blue(._500))
+                }
+                modifiers(.dark, .focus) {
+                    font(color: .white())
+                }
+                lg {
+                    padding(of: 16)
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:bg-blue-500"))
+        #expect(rendered.contains("dark:focus:text-white"))
+        #expect(rendered.contains("lg:p-16"))
+    }
+
+    @Test("Multi-modifier with variadic syntax: hover, dark")
+    func testVariadicModifierSyntax() async throws {
+        let element = Stack()
+            .on {
+                modifiers(.hover, .dark) {
+                    background(color: .red(._500))
+                    font(color: .white())
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:dark:bg-red-500"))
+        #expect(rendered.contains("hover:dark:text-white"))
+    }
+
+    @Test("Multi-modifier with variadic syntax: three modifiers")
+    func testVariadicThreeModifiers() async throws {
+        let element = Stack()
+            .on {
+                modifiers(.hover, .dark, .focus) {
+                    opacity(75)
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:dark:focus:opacity-75"))
+    }
+
+    @Test("Multi-modifier with variadic syntax: breakpoint and state")
+    func testVariadicBreakpointAndState() async throws {
+        let element = Input(name: "email", type: .email)
+            .on {
+                modifiers(.md, .placeholder) {
+                    font(color: .gray(._400))
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("md:placeholder:text-gray-400"))
+    }
+
+    @Test("Custom operator modifier syntax: hover <&> dark")
+    func testCustomOperatorModifierSyntax() async throws {
+        let element = Stack()
+            .on {
+                (hover <&> dark) {
+                    background(color: .blue(._600))
+                    font(color: .yellow(._300))
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:dark:bg-blue-600"))
+        #expect(rendered.contains("hover:dark:text-yellow-300"))
+    }
+
+    @Test("Custom operator modifier syntax: three modifiers")
+    func testCustomOperatorThreeModifiers() async throws {
+        let element = Stack()
+            .on {
+                (hover <&> dark <&> focus) {
+                    opacity(90)
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:dark:focus:opacity-90"))
+    }
+
+    @Test("Nested modifier syntax support")
+    func testNestedModifierSyntax() async throws {
+        let element = Stack()
+            .on {
+                hover {
+                    dark {
+                        background(color: .red(._500))
+                        font(color: .white())
+                    }
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:dark:bg-red-500"))
+        #expect(rendered.contains("hover:dark:text-white"))
+    }
+
+    @Test("Comprehensive multiple modifier syntax demonstration")
+    func testComprehensiveMultipleModifierSyntax() async throws {
+        let element = Stack()
+            .on {
+                // Method 1: Variadic modifiers function
+                modifiers(.hover, .dark) {
+                    background(color: .blue(._600))
+                }
+                
+                // Method 2: Nested syntax
+                hover {
+                    focus {
+                        border(of: 2, color: .green(._500))
+                    }
+                }
+                
+                // Method 3: Custom operator syntax
+                (md <&> placeholder) {
+                    font(color: .gray(._400))
+                }
+                
+                // Method 4: Mixed usage
+                lg {
+                    padding(of: 8)
+                }
+                modifiers(.disabled, .ariaBusy) {
+                    opacity(50)
+                }
+            }
+        
+        let rendered = element.render()
+        
+        // Verify variadic syntax
+        #expect(rendered.contains("hover:dark:bg-blue-600"))
+        
+        // Verify nested syntax
+        #expect(rendered.contains("hover:focus:border-2"))
+        #expect(rendered.contains("hover:focus:border-green-500"))
+        
+        // Verify custom operator syntax
+        #expect(rendered.contains("md:placeholder:text-gray-400"))
+        
+        // Verify mixed usage
+        #expect(rendered.contains("lg:p-8"))
+        #expect(rendered.contains("disabled:aria-busy:opacity-50"))
+    }
+
+    @Test("Multiple multi-modifier blocks")
+    func testMultipleMultiModifierBlocks() async throws {
+        let element = Stack()
+            .on {
+                modifiers(.hover, .dark) {
+                    background(color: .red(._500))
+                }
+                modifiers(.focus, .dark) {
+                    border(of: 1, color: .blue(._500))
+                }
+                modifiers(.lg, .dark) {
+                    padding(of: 6)
+                }
+            }
+        let rendered = element.render()
+        #expect(rendered.contains("hover:dark:bg-red-500"))
+        #expect(rendered.contains("focus:dark:border-1"))
+        #expect(rendered.contains("focus:dark:border-blue-500"))
+        #expect(rendered.contains("lg:dark:p-6"))
+    }
+
     @Test("ARIA state modifiers")
     func testAriaStateModifiers() async throws {
         let element = Stack()

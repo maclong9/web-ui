@@ -5,6 +5,82 @@ import Foundation
 /// This extension adds support for additional modifiers like hover, focus, and other
 /// interactive states to the ResponsiveBuilder to allow styling based on element state.
 
+// MARK: - Modifier Constants for Comma-Separated Syntax
+
+/// Hover state modifier constant for comma-separated syntax.
+public let hover: Modifier = .hover
+
+/// Focus state modifier constant for comma-separated syntax.
+public let focus: Modifier = .focus
+
+/// Active state modifier constant for comma-separated syntax.
+public let active: Modifier = .active
+
+/// Placeholder modifier constant for comma-separated syntax.
+public let placeholder: Modifier = .placeholder
+
+/// Dark mode modifier constant for comma-separated syntax.
+public let dark: Modifier = .dark
+
+/// First child modifier constant for comma-separated syntax.
+public let first: Modifier = .first
+
+/// Last child modifier constant for comma-separated syntax.
+public let last: Modifier = .last
+
+/// Disabled state modifier constant for comma-separated syntax.
+public let disabled: Modifier = .disabled
+
+/// Motion reduce modifier constant for comma-separated syntax.
+public let motionReduce: Modifier = .motionReduce
+
+/// ARIA busy state modifier constant for comma-separated syntax.
+public let ariaBusy: Modifier = .ariaBusy
+
+/// ARIA checked state modifier constant for comma-separated syntax.
+public let ariaChecked: Modifier = .ariaChecked
+
+/// ARIA disabled state modifier constant for comma-separated syntax.
+public let ariaDisabled: Modifier = .ariaDisabled
+
+/// ARIA expanded state modifier constant for comma-separated syntax.
+public let ariaExpanded: Modifier = .ariaExpanded
+
+/// ARIA hidden state modifier constant for comma-separated syntax.
+public let ariaHidden: Modifier = .ariaHidden
+
+/// ARIA pressed state modifier constant for comma-separated syntax.
+public let ariaPressed: Modifier = .ariaPressed
+
+/// ARIA readonly state modifier constant for comma-separated syntax.
+public let ariaReadonly: Modifier = .ariaReadonly
+
+/// ARIA required state modifier constant for comma-separated syntax.
+public let ariaRequired: Modifier = .ariaRequired
+
+/// ARIA selected state modifier constant for comma-separated syntax.
+public let ariaSelected: Modifier = .ariaSelected
+
+// MARK: - Breakpoint Constants for Comma-Separated Syntax
+
+/// Extra-small breakpoint modifier constant for comma-separated syntax.
+public let xs: Modifier = .xs
+
+/// Small breakpoint modifier constant for comma-separated syntax.
+public let sm: Modifier = .sm
+
+/// Medium breakpoint modifier constant for comma-separated syntax.
+public let md: Modifier = .md
+
+/// Large breakpoint modifier constant for comma-separated syntax.
+public let lg: Modifier = .lg
+
+/// Extra-large breakpoint modifier constant for comma-separated syntax.
+public let xl: Modifier = .xl
+
+/// 2x extra-large breakpoint modifier constant for comma-separated syntax.
+public let xl2: Modifier = .xl2
+
 extension ResponsiveBuilder {
     /// Applies styles when the element is hovered.
     ///
@@ -14,10 +90,7 @@ extension ResponsiveBuilder {
     public func hover(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .hover
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.hover, modifications: modifications)
     }
 
     /// Applies styles when the element has keyboard focus.
@@ -28,10 +101,7 @@ extension ResponsiveBuilder {
     public func focus(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .focus
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.focus, modifications: modifications)
     }
 
     /// Applies styles when the element is being actively pressed or clicked.
@@ -42,10 +112,7 @@ extension ResponsiveBuilder {
     public func active(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .active
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.active, modifications: modifications)
     }
 
     /// Applies styles to input placeholders within the element.
@@ -56,10 +123,7 @@ extension ResponsiveBuilder {
     public func placeholder(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .placeholder
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.placeholder, modifications: modifications)
     }
 
     /// Applies styles when dark mode is active.
@@ -70,10 +134,7 @@ extension ResponsiveBuilder {
     public func dark(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .dark
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.dark, modifications: modifications)
     }
 
     /// Applies styles to the first child element.
@@ -84,10 +145,7 @@ extension ResponsiveBuilder {
     public func first(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .first
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.first, modifications: modifications)
     }
 
     /// Applies styles to the last child element.
@@ -98,10 +156,7 @@ extension ResponsiveBuilder {
     public func last(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .last
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.last, modifications: modifications)
     }
 
     /// Applies styles when the element is disabled.
@@ -112,10 +167,7 @@ extension ResponsiveBuilder {
     public func disabled(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .disabled
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.disabled, modifications: modifications)
     }
 
     /// Applies styles when the user prefers reduced motion.
@@ -126,10 +178,7 @@ extension ResponsiveBuilder {
     public func motionReduce(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .motionReduce
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.motionReduce, modifications: modifications)
     }
 
     /// Applies styles when the element has aria-busy="true".
@@ -140,10 +189,7 @@ extension ResponsiveBuilder {
     public func ariaBusy(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .ariaBusy
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.ariaBusy, modifications: modifications)
     }
 
     /// Applies styles when the element has aria-checked="true".
@@ -154,10 +200,7 @@ extension ResponsiveBuilder {
     public func ariaChecked(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .ariaChecked
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.ariaChecked, modifications: modifications)
     }
 
     /// Applies styles when the element has aria-disabled="true".
@@ -168,10 +211,7 @@ extension ResponsiveBuilder {
     public func ariaDisabled(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .ariaDisabled
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.ariaDisabled, modifications: modifications)
     }
 
     /// Applies styles when the element has aria-expanded="true".
@@ -182,10 +222,7 @@ extension ResponsiveBuilder {
     public func ariaExpanded(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .ariaExpanded
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.ariaExpanded, modifications: modifications)
     }
 
     /// Applies styles when the element has aria-hidden="true".
@@ -196,10 +233,7 @@ extension ResponsiveBuilder {
     public func ariaHidden(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .ariaHidden
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.ariaHidden, modifications: modifications)
     }
 
     /// Applies styles when the element has aria-pressed="true".
@@ -210,10 +244,7 @@ extension ResponsiveBuilder {
     public func ariaPressed(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .ariaPressed
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.ariaPressed, modifications: modifications)
     }
 
     /// Applies styles when the element has aria-readonly="true".
@@ -224,10 +255,7 @@ extension ResponsiveBuilder {
     public func ariaReadonly(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .ariaReadonly
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.ariaReadonly, modifications: modifications)
     }
 
     /// Applies styles when the element has aria-required="true".
@@ -238,10 +266,7 @@ extension ResponsiveBuilder {
     public func ariaRequired(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .ariaRequired
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.ariaRequired, modifications: modifications)
     }
 
     /// Applies styles when the element has aria-selected="true".
@@ -252,10 +277,7 @@ extension ResponsiveBuilder {
     public func ariaSelected(_ modifications: (ResponsiveBuilder) -> Void)
         -> ResponsiveBuilder
     {
-        currentBreakpoint = .ariaSelected
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.ariaSelected, modifications: modifications)
     }
 }
 
