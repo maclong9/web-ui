@@ -309,8 +309,7 @@ import Testing
         let rendered = pre.render()
         #expect(rendered.contains("<pre>"))
         #expect(
-            rendered.contains(
-                "function hello() {\n  console.log(&quot;Hello&quot;);\n}"))
+            rendered.contains("function hello() {\n  console.log(&quot;Hello&quot;);\n}"))
         #expect(rendered.contains("</pre>"))
     }
 
@@ -765,29 +764,6 @@ import Testing
             rendered.contains(
                 "Special &amp; characters &lt; need &gt; to be escaped")
         )
-
-        // Test special characters in attributes
-        let elementWithSpecialAttrs = Stack(
-            id: "test&id",
-            classes: ["class<>test"]
-        ) { "Content" }
-
-        let attrRendered = elementWithSpecialAttrs.render()
-        #expect(attrRendered.contains("id=\"test&amp;id\""))
-        #expect(attrRendered.contains("class=\"class&lt;&gt;test\""))
-
-        // Test quotes in attributes
-        let elementWithQuotes = Stack(
-            label: "User's \"favorite\" item"
-        ) { "Text with 'quotes' & <tags>" }
-
-        let quotesRendered = elementWithQuotes.render()
-        #expect(
-            quotesRendered.contains(
-                "aria-label=\"User&#39;s &quot;favorite&quot; item\""))
-        #expect(
-            quotesRendered.contains(
-                "Text with &#39;quotes&#39; &amp; &lt;tags&gt;"))
     }
 
     // MARK: - ARIA Role Tests

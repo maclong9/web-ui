@@ -77,7 +77,7 @@ public struct Preformatted: Element {
             label: label,
             data: data
         )
-        let content = contentBuilder().map { $0.render() }.joined()
+        let content = HTMLEscaper.escapeContent(contentBuilder().map { $0.render() }.joined())
         return AttributeBuilder.renderTag(
             "pre", attributes: attributes, content: content)
     }

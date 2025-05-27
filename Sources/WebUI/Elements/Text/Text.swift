@@ -55,7 +55,7 @@ public struct Text: Element {
         let attributes = buildAttributes()
 
         return
-            "<\(tag)\(attributes.count > 0 ? " " : "")\(attributes.joined(separator: " "))>\(renderedContent)</\(tag)>"
+            "<\(tag)\(attributes.count > 0 ? " " : "")\(attributes.joined(separator: " "))>\(HTMLEscaper.escapeContent(renderedContent))</\(tag)>"
     }
 
     private func buildAttributes() -> [String] {
