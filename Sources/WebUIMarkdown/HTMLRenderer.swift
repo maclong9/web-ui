@@ -34,6 +34,9 @@
 /// let safeHtml = renderer.renderSafely(document)
 /// print("HTML: \(safeHtml)")
 /// ```
+import Foundation
+import Markdown
+
 public struct HtmlRenderer {
     public var html = ""
 
