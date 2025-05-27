@@ -111,6 +111,10 @@ public struct HtmlRenderer {
                 try visitTableBody(tableBody)
             case let tableCell as Table.Cell:
                 try visitTableCell(tableCell)
+            case let htmlBlock as Markdown.HTMLBlock:
+                try visitHTMLBlock(htmlBlock)
+            case let inlineHTML as Markdown.InlineHTML:
+                try visitInlineHTML(inlineHTML)
             default:
                 try defaultVisit(markup)
         }
@@ -305,6 +309,16 @@ public struct HtmlRenderer {
         html += "<\(tag)>"
         try renderChildren(tableCell)
         html += "</\(tag)>"
+    }
+
+    /// Visits a block of rawHTML and adds it to the Markdown file
+    public mutating func visitHTMLBlock(_ htmlBlock: Markdown.HTMLBlock) throws {
+        html += htmlBlock.rawHTML
+    }
+
+    /// Visits inline rawHTML and adds it to the Markdown file
+    public mutating func visitInlineHTML(_ inlineHTML: Markdown.InlineHTML) throws {
+        html += inlineHTML.rawHTML
     }
 
     /// A fallback method for visiting any unhandled markup nodes.
