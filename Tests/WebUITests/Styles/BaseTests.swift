@@ -1,6 +1,7 @@
 import Testing
 
 @testable import WebUI
+import struct WebUI.EdgeInsets
 
 @Suite("Base Style Tests") struct BaseStyleTests {
     // MARK: - Sizing Tests
@@ -10,6 +11,51 @@ import Testing
         let element = Stack().frame(width: .spacing(100), height: .spacing(200))
         let rendered = element.render()
         #expect(rendered.contains("class=\"w-100 h-200\""))
+    }
+
+    // MARK: - EdgeInsets Margin/Padding Tests
+
+    @Test("Padding with EdgeInsets uniform")
+    func testPaddingWithEdgeInsetsUniform() async throws {
+        let element = Stack().padding(EdgeInsets(3))
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"p-3\""))
+    }
+
+    @Test("Padding with EdgeInsets vertical/horizontal")
+    func testPaddingWithEdgeInsetsVerticalHorizontal() async throws {
+        let element = Stack().padding(EdgeInsets(vertical: 2, horizontal: 4))
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"pt-2 pl-4 pb-2 pr-4\""))
+    }
+
+    @Test("Padding with EdgeInsets per-edge")
+    func testPaddingWithEdgeInsetsPerEdge() async throws {
+        let element = Stack().padding(EdgeInsets(top: 1, leading: 2, bottom: 3, trailing: 4))
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"pt-1 pl-2 pb-3 pr-4\""))
+    }
+
+    @Test("Margins with EdgeInsets uniform")
+    func testMarginsWithEdgeInsetsUniform() async throws {
+        let element = Stack().margins(EdgeInsets(5))
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"m-5\""))
+    }
+
+    @Test("Margins with EdgeInsets vertical/horizontal")
+    func testMarginsWithEdgeInsetsVerticalHorizontal() async throws {
+        let element = Stack().margins(EdgeInsets(vertical: 2, horizontal: 6))
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"mt-2 ml-6 mb-2 mr-6\""))
+    }
+
+    @Test("Margins with EdgeInsets per-edge")
+    func testMarginsWithEdgeInsetsPerEdge() async throws {
+        let element = Stack().margins(EdgeInsets(top: 1, leading: 0, bottom: 2, trailing: 3))
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"mt-1 mb-2 mr-3\""))
+        #expect(!rendered.contains("ml-0"))
     }
 
     @Test("Frame with fractional width")
