@@ -31,6 +31,11 @@ public struct ResponsiveStyleBuilder {
         CompositeResponsiveModification(modifications: components)
     }
 
+    /// Builds a responsive modification from a modifier expression.
+    public static func buildExpression(_ expression: ResponsiveModification) -> ResponsiveModification {
+        expression
+    }
+
     /// Transforms an optional into a responsive modification.
     public static func buildOptional(_ component: ResponsiveModification?)
         -> ResponsiveModification

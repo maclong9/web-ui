@@ -102,10 +102,10 @@ private struct HTMLElementWrapper<Content: HTML>: Element {
 public class ResponsiveBuilder {
     /// The current element being modified
     var element: any Element
-    /// Keep track of responsive styles for each breakpoint
+    /// Keep track of responsive styles for each breakpoint/modifier combination
     internal var pendingClasses: [String] = []
-    /// The current breakpoint being modified
-    internal var currentBreakpoint: Modifier?
+    /// The current stack of active modifiers
+    internal var currentModifiers: [Modifier] = []
 
     /// Creates a new responsive builder for the given element.
     ///
@@ -114,76 +114,70 @@ public class ResponsiveBuilder {
         self.element = element
     }
 
-    /// Applies styles at the extra-small breakpoint (480px+).
+    /// Applies styles for one or more modifiers (breakpoints or states).
     ///
-    /// - Parameter modifications: A closure containing style modifications.
+    /// - Parameters:
+    ///   - modifiers: One or more modifiers to apply (e.g., .hover, .dark, .md).
+    ///   - modifications: A closure containing style modifications.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func xs(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
-        currentBreakpoint = .xs
+    public func modifiers(_ modifiers: Modifier..., modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+        currentModifiers.append(contentsOf: modifiers)
         modifications(self)
-        applyBreakpoint()
+        applyModifiers()
+        currentModifiers.removeLast(modifiers.count)
         return self
+    }
+
+    /// Applies styles for an array of modifiers (breakpoints or states).
+    ///
+    /// - Parameters:
+    ///   - modifiers: Array of modifiers to apply (e.g., [.hover, .dark]).
+    ///   - modifications: A closure containing style modifications.
+    /// - Returns: The builder for method chaining.
+    @discardableResult
+    public func modifiers(_ modifiers: [Modifier], modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+        currentModifiers.append(contentsOf: modifiers)
+        modifications(self)
+        applyModifiers()
+        currentModifiers.removeLast(modifiers.count)
+        return self
+    }
+
+    /// Applies styles at the extra-small breakpoint (480px+).
+    @discardableResult
+    public func xs(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
+        modifiers(.xs, modifications: modifications)
     }
 
     /// Applies styles at the small breakpoint (640px+).
-    ///
-    /// - Parameter modifications: A closure containing style modifications.
-    /// - Returns: The builder for method chaining.
     @discardableResult
     public func sm(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
-        currentBreakpoint = .sm
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.sm, modifications: modifications)
     }
 
     /// Applies styles at the medium breakpoint (768px+).
-    ///
-    /// - Parameter modifications: A closure containing style modifications.
-    /// - Returns: The builder for method chaining.
     @discardableResult
     public func md(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
-        currentBreakpoint = .md
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.md, modifications: modifications)
     }
 
     /// Applies styles at the large breakpoint (1024px+).
-    ///
-    /// - Parameter modifications: A closure containing style modifications.
-    /// - Returns: The builder for method chaining.
     @discardableResult
     public func lg(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
-        currentBreakpoint = .lg
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.lg, modifications: modifications)
     }
 
     /// Applies styles at the extra-large breakpoint (1280px+).
-    ///
-    /// - Parameter modifications: A closure containing style modifications.
-    /// - Returns: The builder for method chaining.
     @discardableResult
     public func xl(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
-        currentBreakpoint = .xl
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.xl, modifications: modifications)
     }
 
     /// Applies styles at the 2x-extra-large breakpoint (1536px+).
-    ///
-    /// - Parameter modifications: A closure containing style modifications.
-    /// - Returns: The builder for method chaining.
     @discardableResult
     public func xl2(_ modifications: (ResponsiveBuilder) -> Void) -> ResponsiveBuilder {
-        currentBreakpoint = .xl2
-        modifications(self)
-        applyBreakpoint()
-        return self
+        modifiers(.xl2, modifications: modifications)
     }
 
     /// Creates a hover state responsive modification.
@@ -358,24 +352,18 @@ public class ResponsiveBuilder {
         }
     }
 
-    internal func applyBreakpoint() {
-        guard let breakpoint = currentBreakpoint else { return }
+    internal func applyModifiers() {
+        guard !currentModifiers.isEmpty else { return }
 
-        // Apply the breakpoint prefix to all pending classes
-        let responsiveClasses = pendingClasses.map {
-            "\(breakpoint.rawValue)\($0)"
-        }
+        let modifierPrefix = currentModifiers.map { $0.rawValue }.joined()
+        let responsiveClasses = pendingClasses.map { "\(modifierPrefix)\($0)" }
 
-        // Create a concrete wrapper that preserves Element conformance
         let wrapped = AnyElement(self.element)
-
         let styledModifier = StyleModifierWithDeduplication(
             content: wrapped, classes: responsiveClasses)
         self.element = ElementWrapper(styledModifier)
 
-        // Clear pending classes for the next breakpoint
         pendingClasses = []
-        currentBreakpoint = nil
     }
 
     /// Add a class to the pending list of classes

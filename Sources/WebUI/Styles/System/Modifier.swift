@@ -17,7 +17,7 @@
 ///   .font(color: .white)
 ///   .font(size: .lg, on: .md)  // Larger text on medium screens and up
 /// ```
-public enum Modifier: String {
+public enum Modifier: String, Sendable {
     /// Extra small breakpoint modifier applying styles at 480px min-width and above.
     ///
     /// Use for small mobile device specific styles.

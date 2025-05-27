@@ -4,6 +4,7 @@ import Foundation
 ///
 /// These functions are available in the context of a responsive closure, allowing
 /// for a more natural, SwiftUI-like syntax without requiring `$0` references.
+/// Supports a single modifier (legacy, for compatibility)
 public struct BreakpointModification: ResponsiveModification {
     private let breakpoint: Modifier
     private let styleModification: ResponsiveModification
@@ -14,104 +15,26 @@ public struct BreakpointModification: ResponsiveModification {
     }
 
     public func apply(to builder: ResponsiveBuilder) {
-        switch breakpoint {
-            case .xs:
-                builder.xs { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .sm:
-                builder.sm { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .md:
-                builder.md { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .lg:
-                builder.lg { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .xl:
-                builder.xl { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .xl2:
-                builder.xl2 { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .hover:
-                builder.hover { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .focus:
-                builder.focus { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .active:
-                builder.active { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .placeholder:
-                builder.placeholder { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .dark:
-                builder.dark { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .first:
-                builder.first { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .last:
-                builder.last { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .disabled:
-                builder.disabled { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .motionReduce:
-                builder.motionReduce { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .ariaBusy:
-                builder.ariaBusy { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .ariaChecked:
-                builder.ariaChecked { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .ariaDisabled:
-                builder.ariaDisabled { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .ariaExpanded:
-                builder.ariaExpanded { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .ariaHidden:
-                builder.ariaHidden { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .ariaPressed:
-                builder.ariaPressed { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .ariaReadonly:
-                builder.ariaReadonly { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .ariaRequired:
-                builder.ariaRequired { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
-            case .ariaSelected:
-                builder.ariaSelected { innerBuilder in
-                    styleModification.apply(to: innerBuilder)
-                }
+        builder.modifiers(breakpoint) { innerBuilder in
+            styleModification.apply(to: innerBuilder)
         }
+    }
+}
+
+/// Supports multiple modifiers (e.g. hover, dark)
+public struct MultiModifierModification: ResponsiveModification {
+    private let modifiers: [Modifier]
+    private let styleModification: ResponsiveModification
+
+    init(modifiers: [Modifier], styleModification: ResponsiveModification) {
+        self.modifiers = modifiers
+        self.styleModification = styleModification
+    }
+
+    public func apply(to builder: ResponsiveBuilder) {
+        builder.modifiers(modifiers, modifications: { innerBuilder in
+            styleModification.apply(to: innerBuilder)
+        })
     }
 }
 
@@ -132,61 +55,87 @@ public struct StyleModification: ResponsiveModification {
 // Note: Interactive state functions like hover, focus, etc. are defined in InteractionModifiers.swift
 
 /// Creates an extra-small breakpoint (480px+) responsive modification.
-///
-/// - Parameter content: A closure containing style modifications for this breakpoint.
-/// - Returns: A responsive modification for the extra-small breakpoint.
-public func xs(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
-    -> ResponsiveModification
-{
+public func xs(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
     BreakpointModification(breakpoint: .xs, styleModification: content())
 }
-
 /// Creates a small breakpoint (640px+) responsive modification.
-///
-/// - Parameter content: A closure containing style modifications for this breakpoint.
-/// - Returns: A responsive modification for the small breakpoint.
-public func sm(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
-    -> ResponsiveModification
-{
+public func sm(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
     BreakpointModification(breakpoint: .sm, styleModification: content())
 }
-
 /// Creates a medium breakpoint (768px+) responsive modification.
-///
-/// - Parameter content: A closure containing style modifications for this breakpoint.
-/// - Returns: A responsive modification for the medium breakpoint.
-public func md(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
-    -> ResponsiveModification
-{
+public func md(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
     BreakpointModification(breakpoint: .md, styleModification: content())
 }
-
 /// Creates a large breakpoint (1024px+) responsive modification.
-///
-/// - Parameter content: A closure containing style modifications for this breakpoint.
-/// - Returns: A responsive modification for the large breakpoint.
-public func lg(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
-    -> ResponsiveModification
-{
+public func lg(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
     BreakpointModification(breakpoint: .lg, styleModification: content())
 }
-
 /// Creates an extra-large breakpoint (1280px+) responsive modification.
-///
-/// - Parameter content: A closure containing style modifications for this breakpoint.
-/// - Returns: A responsive modification for the extra-large breakpoint.
-public func xl(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
-    -> ResponsiveModification
-{
+public func xl(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
     BreakpointModification(breakpoint: .xl, styleModification: content())
 }
-
 /// Creates a 2x extra-large breakpoint (1536px+) responsive modification.
-///
-/// - Parameter content: A closure containing style modifications for this breakpoint.
-/// - Returns: A responsive modification for the 2x extra-large breakpoint.
-public func xl2(@ResponsiveStyleBuilder content: () -> ResponsiveModification)
-    -> ResponsiveModification
-{
+public func xl2(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
     BreakpointModification(breakpoint: .xl2, styleModification: content())
+}
+
+/// Creates a multi-modifier responsive modification (e.g. hover, dark).
+public func modifiers(_ modifiers: Modifier..., @ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+    MultiModifierModification(modifiers: modifiers, styleModification: content())
+}
+
+// MARK: - Tuple Syntax Support Functions
+
+/// Creates a two-modifier responsive modification for tuple syntax.
+public func modifiers(_ modifier1: Modifier, _ modifier2: Modifier, @ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+    MultiModifierModification(modifiers: [modifier1, modifier2], styleModification: content())
+}
+
+/// Creates a three-modifier responsive modification for tuple syntax.
+public func modifiers(_ modifier1: Modifier, _ modifier2: Modifier, _ modifier3: Modifier, @ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+    MultiModifierModification(modifiers: [modifier1, modifier2, modifier3], styleModification: content())
+}
+
+/// Creates a four-modifier responsive modification for tuple syntax.
+public func modifiers(_ modifier1: Modifier, _ modifier2: Modifier, _ modifier3: Modifier, _ modifier4: Modifier, @ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+    MultiModifierModification(modifiers: [modifier1, modifier2, modifier3, modifier4], styleModification: content())
+}
+
+// MARK: - Comma-Separated Modifier Syntax Support
+
+/// Custom operator for combining modifiers with comma-like syntax
+infix operator <&>: MultiplicationPrecedence
+
+/// Represents a collection of modifiers that can be combined using comma-like syntax.
+public struct ModifierGroup {
+    let modifiers: [Modifier]
+    
+    init(_ modifiers: [Modifier]) {
+        self.modifiers = modifiers
+    }
+    
+    /// Creates a responsive modification with the combined modifiers.
+    public func callAsFunction(@ResponsiveStyleBuilder content: () -> ResponsiveModification) -> ResponsiveModification {
+        MultiModifierModification(modifiers: modifiers, styleModification: content())
+    }
+}
+
+/// Combines two modifiers using the <&> operator.
+public func <&>(_ lhs: Modifier, _ rhs: Modifier) -> ModifierGroup {
+    ModifierGroup([lhs, rhs])
+}
+
+/// Combines a modifier group with another modifier using the <&> operator.
+public func <&>(_ lhs: ModifierGroup, _ rhs: Modifier) -> ModifierGroup {
+    ModifierGroup(lhs.modifiers + [rhs])
+}
+
+/// Combines a modifier with a modifier group using the <&> operator.
+public func <&>(_ lhs: Modifier, _ rhs: ModifierGroup) -> ModifierGroup {
+    ModifierGroup([lhs] + rhs.modifiers)
+}
+
+/// Combines two modifier groups using the <&> operator.
+public func <&>(_ lhs: ModifierGroup, _ rhs: ModifierGroup) -> ModifierGroup {
+    ModifierGroup(lhs.modifiers + rhs.modifiers)
 }
