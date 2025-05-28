@@ -118,7 +118,7 @@ public struct FontStyleOperation: StyleOperation, @unchecked Sendable {
     private init() {}
 }
 
-// Extension for Element to provide font styling
+// Extension for HTML to provide font styling
 extension HTML {
     /// Applies font styling to the element with optional modifiers.
     ///
@@ -156,6 +156,59 @@ extension HTML {
     ///   .font(size: .xl3)
     ///   .font(size: .xl5, on: .lg)  // Larger on desktop
     /// ```
+    public func font(
+        size: TextSize? = nil,
+        weight: Weight? = nil,
+        alignment: Alignment? = nil,
+        tracking: Tracking? = nil,
+        leading: Leading? = nil,
+        decoration: Decoration? = nil,
+        wrapping: Wrapping? = nil,
+        color: Color? = nil,
+        family: String? = nil,
+        on modifiers: Modifier...
+    ) -> some HTML {
+        let params = FontStyleOperation.Parameters(
+            size: size,
+            weight: weight,
+            alignment: alignment,
+            tracking: tracking,
+            leading: leading,
+            decoration: decoration,
+            wrapping: wrapping,
+            color: color,
+            family: family
+        )
+
+        return FontStyleOperation.shared.applyTo(
+            self,
+            params: params,
+            modifiers: modifiers
+        )
+    }
+}
+
+// Extension for Element to provide font styling
+extension Element {
+    /// Applies font styling to the element with optional modifiers.
+    ///
+    /// This method allows controlling all aspects of typography including
+    /// size, weight, alignment, spacing, color, and font family. Each parameter targets
+    /// a specific aspect of text appearance, and can be combined with modifiers for
+    /// responsive or state-based typography.
+    ///
+    /// - Parameters:
+    ///   - size: The font size from extra-small to extra-large variants.
+    ///   - weight: The font weight from thin to black/heavy.
+    ///   - alignment: The text alignment (left, center, right).
+    ///   - tracking: The letter spacing (character spacing).
+    ///   - leading: The line height (vertical spacing between lines).
+    ///   - decoration: The text decoration style (underline, strikethrough, etc.).
+    ///   - wrapping: The text wrapping behavior.
+    ///   - color: The text color from the color palette.
+    ///   - family: The font family name or stack (e.g., "sans-serif").
+    ///   - modifiers: Zero or more modifiers to scope the styles (e.g., responsive breakpoints or states).
+    /// - Returns: A new element with updated font styling classes.
     public func font(
         size: TextSize? = nil,
         weight: Weight? = nil,

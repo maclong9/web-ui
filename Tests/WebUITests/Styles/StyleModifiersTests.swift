@@ -151,6 +151,13 @@ import Testing
 
     // MARK: - Cursor Modifier Tests
 
+    @Test("Font modifier with family and on: modifier on Text (Element)")
+    func testFontModifierWithFamilyAndOnModifierOnText() async throws {
+        let element = Text { "Hello" }.font(family: "serif", on: .hover)
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"hover:font-[serif]\""))
+    }
+
     @Test("Cursor with not-allowed type and modifier")
     func testCursorWithNotAllowedAndModifier() async throws {
         let element = Stack().cursor(.notAllowed, on: .focus)
@@ -475,19 +482,19 @@ import Testing
                 modifiers(.hover, .dark) {
                     background(color: .blue(._600))
                 }
-                
+
                 // Method 2: Nested syntax
                 hover {
                     focus {
                         border(of: 2, color: .green(._500))
                     }
                 }
-                
+
                 // Method 3: Custom operator syntax
                 (md <&> placeholder) {
                     font(color: .gray(._400))
                 }
-                
+
                 // Method 4: Mixed usage
                 lg {
                     padding(of: 8)
@@ -496,19 +503,19 @@ import Testing
                     opacity(50)
                 }
             }
-        
+
         let rendered = element.render()
-        
+
         // Verify variadic syntax
         #expect(rendered.contains("hover:dark:bg-blue-600"))
-        
+
         // Verify nested syntax
         #expect(rendered.contains("hover:focus:border-2"))
         #expect(rendered.contains("hover:focus:border-green-500"))
-        
+
         // Verify custom operator syntax
         #expect(rendered.contains("md:placeholder:text-gray-400"))
-        
+
         // Verify mixed usage
         #expect(rendered.contains("lg:p-8"))
         #expect(rendered.contains("disabled:aria-busy:opacity-50"))
@@ -750,10 +757,10 @@ import Testing
                 Text { "Hello" }
                     .on {
                         md {
-                            font(color: .amber(._100))
+                            S.font(color: .amber(._100))
                         }
                         placeholder {
-                            font(color: .amber(._100))
+                            S.font(color: .amber(._100))
                         }
                     }
             }
@@ -766,7 +773,7 @@ import Testing
                         md {
                             S.font(color: .amber(._100))
                         }
-                        placeholder {
+                        modifiers(placeholder, hover) {
                             S.font(color: .amber(._100))
                         }
                     }
@@ -777,7 +784,7 @@ import Testing
         let renderedEle = TestElement().render()
 
         #expect(renderedDoc.contains("placeholder:text-amber-100"))
-        #expect(renderedEle.contains("placeholder:text-amber-100"))
+        #expect(renderedEle.contains("placeholder:hover:text-amber-100"))
         #expect(renderedDoc.contains("md:text-amber-100"))
         #expect(renderedEle.contains("md:text-amber-100"))
     }
