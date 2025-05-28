@@ -52,42 +52,15 @@ public struct Text: Element {
         .count
 
         let tag = sentenceCount > 1 ? "p" : "span"
-        let attributes = buildAttributes()
+        let attributes = AttributeBuilder.buildAttributes(
+            id: id,
+            classes: classes,
+            role: role,
+            label: label,
+            data: data
+        )
 
         return
             "<\(tag)\(attributes.count > 0 ? " " : "")\(attributes.joined(separator: " "))>\(HTMLEscaper.escapeContent(renderedContent))</\(tag)>"
-    }
-
-    private func buildAttributes() -> [String] {
-        var attributes: [String] = []
-
-        if let id, let idAttr = Attribute.string("id", id) {
-            attributes.append(idAttr)
-        }
-
-        if let classes, !classes.isEmpty,
-            let classAttr = Attribute.string(
-                "class", classes.joined(separator: " "))
-        {
-            attributes.append(classAttr)
-        }
-
-        if let role, let roleAttr = Attribute.typed("role", role) {
-            attributes.append(roleAttr)
-        }
-
-        if let label, let labelAttr = Attribute.string("aria-label", label) {
-            attributes.append(labelAttr)
-        }
-
-        if let data {
-            for (key, value) in data {
-                if let dataAttr = Attribute.string("data-\(key)", value) {
-                    attributes.append(dataAttr)
-                }
-            }
-        }
-
-        return attributes
     }
 }
