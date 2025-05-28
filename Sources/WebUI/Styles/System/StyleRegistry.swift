@@ -85,17 +85,5 @@ public enum StyleRegistry {
         _ = sizing
     }
 
-    /// Registers a custom style operation
-    ///
-    /// This method allows for registering custom style operations
-    /// from outside the core framework, making them available for both
-    /// direct Element styling and declaritive responsive syntax.
-    ///
-    /// - Parameters:
-    ///   - name: The name of the custom style operation
-    ///   - operation: The style operation to register
-    public static func register<T: StyleOperation>(name: String, operation: T) {
-        // In a more complex implementation, this could store operations in a dictionary
-        // For now, this is a placeholder for future extensibility
-    }
+
 }

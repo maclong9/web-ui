@@ -4,19 +4,18 @@
 /// utility methods for common string transformations needed in web development.
 extension String: HTML {
     public var body: some HTML { self }
-    /// Renders the string as HTML content with proper escaping.
+    /// Renders the string as HTML content.
     ///
-    /// This implementation allows plain strings to be used directly in HTML content builders,
-    /// automatically escaping HTML special characters to prevent XSS attacks and ensure
-    /// proper rendering.
+    /// This implementation allows plain strings to be used directly in HTML content builders.
+    /// No escaping is performed here; escaping should be handled where appropriate.
     ///
-    /// - Returns: The string with HTML characters properly escaped.
+    /// - Returns: The string as-is.
     ///
     /// - Example:
     ///   ```swift
     ///   let userInput = "Hello <script>alert('XSS')</script> & goodbye"
     ///   let content: [any HTML] = [
-    ///     userInput,  // Automatically escaped to: "Hello &lt;script&gt;alert('XSS')&lt;/script&gt; &amp; goodbye"
+    ///     userInput,
     ///     Heading(.one) { "Title" }
     ///   ]
     ///   ```
