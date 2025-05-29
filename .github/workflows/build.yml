@@ -115,7 +115,7 @@ jobs:
       
           echo "🧳 Moving site output to temp_output/"
           mkdir -p temp_output
-          cp -r "$SOURCE"/. temp_output/
+          cp -r "$SOURCE"/. ~/temp_output/
       
           echo "🌿 Switching to static branch: ${{ inputs.static-branch }}"
           git checkout -B "${{ inputs.static-branch }}"
@@ -124,10 +124,10 @@ jobs:
           rm -rf ./*
       
           echo "📥 Copying files back from temp_output/"
-          cp -r temp_output/* .
+          cp -r ~/temp_output/* .
       
           echo "🧽 Cleaning up"
-          rm -rf temp_output "$SOURCE" .gitignore .github .build .swift-format Public
+          rm -rf ~/temp_output "$SOURCE" .gitignore .github .build .swift-format Public Articles
       
           echo "📝 Git add & commit"
           git add .
