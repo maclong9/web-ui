@@ -168,9 +168,7 @@ do {
             "Run \u{001B}[1;33mcd \(projectName) && swift run\u{001B}[0m to build your static site to the \u{001B}[1;36m.output\u{001B}[0m directory.\n"
         )
     } else {
-        print(
-            "Run \u{001B}[1;33mcd \(projectName) && swift run\u{001B}[0m to start your server.\n"
-        )
+        print("🚧 Example coming soon")
     }
 
 } catch let error as InitError {
