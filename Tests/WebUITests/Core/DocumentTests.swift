@@ -26,7 +26,7 @@ struct BasicTestDocument: Document {
         Metadata(
             site: "Test Site",
             title: "Hello World",
-            titleSeperator: " | ",
+            titleSeparator: " | ",
             description: "A test description"
         )
     }
@@ -42,7 +42,7 @@ struct FullMetadataDocument: Document {
         Metadata(
             site: "Test Site",
             title: "Full Test",
-            titleSeperator: " - ",
+            titleSeparator: " - ",
             description: "A complete metadata test",
             date: Date(),
             image: "https://example.com/image.png",
