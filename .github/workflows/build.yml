@@ -23,7 +23,7 @@ on:
         description: 'Swift version to use'
         required: false
         type: string
-        default: 'latest'
+        default: '6.1'
       build-command:
         description: 'Custom build command'
         required: false
