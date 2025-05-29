@@ -11,7 +11,7 @@ public struct Metadata {
     /// The title of the current page.
     public var title: String?
     /// The separator between the title and site name (e.g., " - " or " | ").
-    public var titleSeperator: String?
+    public var titleSeparator: String?
     /// A concise description of the page content.
     public var description: String?
     /// The publication date of the content.
@@ -39,7 +39,7 @@ public struct Metadata {
     ///
     /// - Returns: A string combining the title, separator, and site name, handling nil values appropriately.
     public var pageTitle: String {
-        "\(title ?? "")\(titleSeperator ?? "")\(site ?? "")"
+        "\(title ?? "")\(titleSeparator ?? "")\(site ?? "")"
     }
 
     /// Creates a new metadata configuration for an HTML document.
@@ -47,7 +47,7 @@ public struct Metadata {
     /// - Parameters:
     ///   - site: The name of the website or application.
     ///   - title: The title of the current page.
-    ///   - titleSeperator: The separator between title and site name (defaults to a space).
+    ///   - titleSeparator: The separator between title and site name (defaults to a space).
     ///   - description: A concise description of the page content.
     ///   - date: The publication date of the content.
     ///   - image: URL to an image representing the content.
@@ -65,7 +65,7 @@ public struct Metadata {
     ///   let pageMetadata = Metadata(
     ///     site: "My Website",
     ///     title: "Welcome",
-    ///     titleSeperator: " | ",
+    ///     titleSeparator: " | ",
     ///     description: "A modern website built with WebUI",
     ///     author: "John Doe",
     ///     keywords: ["swift", "web", "ui"],
@@ -80,7 +80,7 @@ public struct Metadata {
     public init(
         site: String? = nil,
         title: String? = nil,
-        titleSeperator: String? = " ",
+        titleSeparator: String? = " ",
         description: String? = nil,
         date: Date? = nil,
         image: String? = nil,
@@ -95,7 +95,7 @@ public struct Metadata {
     ) {
         self.site = site
         self.title = title
-        self.titleSeperator = titleSeperator
+        self.titleSeparator = titleSeparator
         self.description = description
         self.date = date
         self.image = image
@@ -119,7 +119,7 @@ public struct Metadata {
     ///   - base: The base metadata to inherit values from.
     ///   - site: Override for the website name.
     ///   - title: Override for the page title.
-    ///   - titleSeperator: Override for the title separator.
+    ///   - titleSeparator: Override for the title separator.
     ///   - description: Override for the description.
     ///   - date: Override for the publication date.
     ///   - image: Override for the image URL.
@@ -136,7 +136,7 @@ public struct Metadata {
     ///   ```swift
     ///   let siteMetadata = Metadata(
     ///     site: "My Website",
-    ///     titleSeperator: " | ",
+    ///     titleSeparator: " | ",
     ///     description: "A website about Swift"
     ///   )
     ///
@@ -151,7 +151,7 @@ public struct Metadata {
         from base: Metadata,
         site: String? = nil,
         title: String? = nil,
-        titleSeperator: String? = nil,
+        titleSeparator: String? = nil,
         description: String? = nil,
         date: Date? = nil,
         image: String? = nil,
@@ -166,7 +166,7 @@ public struct Metadata {
     ) {
         self.site = site ?? base.site
         self.title = title ?? base.title
-        self.titleSeperator = titleSeperator ?? base.titleSeperator
+        self.titleSeparator = titleSeparator ?? base.titleSeparator
         self.description = description ?? base.description
         self.date = date ?? base.date
         self.image = image ?? base.image
