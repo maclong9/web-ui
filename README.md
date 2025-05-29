@@ -95,6 +95,50 @@ And then add this to your Target:
     )
 ```
 
+### Static Site Building
+
+The recommended approach is the GitHub action within the `.github/workflows` directory, this will build the site and push the changes to a `static` branch, you can then use this branch with most deployment providers such as Cloudflare Pages and Netlify. Below are two examples, one that uses the default options and one with some customisations for working within a monorepo, both of these examples are used in production here: [portfolio](https://github.com/maclong9/portfolio) and [comp-sci](https://github.com/maclong9/comp-sci).
+
+**With Defaults**
+``` .github/workflows/build.yml
+name: Build Static Site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: maclong9/web-ui/.github/workflows/build.yml@main
+```
+
+**With Custom Options**
+``` .github/workflows/build.yml
+name: Build Static Site
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: maclong9/web-ui/.github/workflows/build.yml@main
+    with:
+      working-directory: 'Application'
+      generate-command: 'swift run Application'
+```
+
 ## Contributing
 
 Contributions are what make the open-source community such an amazing place to
