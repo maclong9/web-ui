@@ -1,22 +1,5 @@
 name: WebUI Static Site Build
 
-# You can reference this in your static site repos to build and push to `static` branch
-# USAGE:
-# Default: `uses: maclong9/web-ui/.github/workflows/build.yml@main`
-#
-# Customised:
-# ``` build.yml
-# jobs:
-#  build:
-#    uses: maclong9/web-ui/.github/workflows/build.yml@main
-#    with:
-#      swift-version: '5.9'
-#      generate-command: 'swift run PortfolioGenerator'
-#      static-branch: 'gh-pages'
-#      output-directory: 'dist'
-#      working-directory: 'Application'
-# ```
-
 on:
   workflow_call:
     inputs:
@@ -52,7 +35,7 @@ on:
         default: '.'
 
 permissions:
-  contents: write 
+  contents: write
 
 jobs:
   web-ui-build:
@@ -60,11 +43,10 @@ jobs:
     defaults:
       run:
         working-directory: ${{ inputs.working-directory }}
+
     steps:
-      # Check out the repository code
       - uses: actions/checkout@v4
-      
-      # Cache Swift toolchain
+
       - name: Cache Swift Toolchain
         uses: actions/cache@v4
         id: cache-swift-toolchain
@@ -74,14 +56,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-swift-toolchain-
 
-      # Set up Swift (only if cache miss)
       - name: Setup Swift
         uses: swift-actions/setup-swift@v2
         with:
           swift-version: ${{ inputs.swift-version }}
         if: steps.cache-swift-toolchain.outputs.cache-hit != 'true'
-      
-      # Cache Swift build artifacts
+
       - name: Cache Swift Build
         uses: actions/cache@v4
         id: cache-swift-build
@@ -90,13 +70,11 @@ jobs:
           key: ${{ runner.os }}-swift-build-${{ hashFiles(format('{0}/Package.swift', inputs.working-directory), format('{0}/Sources/**', inputs.working-directory)) }}
           restore-keys: |
             ${{ runner.os }}-swift-build-
-      
-      # Build the project
+
       - name: Build
         run: ${{ inputs.build-command }}
         if: steps.cache-swift-build.outputs.cache-hit != 'true'
-      
-      # Cache generated site output
+
       - name: Cache Generated Site
         uses: actions/cache@v4
         id: cache-site-output
@@ -105,25 +83,55 @@ jobs:
           key: ${{ runner.os }}-site-output-${{ hashFiles(format('{0}/Sources/**', inputs.working-directory)) }}
           restore-keys: |
             ${{ runner.os }}-site-output-
-      
-      # Run the static site generator
+
       - name: Generate Site
         run: ${{ inputs.generate-command }}
         if: steps.cache-site-output.outputs.cache-hit != 'true'
 
-      # Push to static branch (only on push to main)
       - name: Push to static branch
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main'
         working-directory: .
         run: |
+          set -euo pipefail
+          echo "🔧 Configuring Git user"
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git checkout -B ${{ inputs.static-branch }}
+      
+          SOURCE="${{ inputs.working-directory }}/${{ inputs.output-directory }}"
+          echo "📁 Copying from output directory: $SOURCE"
+      
+          if [ ! -d "$SOURCE" ]; then
+            echo "❌ ERROR: Directory '$SOURCE' does not exist"
+            exit 1
+          fi
+      
+          if [ -z "$(ls -A "$SOURCE")" ]; then
+            echo "❌ ERROR: Directory '$SOURCE' is empty"
+            exit 1
+          fi
+      
+          echo "📦 Files in output directory before checkout:"
+          ls -al "$SOURCE"
+      
+          echo "🧳 Moving site output to temp_output/"
+          mkdir -p temp_output
+          cp -r "$SOURCE"/. ~/temp_output/
+      
+          echo "🌿 Switching to static branch: ${{ inputs.static-branch }}"
+          git checkout -B "${{ inputs.static-branch }}"
+      
+          echo "🧹 Cleaning current contents"
           rm -rf ./*
-          mv ${{ inputs.working-directory }}/${{ inputs.output-directory }}/* .
-          rm -rf ${{ inputs.working-directory }}/${{ inputs.output-directory }} .gitignore .github .build .swift-format Public
+      
+          echo "📥 Copying files back from temp_output/"
+          cp -r ~/temp_output/* .
+      
+          echo "🧽 Cleaning up"
+          rm -rf ~/temp_output "$SOURCE" .gitignore .github .build .swift-format Public Articles
+      
+          echo "📝 Git add & commit"
           git add .
           git commit -m "Update static site content"
-          git push origin ${{ inputs.static-branch }} --force
+          git push origin "${{ inputs.static-branch }}" --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
