@@ -1,0 +1,106 @@
+name: Build Static Site
+
+# You can reference this in your static site repos to build and push to `static` branch
+# USAGE: `uses: maclong9/web-ui/.github/workflows/build.yml@main`
+
+on:
+  workflow_call:
+    inputs:
+      swift-version:
+        description: 'Swift version to use'
+        required: false
+        type: string
+        default: 'latest'
+      build-command:
+        description: 'Custom build command'
+        required: false
+        type: string
+        default: 'swift build -v'
+      generate-command:
+        description: 'Site generation command'
+        required: false
+        type: string
+        default: 'swift run Application'
+      output-directory:
+        description: 'Output directory path'
+        required: false
+        type: string
+        default: '.output'
+      static-branch:
+        description: 'Branch to push static content to'
+        required: false
+        type: string
+        default: 'static'
+
+permissions:
+  contents: write 
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      # Check out the repository code
+      - uses: actions/checkout@v4
+      
+      # Cache Swift toolchain
+      - name: Cache Swift Toolchain
+        uses: actions/cache@v4
+        id: cache-swift-toolchain
+        with:
+          path: ~/Library/Developer/Toolchains
+          key: ${{ runner.os }}-swift-toolchain-v1
+          restore-keys: |
+            ${{ runner.os }}-swift-toolchain-
+
+      # Set up Swift (only if cache miss)
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: ${{ inputs.swift-version }}
+        if: steps.cache-swift-toolchain.outputs.cache-hit != 'true'
+      
+      # Cache Swift build artifacts
+      - name: Cache Swift Build
+        uses: actions/cache@v4
+        id: cache-swift-build
+        with:
+          path: .build
+          key: ${{ runner.os }}-swift-build-${{ hashFiles('Package.swift', 'Sources/**') }}
+          restore-keys: |
+            ${{ runner.os }}-swift-build-
+      
+      # Build the project
+      - name: Build
+        run: ${{ inputs.build-command }}
+        if: steps.cache-swift-build.outputs.cache-hit != 'true'
+      
+      # Cache generated site output
+      - name: Cache Generated Site
+        uses: actions/cache@v4
+        id: cache-site-output
+        with:
+          path: ${{ inputs.output-directory }}
+          key: ${{ runner.os }}-site-output-${{ hashFiles('Sources/**') }}
+          restore-keys: |
+            ${{ runner.os }}-site-output-
+      
+      # Run the static site generator
+      - name: Generate Site
+        run: ${{ inputs.generate-command }}
+        if: steps.cache-site-output.outputs.cache-hit != 'true'
+
+      # Push to static branch (only on push to main)
+      - name: Push to static branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git checkout -B ${{ inputs.static-branch }}
+          rm -rf ./*
+          mv ${{ inputs.output-directory }}/* .
+          rm -rf ${{ inputs.output-directory }} .gitignore .github .build .swift-format Public
+          git add .
+          git commit -m "Update static site content"
+          git push origin ${{ inputs.static-branch }} --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
