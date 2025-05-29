@@ -14,6 +14,7 @@ name: WebUI Static Site Build
 #      generate-command: 'swift run PortfolioGenerator'
 #      static-branch: 'gh-pages'
 #      output-directory: 'dist'
+#      working-directory: 'Application'
 # ```
 
 on:
@@ -44,6 +45,11 @@ on:
         required: false
         type: string
         default: 'static'
+      working-directory:
+        description: 'Working directory for build commands'
+        required: false
+        type: string
+        default: '.'
 
 permissions:
   contents: write 
@@ -51,6 +57,9 @@ permissions:
 jobs:
   web-ui-build:
     runs-on: macos-15
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     steps:
       # Check out the repository code
       - uses: actions/checkout@v4
@@ -77,8 +86,8 @@ jobs:
         uses: actions/cache@v4
         id: cache-swift-build
         with:
-          path: .build
-          key: ${{ runner.os }}-swift-build-${{ hashFiles('Package.swift', 'Sources/**') }}
+          path: ${{ inputs.working-directory }}/.build
+          key: ${{ runner.os }}-swift-build-${{ hashFiles(format('{0}/Package.swift', inputs.working-directory), format('{0}/Sources/**', inputs.working-directory)) }}
           restore-keys: |
             ${{ runner.os }}-swift-build-
       
@@ -92,8 +101,8 @@ jobs:
         uses: actions/cache@v4
         id: cache-site-output
         with:
-          path: ${{ inputs.output-directory }}
-          key: ${{ runner.os }}-site-output-${{ hashFiles('Sources/**') }}
+          path: ${{ inputs.working-directory }}/${{ inputs.output-directory }}
+          key: ${{ runner.os }}-site-output-${{ hashFiles(format('{0}/Sources/**', inputs.working-directory)) }}
           restore-keys: |
             ${{ runner.os }}-site-output-
       
@@ -105,13 +114,14 @@ jobs:
       # Push to static branch (only on push to main)
       - name: Push to static branch
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: .
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git checkout -B ${{ inputs.static-branch }}
           rm -rf ./*
-          mv ${{ inputs.output-directory }}/* .
-          rm -rf ${{ inputs.output-directory }} .gitignore .github .build .swift-format Public
+          mv ${{ inputs.working-directory }}/${{ inputs.output-directory }}/* .
+          rm -rf ${{ inputs.working-directory }}/${{ inputs.output-directory }} .gitignore .github .build .swift-format Public
           git add .
           git commit -m "Update static site content"
           git push origin ${{ inputs.static-branch }} --force
