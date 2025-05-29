@@ -124,7 +124,7 @@ jobs:
           rm -rf ./*
       
           echo "📥 Copying files back from temp_output/"
-          cp -r temp_output/. .
+          cp -r temp_output/* .
       
           echo "🧽 Cleaning up"
           rm -rf temp_output "$SOURCE" .gitignore .github .build .swift-format Public
