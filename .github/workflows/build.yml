@@ -1,4 +1,4 @@
-name: Build Static Site
+name: WebUI Static Site Build
 
 # You can reference this in your static site repos to build and push to `static` branch
 # USAGE:
@@ -49,7 +49,7 @@ permissions:
   contents: write 
 
 jobs:
-  build:
+  web-ui-build:
     runs-on: macos-15
     steps:
       # Check out the repository code
