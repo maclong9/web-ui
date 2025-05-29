@@ -61,6 +61,6 @@ public struct Text: Element {
         )
 
         return
-            "<\(tag)\(attributes.count > 0 ? " " : "")\(attributes.joined(separator: " "))>\(HTMLEscaper.escapeContent(renderedContent))</\(tag)>"
+            "<\(tag)\(attributes.count > 0 ? " " : "")\(attributes.joined(separator: " "))>\(renderedContent)</\(tag)>"
     }
 }
