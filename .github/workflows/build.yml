@@ -89,42 +89,46 @@ jobs:
         if: steps.cache-site-output.outputs.cache-hit != 'true'
 
       - name: Push to static branch
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: .
         run: |
           set -euo pipefail
           echo "🔧 Configuring Git user"
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-
-          echo "🌿 Switching to static branch: ${{ inputs.static-branch }}"
-          git checkout -B "${{ inputs.static-branch }}"
-
-          echo "🧹 Cleaning current contents"
-          rm -rf ./*
-
+      
           SOURCE="${{ inputs.working-directory }}/${{ inputs.output-directory }}"
           echo "📁 Copying from output directory: $SOURCE"
-
+      
           if [ ! -d "$SOURCE" ]; then
             echo "❌ ERROR: Directory '$SOURCE' does not exist"
             exit 1
           fi
-
+      
           if [ -z "$(ls -A "$SOURCE")" ]; then
             echo "❌ ERROR: Directory '$SOURCE' is empty"
             exit 1
           fi
-
-          echo "📦 Files in output directory:"
+      
+          echo "📦 Files in output directory before checkout:"
           ls -al "$SOURCE"
-
-          echo "📥 Copying files (including dotfiles)"
-          cp -r "$SOURCE"/. .
-
-          echo "🧽 Cleaning up source and build artifacts"
-          rm -rf "$SOURCE" .gitignore .github .build .swift-format Public
-
+      
+          echo "🧳 Moving site output to temp_output/"
+          mkdir -p temp_output
+          cp -r "$SOURCE"/. temp_output/
+      
+          echo "🌿 Switching to static branch: ${{ inputs.static-branch }}"
+          git checkout -B "${{ inputs.static-branch }}"
+      
+          echo "🧹 Cleaning current contents"
+          rm -rf ./*
+      
+          echo "📥 Copying files back from temp_output/"
+          cp -r temp_output/. .
+      
+          echo "🧽 Cleaning up"
+          rm -rf temp_output "$SOURCE" .gitignore .github .build .swift-format Public
+      
           echo "📝 Git add & commit"
           git add .
           git commit -m "Update static site content"
