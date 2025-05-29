@@ -120,7 +120,16 @@ jobs:
           git config user.email "actions@github.com"
           git checkout -B ${{ inputs.static-branch }}
           rm -rf ./*
-          mv ${{ inputs.working-directory }}/${{ inputs.output-directory }}/* .
+          # Define source directory
+          SOURCE="${{ inputs.working-directory }}/${{ inputs.output-directory }}"
+          
+          # Verify directory exists and is not empty
+          if [ -d "$SOURCE" ] && [ "$(ls -A "$SOURCE")" ]; then
+            cp -r "$SOURCE"/. .  # copy everything, including hidden files
+          else
+            echo "Error: Output directory '$SOURCE' does not exist or is empty"
+            exit 1
+          fi
           rm -rf ${{ inputs.working-directory }}/${{ inputs.output-directory }} .gitignore .github .build .swift-format Public
           git add .
           git commit -m "Update static site content"
