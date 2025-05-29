@@ -1,7 +1,20 @@
 name: Build Static Site
 
 # You can reference this in your static site repos to build and push to `static` branch
-# USAGE: `uses: maclong9/web-ui/.github/workflows/build.yml@main`
+# USAGE:
+# Default: `uses: maclong9/web-ui/.github/workflows/build.yml@main`
+#
+# Customised:
+# ``` build.yml
+# jobs:
+#  build:
+#    uses: maclong9/web-ui/.github/workflows/build.yml@main
+#    with:
+#      swift-version: '5.9'
+#      generate-command: 'swift run PortfolioGenerator'
+#      static-branch: 'gh-pages'
+#      output-directory: 'dist'
+# ```
 
 on:
   workflow_call:
