@@ -67,7 +67,7 @@ public struct StructuredData {
         // Try to serialize the JSON object to data
         if let jsonData = try? JSONSerialization.data(
             withJSONObject: jsonObject,
-            options: [.prettyPrinted, .withoutEscapingSlashes]
+            options: [.withoutEscapingSlashes]
         ) {
             // Convert the data to a string
             return String(data: jsonData, encoding: .utf8) ?? ""
