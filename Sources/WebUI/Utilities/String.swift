@@ -59,7 +59,7 @@ extension String: HTML {
     public func pathFormatted() -> String {
         self.lowercased()
             .replacingOccurrences(
-                of: "[^a-z0-9 ]", with: "", options: .regularExpression
+                of: "[^a-z0-9 -]", with: "", options: .regularExpression
             )
             .split(separator: " ")
             .filter { !$0.isEmpty }
