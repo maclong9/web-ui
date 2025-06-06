@@ -12,13 +12,13 @@ public struct Button: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let onclick: String
+    private let onClick: String?
     private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML button.
     ///
     /// - Parameters:
-    ///   - type: Button type (submit or reset), optional. If nil, the button will be a standard button without a specific form role.
+    ///   - type: Button type (submit or reset), optional.
     ///   - autofocus: When true, automatically focuses the button when the page loads, optional.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
     ///   - classes: An array of CSS classnames for styling the button.
@@ -44,7 +44,7 @@ public struct Button: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        onclick: String,
+        onClick: String? = nil,
         @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
         self.type = type
@@ -54,7 +54,7 @@ public struct Button: Element {
         self.role = role
         self.label = label
         self.data = data
-        self.onclick = onclick
+        self.onClick = onClick
         self.contentBuilder = content
     }
 
@@ -70,13 +70,15 @@ public struct Button: Element {
         if let autofocus, autofocus {
             additional.append("autofocus")
         }
+        if let onClick, let clickAttr = Attribute.string("onclick", onClick) {
+            additional.append(clickAttr)
+        }
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data,
-            onclick: onclick,
             additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()

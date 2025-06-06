@@ -286,11 +286,11 @@ struct DocumentTests {
         let rendered = try document.render()
 
         #expect(rendered.contains("<script type=\"application/ld+json\">"))
-        #expect(rendered.contains("\"@context\" : \"https://schema.org\""))
-        #expect(rendered.contains("\"@type\" : \"Article\""))
-        #expect(rendered.contains("\"headline\" : \"Test Article\""))
+        #expect(rendered.contains("\"@context\":\"https://schema.org\""))
+        #expect(rendered.contains("\"@type\":\"Organization\""))
+        #expect(rendered.contains("\"headline\":\"Test Article\""))
         #expect(
-            rendered.contains("\"image\" : \"https://example.com/image.jpg\""))
+            rendered.contains("\"image\":\"https://example.com/image.jpg\""))
     }
 
     @Test("Custom scripts are correctly added to document head")

@@ -887,6 +887,15 @@ import Testing
         #expect(inputRendered.contains("aria-label=\"Custom checkbox\""))
     }
 
+    @Test("Button with Onclick Attribute")
+    func testButtonWithOnClickAttribute() async throws {
+        let buttonWithOnClick = Button(onClick: "hello()") {
+            "Click me"
+        }
+        let buttonRendered = buttonWithOnClick.render()
+        #expect(buttonRendered.contains("onclick=\"hello()\""))
+    }
+
     @Test("Deeply nested elements")
     func testDeeplyNestedElements() async throws {
         let nested = Stack {
