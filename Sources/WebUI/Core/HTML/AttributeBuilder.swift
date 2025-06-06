@@ -24,32 +24,37 @@ public enum AttributeBuilder {
         additional: [String] = []
     ) -> [String] {
         var attributes: [String] = []
-        // ID
-        if let id = id {
-            attributes.append(Attribute.string("id", id)!)
+    
+        if let id, let attr = Attribute.string("id", id) {
+            attributes.append(attr)
         }
-        // Classes
-        if let classes = classes, !classes.isEmpty {
-            attributes.append(
-                Attribute.string("class", classes.joined(separator: " "))!)
-        }
-        // Aria Role
-        if let role = role {
-            attributes.append(Attribute.typed("role", role)!)
-        }
-        // Aria Label
-        if let label = label {
-            attributes.append(Attribute.string("aria-label", label)!)
-        }
-        // Data Attributes
-        if let data = data {
-            for (key, value) in data {
-                attributes.append(Attribute.string("data-\(key)", value)!)
+    
+        if let classes, !classes.isEmpty {
+            if let attr = Attribute.string("class", classes.joined(separator: " ")) {
+                attributes.append(attr)
             }
         }
+    
+        if let role, let attr = Attribute.typed("role", role) {
+            attributes.append(attr)
+        }
+    
+        if let label, let attr = Attribute.string("aria-label", label) {
+            attributes.append(attr)
+        }
+    
+        if let data {
+            for (key, value) in data {
+                if let attr = Attribute.string("data-\(key)", value) {
+                    attributes.append(attr)
+                }
+            }
+        }
+    
         attributes.append(contentsOf: additional)
         return attributes
     }
+
 
     /// Renders a complete HTML tag with attributes and content
     ///
