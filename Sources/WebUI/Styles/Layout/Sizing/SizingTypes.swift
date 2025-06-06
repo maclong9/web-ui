@@ -1,4 +1,6 @@
+#if canImport(CoreGraphics)
 import CoreGraphics
+#endif
 
 /// Represents sizing options for elements.
 public enum SizingValue: Sendable {
@@ -87,8 +89,17 @@ public enum SizingValue: Sendable {
 
 // MARK: - Convenience Extensions for Improved SwiftUI-like Experience
 
+#if canImport(CoreGraphics)
 extension CGFloat {
     /// Converts the CGFloat to a fixed spacing SizingValue.
+    public var spacing: SizingValue {
+        .spacing(Int(self))
+    }
+}
+#endif
+
+extension Double {
+    /// Converts the Double to a fixed spacing SizingValue.
     public var spacing: SizingValue {
         .spacing(Int(self))
     }

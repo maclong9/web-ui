@@ -1,4 +1,6 @@
+#if canImport(CoreGraphics)
 import CoreGraphics
+#endif
 import Foundation
 
 /// Style operation for sizing styling
@@ -88,9 +90,9 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
     /// Parameters for aspect ratio styling
     public struct AspectRatioParameters {
         /// The width component of the aspect ratio
-        public let width: CGFloat?
+        public let width: Double?
         /// The height component of the aspect ratio
-        public let height: CGFloat?
+        public let height: Double?
         /// Whether to use a square (1:1) aspect ratio
         public let isSquare: Bool
         /// Whether to use a video (16:9) aspect ratio
@@ -104,8 +106,8 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
         ///   - isSquare: Whether to use a square aspect ratio
         ///   - isVideo: Whether to use a video aspect ratio
         public init(
-            width: CGFloat? = nil,
-            height: CGFloat? = nil,
+            width: Double? = nil,
+            height: Double? = nil,
             isSquare: Bool = false,
             isVideo: Bool = false
         ) {
@@ -244,12 +246,12 @@ extension HTML {
     ///   - maxHeight: The maximum height in spacing units.
     /// - Returns: A new element with updated sizing classes.
     public func frame(
-        width: CGFloat? = nil,
-        height: CGFloat? = nil,
-        minWidth: CGFloat? = nil,
-        maxWidth: CGFloat? = nil,
-        minHeight: CGFloat? = nil,
-        maxHeight: CGFloat? = nil
+        width: Double? = nil,
+        height: Double? = nil,
+        minWidth: Double? = nil,
+        maxWidth: Double? = nil,
+        minHeight: Double? = nil,
+        maxHeight: Double? = nil
     ) -> some HTML {
         frame(
             width: width.map { .spacing(Int($0)) },
@@ -290,7 +292,7 @@ extension HTML {
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with aspect ratio classes.
     public func aspectRatio(
-        _ width: CGFloat, _ height: CGFloat, on modifiers: Modifier...
+        _ width: Double, _ height: Double, on modifiers: Modifier...
     ) -> some HTML {
         let params = SizingStyleOperation.AspectRatioParameters(
             width: width, height: height)
@@ -385,7 +387,7 @@ extension ResponsiveBuilder {
     ///   - height: The height for the aspect ratio calculation.
     /// - Returns: The builder for method chaining.
     @discardableResult
-    public func aspectRatio(_ width: CGFloat, _ height: CGFloat)
+    public func aspectRatio(_ width: Double, _ height: Double)
         -> ResponsiveBuilder
     {
         let params = SizingStyleOperation.AspectRatioParameters(
@@ -479,7 +481,7 @@ public func size(_ value: SizingValue) -> ResponsiveModification {
 ///   - width: The width for the aspect ratio calculation.
 ///   - height: The height for the aspect ratio calculation.
 /// - Returns: A responsive modification for aspect ratio styling.
-public func aspectRatio(_ width: CGFloat, _ height: CGFloat)
+public func aspectRatio(_ width: Double, _ height: Double)
     -> ResponsiveModification
 {
     let params = SizingStyleOperation.AspectRatioParameters(
