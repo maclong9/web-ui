@@ -7,12 +7,12 @@ import Foundation
 public struct Button: Element {
     private let type: ButtonType?
     private let autofocus: Bool?
+    private let onClick: String?
     private let id: String?
     private let classes: [String]?
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let onClick: String?
     private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML button.
@@ -20,12 +20,12 @@ public struct Button: Element {
     /// - Parameters:
     ///   - type: Button type (submit or reset), optional.
     ///   - autofocus: When true, automatically focuses the button when the page loads, optional.
+    ///   - onClick: JavaScript function to execute when the button is clicked, optional.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
     ///   - classes: An array of CSS classnames for styling the button.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when button text isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the button.
-    ///   - onclick: Early implementation for JS, add an onclick string to your button.
     ///   - content: Closure providing button content (text or other HTML elements), defaults to empty.
     ///
     /// ## Example
@@ -39,22 +39,22 @@ public struct Button: Element {
     public init(
         type: ButtonType? = nil,
         autofocus: Bool? = nil,
+        onClick: String? = nil,
         id: String? = nil,
         classes: [String]? = nil,
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        onClick: String? = nil,
         @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
         self.type = type
         self.autofocus = autofocus
+        self.onClick = onClick
         self.id = id
         self.classes = classes
         self.role = role
         self.label = label
         self.data = data
-        self.onClick = onClick
         self.contentBuilder = content
     }
 
