@@ -12,6 +12,7 @@ public struct Button: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
+    private let onclick: String
     private let contentBuilder: HTMLContentBuilder
 
     /// Creates a new HTML button.
@@ -24,6 +25,7 @@ public struct Button: Element {
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when button text isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the button.
+    ///   - onclick: Early implementation for JS, add an onclick string to your button.
     ///   - content: Closure providing button content (text or other HTML elements), defaults to empty.
     ///
     /// ## Example
@@ -42,6 +44,7 @@ public struct Button: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
+        onclick: String,
         @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
     ) {
         self.type = type
@@ -51,6 +54,7 @@ public struct Button: Element {
         self.role = role
         self.label = label
         self.data = data
+        self.onclick = onclick
         self.contentBuilder = content
     }
 
@@ -72,6 +76,7 @@ public struct Button: Element {
             role: role,
             label: label,
             data: data,
+            onclick: onclick,
             additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()
