@@ -1,7 +1,8 @@
 import Testing
 
-@testable import WebUI
 import struct WebUI.EdgeInsets
+
+@testable import WebUI
 
 @Suite("Base Style Tests") struct BaseStyleTests {
     // MARK: - Sizing Tests

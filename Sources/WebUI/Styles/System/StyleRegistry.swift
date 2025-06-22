@@ -85,5 +85,4 @@ public enum StyleRegistry {
         _ = sizing
     }
 
-
 }

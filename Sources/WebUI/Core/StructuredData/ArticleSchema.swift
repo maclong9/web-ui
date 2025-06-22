@@ -105,5 +105,4 @@ extension StructuredData {
         return StructuredData(type: .article, data: data)
     }
 
-
 }
