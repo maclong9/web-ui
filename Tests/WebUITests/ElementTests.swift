@@ -1210,4 +1210,127 @@ import Testing
             rendered.contains("<span data-item=\"child\">Nested content</span>")
         )
     }
+
+    // MARK: - Conditional Modifier Tests
+
+    @Test("Conditional modifier - if pattern with true condition")
+    func testConditionalModifierIfTrue() async throws {
+        let element = Text("Hello").if(true) { $0.addClass("highlight") }
+
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"highlight\""))
+        #expect(rendered.contains("Hello"))
+    }
+
+    @Test("Conditional modifier - if pattern with false condition")
+    func testConditionalModifierIfFalse() async throws {
+        let element = Text("Hello").if(false) { $0.addClass("highlight") }
+
+        let rendered = element.render()
+        #expect(!rendered.contains("class=\"highlight\""))
+        #expect(rendered.contains("Hello"))
+    }
+
+    @Test("Conditional modifier - chained if patterns")
+    func testConditionalModifierChained() async throws {
+        let element = Text("Hello")
+            .if(true) { $0.addClass("primary") }
+            .if(false) { $0.addClass("secondary") }
+            .if(true) { $0.addClass("active") }
+
+        let rendered = element.render()
+        #expect(rendered.contains("primary"))
+        #expect(!rendered.contains("secondary"))
+        #expect(rendered.contains("active"))
+        #expect(rendered.contains("Hello"))
+    }
+
+    @Test("Conditional modifier - hidden when true")
+    func testHiddenWhenTrue() async throws {
+        let element = Text("Hidden content").hidden(when: true)
+
+        let rendered = element.render()
+        #expect(rendered.contains("class=\"hidden\""))
+        #expect(rendered.contains("Hidden content"))
+    }
+
+    @Test("Conditional modifier - hidden when false")
+    func testHiddenWhenFalse() async throws {
+        let element = Text("Visible content").hidden(when: false)
+
+        let rendered = element.render()
+        #expect(!rendered.contains("class=\"hidden\""))
+        #expect(rendered.contains("Visible content"))
+    }
+
+    @Test("Conditional modifier - hidden when combined with other modifiers")
+    func testHiddenWhenWithOtherModifiers() async throws {
+        let element = Text("Content")
+            .addClass("primary")
+            .hidden(when: true)
+            .addClass("extra")
+
+        let rendered = element.render()
+        // The hidden class should be combined with other classes
+        #expect(rendered.contains("hidden"))
+        #expect(rendered.contains("primary"))
+        #expect(rendered.contains("extra"))
+        #expect(rendered.contains("Content"))
+    }
+
+    @Test("Conditional modifier - complex boolean expressions")
+    func testConditionalModifierComplexConditions() async throws {
+        let isLoggedIn = true
+        let hasPermission = false
+        let isAdmin = true
+
+        let element = Text("Content")
+            .if(isLoggedIn && hasPermission) { $0.addClass("user-content") }
+            .if(isLoggedIn && !hasPermission) { $0.addClass("restricted") }
+            .hidden(when: !isLoggedIn || (!hasPermission && !isAdmin))
+
+        let rendered = element.render()
+        #expect(!rendered.contains("user-content"))
+        #expect(rendered.contains("restricted"))
+        #expect(!rendered.contains("hidden"))  // isAdmin=true allows visibility
+        #expect(rendered.contains("Content"))
+    }
+
+    @Test("Conditional modifier - with different element types")
+    func testConditionalModifierDifferentElements() async throws {
+        let button = Button("Click me").if(true) { $0.addClass("btn-primary") }
+        let heading = Heading(.title, "Title").hidden(when: false)
+        let link = Link("Example", destination: "#").if(false) { $0.addClass("external") }
+
+        let buttonRendered = button.render()
+        let headingRendered = heading.render()
+        let linkRendered = link.render()
+
+        #expect(buttonRendered.contains("btn-primary"))
+        #expect(!headingRendered.contains("hidden"))
+        #expect(!linkRendered.contains("external"))
+    }
+
+    @Test("Conditional modifier - type erasure works correctly")
+    func testConditionalModifierTypeErasure() async throws {
+        // This test ensures that the AnyHTML type erasure doesn't break functionality
+        let elements = [
+            Text("First").if(true) { $0.addClass("first") },
+            Text("Second").hidden(when: false),
+            Text("Third").if(false) { $0.addClass("third") }
+        ]
+
+        for element in elements {
+            let rendered = element.render()
+            #expect(!rendered.isEmpty)
+        }
+
+        let firstRendered = elements[0].render()
+        let secondRendered = elements[1].render()
+        let thirdRendered = elements[2].render()
+
+        #expect(firstRendered.contains("first"))
+        #expect(!secondRendered.contains("hidden"))
+        #expect(!thirdRendered.contains("third"))
+    }
 }
