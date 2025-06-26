@@ -12,7 +12,41 @@ public struct Text: Element {
     private let data: [String: String]?
     private let contentBuilder: HTMLContentBuilder
 
-    /// Creates a new text element.
+    /// Creates a new text element with string content.
+    ///
+    /// This is the preferred SwiftUI-like initializer for creating text elements.
+    /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
+    ///
+    /// - Parameters:
+    ///   - content: The text content to display.
+    ///   - id: Unique identifier for the HTML element.
+    ///   - classes: An array of CSS classnames.
+    ///   - role: ARIA role of the element for accessibility.
+    ///   - label: ARIA label to describe the element.
+    ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Text("Hello, world!")
+    /// Text("Multi-line text with multiple sentences. This will render as a paragraph.", classes: ["intro"])
+    /// ```
+    public init(
+        _ content: String,
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil
+    ) {
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = { [content] }
+    }
+
+    /// Creates a new text element using HTMLBuilder closure syntax.
     ///
     /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
     ///
@@ -23,6 +57,7 @@ public struct Text: Element {
     ///   - label: ARIA label to describe the element.
     ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
     ///   - content: Closure providing text content.
+    @available(*, deprecated, message: "Use Text(_:) string initializer instead for better SwiftUI compatibility. Example: Text(\"Hello, world!\")")
     public init(
         id: String? = nil,
         classes: [String]? = nil,

@@ -15,7 +15,47 @@ public struct Link: Element {
     private let data: [String: String]?
     private let contentBuilder: HTMLContentBuilder
 
-    /// Creates a new HTML anchor link.
+    /// Creates a new HTML anchor link with string title.
+    ///
+    /// This is the preferred SwiftUI-like initializer for creating links with text content.
+    ///
+    /// - Parameters:
+    ///   - title: The link text content to display.
+    ///   - destination: URL or path the link points to.
+    ///   - newTab: Opens in a new tab if true, optional.
+    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of CSS classnames for styling the link.
+    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
+    ///   - label: ARIA label to describe the element for accessibility when link text isn't sufficient.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the link.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Link("Visit Example Website", destination: "https://example.com")
+    /// Link("Open in New Tab", destination: "https://example.com", newTab: true)
+    /// Link("Contact Us", destination: "/contact", classes: ["nav-link"])
+    /// ```
+    public init(
+        _ title: String,
+        destination: String,
+        newTab: Bool? = nil,
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil
+    ) {
+        self.destination = destination
+        self.newTab = newTab
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = { [title] }
+    }
+
+    /// Creates a new HTML anchor link using HTMLBuilder closure syntax.
     ///
     /// - Parameters:
     ///   - to: URL or path the link points to.
@@ -33,6 +73,7 @@ public struct Link: Element {
     ///   "Visit Example Website"
     /// }
     /// ```
+    @available(*, deprecated, message: "Use Link(_:destination:) string initializer instead for better SwiftUI compatibility. Example: Link(\"Visit Example\", destination: \"https://example.com\")")
     public init(
         to destination: String,
         newTab: Bool? = nil,

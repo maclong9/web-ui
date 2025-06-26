@@ -13,7 +13,40 @@ public struct Emphasis: Element {
     private let data: [String: String]?
     private let contentBuilder: HTMLContentBuilder
 
-    /// Creates a new HTML emphasis element.
+    /// Creates a new HTML emphasis element with string content.
+    ///
+    /// This is the preferred SwiftUI-like initializer for creating emphasized text.
+    ///
+    /// - Parameters:
+    ///   - content: The text content to be emphasized.
+    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of CSS classnames for styling the emphasized text.
+    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
+    ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the element.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Emphasis("Important information")
+    /// Emphasis("Key point to remember", classes: ["highlight"])
+    /// ```
+    public init(
+        _ content: String,
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil
+    ) {
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = { [content] }
+    }
+
+    /// Creates a new HTML emphasis element using HTMLBuilder closure syntax.
     ///
     /// - Parameters:
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
@@ -29,6 +62,7 @@ public struct Emphasis: Element {
     ///   "Important information"
     /// }
     /// ```
+    @available(*, deprecated, message: "Use Emphasis(_:) string initializer instead for better SwiftUI compatibility. Example: Emphasis(\"Important text\")")
     public init(
         id: String? = nil,
         classes: [String]? = nil,
