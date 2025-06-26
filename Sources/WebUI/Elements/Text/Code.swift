@@ -12,7 +12,40 @@ public struct Code: Element {
     private let data: [String: String]?
     private let contentBuilder: HTMLContentBuilder
 
-    /// Creates a new HTML code element.
+    /// Creates a new HTML code element with string content.
+    ///
+    /// This is the preferred SwiftUI-like initializer for creating inline code elements.
+    ///
+    /// - Parameters:
+    ///   - content: The code snippet to display.
+    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of CSS classnames for styling the code element.
+    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
+    ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the code element.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Code("let x = 42")
+    /// Code("console.log('Hello, world!')", classes: ["javascript"])
+    /// ```
+    public init(
+        _ content: String,
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil
+    ) {
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = { [content] }
+    }
+
+    /// Creates a new HTML code element using HTMLBuilder closure syntax.
     ///
     /// - Parameters:
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
@@ -28,6 +61,7 @@ public struct Code: Element {
     ///   "let x = 42"
     /// }
     /// ```
+    @available(*, deprecated, message: "Use Code(_:) string initializer instead for better SwiftUI compatibility. Example: Code(\"let x = 42\")")
     public init(
         id: String? = nil,
         classes: [String]? = nil,

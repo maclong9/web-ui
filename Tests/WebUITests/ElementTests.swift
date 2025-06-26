@@ -27,6 +27,48 @@ import Testing
         #expect(rendered.contains(">Submit</button>"))
     }
 
+    @Test("Button element with string initializer")
+    func testButtonStringInitializer() async throws {
+        let button = Button("Click Me")
+
+        let rendered = button.render()
+        #expect(rendered.contains("<button"))
+        #expect(rendered.contains(">Click Me</button>"))
+    }
+
+    @Test("Button element with string initializer and attributes")
+    func testButtonStringInitializerWithAttributes() async throws {
+        let button = Button(
+            "Save Changes",
+            type: .submit,
+            autofocus: true,
+            onClick: "saveForm()",
+            id: "save-btn",
+            classes: ["primary", "large"],
+            role: .button
+        )
+
+        let rendered = button.render()
+        #expect(rendered.contains("<button"))
+        #expect(rendered.contains("id=\"save-btn\""))
+        #expect(rendered.contains("class=\"primary large\""))
+        #expect(rendered.contains("type=\"submit\""))
+        #expect(rendered.contains("autofocus"))
+        #expect(rendered.contains("onclick=\"saveForm()\""))
+        #expect(rendered.contains("role=\"button\""))
+        #expect(rendered.contains(">Save Changes</button>"))
+    }
+
+    @Test("Button element with onClick only")
+    func testButtonWithOnClick() async throws {
+        let button = Button("Cancel", onClick: "closeDialog()")
+
+        let rendered = button.render()
+        #expect(rendered.contains("<button"))
+        #expect(rendered.contains("onclick=\"closeDialog()\""))
+        #expect(rendered.contains(">Cancel</button>"))
+    }
+
     // MARK: - List Tests
 
     @Test("Unordered list")
@@ -240,6 +282,44 @@ import Testing
         #expect(rendered.contains("</span>"))
     }
 
+    @Test("Text element with string initializer as paragraph")
+    func testTextStringInitializerAsParagraph() async throws {
+        let text = Text("This is a long paragraph. It contains multiple sentences. This should be rendered as a p tag.")
+
+        let rendered = text.render()
+        #expect(rendered.contains("<p>"))
+        #expect(rendered.contains("This is a long paragraph."))
+        #expect(rendered.contains("</p>"))
+    }
+
+    @Test("Text element with string initializer as span")
+    func testTextStringInitializerAsSpan() async throws {
+        let text = Text("Just one sentence.")
+
+        let rendered = text.render()
+        #expect(rendered.contains("<span>"))
+        #expect(rendered.contains("Just one sentence."))
+        #expect(rendered.contains("</span>"))
+    }
+
+    @Test("Text element with string initializer and additional attributes")
+    func testTextStringInitializerWithAttributes() async throws {
+        let text = Text(
+            "Hello, world!",
+            id: "greeting",
+            classes: ["intro", "bold"],
+            role: .status
+        )
+
+        let rendered = text.render()
+        #expect(rendered.contains("<span"))
+        #expect(rendered.contains("id=\"greeting\""))
+        #expect(rendered.contains("class=\"intro bold\""))
+        #expect(rendered.contains("role=\"status\""))
+        #expect(rendered.contains("Hello, world!"))
+        #expect(rendered.contains("</span>"))
+    }
+
     @Test("Heading element")
     func testHeadingElement() async throws {
         let heading1 = Heading(.largeTitle) { "Main Title" }
@@ -249,6 +329,35 @@ import Testing
         #expect(heading1.render() == "<h1>Main Title</h1>")
         #expect(heading2.render() == "<h2>Subtitle</h2>")
         #expect(heading6.render() == "<h6>Small Heading</h6>")
+    }
+
+    @Test("Heading element with string initializer")
+    func testHeadingStringInitializer() async throws {
+        let heading1 = Heading(.largeTitle, "Main Title")
+        let heading2 = Heading(.title, "Subtitle")
+        let heading6 = Heading(.footnote, "Small Heading")
+
+        #expect(heading1.render() == "<h1>Main Title</h1>")
+        #expect(heading2.render() == "<h2>Subtitle</h2>")
+        #expect(heading6.render() == "<h6>Small Heading</h6>")
+    }
+
+    @Test("Heading element with string initializer and attributes")
+    func testHeadingStringInitializerWithAttributes() async throws {
+        let heading = Heading(
+            .title,
+            "Section Title",
+            id: "section-title",
+            classes: ["article-heading", "primary"],
+            role: .heading
+        )
+
+        let rendered = heading.render()
+        #expect(rendered.contains("<h2"))
+        #expect(rendered.contains("id=\"section-title\""))
+        #expect(rendered.contains("class=\"article-heading primary\""))
+        #expect(rendered.contains("role=\"heading\""))
+        #expect(rendered.contains(">Section Title</h2>"))
     }
 
     @Test("Link element")
@@ -277,6 +386,107 @@ import Testing
         let strong = Strong { "Bold text" }
 
         #expect(strong.render() == "<strong>Bold text</strong>")
+    }
+
+    @Test("Strong element with string initializer")
+    func testStrongStringInitializer() async throws {
+        let strong = Strong("Bold text")
+
+        #expect(strong.render() == "<strong>Bold text</strong>")
+    }
+
+    @Test("Strong element with string initializer and attributes")
+    func testStrongStringInitializerWithAttributes() async throws {
+        let strong = Strong(
+            "Important warning!",
+            id: "warning",
+            classes: ["alert", "critical"]
+        )
+
+        let rendered = strong.render()
+        #expect(rendered.contains("<strong"))
+        #expect(rendered.contains("id=\"warning\""))
+        #expect(rendered.contains("class=\"alert critical\""))
+        #expect(rendered.contains(">Important warning!</strong>"))
+    }
+
+    @Test("Emphasis element with string initializer")
+    func testEmphasisStringInitializer() async throws {
+        let emphasis = Emphasis("Important text")
+
+        #expect(emphasis.render() == "<em>Important text</em>")
+    }
+
+    @Test("Emphasis element with string initializer and attributes")
+    func testEmphasisStringInitializerWithAttributes() async throws {
+        let emphasis = Emphasis(
+            "Key point to remember",
+            classes: ["highlight", "important"]
+        )
+
+        let rendered = emphasis.render()
+        #expect(rendered.contains("<em"))
+        #expect(rendered.contains("class=\"highlight important\""))
+        #expect(rendered.contains(">Key point to remember</em>"))
+    }
+
+    @Test("Code element with string initializer")
+    func testCodeStringInitializer() async throws {
+        let code = Code("let x = 5")
+
+        #expect(code.render() == "<code>let x = 5</code>")
+    }
+
+    @Test("Code element with string initializer and attributes")
+    func testCodeStringInitializerWithAttributes() async throws {
+        let code = Code(
+            "console.log('Hello, world!')",
+            classes: ["javascript", "inline-code"]
+        )
+
+        let rendered = code.render()
+        #expect(rendered.contains("<code"))
+        #expect(rendered.contains("class=\"javascript inline-code\""))
+        #expect(rendered.contains(">console.log('Hello, world!')</code>"))
+    }
+
+    @Test("Link element with string initializer")
+    func testLinkStringInitializer() async throws {
+        let link = Link("Visit Example", destination: "https://example.com")
+
+        let rendered = link.render()
+        #expect(rendered.contains("<a"))
+        #expect(rendered.contains("href=\"https://example.com\""))
+        #expect(rendered.contains(">Visit Example</a>"))
+    }
+
+    @Test("Link element with string initializer and newTab")
+    func testLinkStringInitializerWithNewTab() async throws {
+        let link = Link("Open in New Tab", destination: "https://example.com", newTab: true)
+
+        let rendered = link.render()
+        #expect(rendered.contains("<a"))
+        #expect(rendered.contains("href=\"https://example.com\""))
+        #expect(rendered.contains("target=\"_blank\""))
+        #expect(rendered.contains("rel=\"noreferrer\""))
+        #expect(rendered.contains(">Open in New Tab</a>"))
+    }
+
+    @Test("Link element with string initializer and attributes")
+    func testLinkStringInitializerWithAttributes() async throws {
+        let link = Link(
+            "Contact Us",
+            destination: "/contact",
+            id: "contact-link",
+            classes: ["nav-link", "primary"]
+        )
+
+        let rendered = link.render()
+        #expect(rendered.contains("<a"))
+        #expect(rendered.contains("href=\"/contact\""))
+        #expect(rendered.contains("id=\"contact-link\""))
+        #expect(rendered.contains("class=\"nav-link primary\""))
+        #expect(rendered.contains(">Contact Us</a>"))
     }
 
     @Test("Time element")

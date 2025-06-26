@@ -15,7 +15,50 @@ public struct Button: Element {
     private let data: [String: String]?
     private let contentBuilder: HTMLContentBuilder
 
-    /// Creates a new HTML button.
+    /// Creates a new HTML button with string title.
+    ///
+    /// This is the preferred SwiftUI-like initializer for creating buttons with text content.
+    ///
+    /// - Parameters:
+    ///   - title: The button's text content.
+    ///   - type: Button type (submit or reset), optional.
+    ///   - autofocus: When true, automatically focuses the button when the page loads, optional.
+    ///   - onClick: JavaScript function to execute when the button is clicked, optional.
+    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of CSS classnames for styling the button.
+    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
+    ///   - label: ARIA label to describe the element for accessibility when button text isn't sufficient.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the button.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Button("Save Changes", type: .submit, id: "save-button")
+    /// Button("Cancel", onClick: "closeDialog()")
+    /// Button("Submit Form", type: .submit)
+    /// ```
+    public init(
+        _ title: String,
+        type: ButtonType? = nil,
+        autofocus: Bool? = nil,
+        onClick: String? = nil,
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil
+    ) {
+        self.type = type
+        self.autofocus = autofocus
+        self.onClick = onClick
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.contentBuilder = { [title] }
+    }
+
+    /// Creates a new HTML button using HTMLBuilder closure syntax.
     ///
     /// - Parameters:
     ///   - type: Button type (submit or reset), optional.
@@ -36,6 +79,7 @@ public struct Button: Element {
     /// .background(color: .blue(.600))
     /// .padding(.all, length: 2)
     /// ```
+    @available(*, deprecated, message: "Use Button(_:) string initializer instead for better SwiftUI compatibility. Example: Button(\"Save Changes\", type: .submit)")
     public init(
         type: ButtonType? = nil,
         autofocus: Bool? = nil,
