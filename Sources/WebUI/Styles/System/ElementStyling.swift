@@ -63,4 +63,27 @@ extension HTML {
             baseClasses, withModifiers: modifiers)
         return addingClasses(classes)
     }
+
+    /// Conditionally applies a modifier based on a boolean condition
+    ///
+    /// This provides SwiftUI-style conditional modification syntax.
+    ///
+    /// - Parameters:
+    ///   - condition: Boolean condition that determines whether to apply the modifier
+    ///   - modifier: Closure that applies styling when condition is true
+    /// - Returns: HTML with conditional styling applied
+    ///
+    /// ## Example
+    /// ```swift
+    /// Text("Hello, world!")
+    ///     .if(isHighlighted) { $0.background(color: .yellow) }
+    ///     .if(isLarge) { $0.font(size: .xl) }
+    /// ```
+    public func `if`<T: HTML>(_ condition: Bool, _ modifier: (Self) -> T) -> AnyHTML {
+        if condition {
+            return AnyHTML(modifier(self))
+        } else {
+            return AnyHTML(self)
+        }
+    }
 }

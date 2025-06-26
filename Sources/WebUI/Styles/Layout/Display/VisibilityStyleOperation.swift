@@ -82,6 +82,29 @@ extension HTML {
             modifiers: modifiers
         )
     }
+
+    /// Conditionally hides an element based on a boolean condition.
+    ///
+    /// This provides SwiftUI-style conditional visibility syntax.
+    ///
+    /// - Parameter condition: Boolean condition that determines whether to hide the element
+    /// - Returns: HTML with conditional visibility applied
+    ///
+    /// ## Example
+    /// ```swift
+    /// Text("Conditional content")
+    ///     .hidden(when: shouldHideText)
+    ///
+    /// Button("Save")
+    ///     .hidden(when: !isEditing)
+    /// ```
+    public func hidden(when condition: Bool) -> AnyHTML {
+        if condition {
+            return AnyHTML(hidden(true))
+        } else {
+            return AnyHTML(self)
+        }
+    }
 }
 
 // Extension for ResponsiveBuilder to provide visibility styling
