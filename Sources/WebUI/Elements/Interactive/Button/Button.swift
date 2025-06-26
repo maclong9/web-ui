@@ -58,6 +58,59 @@ public struct Button: Element {
         self.contentBuilder = { [title] }
     }
 
+    /// Creates a new HTML button with string title and optional system image.
+    ///
+    /// This initializer supports adding system images (icons) to buttons, following SwiftUI patterns.
+    /// The image will be rendered as an inline SVG icon before the button text.
+    ///
+    /// - Parameters:
+    ///   - title: The button's text content.
+    ///   - systemImage: Name of the system image/icon to display, optional.
+    ///   - type: Button type (submit or reset), optional.
+    ///   - autofocus: When true, automatically focuses the button when the page loads, optional.
+    ///   - onClick: JavaScript function to execute when the button is clicked, optional.
+    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of CSS classnames for styling the button.
+    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
+    ///   - label: ARIA label to describe the element for accessibility when button text isn't sufficient.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the button.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Button("Save", systemImage: "checkmark", type: .submit)
+    /// Button("Delete", systemImage: "trash", onClick: "confirmDelete()")
+    /// Button("Download", systemImage: "arrow.down")
+    /// ```
+    public init(
+        _ title: String,
+        systemImage: String,
+        type: ButtonType? = nil,
+        autofocus: Bool? = nil,
+        onClick: String? = nil,
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil
+    ) {
+        self.type = type
+        self.autofocus = autofocus
+        self.onClick = onClick
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        
+        // Create content builder that includes both icon and text
+        self.contentBuilder = {
+            [
+                SystemImage(systemImage, classes: ["button-icon"]),
+                " \(title)"
+            ]
+        }
+    }
+
     /// Creates a new HTML button using HTMLBuilder closure syntax.
     ///
     /// - Parameters:
