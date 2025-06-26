@@ -59,6 +59,75 @@ import Testing
         #expect(rendered.contains(">Save Changes</button>"))
     }
 
+    @Test("Button element with systemImage initializer")
+    func testButtonSystemImageInitializer() async throws {
+        let button = Button("Save", systemImage: "checkmark")
+
+        let rendered = button.render()
+        #expect(rendered.contains("<button"))
+        #expect(rendered.contains("system-image"))
+        #expect(rendered.contains("icon-checkmark"))
+        #expect(rendered.contains("button-icon"))
+        #expect(rendered.contains(" Save"))
+        #expect(rendered.contains("</button>"))
+    }
+
+    @Test("Button element with systemImage and attributes")
+    func testButtonSystemImageInitializerWithAttributes() async throws {
+        let button = Button(
+            "Delete Item",
+            systemImage: "trash.fill",
+            type: .submit,
+            onClick: "confirmDelete()",
+            id: "delete-btn",
+            classes: ["danger"],
+            label: "Delete selected item"
+        )
+
+        let rendered = button.render()
+        #expect(rendered.contains("<button"))
+        #expect(rendered.contains("id=\"delete-btn\""))
+        #expect(rendered.contains("class=\"danger\""))
+        #expect(rendered.contains("type=\"submit\""))
+        #expect(rendered.contains("onclick=\"confirmDelete()\""))
+        #expect(rendered.contains("aria-label=\"Delete selected item\""))
+        #expect(rendered.contains("system-image"))
+        #expect(rendered.contains("icon-trash-fill"))
+        #expect(rendered.contains("button-icon"))
+        #expect(rendered.contains(" Delete Item"))
+        #expect(rendered.contains("</button>"))
+    }
+
+    @Test("SystemImage element standalone")
+    func testSystemImageElement() async throws {
+        let image = SystemImage("star.fill", classes: ["rating-star"])
+
+        let rendered = image.render()
+        #expect(rendered.contains("<span"))
+        #expect(rendered.contains("class=\"system-image icon-star-fill rating-star\""))
+        #expect(rendered.contains("aria-label=\"star.fill\""))
+        #expect(rendered.contains("></span>"))
+    }
+
+    @Test("SystemImage element with custom attributes")
+    func testSystemImageElementWithAttributes() async throws {
+        let image = SystemImage(
+            "heart",
+            id: "favorite-icon",
+            classes: ["favorite"],
+            role: .button,
+            label: "Add to favorites"
+        )
+
+        let rendered = image.render()
+        #expect(rendered.contains("<span"))
+        #expect(rendered.contains("id=\"favorite-icon\""))
+        #expect(rendered.contains("class=\"system-image icon-heart favorite\""))
+        #expect(rendered.contains("role=\"button\""))
+        #expect(rendered.contains("aria-label=\"Add to favorites\""))
+        #expect(rendered.contains("></span>"))
+    }
+
     @Test("Button element with onClick only")
     func testButtonWithOnClick() async throws {
         let button = Button("Cancel", onClick: "closeDialog()")
