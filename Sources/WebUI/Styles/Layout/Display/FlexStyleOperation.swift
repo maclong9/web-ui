@@ -60,7 +60,7 @@ public struct FlexStyleOperation: StyleOperation, @unchecked Sendable {
         var classes: [String] = []
 
         let hasLayoutParams = params.direction != nil || params.justify != nil || params.align != nil
-        let hasGrowOnly = params.grow != nil && !hasLayoutParams
+        let _ = params.grow != nil && !hasLayoutParams
 
         if hasLayoutParams {
             classes.append("flex")
