@@ -37,7 +37,7 @@ public struct Link: Element {
     /// ```
     public init(
         _ title: String,
-        destination: String,
+        to destination: String,
         newTab: Bool? = nil,
         id: String? = nil,
         classes: [String]? = nil,
@@ -57,6 +57,9 @@ public struct Link: Element {
 
     /// Creates a new HTML anchor link using HTMLBuilder closure syntax.
     ///
+    /// This allows more complex Link generation, for example if you require
+    /// an icon before or after your link text.
+    ///
     /// - Parameters:
     ///   - to: URL or path the link points to.
     ///   - newTab: Opens in a new tab if true, optional.
@@ -73,7 +76,6 @@ public struct Link: Element {
     ///   "Visit Example Website"
     /// }
     /// ```
-    @available(*, deprecated, message: "Use Link(_:destination:) string initializer instead for better SwiftUI compatibility. Example: Link(\"Visit Example\", destination: \"https://example.com\")")
     public init(
         to destination: String,
         newTab: Bool? = nil,

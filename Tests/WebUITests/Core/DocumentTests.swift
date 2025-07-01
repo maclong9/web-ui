@@ -16,7 +16,7 @@ struct NoDescriptionDocument: Document {
     }
 
     var body: some HTML {
-        Text { "Test content" }
+        Text("Test content")
     }
 }
 
@@ -32,7 +32,7 @@ struct BasicTestDocument: Document {
     }
 
     var body: some HTML {
-        Text { "Hello, world!" }
+        Text("Hello, world!")
     }
 }
 
@@ -56,7 +56,7 @@ struct FullMetadataDocument: Document {
     }
 
     var body: some HTML {
-        Text { "Content" }
+        Text("Content")
     }
 }
 
@@ -76,7 +76,7 @@ struct FaviconTestDocument: Document {
     }
 
     var body: some HTML {
-        Text { "Favicon Test" }
+        Text("Favicon Test")
     }
 }
 
@@ -98,7 +98,7 @@ struct StructuredDataDocument: Document {
     }
 
     var body: some HTML {
-        Text { "Structured Data Test" }
+        Text("Structured Data Test")
     }
 }
 
@@ -122,7 +122,7 @@ struct ScriptTestDocument: Document {
     }
 
     var body: some HTML {
-        Text { "Script Test" }
+        Text("Script Test")
     }
 }
 
@@ -143,7 +143,7 @@ struct StylesheetTestDocument: Document {
     }
 
     var body: some HTML {
-        Text { "Stylesheet Test" }
+        Text("Stylesheet Test")
     }
 }
 
@@ -164,7 +164,7 @@ struct CustomHeadDocument: Document {
     }
 
     var body: some HTML {
-        Text { "Custom Head Test" }
+        Text("Custom Head Test")
     }
 }
 
@@ -338,3 +338,4 @@ struct DocumentTests {
         #expect(rendered.contains("<style>body { color: red; }</style>"))
     }
 }
+

@@ -153,7 +153,7 @@ import Testing
 
     @Test("Font modifier with family and on: modifier on Text (Element)")
     func testFontModifierWithFamilyAndOnModifierOnText() async throws {
-        let element = Text { "Hello" }.font(family: "serif", on: .hover)
+        let element = Text("Hello").font(family: "serif", on: .hover)
         let rendered = element.render()
         #expect(rendered.contains("class=\"hover:font-[serif]\""))
     }
@@ -599,7 +599,7 @@ import Testing
 
     @Test("Disabled state modifier")
     func testDisabledStateModifier() async throws {
-        let element = Button { "Disabled Button" }
+        let element = Button("Disabled Button")
             .on {
                 disabled {
                     opacity(50)
@@ -633,7 +633,7 @@ import Testing
 
     @Test("Complex component with responsive syntax")
     func testComplexComponentResponsiveSyntax() async throws {
-        let button = Button(type: .submit) { "Submit" }
+        let button = Button("Submit", type: .submit)
             .background(color: .blue(._500))
             .font(color: .blue(._50))
             .padding(of: 2)
@@ -683,7 +683,7 @@ import Testing
 
     @Test("Complex interactive button with modifiers")
     func testComplexInteractiveButtonWithModifiers() async throws {
-        let button = Button { "Hello World!" }
+        let button = Button("Hello World!")
             .padding(of: 4)
             .background(color: .blue(._500))
             .font(color: .gray(._50))
@@ -754,7 +754,7 @@ import Testing
             }
 
             var body: some HTML {
-                Text { "Hello" }
+                Text("Hello")
                     .on {
                         md {
                             S.font(color: .amber(._100))
@@ -768,7 +768,7 @@ import Testing
         // FIXME: If possible remove `S.` prefix
         struct TestElement: Element {
             var body: some HTML {
-                Text { "Hello" }
+                Text("Hello")
                     .on {
                         md {
                             S.font(color: .amber(._100))
