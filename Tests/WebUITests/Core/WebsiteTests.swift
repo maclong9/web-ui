@@ -24,12 +24,12 @@ struct PageLayout: Element {
         BodyWrapper {
             Header {
                 Stack {
-                    Heading(.largeTitle) { "My Portfolio" }
+                    Heading(.largeTitle, "My Portfolio")
                     Navigation {
-                        Link(to: "/") { "Home" }
-                        Link(to: "/about") { "About" }
-                        Link(to: "/projects") { "Projects" }
-                        Link(to: "/contact") { "Contact" }
+                        Link("Home", to: "/")
+                        Link("About", to: "/about")
+                        Link("Projects", to: "/projects")
+                        Link("Contact", to: "/contact")
                     }
                     .flex()
                     .spacing(of: 4)
@@ -42,8 +42,8 @@ struct PageLayout: Element {
             Main {
                 Stack {
                     Section {
-                        Heading(.title) { title }
-                        Text { description }
+                        Heading(.title, title)
+                        Text(description)
                     }
                     .padding()
                     .margins(at: .bottom)
@@ -62,17 +62,11 @@ struct PageLayout: Element {
 
             Footer {
                 Stack {
-                    Text { "© 2024 My Portfolio. All rights reserved." }
+                    Text("© 2024 My Portfolio. All rights reserved.")
                     Stack {
-                        Link(to: "https://github.com", newTab: true) {
-                            "GitHub"
-                        }
-                        Link(to: "https://linkedin.com", newTab: true) {
-                            "LinkedIn"
-                        }
-                        Link(to: "https://twitter.com", newTab: true) {
-                            "Twitter"
-                        }
+                        Link("GitHub", to: "https://github.com", newTab: true)
+                        Link("LinkedIn", to: "https://linkedin.com", newTab: true)
+                        Link("Twitter", to: "https://twitter.com", newTab: true)
                     }
                     .flex()
                     .spacing(of: 4)
@@ -104,13 +98,13 @@ struct ProjectCard: Element {
             .overflow(.hidden)
 
             Stack {
-                Heading(.title) { title }
-                Text { description }
+                Heading(.title, title)
+                Text(description)
 
                 Stack {
                     for tech in technologies {
                         Stack {
-                            Text { tech }
+                            Text(tech)
                         }
                         .padding(of: 2, at: .horizontal)
                         .padding(of: 1, at: .vertical)
@@ -123,16 +117,14 @@ struct ProjectCard: Element {
                 .spacing(of: 2)
                 .margins(of: 4, at: .top)
 
-                Link(to: link, newTab: true) {
-                    "View Project"
-                }
-                .padding()
-                .background(color: .blue(._600))
-                .font(color: .white())
-                .font(weight: .medium)
-                .rounded(.md)
-                .display(.block)
-                .margins(of: 4, at: .top)
+                Link("View Project", to: link, newTab: true)
+                    .padding()
+                    .background(color: .blue(._600))
+                    .font(color: .white())
+                    .font(weight: .medium)
+                    .rounded(.md)
+                    .display(.block)
+                    .margins(of: 4, at: .top)
             }
             .padding()
         }
@@ -151,9 +143,9 @@ struct ExperienceItem: Element {
 
     var body: some HTML {
         Stack {
-            Heading(.headline) { role }
-            Text { company }
-            Text { description }
+            Heading(.headline, role)
+            Text(company)
+            Text(description)
         }
     }
 }
@@ -164,10 +156,10 @@ struct SkillCategory: Element {
 
     var body: some HTML {
         Stack {
-            Heading(.subheadline) { category }
+            Heading(.subheadline, category)
             Stack {
                 for skill in skills {
-                    Text { skill }
+                    Text(skill)
                 }
             }
         }
@@ -184,7 +176,7 @@ struct ContactForm: Element {
                 Input(name: "email", type: .email, required: true, id: "email")
                 Label(for: "message") { "Message" }
                 TextArea(name: "message", required: true, id: "message")
-                Button(type: .submit) { "Send Message" }
+                Button("Send Message", type: .submit)
             }
         }
     }
@@ -218,22 +210,22 @@ struct HomePage: Document {
                     .overflow(.hidden)
                     .margins(at: .horizontal, auto: true)
 
-                    Heading(.headline) { "Hi, I'm Jane Doe" }
+                    Heading(.headline, "Hi, I'm Jane Doe")
                         .font(alignment: .center)
 
-                    Text {
+                    Text(
                         "I'm a full-stack developer with expertise in Swift, JavaScript, and modern web technologies. I love building high-quality, user-focused applications that solve real problems."
-                    }
+                    )
                     .font(alignment: .center)
 
                     Stack {
-                        Link(to: "/about") { "Learn more about me" }
+                        Link("Learn more about me", to: "/about")
                             .padding()
                             .background(color: .blue(._600))
                             .font(color: .white())
                             .rounded(.md)
 
-                        Link(to: "/projects") { "View my projects" }
+                        Link("View my projects", to: "/projects")
                             .padding()
                             .background(color: .gray(._700))
                             .font(color: .white())
@@ -248,7 +240,7 @@ struct HomePage: Document {
                 .rounded(.lg)
                 .shadow(size: .md)
 
-                Heading(.title) { "Featured Projects" }
+                Heading(.title, "Featured Projects")
                     .margins(of: 8, at: .top)
                     .margins(of: 4, at: .bottom)
 
@@ -273,13 +265,11 @@ struct HomePage: Document {
                 }
                 .grid(columns: 1)
 
-                Link(to: "/projects") {
-                    "View all projects →"
-                }
-                .display(.block)
-                .font(alignment: .center)
-                .font(size: .lg)
-                .margins(of: 8, at: .top)
+                Link("View all projects →", to: "/projects")
+                    .display(.block)
+                    .font(alignment: .center)
+                    .font(size: .lg)
+                    .margins(of: 8, at: .top)
             }
         }
     }
@@ -308,9 +298,9 @@ struct AboutPage: Document {
                     .frame(width: .full)
                     .rounded(.lg)
 
-                    Text {
+                    Text(
                         "I'm a full-stack developer with over 5 years of experience building web and mobile applications. I have a passion for clean code, intuitive user interfaces, and solving complex problems with elegant solutions."
-                    }
+                    )
                     .padding()
                 }
                 .grid(columns: 1)
@@ -319,7 +309,7 @@ struct AboutPage: Document {
                 .rounded(.lg)
                 .shadow(size: .md)
 
-                Heading(.title) { "Skills" }
+                Heading(.title, "Skills")
                     .margins(of: 8, at: .top)
                     .margins(of: 4, at: .bottom)
 
@@ -350,7 +340,7 @@ struct AboutPage: Document {
                 }
                 .grid(columns: 1)
 
-                Heading(.title) { "Experience" }
+                Heading(.title, "Experience")
                     .margins(of: 8, at: .top)
                     .margins(of: 4, at: .bottom)
 
@@ -487,26 +477,26 @@ struct ContactPage: Document {
             Stack {
                 Stack {
                     Stack {
-                        Heading(.headline) { "Contact Information" }
+                        Heading(.headline, "Contact Information")
 
                         Stack {
                             Stack {
-                                Text { "Email:" }
-                                Text { "jane.doe@example.com" }
+                                Text("Email:")
+                                Text("jane.doe@example.com")
                             }
                             .flex()
                             .spacing(of: 2)
 
                             Stack {
-                                Text { "Phone:" }
-                                Text { "+1 (555) 123-4567" }
+                                Text("Phone:")
+                                Text("+1 (555) 123-4567")
                             }
                             .flex()
                             .spacing(of: 2)
 
                             Stack {
-                                Text { "Location:" }
-                                Text { "San Francisco, CA" }
+                                Text("Location:")
+                                Text("San Francisco, CA")
                             }
                             .flex()
                             .spacing(of: 2)
@@ -514,39 +504,33 @@ struct ContactPage: Document {
                         .spacing(of: 3, along: .vertical)
                         .margins(of: 4, at: .top)
 
-                        Heading(.headline) { "Social Media" }
+                        Heading(.headline, "Social Media")
                             .margins(of: 4, at: .top)
 
                         Stack {
-                            Link(to: "https://github.com", newTab: true) {
-                                "GitHub"
-                            }
-                            .padding(of: 2)
-                            .background(color: .gray(._800))
-                            .font(color: .white())
-                            .rounded(.md)
-                            .frame(width: .full)
-                            .font(alignment: .center)
+                            Link("GitHub", to: "https://github.com", newTab: true)
+                                .padding(of: 2)
+                                .background(color: .gray(._800))
+                                .font(color: .white())
+                                .rounded(.md)
+                                .frame(width: .full)
+                                .font(alignment: .center)
 
-                            Link(to: "https://linkedin.com", newTab: true) {
-                                "LinkedIn"
-                            }
-                            .padding(of: 2)
-                            .background(color: .blue(._700))
-                            .font(color: .white())
-                            .rounded(.md)
-                            .frame(width: .full)
-                            .font(alignment: .center)
+                            Link("LinkedIn", to: "https://linkedin.com", newTab: true)
+                                .padding(of: 2)
+                                .background(color: .blue(._700))
+                                .font(color: .white())
+                                .rounded(.md)
+                                .frame(width: .full)
+                                .font(alignment: .center)
 
-                            Link(to: "https://twitter.com", newTab: true) {
-                                "Twitter"
-                            }
-                            .padding(of: 2)
-                            .background(color: .blue(._400))
-                            .font(color: .white())
-                            .rounded(.md)
-                            .frame(width: .full)
-                            .font(alignment: .center)
+                            Link("Twitter", to: "https://twitter.com", newTab: true)
+                                .padding(of: 2)
+                                .background(color: .blue(._400))
+                                .font(color: .white())
+                                .rounded(.md)
+                                .frame(width: .full)
+                                .font(alignment: .center)
                         }
                         .spacing(of: 3, along: .vertical)
                         .margins(of: 4, at: .top)
@@ -557,7 +541,7 @@ struct ContactPage: Document {
                     .shadow(size: .md)
 
                     Stack {
-                        Heading(.headline) { "Send Me a Message" }
+                        Heading(.headline, "Send Me a Message")
                         ContactForm()
                     }
                     .padding()

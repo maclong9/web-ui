@@ -136,7 +136,7 @@ import Testing
 
     @Test("Display element as block")
     func testDisplayAsBlock() async throws {
-        let element = Text { "Test content" }.display(.block)
+        let element = Text("Test content").display(.block)
         let rendered = element.render()
         #expect(rendered.contains("class=\"display-block\""))
     }

@@ -10,13 +10,12 @@ import Testing
     @Test("Button element with type and autofocus")
     func testButtonElement() async throws {
         let button = Button(
+            "Submit",
             type: .submit,
             autofocus: true,
             id: "submit-btn",
             classes: ["primary", "large"],
-        ) {
-            "Submit"
-        }
+        )
 
         let rendered = button.render()
         #expect(rendered.contains("<button"))
@@ -329,9 +328,7 @@ import Testing
 
     @Test("Text element as paragraph")
     func testTextAsParagraph() async throws {
-        let text = Text {
-            "This is a long paragraph. It contains multiple sentences. This should be rendered as a p tag."
-        }
+        let text = Text("This is a long paragraph. It contains multiple sentences. This should be rendered as a p tag.")
 
         let rendered = text.render()
         #expect(rendered.contains("<p>"))
@@ -341,9 +338,7 @@ import Testing
 
     @Test("Text element as span")
     func testTextAsSpan() async throws {
-        let text = Text {
-            "Just one sentence."
-        }
+        let text = Text("Just one sentence.")
 
         let rendered = text.render()
         #expect(rendered.contains("<span>"))
@@ -391,9 +386,9 @@ import Testing
 
     @Test("Heading element")
     func testHeadingElement() async throws {
-        let heading1 = Heading(.largeTitle) { "Main Title" }
-        let heading2 = Heading(.title) { "Subtitle" }
-        let heading6 = Heading(.footnote) { "Small Heading" }
+        let heading1 = Heading(.largeTitle, "Main Title")
+        let heading2 = Heading(.title, "Subtitle")
+        let heading6 = Heading(.footnote, "Small Heading")
 
         #expect(heading1.render() == "<h1>Main Title</h1>")
         #expect(heading2.render() == "<h2>Subtitle</h2>")
@@ -431,9 +426,7 @@ import Testing
 
     @Test("Link element")
     func testLinkElement() async throws {
-        let link = Link(to: "https://example.com", newTab: true) {
-            "Visit Example"
-        }
+        let link = Link("Visit Example", to: "https://example.com", newTab: true)
 
         let rendered = link.render()
         #expect(rendered.contains("<a"))
@@ -445,14 +438,14 @@ import Testing
 
     @Test("Emphasis element")
     func testEmphasisElement() async throws {
-        let em = Emphasis { "Important text" }
+        let em = Emphasis("Important text")
 
         #expect(em.render() == "<em>Important text</em>")
     }
 
     @Test("Strong element")
     func testStrongElement() async throws {
-        let strong = Strong { "Bold text" }
+        let strong = Strong("Bold text")
 
         #expect(strong.render() == "<strong>Bold text</strong>")
     }
@@ -521,7 +514,7 @@ import Testing
 
     @Test("Link element with string initializer")
     func testLinkStringInitializer() async throws {
-        let link = Link("Visit Example", destination: "https://example.com")
+        let link = Link(to: "https://example.com") { "Visit Example" }
 
         let rendered = link.render()
         #expect(rendered.contains("<a"))
@@ -531,7 +524,7 @@ import Testing
 
     @Test("Link element with string initializer and newTab")
     func testLinkStringInitializerWithNewTab() async throws {
-        let link = Link("Open in New Tab", destination: "https://example.com", newTab: true)
+        let link = Link(to: "https://example.com", newTab: true) { "Open in New Tab" }
 
         let rendered = link.render()
         #expect(rendered.contains("<a"))
@@ -544,11 +537,10 @@ import Testing
     @Test("Link element with string initializer and attributes")
     func testLinkStringInitializerWithAttributes() async throws {
         let link = Link(
-            "Contact Us",
-            destination: "/contact",
+            to: "/contact",
             id: "contact-link",
             classes: ["nav-link", "primary"]
-        )
+        ) { "Contact Us" }
 
         let rendered = link.render()
         #expect(rendered.contains("<a"))
@@ -572,9 +564,7 @@ import Testing
 
     @Test("Code element")
     func testCodeElement() async throws {
-        let code = Code {
-            "let x = 5"
-        }
+        let code = Code("let x = 5")
 
         #expect(code.render() == "<code>let x = 5</code>")
     }
@@ -658,10 +648,7 @@ import Testing
 
     @Test("Label element")
     func testLabelElement() async throws {
-        let label = Label(
-            for: "name-input",
-            id: "name-label",
-        ) {
+        let label = Label(for: "name-input", id: "name-label") {
             "Your Name:"
         }
 
@@ -714,7 +701,7 @@ import Testing
     @Test("Header element")
     func testHeaderElement() async throws {
         let header = Header(id: "page-header") {
-            Heading(.largeTitle) { "Site Title" }
+            Heading(.largeTitle, "Site Title")
         }
 
         let rendered = header.render()
@@ -740,7 +727,7 @@ import Testing
     @Test("Aside element")
     func testAsideElement() async throws {
         let aside = Aside(id: "sidebar") {
-            Text { "Related content" }
+            Text("Related content")
         }
 
         let rendered = aside.render()
@@ -753,7 +740,7 @@ import Testing
     @Test("Main element")
     func testMainElement() async throws {
         let mainElement = Main(id: "content") {
-            Text { "Main content" }
+            Text("Main content")
         }
 
         let rendered = mainElement.render()
@@ -766,7 +753,7 @@ import Testing
     @Test("Footer element")
     func testFooterElement() async throws {
         let footer = Footer(id: "page-footer") {
-            Text { "Copyright 2025" }
+            Text("Copyright 2025")
         }
 
         let rendered = footer.render()
@@ -781,8 +768,8 @@ import Testing
     @Test("Article element")
     func testArticleElement() async throws {
         let article = Article(id: "blog-post") {
-            Heading(.title) { "Article Title" }
-            Text { "Article content" }
+            Heading(.title, "Article Title")
+            Text("Article content")
         }
 
         let rendered = article.render()
@@ -796,8 +783,8 @@ import Testing
     @Test("Section element")
     func testSectionElement() async throws {
         let section = Section(id: "features") {
-            Heading(.headline) { "Features" }
-            Text { "Feature list" }
+            Heading(.headline, "Features")
+            Text("Feature list")
         }
 
         let rendered = section.render()
@@ -845,7 +832,7 @@ import Testing
                 Input(name: "subscribe", type: .checkbox, id: "subscribe")
                 Label(for: "subscribe") { "Subscribe to newsletter" }
             }
-            Button(type: .submit) { "Send Message" }
+            Button("Send Message", type: .submit)
         }
 
         let rendered = contactForm.render()
@@ -892,7 +879,7 @@ import Testing
     func testPageLayout() async throws {
         let page = Stack {
             Header(id: "main-header") {
-                Heading(.largeTitle) { "My Website" }
+                Heading(.largeTitle, "My Website")
                 Navigation {
                     List(type: .unordered, classes: ["nav-links"]) {
                         Item { Link(to: "/") { "Home" } }
@@ -903,19 +890,19 @@ import Testing
             }
             Main {
                 Article {
-                    Heading(.title) { "Welcome" }
-                    Text { "This is the main content of the page." }
+                    Heading(.title, "Welcome")
+                    Text("This is the main content of the page.")
                 }
             }
             Aside(id: "sidebar") {
-                Heading(.headline) { "Related Links" }
+                Heading(.headline, "Related Links")
                 List(type: .unordered) {
                     Item { Link(to: "/link1") { "Link 1" } }
                     Item { Link(to: "/link2") { "Link 2" } }
                 }
             }
             Footer {
-                Text { "Copyright © 2025" }
+                Text("Copyright © 2025")
             }
         }
 
@@ -938,9 +925,7 @@ import Testing
 
     @Test("Abbreviation element")
     func testAbbreviationElement() async throws {
-        let abbr = Abbreviation(title: "Hypertext Markup Language") {
-            "HTML"
-        }
+        let abbr = Abbreviation(title: "Hypertext Markup Language") { "HTML" }
 
         let rendered = abbr.render()
         #expect(rendered.contains("<abbr"))
@@ -954,9 +939,7 @@ import Testing
             title: "World Health Organization",
             id: "who-abbr",
             classes: ["term", "org"]
-        ) {
-            "WHO"
-        }
+        ) { "WHO" }
 
         let rendered = abbr.render()
         #expect(rendered.contains("<abbr"))
@@ -988,14 +971,16 @@ import Testing
             role: .tablist
         ) {
             Button(
-                role: AriaRole.tab,
+                "Tab 1",
+                role: .tab,
                 label: "First tab"
-            ) { "Tab 1" }
+            )
 
             Button(
-                role: AriaRole.tab,
+                "Tab 2",
+                role: .tab,
                 label: "Second tab"
-            ) { "Tab 2" }
+            )
         }
 
         let rendered = tabContainer.render()
@@ -1014,7 +999,7 @@ import Testing
         let div = Stack {}
         #expect(div.render() == "<div></div>")
 
-        let span = Text {}
+        let span = Text("")
         #expect(span.render() == "<span></span>")
     }
 
@@ -1143,9 +1128,7 @@ import Testing
 
     @Test("Interactive elements with appropriate ARIA roles")
     func testInteractiveElementsWithAriaRoles() async throws {
-        let buttonWithRole = Button(role: .button, label: "Custom button") {
-            "Click me"
-        }
+        let buttonWithRole = Button("Click me", role: .button, label: "Custom button")
         let buttonRendered = buttonWithRole.render()
         #expect(buttonRendered.contains("role=\"button\""))
         #expect(buttonRendered.contains("aria-label=\"Custom button\""))
@@ -1166,9 +1149,7 @@ import Testing
 
     @Test("Button with Onclick Attribute")
     func testButtonWithOnClickAttribute() async throws {
-        let buttonWithOnClick = Button(onClick: "hello()") {
-            "Click me"
-        }
+        let buttonWithOnClick = Button("Click me", onClick: "hello()")
         let buttonRendered = buttonWithOnClick.render()
         #expect(buttonRendered.contains("onclick=\"hello()\""))
     }
@@ -1180,7 +1161,7 @@ import Testing
                 Stack {
                     Stack {
                         Stack {
-                            Text { "Deeply nested" }
+                            Text("Deeply nested")
                         }
                     }
                 }
@@ -1210,12 +1191,13 @@ import Testing
     @Test("Element with multiple data attributes")
     func testMultipleDatAttributes() async throws {
         let element = Text(
+            "Content",
             data: [
                 "user-id": "123",
                 "theme": "dark",
                 "status": "active",
             ]
-        ) { "Content" }
+        )
 
         let rendered = element.render()
         #expect(rendered.contains("data-user-id=\"123\""))
@@ -1228,7 +1210,7 @@ import Testing
         let element = Section(
             id: "content",
             classes: ["container"],
-            role: AriaRole.contentinfo,
+            role: .contentinfo,
             data: [
                 "page": "home",
                 "version": "1.0",
@@ -1265,10 +1247,9 @@ import Testing
             data: ["container": "main"]
         ) {
             Text(
+                "Nested content",
                 data: ["item": "child"]
-            ) {
-                "Nested content"
-            }
+            )
         }
 
         let rendered = element.render()
@@ -1367,7 +1348,7 @@ import Testing
     func testConditionalModifierDifferentElements() async throws {
         let button = Button("Click me").if(true) { $0.addClass("btn-primary") }
         let heading = Heading(.title, "Title").hidden(when: false)
-        let link = Link("Example", destination: "#").if(false) { $0.addClass("external") }
+        let link = Link(to: "#").if(false) { $0.addClass("external") }
 
         let buttonRendered = button.render()
         let headingRendered = heading.render()
@@ -1384,7 +1365,7 @@ import Testing
         let elements = [
             Text("First").if(true) { $0.addClass("first") },
             Text("Second").hidden(when: false),
-            Text("Third").if(false) { $0.addClass("third") }
+            Text("Third").if(false) { $0.addClass("third") },
         ]
 
         for element in elements {
