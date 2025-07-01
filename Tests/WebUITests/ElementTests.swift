@@ -1033,9 +1033,7 @@ import Testing
 
     @Test("Elements with special characters")
     func testSpecialCharacters() async throws {
-        let text = Text {
-            "Special & characters < need > to be escaped"
-        }
+        let text = Text("Special & characters < need > to be escaped")
 
         let rendered = text.render()
         // HTML characters should now be properly escaped in content

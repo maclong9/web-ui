@@ -243,12 +243,12 @@ struct MetadataTests {
         #expect(articleData.type == .article)
 
         let json = articleData.toJSON()
-        #expect(json.contains("\"@context\" : \"https://schema.org\""))
-        #expect(json.contains("\"@type\" : \"Article\""))
-        #expect(json.contains("\"headline\" : \"Test Article\""))
-        #expect(json.contains("\"image\" : \"https://example.com/image.jpg\""))
-        #expect(json.contains("\"name\" : \"Test Author\""))
-        #expect(json.contains("\"description\" : \"A test article\""))
+        #expect(json.contains("\"@context\":\"https://schema.org\""))
+        #expect(json.contains("\"@type\":\"Article\""))
+        #expect(json.contains("\"headline\":\"Test Article\""))
+        #expect(json.contains("\"image\":\"https://example.com/image.jpg\""))
+        #expect(json.contains("\"name\":\"Test Author\""))
+        #expect(json.contains("\"description\":\"A test article\""))
     }
 
     /// Tests structured data generation for a product.
@@ -268,13 +268,13 @@ struct MetadataTests {
         #expect(productData.type == .product)
 
         let json = productData.toJSON()
-        #expect(json.contains("\"@type\" : \"Product\""))
-        #expect(json.contains("\"name\" : \"Test Product\""))
+        #expect(json.contains("\"@type\":\"Product\""))
+        #expect(json.contains("\"name\":\"Test Product\""))
         #expect(
-            json.contains("\"image\" : \"https://example.com/product.jpg\""))
-        #expect(json.contains("\"sku\" : \"PROD-123\""))
-        #expect(json.contains("\"price\" : \"99.99\""))
-        #expect(json.contains("\"priceCurrency\" : \"USD\""))
+            json.contains("\"image\":\"https://example.com/product.jpg\""))
+        #expect(json.contains("\"sku\":\"PROD-123\""))
+        #expect(json.contains("\"price\":\"99.99\""))
+        #expect(json.contains("\"priceCurrency\":\"USD\""))
     }
 
     /// Tests structured data generation for FAQ.
@@ -289,11 +289,11 @@ struct MetadataTests {
         #expect(faqData.type == .faqPage)
 
         let json = faqData.toJSON()
-        #expect(json.contains("\"@type\" : \"FAQPage\""))
-        #expect(json.contains("\"@type\" : \"Question\""))
-        #expect(json.contains("\"name\" : \"What is this?\""))
-        #expect(json.contains("\"text\" : \"A test\""))
-        #expect(json.contains("\"name\" : \"How does it work?\""))
+        #expect(json.contains("\"@type\":\"FAQPage\""))
+        #expect(json.contains("\"@type\":\"Question\""))
+        #expect(json.contains("\"name\":\"What is this?\""))
+        #expect(json.contains("\"text\":\"A test\""))
+        #expect(json.contains("\"name\":\"How does it work?\""))
     }
 
     /// Tests structured data in metadata.
@@ -352,17 +352,18 @@ struct MetadataTests {
         #expect(personData.type == .person)
 
         let json = personData.toJSON()
-        #expect(json.contains("\"@context\" : \"https://schema.org\""))
-        #expect(json.contains("\"@type\" : \"Person\""))
-        #expect(json.contains("\"name\" : \"Jane Doe\""))
-        #expect(json.contains("\"givenName\" : \"Jane\""))
-        #expect(json.contains("\"familyName\" : \"Doe\""))
-        #expect(json.contains("\"image\" : \"https://example.com/jane.jpg\""))
-        #expect(json.contains("\"jobTitle\" : \"Software Engineer\""))
-        #expect(json.contains("\"email\" : \"jane@example.com\""))
-        #expect(json.contains("\"telephone\" : \"+1-555-123-4567\""))
-        #expect(json.contains("\"url\" : \"https://janedoe.example.com\""))
-        #expect(json.contains("\"@type\" : \"PostalAddress\""))
-        #expect(json.contains("\"streetAddress\" : \"123 Main St\""))
+        #expect(json.contains("\"@context\":\"https://schema.org\""))
+        #expect(json.contains("\"@type\":\"Person\""))
+        #expect(json.contains("\"name\":\"Jane Doe\""))
+        #expect(json.contains("\"givenName\":\"Jane\""))
+        #expect(json.contains("\"familyName\":\"Doe\""))
+        #expect(json.contains("\"image\":\"https://example.com/jane.jpg\""))
+        #expect(json.contains("\"jobTitle\":\"Software Engineer\""))
+        #expect(json.contains("\"email\":\"jane@example.com\""))
+        #expect(json.contains("\"telephone\":\"+1-555-123-4567\""))
+        #expect(json.contains("\"url\":\"https://janedoe.example.com\""))
+        #expect(json.contains("\"@type\":\"PostalAddress\""))
+        #expect(json.contains("\"streetAddress\":\"123 Main St\""))
     }
 }
+
