@@ -52,10 +52,10 @@ public struct OutlineStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the outline style and returns the appropriate CSS classes
+    /// Applies the outline style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for outline styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
 
@@ -90,7 +90,7 @@ public struct OutlineStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide outline styling
-extension HTML {
+extension Markup {
     /// Sets outline properties with optional modifiers.
     ///
     /// - Parameters:
@@ -99,7 +99,7 @@ extension HTML {
     ///   - color: The outline color.
     ///   - offset: The outline offset in pixels.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated outline classes.
+    /// - Returns: Markup with updated outline classes.
     ///
     /// ## Example
     /// ```swift
@@ -118,7 +118,7 @@ extension HTML {
         color: Color? = nil,
         offset: Int? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = OutlineStyleOperation.Parameters(
             width: width,
             style: style,

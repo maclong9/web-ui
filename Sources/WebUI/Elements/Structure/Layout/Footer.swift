@@ -20,13 +20,13 @@ public struct Footer: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML footer element.
     ///
     /// - Parameters:
     ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
-    ///   - classes: An array of CSS classnames for styling the footer.
+    ///   - classes: An array of stylesheet classnames for styling the footer.
     ///   - role: ARIA role of the element for accessibility and screen readers.
     ///   - label: ARIA label to describe the element's purpose (e.g., "Page Footer").
     ///   - data: Dictionary of `data-*` attributes for storing custom data related to the footer.
@@ -48,7 +48,7 @@ public struct Footer: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.id = id
         self.classes = classes
@@ -58,11 +58,11 @@ public struct Footer: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -72,7 +72,7 @@ public struct Footer: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "footer", attributes: attributes, content: content)
     }
 }

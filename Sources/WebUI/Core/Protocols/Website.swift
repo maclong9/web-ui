@@ -46,17 +46,17 @@ public protocol Website {
     /// Optional custom HTML to append to all document head sections.
     var head: String? { get }
 
-    /// Base URL of the website for sitemap generation.
-    var baseURL: String? { get }
+    /// Base web address of the website for sitemap generation.
+    var baseWebAddress: String? { get }
 
     /// Custom sitemap entries to include in the sitemap.xml.
     var sitemapEntries: [SitemapEntry]? { get }
 
     /// Controls whether to generate a sitemap.xml file.
-    var generateSitemap: Bool { get }
+    var shouldGenerateSitemap: Bool { get }
 
     /// Controls whether to generate a robots.txt file.
-    var generateRobotsTxt: Bool { get }
+    var shouldGenerateRobotsTxt: Bool { get }
 
     /// Optional custom rules to include in robots.txt file.
     var robotsRules: [RobotsRule]? { get }
@@ -77,17 +77,17 @@ extension Website {
     /// Default head implementation returns nil.
     public var head: String? { nil }
 
-    /// Default baseURL implementation returns nil.
-    public var baseURL: String? { nil }
+    /// Default base web address implementation returns nil.
+    public var baseWebAddress: String? { nil }
 
     /// Default sitemapEntries implementation returns nil.
     public var sitemapEntries: [SitemapEntry]? { nil }
 
-    /// Default generateSitemap implementation returns true if baseURL is provided.
-    public var generateSitemap: Bool { baseURL != nil }
+    /// Default sitemap generation implementation returns true if base web address is provided.
+    public var shouldGenerateSitemap: Bool { baseWebAddress != nil }
 
-    /// Default generateRobotsTxt implementation returns true if baseURL is provided.
-    public var generateRobotsTxt: Bool { baseURL != nil }
+    /// Default robots.txt generation implementation returns true if base web address is provided.
+    public var shouldGenerateRobotsTxt: Bool { baseWebAddress != nil }
 
     /// Default robotsRules implementation returns nil.
     public var robotsRules: [RobotsRule]? { nil }
@@ -142,12 +142,12 @@ extension Website {
         }
 
         // Generate sitemap if enabled
-        if generateSitemap, let baseURL = baseURL {
-            try generateSitemapXML(in: outputDirectory, baseURL: baseURL)
+        if shouldGenerateSitemap, let baseWebAddress = baseWebAddress {
+            try generateSitemapXML(in: outputDirectory, baseWebAddress: baseWebAddress)
         }
 
         // Generate robots.txt if enabled
-        if generateRobotsTxt {
+        if shouldGenerateRobotsTxt {
             try generateRobotsTxt(in: outputDirectory)
         }
     }
@@ -186,11 +186,11 @@ extension Website {
         }
     }
 
-    private func generateSitemapXML(in directory: URL, baseURL: String) throws {
+    private func generateSitemapXML(in directory: URL, baseWebAddress: String) throws {
         var entries = try routes.compactMap { route -> SitemapEntry? in
             guard let path = route.path else { return nil }
             return SitemapEntry(
-                url: "\(baseURL)/\(path).html",
+                url: "\(baseWebAddress)/\(path).html",
                 lastModified: route.metadata.date,
                 changeFrequency: .monthly,
                 priority: 0.5
@@ -234,8 +234,8 @@ extension Website {
     private func generateRobotsTxt(in directory: URL) throws {
         // Use the dedicated Robots.generateTxt method
         let robotsTxt = Robots.generateTxt(
-            baseURL: baseURL,
-            generateSitemap: generateSitemap,
+            baseWebAddress: baseWebAddress,
+            shouldGenerateSitemap: shouldGenerateSitemap,
             robotsRules: robotsRules
         )
 

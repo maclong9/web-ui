@@ -1,6 +1,6 @@
 import Foundation
 
-/// Creates HTML strong emphasis elements.
+/// Creates markup strong emphasis elements.
 ///
 /// Represents text with strong emphasis or importance, typically displayed in bold by browsers.
 /// The `<strong>` element indicates content with high importance, seriousness, or urgency.
@@ -17,16 +17,16 @@ public struct Strong: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
-    /// Creates a new HTML strong element with string content.
+    /// Creates a new markup strong element with string content.
     ///
     /// This is the preferred SwiftUI-like initializer for creating strongly emphasized text.
     ///
     /// - Parameters:
     ///   - content: The text content to be strongly emphasized.
-    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the emphasized text.
+    ///   - id: Unique identifier for the markup element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of stylesheet classnames for styling the emphasized text.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the element.
@@ -52,11 +52,11 @@ public struct Strong: Element {
         self.contentBuilder = { [content] }
     }
 
-    /// Creates a new HTML strong element using HTMLBuilder closure syntax.
+    /// Creates a new markup strong element using MarkupBuilder closure syntax.
     ///
     /// - Parameters:
-    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the emphasized text.
+    ///   - id: Unique identifier for the markup element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of stylesheet classnames for styling the emphasized text.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the element.
@@ -77,7 +77,7 @@ public struct Strong: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.id = id
         self.classes = classes
@@ -87,11 +87,11 @@ public struct Strong: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -101,7 +101,7 @@ public struct Strong: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "strong", attributes: attributes, content: content)
     }
 }

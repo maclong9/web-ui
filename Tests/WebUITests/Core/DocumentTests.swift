@@ -15,7 +15,7 @@ struct NoDescriptionDocument: Document {
         )
     }
 
-    var body: some HTML {
+    var body: some Markup {
         Text("Test content")
     }
 }
@@ -31,7 +31,7 @@ struct BasicTestDocument: Document {
         )
     }
 
-    var body: some HTML {
+    var body: some Markup {
         Text("Hello, world!")
     }
 }
@@ -55,7 +55,7 @@ struct FullMetadataDocument: Document {
         )
     }
 
-    var body: some HTML {
+    var body: some Markup {
         Text("Content")
     }
 }
@@ -75,7 +75,7 @@ struct FaviconTestDocument: Document {
         )
     }
 
-    var body: some HTML {
+    var body: some Markup {
         Text("Favicon Test")
     }
 }
@@ -97,7 +97,7 @@ struct StructuredDataDocument: Document {
         )
     }
 
-    var body: some HTML {
+    var body: some Markup {
         Text("Structured Data Test")
     }
 }
@@ -121,7 +121,7 @@ struct ScriptTestDocument: Document {
         ]
     }
 
-    var body: some HTML {
+    var body: some Markup {
         Text("Script Test")
     }
 }
@@ -142,7 +142,7 @@ struct StylesheetTestDocument: Document {
         ]
     }
 
-    var body: some HTML {
+    var body: some Markup {
         Text("Stylesheet Test")
     }
 }
@@ -163,7 +163,7 @@ struct CustomHeadDocument: Document {
         """
     }
 
-    var body: some HTML {
+    var body: some Markup {
         Text("Custom Head Test")
     }
 }

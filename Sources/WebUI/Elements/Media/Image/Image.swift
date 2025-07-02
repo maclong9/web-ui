@@ -34,7 +34,7 @@ public struct Image: Element {
     ///   - type: The MIME type of the image, optional.
     ///   - size: The size of the image in pixels, optional.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the image.
+    ///   - classes: An array of stylesheet classnames for styling the image.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when alt text isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the image.
@@ -60,11 +60,11 @@ public struct Image: Element {
         self.data = data
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -93,7 +93,7 @@ public struct Image: Element {
                 attributes.append(heightAttr)
             }
         }
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "img", attributes: attributes, isSelfClosing: true)
     }
 }

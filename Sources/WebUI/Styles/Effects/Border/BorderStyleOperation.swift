@@ -52,10 +52,10 @@ public struct BorderStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the border style and returns the appropriate CSS classes
+    /// Applies the border style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for border styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
         let width = params.width
@@ -100,7 +100,7 @@ public struct BorderStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide border styling
-extension HTML {
+extension Markup {
     /// Applies border styling to the element with specified attributes.
     ///
     /// Adds borders with custom width, style, and color to specified edges of an element.
@@ -125,7 +125,7 @@ extension HTML {
         style: BorderStyle? = nil,
         color: Color? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = BorderStyleOperation.Parameters(
             width: width,
             edges: edges,

@@ -11,7 +11,7 @@ extension StructuredData {
     ///   - datePublished: The date the article was published.
     ///   - dateModified: The date the article was last modified.
     ///   - description: A short description of the article content.
-    ///   - url: The URL of the article.
+    ///   - webAddress: The web address of the article.
     /// - Returns: A structured data object for an article.
     ///
     /// - Example:
@@ -61,7 +61,7 @@ extension StructuredData {
         datePublished: Date,
         dateModified: Date? = nil,
         description: String? = nil,
-        url: String? = nil
+        webAddress: String? = nil
     ) -> StructuredData {
         var data: [String: Any] = [
             "headline": headline,
@@ -81,7 +81,7 @@ extension StructuredData {
                     || publisherData.type == .person
                 {
                     // Extract the raw data from the structured data object
-                    let publisherDict = publisherData.getData()
+                    let publisherDict = publisherData.retrieveStructuredDataDictionary()
                     var typeDict = publisherDict
                     typeDict["@type"] = publisherData.type.rawValue
                     data["publisher"] = typeDict
@@ -98,8 +98,8 @@ extension StructuredData {
             data["description"] = description
         }
 
-        if let url = url {
-            data["url"] = url
+        if let webAddress = webAddress {
+            data["url"] = webAddress
         }
 
         return StructuredData(type: .article, data: data)

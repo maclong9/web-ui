@@ -242,7 +242,7 @@ struct MetadataTests {
 
         #expect(articleData.type == .article)
 
-        let json = articleData.toJSON()
+        let json = articleData.convertToJsonString()
         #expect(json.contains("\"@context\":\"https://schema.org\""))
         #expect(json.contains("\"@type\":\"Article\""))
         #expect(json.contains("\"headline\":\"Test Article\""))
@@ -267,7 +267,7 @@ struct MetadataTests {
 
         #expect(productData.type == .product)
 
-        let json = productData.toJSON()
+        let json = productData.convertToJsonString()
         #expect(json.contains("\"@type\":\"Product\""))
         #expect(json.contains("\"name\":\"Test Product\""))
         #expect(
@@ -288,7 +288,7 @@ struct MetadataTests {
 
         #expect(faqData.type == .faqPage)
 
-        let json = faqData.toJSON()
+        let json = faqData.convertToJsonString()
         #expect(json.contains("\"@type\":\"FAQPage\""))
         #expect(json.contains("\"@type\":\"Question\""))
         #expect(json.contains("\"name\":\"What is this?\""))
@@ -301,7 +301,7 @@ struct MetadataTests {
         let structuredData = StructuredData.organization(
             name: "Test Org",
             logo: "https://example.com/logo.png",
-            url: "https://example.com"
+            webAddress: "https://example.com"
         )
 
         let metadata = Metadata(
@@ -336,7 +336,7 @@ struct MetadataTests {
             jobTitle: "Software Engineer",
             email: "jane@example.com",
             telephone: "+1-555-123-4567",
-            url: "https://janedoe.example.com",
+            webAddress: "https://janedoe.example.com",
             address: [
                 "streetAddress": "123 Main St",
                 "addressLocality": "Anytown",
@@ -351,7 +351,7 @@ struct MetadataTests {
 
         #expect(personData.type == .person)
 
-        let json = personData.toJSON()
+        let json = personData.convertToJsonString()
         #expect(json.contains("\"@context\":\"https://schema.org\""))
         #expect(json.contains("\"@type\":\"Person\""))
         #expect(json.contains("\"name\":\"Jane Doe\""))

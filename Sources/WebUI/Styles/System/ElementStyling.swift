@@ -2,14 +2,14 @@ import Foundation
 
 /// Provides common styling utilities for HTML elements
 public enum ElementStyling {
-    /// Applies CSS classes to HTML content
+    /// Applies stylesheet classes to HTML content
     ///
     /// - Parameters:
     ///   - content: The HTML content to apply classes to
-    ///   - classes: The CSS classes to apply
-    /// - Returns: HTML content with classes applied
-    public static func applyClasses<T: HTML>(_ content: T, classes: [String])
-        -> some HTML
+    ///   - classes: The stylesheet classes to apply
+    /// - Returns: Markup content with classes applied
+    public static func applyClasses<T: Markup>(_ content: T, classes: [String])
+        -> some Markup
     {
         content.addingClasses(classes)
     }
@@ -17,9 +17,9 @@ public enum ElementStyling {
     /// Combines base classes with modifier classes
     ///
     /// - Parameters:
-    ///   - baseClasses: The base CSS classes
+    ///   - baseClasses: The base stylesheet classes
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
-    /// - Returns: Combined array of CSS classes
+    /// - Returns: Combined array of stylesheet classes
     public static func combineClasses(
         _ baseClasses: [String], withModifiers modifiers: [Modifier]
     ) -> [String] {
@@ -33,31 +33,31 @@ public enum ElementStyling {
 }
 
 /// Extension to provide styling helpers for HTML protocol
-extension HTML {
-    /// Adds CSS classes to an HTML element
+extension Markup {
+    /// Adds stylesheet classes to an HTML element
     ///
-    /// - Parameter classNames: The CSS class names to add
-    /// - Returns: HTML with the classes applied
-    public func addClass(_ classNames: String...) -> some HTML {
+    /// - Parameter classNames: The stylesheet class names to add
+    /// - Returns: Markup with the classes applied
+    public func addClass(_ classNames: String...) -> some Markup {
         addingClasses(classNames)
     }
 
-    /// Adds CSS classes to an HTML element
+    /// Adds stylesheet classes to an HTML element
     ///
-    /// - Parameter classNames: The CSS class names to add
-    /// - Returns: HTML with the classes applied
-    public func addClasses(_ classNames: [String]) -> some HTML {
+    /// - Parameter classNames: The stylesheet class names to add
+    /// - Returns: Markup with the classes applied
+    public func addClasses(_ classNames: [String]) -> some Markup {
         addingClasses(classNames)
     }
 
     /// Applies a style with modifier to the element
     ///
     /// - Parameters:
-    ///   - baseClasses: The base CSS classes to apply
+    ///   - baseClasses: The base stylesheet classes to apply
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
-    /// - Returns: HTML with the styled classes applied
+    /// - Returns: Markup with the styled classes applied
     public func applyStyle(baseClasses: [String], modifiers: [Modifier] = [])
-        -> some HTML
+        -> some Markup
     {
         let classes = ElementStyling.combineClasses(
             baseClasses, withModifiers: modifiers)
@@ -71,7 +71,7 @@ extension HTML {
     /// - Parameters:
     ///   - condition: Boolean condition that determines whether to apply the modifier
     ///   - modifier: Closure that applies styling when condition is true
-    /// - Returns: HTML with conditional styling applied
+    /// - Returns: Markup with conditional styling applied
     ///
     /// ## Example
     /// ```swift
@@ -79,11 +79,11 @@ extension HTML {
     ///     .if(isHighlighted) { $0.background(color: .yellow) }
     ///     .if(isLarge) { $0.font(size: .xl) }
     /// ```
-    public func `if`<T: HTML>(_ condition: Bool, _ modifier: (Self) -> T) -> AnyHTML {
+    public func `if`<T: Markup>(_ condition: Bool, _ modifier: (Self) -> T) -> AnyMarkup {
         if condition {
-            return AnyHTML(modifier(self))
+            return AnyMarkup(modifier(self))
         } else {
-            return AnyHTML(self)
+            return AnyMarkup(self)
         }
     }
 }

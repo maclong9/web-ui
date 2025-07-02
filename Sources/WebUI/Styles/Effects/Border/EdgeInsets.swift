@@ -64,13 +64,13 @@ public struct EdgeInsets: Sendable, Equatable {
 
 // MARK: - Margin and Padding Style API
 
-extension HTML {
+extension Markup {
     /// Applies margin styling to the element using edge insets.
     ///
     /// - Parameters:
     ///   - insets: The edge insets to apply as margins.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated margin classes.
+    /// - Returns: Markup with updated margin classes.
     ///
     /// ## Example
     /// ```swift
@@ -79,7 +79,7 @@ extension HTML {
     public func margins(
         _ insets: EdgeInsets,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let classes = EdgeInsets.marginClasses(from: insets)
         let newClasses = StyleUtilities.combineClasses(classes, withModifiers: modifiers)
         return StyleModifier(content: self, classes: newClasses)
@@ -90,7 +90,7 @@ extension HTML {
     /// - Parameters:
     ///   - insets: The edge insets to apply as padding.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated padding classes.
+    /// - Returns: Markup with updated padding classes.
     ///
     /// ## Example
     /// ```swift
@@ -99,7 +99,7 @@ extension HTML {
     public func padding(
         _ insets: EdgeInsets,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let classes = EdgeInsets.paddingClasses(from: insets)
         let newClasses = StyleUtilities.combineClasses(classes, withModifiers: modifiers)
         return StyleModifier(content: self, classes: newClasses)

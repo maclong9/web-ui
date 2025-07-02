@@ -1,12 +1,12 @@
-/// A renderer that converts a Markdown Abstract Syntax Tree (AST) into HTML.
+/// A renderer that converts a Markdown Abstract Syntax Tree (AST) into markup.
 ///
 /// `HtmlRenderer` walks through the Markdown document structure and generates appropriate
-/// HTML tags for each Markdown element, with special handling for links, code blocks,
+/// markup tags for each Markdown element, with special handling for links, code blocks,
 /// and other formatting constructs.
-/// A renderer that converts a Markdown Abstract Syntax Tree (AST) into HTML with configurable code block rendering options.
+/// A renderer that converts a Markdown Abstract Syntax Tree (AST) into markup with configurable code block rendering options.
 ///
 /// `HtmlRenderer` walks through the Markdown document structure and generates appropriate
-/// HTML tags for each Markdown element, with special handling for links, code blocks,
+/// markup tags for each Markdown element, with special handling for links, code blocks,
 /// and other formatting constructs. Code block rendering features such as syntax highlighting,
 /// filename display, copy button, and line numbers can be enabled or disabled via boolean flags.
 ///

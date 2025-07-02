@@ -22,14 +22,14 @@ public struct Label: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML label element associated with a form control.
     ///
     /// - Parameters:
     ///   - for: ID of the associated input element. This creates a programmatic connection between the label and the form control.
     ///   - id: Unique identifier for the HTML element itself.
-    ///   - classes: An array of CSS classnames for styling the label.
+    ///   - classes: An array of stylesheet classnames for styling the label.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data related to the label.
@@ -48,7 +48,7 @@ public struct Label: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.forAttribute = `for`
         self.id = id
@@ -59,11 +59,11 @@ public struct Label: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var additional: [String] = []
         if let forAttr = Attribute.string("for", forAttribute) {
             additional.append(forAttr)
@@ -77,7 +77,7 @@ public struct Label: Element {
             additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "label", attributes: attributes, content: content)
     }
 }
