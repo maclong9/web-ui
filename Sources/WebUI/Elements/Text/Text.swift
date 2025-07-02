@@ -16,9 +16,13 @@ public struct Text: Element {
     ///
     /// This is the preferred SwiftUI-like initializer for creating text elements.
     /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
+    /// 
+    /// The content string is automatically checked for localization keys. If the string
+    /// appears to be a localization key (e.g., "welcome_message", "app.title"), it will
+    /// be resolved using the current localization settings.
     ///
     /// - Parameters:
-    ///   - content: The text content to display.
+    ///   - content: The text content to display or localization key to resolve.
     ///   - id: Unique identifier for the markup element.
     ///   - classes: An array of stylesheet classnames.
     ///   - role: ARIA role of the element for accessibility.
@@ -27,7 +31,8 @@ public struct Text: Element {
     ///
     /// ## Example
     /// ```swift
-    /// Text("Hello, world!")
+    /// Text("Hello, world!")  // Regular text
+    /// Text("welcome_message")  // Localization key (resolved automatically)
     /// Text("Multi-line text with multiple sentences. This will render as a paragraph.", classes: ["intro"])
     /// ```
     public init(
@@ -43,7 +48,49 @@ public struct Text: Element {
         self.role = role
         self.label = label
         self.data = data
-        self.contentBuilder = { [content] }
+        
+        // Resolve localization if the content appears to be a localization key
+        let resolvedContent = LocalizationManager.shared.resolveIfLocalizationKey(content)
+        self.contentBuilder = { [resolvedContent] }
+    }
+    
+    /// Creates a new text element with explicit localization key support.
+    ///
+    /// This initializer provides explicit control over localization, allowing you to
+    /// specify localization parameters directly. Use this when you need more control
+    /// over the localization process than the automatic detection provides.
+    ///
+    /// - Parameters:
+    ///   - localizationKey: The localization key to resolve.
+    ///   - id: Unique identifier for the markup element.
+    ///   - classes: An array of stylesheet classnames.
+    ///   - role: ARIA role of the element for accessibility.
+    ///   - label: ARIA label to describe the element.
+    ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Text(localizationKey: LocalizationKey("welcome_message"))
+    /// Text(localizationKey: LocalizationKey.interpolated("user_count", arguments: ["5"]))
+    /// Text(localizationKey: LocalizationKey.fromTable("greeting", tableName: "Common"))
+    /// ```
+    public init(
+        localizationKey: LocalizationKey,
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil
+    ) {
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        
+        // Resolve the localization key explicitly
+        let resolvedContent = LocalizationManager.shared.resolveKey(localizationKey)
+        self.contentBuilder = { [resolvedContent] }
     }
 
     /// Creates a new text element using MarkupBuilder closure syntax.
