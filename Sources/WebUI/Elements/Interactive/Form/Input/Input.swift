@@ -38,7 +38,7 @@ public struct Input: Element {
     ///   - required: When true, the input must be filled before form submission, optional.
     ///   - checked: For checkbox inputs, indicates if initially checked, optional.
     ///   - id: Unique identifier for the HTML element, useful for labels and JavaScript.
-    ///   - classes: An array of CSS classnames for styling the input.
+    ///   - classes: An array of stylesheet classnames for styling the input.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
@@ -88,11 +88,11 @@ public struct Input: Element {
         self.on = on
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -126,7 +126,7 @@ public struct Input: Element {
         if let on = on {
             attributes.append(on)
         }
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "input", attributes: attributes, isSelfClosing: true)
     }
 }

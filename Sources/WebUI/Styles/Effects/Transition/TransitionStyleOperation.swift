@@ -52,10 +52,10 @@ public struct TransitionStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the transition style and returns the appropriate CSS classes
+    /// Applies the transition style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for transition styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
 
@@ -88,7 +88,7 @@ public struct TransitionStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide transition styling
-extension HTML {
+extension Markup {
     /// Applies transition styling to the element.
     ///
     /// Adds classes for animating properties with duration, easing, and delay.
@@ -106,7 +106,7 @@ extension HTML {
         easing: Easing? = nil,
         delay: Int? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = TransitionStyleOperation.Parameters(
             property: property,
             duration: duration,

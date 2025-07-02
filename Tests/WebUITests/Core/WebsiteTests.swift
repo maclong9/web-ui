@@ -9,18 +9,18 @@ import Testing
 struct PageLayout: Element {
     var title: String
     var description: String
-    var content: HTMLContentBuilder
+    var content: MarkupContentBuilder
 
     init(
         title: String, description: String,
-        @HTMLBuilder content: @escaping HTMLContentBuilder
+        @MarkupBuilder content: @escaping MarkupContentBuilder
     ) {
         self.title = title
         self.description = description
         self.content = content
     }
 
-    var body: some HTML {
+    var body: some Markup {
         BodyWrapper {
             Header {
                 Stack {
@@ -48,7 +48,7 @@ struct PageLayout: Element {
                     .padding()
                     .margins(at: .bottom)
 
-                    HTMLString(content: content().map { $0.render() }.joined())
+                    MarkupString(content: content().map { $0.render() }.joined())
                 }
                 .padding()
                 .margins(at: .horizontal, auto: true)
@@ -87,7 +87,7 @@ struct ProjectCard: Element {
     var imageUrl: String
     var link: String
 
-    var body: some HTML {
+    var body: some Markup {
         Stack {
             Image(
                 source: imageUrl, description: title,
@@ -141,7 +141,7 @@ struct ExperienceItem: Element {
     var period: String
     var description: String
 
-    var body: some HTML {
+    var body: some Markup {
         Stack {
             Heading(.headline, role)
             Text(company)
@@ -154,7 +154,7 @@ struct SkillCategory: Element {
     var category: String
     var skills: [String]
 
-    var body: some HTML {
+    var body: some Markup {
         Stack {
             Heading(.subheadline, category)
             Stack {
@@ -167,7 +167,7 @@ struct SkillCategory: Element {
 }
 
 struct ContactForm: Element {
-    var body: some HTML {
+    var body: some Markup {
         Form(action: "/submit", method: .post) {
             Stack {
                 Label(for: "name") { "Name" }
@@ -193,7 +193,7 @@ struct HomePage: Document {
         )
     }
 
-    var body: some HTML {
+    var body: some Markup {
         PageLayout(
             title: "Welcome to My Portfolio",
             description:
@@ -284,7 +284,7 @@ struct AboutPage: Document {
         )
     }
 
-    var body: some HTML {
+    var body: some Markup {
         PageLayout(
             title: "About Me",
             description: "Learn about my background, skills, and experience"
@@ -384,7 +384,7 @@ struct ProjectsPage: Document {
         )
     }
 
-    var body: some HTML {
+    var body: some Markup {
         PageLayout(
             title: "My Projects",
             description: "A showcase of my recent work and projects"
@@ -468,7 +468,7 @@ struct ContactPage: Document {
         [Script(src: "/js/contact-form.js", attribute: .defer)]
     }
 
-    var body: some HTML {
+    var body: some Markup {
         PageLayout(
             title: "Contact Me",
             description:

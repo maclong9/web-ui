@@ -52,10 +52,10 @@ public struct TransformStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the transform style and returns the appropriate CSS classes
+    /// Applies the transform style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for transform styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = ["transform"]
 
@@ -100,7 +100,7 @@ public struct TransformStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide transform styling
-extension HTML {
+extension Markup {
     /// Applies transformation styling to the element.
     ///
     /// Adds classes for scaling, rotating, translating, and skewing, optionally scoped to modifiers.
@@ -119,7 +119,7 @@ extension HTML {
         translate: (x: Int?, y: Int?)? = nil,
         skew: (x: Int?, y: Int?)? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = TransformStyleOperation.Parameters(
             scale: scale,
             rotate: rotate,

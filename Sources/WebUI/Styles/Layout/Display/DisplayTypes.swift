@@ -43,7 +43,7 @@ public enum Justify: String {
     /// Distributes items with equal space between and around them.
     case evenly
 
-    /// Provides the raw CSS class value.
+    /// Provides the raw stylesheet class value.
     public var rawValue: String { "justify-\(self)" }
 }
 

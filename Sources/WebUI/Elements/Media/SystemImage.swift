@@ -24,7 +24,7 @@ public struct SystemImage: Element {
     /// - Parameters:
     ///   - name: The name of the system image/icon.
     ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of CSS classnames for styling the icon.
+    ///   - classes: An array of stylesheet classnames for styling the icon.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the icon for accessibility.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
@@ -44,11 +44,11 @@ public struct SystemImage: Element {
         self.data = data
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         // Combine base icon classes with custom classes
         var allClasses = ["system-image", "icon-\(name.replacingOccurrences(of: ".", with: "-"))"]
         if let classes = classes {
@@ -63,9 +63,9 @@ public struct SystemImage: Element {
             data: data
         )
         
-        // Render as a span with CSS classes for icon fonts/CSS icons
+        // Render as a span with stylesheet classes for icon fonts/CSS icons
         // This allows flexibility for different icon systems (Font Awesome, Feather, etc.)
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "span", attributes: attributes, content: ""
         )
     }

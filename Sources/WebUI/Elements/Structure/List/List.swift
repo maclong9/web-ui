@@ -22,7 +22,7 @@ public struct List: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML list element (`<ul>` or `<ol>`).
     ///
@@ -30,7 +30,7 @@ public struct List: Element {
     ///   - type: List type (ordered or unordered), defaults to unordered.
     ///   - style: List style (disc, circle, or square), defaults to none.
     ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of CSS classnames for styling the list.
+    ///   - classes: An array of stylesheet classnames for styling the list.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
@@ -51,7 +51,7 @@ public struct List: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.type = type
         self.style = style
@@ -63,11 +63,11 @@ public struct List: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let combinedClasses =
             (classes ?? []) + (style != .none ? ["list-\(style.rawValue)"] : [])
 
@@ -81,7 +81,7 @@ public struct List: Element {
 
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             type.rawValue, attributes: attributes, content: content)
     }
 }

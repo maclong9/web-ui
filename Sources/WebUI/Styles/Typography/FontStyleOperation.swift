@@ -87,10 +87,10 @@ public struct FontStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the font style and returns the appropriate CSS classes
+    /// Applies the font style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for font styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
 
@@ -119,7 +119,7 @@ public struct FontStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide font styling
-extension HTML {
+extension Markup {
     /// Applies font styling to the element with optional modifiers.
     ///
     /// This comprehensive method allows controlling all aspects of typography including
@@ -167,7 +167,7 @@ extension HTML {
         color: Color? = nil,
         family: String? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = FontStyleOperation.Parameters(
             size: size,
             weight: weight,

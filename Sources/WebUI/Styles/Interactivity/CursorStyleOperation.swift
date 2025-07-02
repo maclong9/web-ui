@@ -38,10 +38,10 @@ public struct CursorStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the cursor style and returns the appropriate CSS classes
+    /// Applies the cursor style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for cursor styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         ["cursor-\(params.type.rawValue)"]
     }
@@ -54,7 +54,7 @@ public struct CursorStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide cursor styling
-extension HTML {
+extension Markup {
     /// Sets the cursor style of the element with optional modifiers.
     ///
     /// - Parameters:
@@ -73,7 +73,7 @@ extension HTML {
     public func cursor(
         _ type: CursorType,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = CursorStyleOperation.Parameters(type: type)
 
         return CursorStyleOperation.shared.applyTo(

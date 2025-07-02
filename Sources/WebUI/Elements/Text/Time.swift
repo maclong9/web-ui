@@ -20,14 +20,14 @@ public struct Time: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML time element.
     ///
     /// - Parameters:
     ///   - datetime: The machine-readable timestamp in a valid format (ISO 8601 recommended).
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the time element.
+    ///   - classes: An array of stylesheet classnames for styling the time element.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the time element.
@@ -49,7 +49,7 @@ public struct Time: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.datetime = datetime
         self.id = id
@@ -60,11 +60,11 @@ public struct Time: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var additional: [String] = []
         if let datetimeAttr = Attribute.string("datetime", datetime) {
             additional.append(datetimeAttr)
@@ -78,7 +78,7 @@ public struct Time: Element {
             additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "time", attributes: attributes, content: content)
     }
 }

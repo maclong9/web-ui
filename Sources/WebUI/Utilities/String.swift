@@ -1,12 +1,12 @@
-/// Utility string extensions for HTML rendering and formatting.
+/// Utility string extensions for markup rendering and formatting.
 ///
-/// These extensions enable strings to be used directly in HTML content and provide
+/// These extensions enable strings to be used directly in markup content and provide
 /// utility methods for common string transformations needed in web development.
-extension String: HTML {
-    public var body: some HTML { self }
-    /// Renders the string as HTML content.
+extension String: Markup {
+    public var body: some Markup { self }
+    /// Renders the string as markup content.
     ///
-    /// This implementation allows plain strings to be used directly in HTML content builders.
+    /// This implementation allows plain strings to be used directly in markup content builders.
     /// No escaping is performed here; escaping should be handled where appropriate.
     ///
     /// - Returns: The string as-is.
@@ -14,20 +14,20 @@ extension String: HTML {
     /// - Example:
     ///   ```swift
     ///   let userInput = "Hello <script>alert('XSS')</script> & goodbye"
-    ///   let content: [any HTML] = [
+    ///   let content: [any Markup] = [
     ///     userInput,
     ///     Heading(.one) { "Title" }
     ///   ]
     ///   ```
     public func render() -> String { self }
 
-    /// Sanitizes strings for use in CSS variable names.
+    /// Sanitizes strings for use in stylesheet variable names.
     ///
-    /// Converts a string into a valid CSS variable name by replacing invalid characters
+    /// Converts a string into a valid stylesheet variable name by replacing invalid characters
     /// with hyphens and converting to lowercase, ensuring the result is compliant with
-    /// CSS naming conventions.
+    /// stylesheet naming conventions.
     ///
-    /// - Returns: A sanitized string suitable for use as a CSS variable name.
+    /// - Returns: A sanitized string suitable for use as a stylesheet variable name.
     ///
     /// - Example:
     ///   ```swift

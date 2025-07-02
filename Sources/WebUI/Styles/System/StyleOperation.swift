@@ -8,10 +8,10 @@ public protocol StyleOperation {
     /// The parameters type used by this style operation
     associatedtype Parameters
 
-    /// Applies the style operation and returns the appropriate CSS classes
+    /// Applies the style operation and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for this style operation
-    /// - Returns: An array of CSS class names to be applied
+    /// - Returns: An array of stylesheet class names to be applied
     func applyClasses(params: Parameters) -> [String]
 }
 
@@ -53,8 +53,8 @@ public struct StyleParameters {
     }
 }
 
-/// A modifier to add classes to an HTML element
-public struct StyleModifier<T: HTML>: HTML {
+/// A modifier to add classes to a markup element
+public struct StyleModifier<T: Markup>: Markup {
     private let content: T
     private let classes: [String]
 
@@ -63,7 +63,7 @@ public struct StyleModifier<T: HTML>: HTML {
         self.classes = classes
     }
 
-    public var body: some HTML {
+    public var body: some Markup {
         content.addingClasses(classes)
     }
 }
@@ -73,11 +73,11 @@ extension StyleOperation {
     /// Adapts this style operation for use with Element extensions
     ///
     /// - Parameters:
-    ///   - content: The HTML content to apply styles to
+    ///   - content: The markup content to apply styles to
     ///   - params: The parameters for this style operation
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
     /// - Returns: A new element with the styles applied
-    public func applyTo<T: HTML>(
+    public func applyTo<T: Markup>(
         _ content: T, params: Parameters, modifiers: [Modifier] = []
     ) -> StyleModifier<T> {
         let classes = applyClasses(params: params)
@@ -94,7 +94,7 @@ extension StyleOperation {
     ///   - params: The parameters for this style operation
     ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
     /// - Returns: A new element with the styles applied
-    public func applyToElement<T: HTML>(
+    public func applyToElement<T: Markup>(
         _ element: T, params: Parameters, modifiers: Modifier...
     ) -> StyleModifier<T> {
         applyTo(element, params: params, modifiers: modifiers)

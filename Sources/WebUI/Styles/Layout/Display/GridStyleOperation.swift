@@ -59,10 +59,10 @@ public struct GridStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the grid style and returns the appropriate CSS classes
+    /// Applies the grid style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for grid styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes = ["grid"]
 
@@ -112,7 +112,7 @@ public enum GridFlow: String {
 }
 
 // Extension for HTML to provide grid styling
-extension HTML {
+extension Markup {
     /// Sets grid container properties with optional modifiers.
     ///
     /// - Parameters:
@@ -122,7 +122,7 @@ extension HTML {
     ///   - columnSpan: The column span value.
     ///   - rowSpan: The row span value.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated grid classes.
+    /// - Returns: Markup with updated grid classes.
     ///
     /// ## Example
     /// ```swift
@@ -142,7 +142,7 @@ extension HTML {
         columnSpan: Int? = nil,
         rowSpan: Int? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = GridStyleOperation.Parameters(
             columns: columns,
             rows: rows,

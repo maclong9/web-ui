@@ -45,10 +45,10 @@ public struct PositionStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the position style and returns the appropriate CSS classes
+    /// Applies the position style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for position styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
 
@@ -88,7 +88,7 @@ public struct PositionStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide position styling
-extension HTML {
+extension Markup {
     /// Applies positioning styling to the element with one or more edges.
     ///
     /// Sets the position type and optional inset values for specified edges, scoped to modifiers if provided.
@@ -104,7 +104,7 @@ extension HTML {
         at edges: Edge...,
         offset length: Int? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = PositionStyleOperation.Parameters(
             type: type,
             edges: edges,

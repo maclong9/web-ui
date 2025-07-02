@@ -20,13 +20,13 @@ public struct Article: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML article element for self-contained content.
     ///
     /// - Parameters:
     ///   - id: Unique identifier for the HTML element, useful for linking and scripting.
-    ///   - classes: An array of CSS classnames for styling the article.
+    ///   - classes: An array of stylesheet classnames for styling the article.
     ///   - role: ARIA role of the element for accessibility and screen readers.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data related to the article.
@@ -45,7 +45,7 @@ public struct Article: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.id = id
         self.classes = classes
@@ -55,11 +55,11 @@ public struct Article: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -69,7 +69,7 @@ public struct Article: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "article", attributes: attributes, content: content)
     }
 }

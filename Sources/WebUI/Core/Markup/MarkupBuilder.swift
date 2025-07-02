@@ -157,7 +157,7 @@ public struct MarkupBuilder {
 ///
 /// - Example:
 ///   ```swift
-///   func makeSection(content: HTMLContentBuilder) -> Element {
+///   func makeSection(content: MarkupContentBuilder) -> Element {
 ///     return Section {
 ///       content()
 ///     }

@@ -1,7 +1,7 @@
 /// Represents different font sizes for typography styling.
 ///
 /// Provides a consistent typographic scale from extra small to very large sizes,
-/// mapping to predefined CSS classes. The scale follows a progressive pattern
+/// mapping to predefined stylesheet classes. The scale follows a progressive pattern
 /// where larger numbers indicate proportionally larger text sizes.
 ///
 /// ## Example
@@ -92,7 +92,7 @@ public enum Alignment: String {
     /// Aligns text to the right edge of the container.
     case right
 
-    /// The corresponding CSS class name for this alignment.
+    /// The corresponding stylesheet class name for this alignment.
     var className: String { "text-\(rawValue)" }
 }
 
@@ -126,7 +126,7 @@ public enum Weight: String {
     /// Extremely bold/black text (900).
     case black
 
-    /// The corresponding CSS class name for this font weight.
+    /// The corresponding stylesheet class name for this font weight.
     var className: String { "font-\(rawValue)" }
 }
 
@@ -154,7 +154,7 @@ public enum Tracking: String {
     /// Maximum letter spacing (greatest increase in space).
     case widest
 
-    /// The corresponding CSS class name for this tracking value.
+    /// The corresponding stylesheet class name for this tracking value.
     var className: String { "tracking-\(rawValue)" }
 }
 
@@ -182,7 +182,7 @@ public enum Leading: String {
     /// Maximum line spacing for very open text layouts.
     case loose
 
-    /// The corresponding CSS class name for this line height value.
+    /// The corresponding stylesheet class name for this line height value.
     var className: String { "leading-\(rawValue)" }
 }
 
@@ -214,7 +214,7 @@ public enum Decoration: String {
     /// Remove line decoration
     case none = "no-underline"
 
-    /// The corresponding CSS class name for this decoration.
+    /// The corresponding stylesheet class name for this decoration.
     var className: String { "\(rawValue)" }
 }
 
@@ -238,6 +238,6 @@ public enum Wrapping: String {
     /// Prevents text from wrapping to multiple lines.
     case nowrap
 
-    /// The corresponding CSS class name for this wrapping behavior.
+    /// The corresponding stylesheet class name for this wrapping behavior.
     var className: String { "text-\(rawValue)" }
 }

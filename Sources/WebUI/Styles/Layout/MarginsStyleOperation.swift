@@ -45,10 +45,10 @@ public struct MarginsStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the margin style and returns the appropriate CSS classes
+    /// Applies the margin style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for margin styling
-    /// - Returns: An array of CSS class names to be applied
+    /// - Returns: An array of stylesheet class names to be applied
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
 
@@ -73,7 +73,7 @@ public struct MarginsStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide margin styling
-extension HTML {
+extension Markup {
     /// Applies margin styling to the element with one or more edges.
     ///
     /// - Parameters:
@@ -81,13 +81,13 @@ extension HTML {
     ///   - edges: One or more edges to apply the margin to. Defaults to `.all`.
     ///   - auto: Whether to use automatic margins instead of a specific length.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated margin classes.
+    /// - Returns: Markup with updated margin classes.
     public func margins(
         of length: Int? = 4,
         at edges: Edge...,
         auto: Bool = false,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = MarginsStyleOperation.Parameters(
             length: length,
             edges: edges,

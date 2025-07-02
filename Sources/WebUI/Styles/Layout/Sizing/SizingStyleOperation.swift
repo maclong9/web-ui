@@ -134,10 +134,10 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the frame style and returns the appropriate CSS classes
+    /// Applies the frame style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for frame styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: FrameParameters) -> [String] {
         var classes: [String] = []
 
@@ -159,18 +159,18 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
         return classes
     }
 
-    /// Applies the size style and returns the appropriate CSS classes
+    /// Applies the size style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for size styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applySizeClasses(params: SizeParameters) -> [String] {
         ["size-\(params.value.rawValue)"]
     }
 
-    /// Applies the aspect ratio style and returns the appropriate CSS classes
+    /// Applies the aspect ratio style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for aspect ratio styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyAspectRatioClasses(params: AspectRatioParameters)
         -> [String]
     {
@@ -193,7 +193,7 @@ public struct SizingStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide sizing and layout styling
-extension HTML {
+extension Markup {
     /// Sets the width and height of the element with comprehensive SwiftUI-like API.
     ///
     /// This method provides control over all width and height properties, supporting
@@ -217,7 +217,7 @@ extension HTML {
         minHeight: SizingValue? = nil,
         maxHeight: SizingValue? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = SizingStyleOperation.FrameParameters(
             width: width,
             height: height,
@@ -253,7 +253,7 @@ extension HTML {
         maxWidth: Double? = nil,
         minHeight: Double? = nil,
         maxHeight: Double? = nil
-    ) -> some HTML {
+    ) -> some Markup {
         frame(
             width: width.map { .spacing(Int($0)) },
             height: height.map { .spacing(Int($0)) },
@@ -273,7 +273,7 @@ extension HTML {
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with updated sizing classes.
     public func size(_ size: SizingValue, on modifiers: Modifier...)
-        -> some HTML
+        -> some Markup
     {
         let params = SizingStyleOperation.SizeParameters(value: size)
         let classes = SizingStyleOperation.shared.applySizeClasses(
@@ -294,7 +294,7 @@ extension HTML {
     /// - Returns: A new element with aspect ratio classes.
     public func aspectRatio(
         _ width: Double, _ height: Double, on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = SizingStyleOperation.AspectRatioParameters(
             width: width, height: height)
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(
@@ -309,7 +309,7 @@ extension HTML {
     /// - Parameters:
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with square aspect ratio.
-    public func aspectRatio(on modifiers: Modifier...) -> some HTML {
+    public func aspectRatio(on modifiers: Modifier...) -> some Markup {
         let params = SizingStyleOperation.AspectRatioParameters(isSquare: true)
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(
             params: params)
@@ -323,7 +323,7 @@ extension HTML {
     /// - Parameters:
     ///   - modifiers: Zero or more modifiers to scope the styles.
     /// - Returns: A new element with video aspect ratio.
-    public func aspectRatioVideo(on modifiers: Modifier...) -> some HTML {
+    public func aspectRatioVideo(on modifiers: Modifier...) -> some Markup {
         let params = SizingStyleOperation.AspectRatioParameters(isVideo: true)
         let classes = SizingStyleOperation.shared.applyAspectRatioClasses(
             params: params)

@@ -1,6 +1,6 @@
 import Foundation
 
-/// Generates HTML text elements as `<p>` or `<span>` based on content.
+/// Generates markup text elements as `<p>` or `<span>` based on content.
 ///
 /// Paragraphs are for long form content with multiple sentences and
 /// a `<span>` tag is used for a single sentence of text and grouping inline content.
@@ -10,7 +10,7 @@ public struct Text: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new text element with string content.
     ///
@@ -19,8 +19,8 @@ public struct Text: Element {
     ///
     /// - Parameters:
     ///   - content: The text content to display.
-    ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of CSS classnames.
+    ///   - id: Unique identifier for the markup element.
+    ///   - classes: An array of stylesheet classnames.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element.
     ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
@@ -46,13 +46,13 @@ public struct Text: Element {
         self.contentBuilder = { [content] }
     }
 
-    /// Creates a new text element using HTMLBuilder closure syntax.
+    /// Creates a new text element using MarkupBuilder closure syntax.
     ///
     /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
     ///
     /// - Parameters:
-    ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of CSS classnames.
+    ///   - id: Unique identifier for the markup element.
+    ///   - classes: An array of stylesheet classnames.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element.
     ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
@@ -68,7 +68,7 @@ public struct Text: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder
+        @MarkupBuilder content: @escaping MarkupContentBuilder
     ) {
         self.id = id
         self.classes = classes
@@ -78,11 +78,11 @@ public struct Text: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let renderedContent = contentBuilder().map { $0.render() }.joined()
         let sentenceCount = renderedContent.components(
             separatedBy: CharacterSet(charactersIn: ".!?")

@@ -38,10 +38,10 @@ public struct SpacingStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the spacing style and returns the appropriate CSS classes
+    /// Applies the spacing style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for spacing styling
-    /// - Returns: An array of CSS class names to be applied
+    /// - Returns: An array of stylesheet class names to be applied
     public func applyClasses(params: Parameters) -> [String] {
         guard let length = params.length else {
             return []
@@ -65,19 +65,19 @@ public struct SpacingStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide spacing styling
-extension HTML {
+extension Markup {
     /// Applies spacing between child elements horizontally and/or vertically.
     ///
     /// - Parameters:
     ///   - length: The spacing value in `0.25rem` increments.
     ///   - direction: The direction(s) to apply spacing (`horizontal`, `vertical`, or both).
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated spacing classes.
+    /// - Returns: Markup with updated spacing classes.
     public func spacing(
         of length: Int? = 4,
         along direction: Axis = .both,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = SpacingStyleOperation.Parameters(
             length: length,
             axis: direction

@@ -38,10 +38,10 @@ public struct ShadowStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the shadow style and returns the appropriate CSS classes
+    /// Applies the shadow style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for shadow styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
         let size = params.size ?? ShadowSize.md
@@ -64,7 +64,7 @@ public struct ShadowStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide shadow styling
-extension HTML {
+extension Markup {
     /// Applies shadow styling to the element with specified attributes.
     ///
     /// Adds shadows with custom size and color to an element.
@@ -73,7 +73,7 @@ extension HTML {
     ///   - size: The shadow size (sm, md, lg).
     ///   - color: The shadow color.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated shadow classes.
+    /// - Returns: Markup with updated shadow classes.
     ///
     /// ## Example
     /// ```swift
@@ -85,7 +85,7 @@ extension HTML {
         size: ShadowSize,
         color: Color? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = ShadowStyleOperation.Parameters(
             size: size,
             color: color

@@ -66,10 +66,10 @@ public struct ScrollStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the scroll style and returns the appropriate CSS classes
+    /// Applies the scroll style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for scroll styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
 
@@ -146,10 +146,10 @@ public struct ScrollStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide scroll styling
-extension HTML {
+extension Markup {
     /// Applies scroll-related styles to the element.
     ///
-    /// Adds Tailwind CSS classes for scroll behavior, margin, padding, and snap properties.
+    /// Adds Tailwind stylesheet classes for scroll behavior, margin, padding, and snap properties.
     ///
     /// - Parameters:
     ///   - behavior: Sets the scroll behavior (smooth or auto).
@@ -168,7 +168,7 @@ extension HTML {
         snapStop: ScrollSnapStop? = nil,
         snapType: ScrollSnapType? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = ScrollStyleOperation.Parameters(
             behavior: behavior,
             margin: margin,
