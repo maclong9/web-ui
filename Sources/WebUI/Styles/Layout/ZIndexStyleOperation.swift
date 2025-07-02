@@ -28,10 +28,10 @@ public struct ZIndexStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the z-index style and returns the appropriate CSS classes
+    /// Applies the z-index style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for z-index styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         ["z-\(params.value)"]
     }
@@ -44,7 +44,7 @@ public struct ZIndexStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide z-index styling
-extension HTML {
+extension Markup {
     /// Applies a z-index to the element.
     ///
     /// Sets the stacking order of the element, optionally scoped to modifiers.
@@ -52,7 +52,7 @@ extension HTML {
     /// - Parameters:
     ///   - value: Specifies the z-index value as an integer.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated z-index classes.
+    /// - Returns: Markup with updated z-index classes.
     ///
     /// ## Example
     /// ```swift
@@ -67,7 +67,7 @@ extension HTML {
     public func zIndex(
         _ value: Int,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = ZIndexStyleOperation.Parameters(value: value)
 
         return ZIndexStyleOperation.shared.applyTo(

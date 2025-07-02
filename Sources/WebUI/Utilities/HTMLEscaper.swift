@@ -1,10 +1,10 @@
 import Foundation
 
-/// Provides HTML escaping functionality to prevent XSS attacks and ensure proper HTML rendering.
+/// Provides markup escaping functionality to prevent XSS attacks and ensure proper markup rendering.
 ///
-/// The `HTMLEscaper` converts special characters that have meaning in HTML
-/// into their corresponding HTML entities, ensuring that user content is
-/// safely displayed without breaking HTML structure or introducing security
+/// The `HTMLEscaper` converts special characters that have meaning in markup
+/// into their corresponding markup entities, ensuring that user content is
+/// safely displayed without breaking markup structure or introducing security
 /// vulnerabilities.
 ///
 /// ## Example
@@ -14,17 +14,17 @@ import Foundation
 /// // Result: "Hello &lt;script&gt;alert('XSS')&lt;/script&gt; &amp; goodbye"
 /// ```
 public struct HTMLEscaper {
-    /// Escapes special HTML characters in a string to prevent injection and parsing errors.
+    /// Escapes special markup characters in a string to prevent injection and parsing errors.
     ///
-    /// This method converts the following characters to their HTML entities:
+    /// This method converts the following characters to their markup entities:
     /// - `&` becomes `&amp;` (must be first to avoid double-escaping)
     /// - `<` becomes `&lt;`
     /// - `>` becomes `&gt;`
     /// - `"` becomes `&quot;`
     /// - `'` becomes `&#39;`
     ///
-    /// - Parameter string: The string containing potentially unsafe HTML characters.
-    /// - Returns: A string with HTML characters properly escaped.
+    /// - Parameter string: The string containing potentially unsafe markup characters.
+    /// - Returns: A string with markup characters properly escaped.
     ///
     /// ## Example
     /// ```swift
@@ -41,14 +41,14 @@ public struct HTMLEscaper {
             .replacingOccurrences(of: "'", with: "&#39;")
     }
 
-    /// Escapes HTML characters specifically for use in HTML attribute values.
+    /// Escapes markup characters specifically for use in markup attribute values.
     ///
     /// This method is optimized for attribute contexts where quotes and ampersands
     /// are the primary concerns. It performs the same escaping as `escape(_:)` but
     /// is semantically distinct for clarity of intent.
     ///
-    /// - Parameter attributeValue: The string to be used as an HTML attribute value.
-    /// - Returns: A string safe for use in HTML attribute values.
+    /// - Parameter attributeValue: The string to be used as a markup attribute value.
+    /// - Returns: A string safe for use in markup attribute values.
     ///
     /// ## Example
     /// ```swift
@@ -60,14 +60,14 @@ public struct HTMLEscaper {
         escape(attributeValue)
     }
 
-    /// Escapes HTML characters specifically for use in HTML text content.
+    /// Escapes markup characters specifically for use in markup text content.
     ///
     /// This method is optimized for text content contexts where angle brackets
     /// and ampersands are the primary concerns. Single and double quotes are
     /// less critical in text content but are still escaped for consistency.
     ///
-    /// - Parameter textContent: The string to be used as HTML text content.
-    /// - Returns: A string safe for use as HTML text content.
+    /// - Parameter textContent: The string to be used as markup text content.
+    /// - Returns: A string safe for use as markup text content.
     ///
     /// ## Example
     /// ```swift

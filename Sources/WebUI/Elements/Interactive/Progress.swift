@@ -26,7 +26,7 @@ public struct Progress: Element {
     ///   - value: Current progress value between 0 and max, optional. When omitted, the progress bar shows an indeterminate state.
     ///   - max: Maximum progress value (100% completion point), optional. Defaults to 100 when omitted.
     ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of CSS classnames for styling the progress bar.
+    ///   - classes: An array of stylesheet classnames for styling the progress bar.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers (e.g., "Download progress").
     ///   - data: Dictionary of `data-*` attributes for storing element-relevant data.
@@ -57,11 +57,11 @@ public struct Progress: Element {
         self.data = data
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var additional: [String] = []
         if let value, let valueAttr = Attribute.string("value", "\(value)") {
             additional.append(valueAttr)
@@ -77,6 +77,6 @@ public struct Progress: Element {
             data: data,
             additional: additional
         )
-        return AttributeBuilder.renderTag("progress", attributes: attributes)
+        return AttributeBuilder.buildMarkupTag("progress", attributes: attributes)
     }
 }

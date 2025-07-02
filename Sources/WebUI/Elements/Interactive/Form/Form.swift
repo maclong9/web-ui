@@ -30,7 +30,7 @@ public struct Form: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML form element.
     ///
@@ -38,7 +38,7 @@ public struct Form: Element {
     ///   - action: Optional URL where form data will be submitted. If nil, the form submits to the current page.
     ///   - method: HTTP method for submission (GET or POST), defaults to `.post`.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interactions.
-    ///   - classes: An array of CSS classnames for styling the form.
+    ///   - classes: An array of stylesheet classnames for styling the form.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data related to the form.
@@ -64,7 +64,7 @@ public struct Form: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.action = action
         self.method = method
@@ -76,11 +76,11 @@ public struct Form: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var additional: [String] = []
         if let action, let actionAttr = Attribute.string("action", action) {
             additional.append(actionAttr)
@@ -97,7 +97,7 @@ public struct Form: Element {
             additional: additional
         )
         let content = contentBuilder().map { $0.render() }.joined()
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "form", attributes: attributes, content: content)
     }
 }

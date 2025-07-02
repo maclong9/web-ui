@@ -12,7 +12,7 @@ public struct Heading: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML heading element with string title.
     ///
@@ -22,7 +22,7 @@ public struct Heading: Element {
     ///   - level: Heading level (.largeTitle, .title, .headline, .subheadline, .body, or .footnote).
     ///   - title: The heading text content.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the heading.
+    ///   - classes: An array of stylesheet classnames for styling the heading.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the heading.
@@ -56,7 +56,7 @@ public struct Heading: Element {
     /// - Parameters:
     ///   - level: Heading level (.largeTitle, .title, .headline, .subheadline, .body, or .footnote).
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the heading.
+    ///   - classes: An array of stylesheet classnames for styling the heading.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the heading.
@@ -76,7 +76,7 @@ public struct Heading: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.level = level
         self.id = id
@@ -87,11 +87,11 @@ public struct Heading: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -101,7 +101,7 @@ public struct Heading: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             level.rawValue, attributes: attributes, content: content)
     }
 }

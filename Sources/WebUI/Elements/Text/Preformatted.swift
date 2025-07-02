@@ -23,13 +23,13 @@ public struct Preformatted: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML preformatted element.
     ///
     /// - Parameters:
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the preformatted text.
+    ///   - classes: An array of stylesheet classnames for styling the preformatted text.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the element.
@@ -55,7 +55,7 @@ public struct Preformatted: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.id = id
         self.classes = classes
@@ -65,11 +65,11 @@ public struct Preformatted: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -78,7 +78,7 @@ public struct Preformatted: Element {
             data: data
         )
         let content = HTMLEscaper.escapeContent(contentBuilder().map { $0.render() }.joined())
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "pre", attributes: attributes, content: content)
     }
 }

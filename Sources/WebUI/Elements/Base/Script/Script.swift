@@ -24,11 +24,11 @@ public struct Script: Element {
         self.content = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var additional: [String] = []
         if let attribute,
             let attributeAttr = Attribute.bool(attribute.rawValue, true)
@@ -42,7 +42,7 @@ public struct Script: Element {
             additional: additional
         )
 
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "script", attributes: attributes, content: content())
     }
 }

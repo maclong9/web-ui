@@ -11,7 +11,7 @@ extension StructuredData {
     ///   - jobTitle: The person's job title.
     ///   - email: The person's email address.
     ///   - telephone: The person's telephone number.
-    ///   - url: The URL of the person's website or profile.
+    ///   - webAddress: The web address of the person's website or profile.
     ///   - address: Optional address information.
     ///   - birthDate: The person's date of birth.
     ///   - sameAs: Optional array of URLs that also represent the person (social profiles).
@@ -24,7 +24,7 @@ extension StructuredData {
     ///     givenName: "Jane",
     ///     familyName: "Doe",
     ///     jobTitle: "Software Engineer",
-    ///     url: "https://janedoe.com",
+    ///     webAddress: "https://janedoe.com",
     ///     sameAs: ["https://twitter.com/janedoe", "https://github.com/janedoe"]
     ///   )
     ///   ```
@@ -36,7 +36,7 @@ extension StructuredData {
         jobTitle: String? = nil,
         email: String? = nil,
         telephone: String? = nil,
-        url: String? = nil,
+        webAddress: String? = nil,
         address: [String: Any]? = nil,
         birthDate: Date? = nil,
         sameAs: [String]? = nil
@@ -69,8 +69,8 @@ extension StructuredData {
             data["telephone"] = telephone
         }
 
-        if let url = url {
-            data["url"] = url
+        if let webAddress = webAddress {
+            data["url"] = webAddress
         }
 
         if let address = address {

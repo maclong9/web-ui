@@ -28,10 +28,10 @@ public struct VisibilityStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the visibility style and returns the appropriate CSS classes
+    /// Applies the visibility style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for visibility styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         if params.isHidden {
             return ["hidden"]
@@ -48,13 +48,13 @@ public struct VisibilityStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide visibility styling
-extension HTML {
+extension Markup {
     /// Controls the visibility of an element with optional modifiers.
     ///
     /// - Parameters:
     ///   - isHidden: Whether the element should be hidden (default: true).
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated visibility classes.
+    /// - Returns: Markup with updated visibility classes.
     ///
     /// ## Example
     /// ```swift
@@ -73,7 +73,7 @@ extension HTML {
     public func hidden(
         _ isHidden: Bool = true,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = VisibilityStyleOperation.Parameters(isHidden: isHidden)
 
         return VisibilityStyleOperation.shared.applyTo(
@@ -88,7 +88,7 @@ extension HTML {
     /// This provides SwiftUI-style conditional visibility syntax.
     ///
     /// - Parameter condition: Boolean condition that determines whether to hide the element
-    /// - Returns: HTML with conditional visibility applied
+    /// - Returns: Markup with conditional visibility applied
     ///
     /// ## Example
     /// ```swift
@@ -98,11 +98,11 @@ extension HTML {
     /// Button("Save")
     ///     .hidden(when: !isEditing)
     /// ```
-    public func hidden(when condition: Bool) -> AnyHTML {
+    public func hidden(when condition: Bool) -> AnyMarkup {
         if condition {
-            return AnyHTML(hidden(true))
+            return AnyMarkup(hidden(true))
         } else {
-            return AnyHTML(self)
+            return AnyMarkup(self)
         }
     }
 }

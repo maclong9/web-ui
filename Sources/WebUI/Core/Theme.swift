@@ -201,7 +201,7 @@ public struct Theme {
 
         func appendVariables(prefix: String, from dict: [String: String]) {
             for (key, value) in dict {
-                css += "  --\(prefix)-\(key.sanitizedForCSS()): \(value);\n"
+                css += "  --\(prefix)-\(key.sanitizedForStyleSheet()): \(value);\n"
                 propertyCount += 1
             }
         }
@@ -228,7 +228,7 @@ public struct Theme {
             for (category, values) in custom {
                 css += "\n  /* \(category.capitalized) */\n"
                 appendVariables(
-                    prefix: category.sanitizedForCSS(), from: values)
+                    prefix: category.sanitizedForStyleSheet(), from: values)
             }
         }
 

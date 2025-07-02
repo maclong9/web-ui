@@ -34,7 +34,7 @@ public struct TextArea: Element {
     ///   - autofocus: When true, automatically focuses this element when the page loads, optional.
     ///   - required: When true, indicates the textarea must be filled before form submission, optional.
     ///   - id: Unique identifier for the HTML element, useful for labels and script interaction.
-    ///   - classes: An array of CSS classnames for styling the textarea.
+    ///   - classes: An array of stylesheet classnames for styling the textarea.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data related to the textarea.
@@ -76,11 +76,11 @@ public struct TextArea: Element {
         self.data = data
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var additional: [String] = []
         if let nameAttr = Attribute.string("name", name) {
             additional.append(nameAttr)
@@ -108,7 +108,7 @@ public struct TextArea: Element {
             additional: additional
         )
         let content = value ?? ""
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "textarea", attributes: attributes, content: content)
     }
 }

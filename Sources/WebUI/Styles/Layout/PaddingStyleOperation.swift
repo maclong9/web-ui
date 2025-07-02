@@ -38,10 +38,10 @@ public struct PaddingStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the padding style and returns the appropriate CSS classes
+    /// Applies the padding style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for padding styling
-    /// - Returns: An array of CSS class names to be applied
+    /// - Returns: An array of stylesheet class names to be applied
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
 
@@ -65,7 +65,7 @@ public struct PaddingStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide padding styling
-extension HTML {
+extension Markup {
     /// Applies padding styling to the element with one or more edges.
     ///
     /// - Parameters:
@@ -77,7 +77,7 @@ extension HTML {
         of length: Int? = 4,
         at edges: Edge...,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = PaddingStyleOperation.Parameters(
             length: length,
             edges: edges

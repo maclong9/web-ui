@@ -1,5 +1,5 @@
 public enum Attribute {
-    /// Builds an HTML attribute string if the value exists.
+    /// Builds a markup attribute string if the value exists.
     ///
     /// - Parameters:
     ///   - name: Attribute name (e.g., "id", "class", "src").
@@ -10,7 +10,7 @@ public enum Attribute {
         return "\(name)=\"\(value)\""
     }
 
-    /// Builds a boolean HTML attribute if enabled.
+    /// Builds a boolean markup attribute if enabled.
     ///
     /// - Parameters:
     ///   - name: Attribute name (e.g., "disabled", "checked", "required").
@@ -20,7 +20,7 @@ public enum Attribute {
         enabled == true ? name : nil
     }
 
-    /// Builds an HTML attribute string from a typed enum value.
+    /// Builds a markup attribute string from a typed enum value.
     ///
     /// - Parameters:
     ///   - name: Attribute name (e.g., "type", "role").

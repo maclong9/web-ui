@@ -38,10 +38,10 @@ public struct BorderRadiusStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the border radius style and returns the appropriate CSS classes
+    /// Applies the border radius style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for border radius styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
         let size = params.size
@@ -65,7 +65,7 @@ public struct BorderRadiusStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide border radius styling
-extension HTML {
+extension Markup {
     /// Applies border radius styling to the element.
     ///
     /// - Parameters:
@@ -87,7 +87,7 @@ extension HTML {
         _ size: RadiusSize? = .md,
         _ sides: RadiusSide...,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = BorderRadiusStyleOperation.Parameters(
             size: size,
             sides: sides

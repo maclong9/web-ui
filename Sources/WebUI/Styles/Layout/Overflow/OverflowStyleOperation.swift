@@ -38,10 +38,10 @@ public struct OverflowStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the overflow style and returns the appropriate CSS classes
+    /// Applies the overflow style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for overflow styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         let axisString =
             params.axis.rawValue.isEmpty ? "" : "-\(params.axis.rawValue)"
@@ -56,7 +56,7 @@ public struct OverflowStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide overflow styling
-extension HTML {
+extension Markup {
     /// Applies overflow styling to the element.
     ///
     /// Sets how overflowing content is handled, optionally on a specific axis and with modifiers.
@@ -81,7 +81,7 @@ extension HTML {
         _ type: OverflowType,
         axis: Axis = .both,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = OverflowStyleOperation.Parameters(
             type: type,
             axis: axis

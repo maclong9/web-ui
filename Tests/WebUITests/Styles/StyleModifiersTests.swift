@@ -753,7 +753,7 @@ import Testing
                 .init(title: "Hello")
             }
 
-            var body: some HTML {
+            var body: some Markup {
                 Text("Hello")
                     .on {
                         md {
@@ -767,7 +767,7 @@ import Testing
         }
         // FIXME: If possible remove `S.` prefix
         struct TestElement: Element {
-            var body: some HTML {
+            var body: some Markup {
                 Text("Hello")
                     .on {
                         md {

@@ -1,13 +1,13 @@
 import Foundation
 
-/// Represents an HTML component or element.
+/// Represents a markup component or element.
 ///
-/// The `HTML` protocol is the foundation for all HTML elements in WebUI. It
+/// The `Markup` protocol is the foundation for all markup elements in WebUI. It
 /// defines how components describe their structure and content.
 ///
-/// Elements conforming to HTML can be composed together to create complex
+/// Elements conforming to Markup can be composed together to create complex
 /// layouts while maintaining a declarative syntax. The protocol handles both
-/// primitive HTML string content and composite element structures.
+/// primitive markup string content and composite element structures.
 ///
 /// ## Example
 /// ```swift
@@ -15,7 +15,7 @@ import Foundation
 ///     var title: String
 ///     var content: String
 ///
-///     var body: some HTML {
+///     var body: some Markup {
 ///         Stack {
 ///             Heading(.title) { title }
 ///             Text { content }
@@ -26,42 +26,42 @@ import Foundation
 ///     }
 /// }
 /// ```
-public protocol HTML {
-    /// The type of HTML content this component produces.
-    associatedtype Body: HTML
+public protocol Markup {
+    /// The type of markup content this component produces.
+    associatedtype Body: Markup
 
-    /// The content and structure of this HTML component.
+    /// The content and structure of this markup component.
     ///
     /// The `body` property defines the component's layout and content
     /// hierarchy.  This pattern mirrors SwiftUI's declarative syntax, making
     /// the code more intuitive and maintainable.
     ///
-    /// - Returns: A composition of HTML elements that make up this component.
+    /// - Returns: A composition of markup elements that make up this component.
     var body: Body { get }
 
-    /// Renders the HTML component to its string representation.
+    /// Renders the markup component to its string representation.
     ///
-    /// This method converts the HTML component into its final HTML string representation
-    /// for output to files or HTTP responses.
+    /// This method converts the markup component into its final markup string representation
+    /// for output to files or responses.
     ///
-    /// - Returns: The rendered HTML string.
+    /// - Returns: The rendered markup string.
     func render() -> String
 }
 
-/// A type-erased HTML component.
+/// A type-erased markup component.
 ///
-/// `AnyHTML` wraps any HTML-conforming type, allowing for type erasure in
+/// `AnyMarkup` wraps any Markup-conforming type, allowing for type erasure in
 /// heterogeneous collections or when specific type information isn't needed.
-public struct AnyHTML: HTML {
-    private let wrapped: any HTML
+public struct AnyMarkup: Markup {
+    private let wrapped: any Markup
     private let renderClosure: () -> String
 
-    public init<T: HTML>(_ html: T) {
-        self.wrapped = html
-        self.renderClosure = { html.render() }
+    public init<T: Markup>(_ markup: T) {
+        self.wrapped = markup
+        self.renderClosure = { markup.render() }
     }
 
-    public var body: AnyHTML {
+    public var body: AnyMarkup {
         self
     }
 
@@ -70,13 +70,13 @@ public struct AnyHTML: HTML {
     }
 }
 
-/// Primitive HTML string content.
+/// Primitive markup string content.
 ///
-/// Used internally to represent raw HTML string content within the HTML hierarchy.
-public struct HTMLString: HTML {
+/// Used internally to represent raw markup string content within the markup hierarchy.
+public struct MarkupString: Markup {
     let content: String
 
-    public var body: HTMLString {
+    public var body: MarkupString {
         self
     }
 
@@ -89,27 +89,27 @@ public struct HTMLString: HTML {
     }
 }
 
-// String extension that conforms to HTML is in Utilities/String.swift
+// String extension that conforms to Markup is in Utilities/String.swift
 
 // MARK: - Default Implementations
 
-extension HTML {
+extension Markup {
     /// Default render implementation that delegates to the body.
     public func render() -> String {
         body.render()
     }
 
-    /// Adds CSS classes to an HTML element
+    /// Adds stylesheet classes to a markup element
     ///
-    /// - Parameter classes: The CSS classes to add
-    /// - Returns: A container with the HTML content and additional classes
-    public func addingClasses(_ classes: [String]) -> some HTML {
-        HTMLClassContainer(content: self, classes: classes)
+    /// - Parameter classes: The stylesheet classes to add
+    /// - Returns: A container with the markup content and additional classes
+    public func addingClasses(_ classes: [String]) -> some Markup {
+        MarkupClassContainer(content: self, classes: classes)
     }
 }
 
-/// A container that adds CSS classes to HTML content
-public struct HTMLClassContainer<Content: HTML>: HTML {
+/// A container that adds stylesheet classes to markup content
+public struct MarkupClassContainer<Content: Markup>: Markup {
     private let content: Content
     private let classes: [String]
 
@@ -118,8 +118,8 @@ public struct HTMLClassContainer<Content: HTML>: HTML {
         self.classes = classes
     }
 
-    public var body: HTMLString {
-        HTMLString(content: renderWithClasses())
+    public var body: MarkupString {
+        MarkupString(content: renderWithClasses())
     }
 
     private func renderWithClasses() -> String {
@@ -131,7 +131,7 @@ public struct HTMLClassContainer<Content: HTML>: HTML {
             return renderedContent
         }
 
-        // Check if content starts with an HTML tag
+        // Check if content starts with a markup tag
         guard
             let tagRange = renderedContent.range(
                 of: "<[^>]+>", options: .regularExpression)

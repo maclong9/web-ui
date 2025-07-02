@@ -31,7 +31,7 @@ public struct Figure: Element {
     ///   - description: Text for the figcaption and alt text for accessibility.
     ///   - size: Picture size dimensions, optional.
     ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of CSS classnames.
+    ///   - classes: An array of stylesheet classnames.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element.
     ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
@@ -70,11 +70,11 @@ public struct Figure: Element {
         self.data = data
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -84,9 +84,9 @@ public struct Figure: Element {
         )
 
         let pictureElement = renderPictureElement()
-        let figcaptionElement = AttributeBuilder.renderTag(
+        let figcaptionElement = AttributeBuilder.buildMarkupTag(
             "figcaption", attributes: [], content: description)
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "figure", attributes: attributes,
             content: pictureElement + figcaptionElement)
     }
@@ -103,7 +103,7 @@ public struct Figure: Element {
             if let srcsetAttr = Attribute.string("srcset", source.src) {
                 sourceAttributes.append(srcsetAttr)
             }
-            content += AttributeBuilder.renderTag(
+            content += AttributeBuilder.buildMarkupTag(
                 "source",
                 attributes: sourceAttributes,
                 hasNoClosingTag: true
@@ -131,9 +131,9 @@ public struct Figure: Element {
             }
         }
 
-        content += AttributeBuilder.renderTag(
+        content += AttributeBuilder.buildMarkupTag(
             "img", attributes: imgAttributes, isSelfClosing: true)
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "picture", attributes: [], content: content)
     }
 }

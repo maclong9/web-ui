@@ -45,10 +45,10 @@ public struct RingStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the ring style and returns the appropriate CSS classes
+    /// Applies the ring style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for ring styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
         let size = params.size ?? 1
@@ -71,7 +71,7 @@ public struct RingStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide ring styling
-extension HTML {
+extension Markup {
     /// Applies ring styling to the element with specified attributes.
     ///
     /// Adds rings with custom width, style, and color to specified edges of an element.
@@ -80,7 +80,7 @@ extension HTML {
     ///   - size: The width of the ring.
     ///   - color: The ring color.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated ring classes.
+    /// - Returns: Markup with updated ring classes.
     ///
     /// ## Example
     /// ```swift
@@ -92,7 +92,7 @@ extension HTML {
         size: Int = 1,
         color: Color? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = RingStyleOperation.Parameters(
             size: size,
             color: color

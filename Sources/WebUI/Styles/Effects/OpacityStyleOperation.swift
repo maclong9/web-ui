@@ -28,10 +28,10 @@ public struct OpacityStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the opacity style and returns the appropriate CSS classes
+    /// Applies the opacity style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for opacity styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         ["opacity-\(params.value)"]
     }
@@ -44,13 +44,13 @@ public struct OpacityStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for HTML to provide opacity styling
-extension HTML {
+extension Markup {
     /// Sets the opacity of the element with optional modifiers.
     ///
     /// - Parameters:
     ///   - value: The opacity value, typically between 0 and 100.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated opacity classes including applied modifiers.
+    /// - Returns: Markup with updated opacity classes including applied modifiers.
     ///
     /// ## Example
     /// ```swift
@@ -61,7 +61,7 @@ extension HTML {
     public func opacity(
         _ value: Int,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = OpacityStyleOperation.Parameters(value: value)
 
         return OpacityStyleOperation.shared.applyTo(

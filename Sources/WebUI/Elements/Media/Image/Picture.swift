@@ -28,7 +28,7 @@ public struct Picture: Element {
     ///   - description: Alt text for accessibility.
     ///   - size: Picture size dimensions, optional.
     ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of CSS classnames.
+    ///   - classes: An array of stylesheet classnames.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element.
     ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
@@ -64,11 +64,11 @@ public struct Picture: Element {
         self.data = data
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -90,7 +90,7 @@ public struct Picture: Element {
             if let srcsetAttr = Attribute.string("srcset", source.src) {
                 sourceAttributes.append(srcsetAttr)
             }
-            content += AttributeBuilder.renderTag(
+            content += AttributeBuilder.buildMarkupTag(
                 "source",
                 attributes: sourceAttributes,
                 isSelfClosing: true
@@ -109,7 +109,7 @@ public struct Picture: Element {
             data: data
         ).render()
 
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "picture", attributes: attributes, content: content)
     }
 }
