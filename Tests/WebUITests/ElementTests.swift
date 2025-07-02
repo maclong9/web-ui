@@ -119,12 +119,13 @@ import Testing
         )
 
         let rendered = image.render()
-        #expect(rendered.contains("<span"))
+        // "heart" is a known Lucide icon, so it should render as <i> with Lucide classes
+        #expect(rendered.contains("<i"))
         #expect(rendered.contains("id=\"favorite-icon\""))
-        #expect(rendered.contains("class=\"system-image icon-heart favorite\""))
+        #expect(rendered.contains("class=\"lucide lucide-heart favorite\""))
         #expect(rendered.contains("role=\"button\""))
         #expect(rendered.contains("aria-label=\"Add to favorites\""))
-        #expect(rendered.contains("></span>"))
+        #expect(rendered.contains("></i>"))
     }
 
     @Test("Button element with onClick only")
