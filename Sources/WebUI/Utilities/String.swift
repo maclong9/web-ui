@@ -32,10 +32,10 @@ extension String: Markup {
     /// - Example:
     ///   ```swift
     ///   let rawName = "Button Color!"
-    ///   let cssName = rawName.sanitizedForCSS() // Returns "button-color-"
-    ///   let css = "--\(cssName): blue;"
+    ///   let styleName = rawName.sanitizedForStyleSheet() // Returns "button-color-"
+    ///   let css = "--\(styleName): blue;"
     ///   ```
-    public func sanitizedForCSS() -> String {
+    public func sanitizedForStyleSheet() -> String {
         self.replacingOccurrences(
             of: "[^a-zA-Z0-9-]", with: "-", options: .regularExpression
         )
@@ -65,5 +65,16 @@ extension String: Markup {
             .filter { !$0.isEmpty }
             .joined(separator: "-")
             .trimmingCharacters(in: .whitespaces)
+    }
+
+    // MARK: - Backward Compatibility
+
+    /// Backward compatibility alias for `sanitizedForStyleSheet()`.
+    ///
+    /// - Deprecated: Use `sanitizedForStyleSheet()` instead.
+    /// - Returns: A sanitized string suitable for use as a stylesheet variable name.
+    @available(*, deprecated, message: "Use sanitizedForStyleSheet() instead")
+    public func sanitizedForCSS() -> String {
+        return sanitizedForStyleSheet()
     }
 }

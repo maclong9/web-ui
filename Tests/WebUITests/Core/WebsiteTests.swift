@@ -579,7 +579,7 @@ struct Portfolio: Website {
         ContactPage()
     }
 
-    var baseURL: String? {
+    var baseWebAddress: String? {
         "https://janedoe.dev"
     }
 
@@ -638,7 +638,7 @@ struct ComprehensiveWebsiteTests {
 
         #expect(portfolio.metadata.site == "Jane Doe")
         #expect(portfolio.routes.count == 4)
-        #expect(portfolio.baseURL == "https://janedoe.dev")
+        #expect(portfolio.baseWebAddress == "https://janedoe.dev")
         #expect(portfolio.sitemapEntries?.count == 2)
         #expect(portfolio.robotsRules?.count == 2)
 
