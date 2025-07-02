@@ -16,12 +16,12 @@ public enum AttributeBuilder {
     ///   - additional: Optional array of additional attribute strings
     /// - Returns: Array of attribute strings for use in markup tags
     public static func buildAttributes(
-        id: String? = nil,
-        classes: [String]? = nil,
-        role: AriaRole? = nil,
-        label: String? = nil,
-        data: [String: String]? = nil,
-        additional: [String] = []
+        identifier id: String? = nil,
+        styleSheetClasses classes: [String]? = nil,
+        ariaRole role: AriaRole? = nil,
+        ariaLabel label: String? = nil,
+        dataAttributes data: [String: String]? = nil,
+        additionalAttributes additional: [String] = []
     ) -> [String] {
         var attributes: [String] = []
 
@@ -53,6 +53,37 @@ public enum AttributeBuilder {
 
         attributes.append(contentsOf: additional)
         return attributes
+    }
+    
+    /// Builds a collection of markup attributes from common parameters (backward compatibility)
+    ///
+    /// This overload maintains backward compatibility with existing code.
+    /// Consider using the version with clearer parameter labels for new code.
+    ///
+    /// - Parameters:
+    ///   - id: Optional unique identifier for the markup element
+    ///   - classes: Optional array of stylesheet class names
+    ///   - role: Optional ARIA role for accessibility
+    ///   - label: Optional ARIA label for accessibility
+    ///   - data: Optional dictionary of data attributes
+    ///   - additional: Optional array of additional attribute strings
+    /// - Returns: Array of attribute strings for use in markup tags
+    public static func buildAttributes(
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil,
+        additional: [String] = []
+    ) -> [String] {
+        return buildAttributes(
+            identifier: id,
+            styleSheetClasses: classes,
+            ariaRole: role,
+            ariaLabel: label,
+            dataAttributes: data,
+            additionalAttributes: additional
+        )
     }
 
     /// Renders a complete markup tag with attributes and content

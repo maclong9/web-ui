@@ -70,6 +70,13 @@ public struct StyleModifier<T: Markup>: Markup {
 
 /// A utility for adapting style operations to Element extensions
 extension StyleOperation {
+    /// Applies the style operation and returns the appropriate stylesheet classes (improved clarity)
+    ///
+    /// - Parameter configuration: The parameters for this style operation
+    /// - Returns: An array of stylesheet class names to be applied
+    public func applyClasses(using configuration: Parameters) -> [String] {
+        return applyClasses(params: configuration)
+    }
     /// Adapts this style operation for use with Element extensions
     ///
     /// - Parameters:
@@ -124,5 +131,53 @@ extension StyleOperation {
         StyleModification { builder in
             _ = applyToBuilder(builder, params: params)
         }
+    }
+    
+    // MARK: - Improved Clarity Methods
+    
+    /// Adapts this style operation for use with Element extensions (improved clarity)
+    ///
+    /// - Parameters:
+    ///   - content: The markup content to apply styles to
+    ///   - configuration: The parameters for this style operation
+    ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
+    /// - Returns: A new element with the styles applied
+    public func applyTo<T: Markup>(
+        _ content: T, using configuration: Parameters, modifiers: [Modifier] = []
+    ) -> StyleModifier<T> {
+        return applyTo(content, params: configuration, modifiers: modifiers)
+    }
+
+    /// Applies style to an element and returns the modified element (improved clarity)
+    ///
+    /// - Parameters:
+    ///   - element: The element to apply styles to
+    ///   - configuration: The parameters for this style operation
+    ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
+    /// - Returns: A new element with the styles applied
+    public func applyToElement<T: Markup>(
+        _ element: T, using configuration: Parameters, modifiers: Modifier...
+    ) -> StyleModifier<T> {
+        return applyTo(element, params: configuration, modifiers: Array(modifiers))
+    }
+
+    /// Internal adapter for use with the responsive builder (improved clarity)
+    ///
+    /// - Parameters:
+    ///   - builder: The responsive builder to apply styles to
+    ///   - configuration: The parameters for this style operation
+    /// - Returns: The builder for method chaining
+    public func applyToBuilder(_ builder: ResponsiveBuilder, using configuration: Parameters)
+        -> ResponsiveBuilder
+    {
+        return applyToBuilder(builder, params: configuration)
+    }
+
+    /// Adapts this style operation for use with the Declaritive result builder syntax (improved clarity)
+    ///
+    /// - Parameter configuration: The parameters for this style operation
+    /// - Returns: A responsive modification that can be used in responsive blocks
+    public func asModification(using configuration: Parameters) -> ResponsiveModification {
+        return asModification(params: configuration)
     }
 }

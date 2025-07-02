@@ -42,7 +42,7 @@ public struct Input: Element {
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
-    ///   - on: String? = nil,
+    ///   - eventHandler: JavaScript event handler code, optional.
     ///
     /// ## Example
     /// ```swift
@@ -71,7 +71,7 @@ public struct Input: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        on: String? = nil
+        eventHandler on: String? = nil
     ) {
         self.name = name
         self.type = type
