@@ -1,20 +1,14 @@
 import Foundation
 import Markdown
 
-/// A module for parsing and rendering Markdown content with front matter support.
+/// A module for parsing and rendering Markdown content with front matter support and advanced rendering features.
 ///
 /// This module provides functionality to transform Markdown text into markup and extract
 /// front matter metadata, making it suitable for content-driven websites and applications.
-/// A module for parsing and rendering Markdown content with front matter support and configurable code block rendering.
+/// Advanced features include syntax highlighting, table of contents generation, interactive
+/// code blocks, mathematical notation support, and comprehensive typography configuration.
 ///
-/// This module provides functionality to transform Markdown text into markup and extract
-/// front matter metadata, making it suitable for content-driven websites and applications.
-/// Code block rendering features such as syntax highlighting, filename display, copy button,
-/// and line numbers can be enabled or disabled via boolean flags.
-///
-/// ## Error Handling
-///
-/// The module provides both throwing and safe variants of parsing methods:
+/// ## Basic Usage
 ///
 /// ```swift
 /// let markdown = WebUIMarkdown()
@@ -24,29 +18,59 @@ import Markdown
 /// date: January 1, 2024
 /// ---
 /// # Hello World
-/// This is a sample post.
+/// This is a sample post with `inline code` and:
+/// 
+/// ```swift
+/// let example = "syntax highlighted code"
+/// ```
 /// """
 ///
-/// // Throwing version - use when you need to handle errors explicitly
-/// do {
-///     let result = try markdown.parseMarkdown(content)
-///     print("Title: \(result.frontMatter["title"] ?? "Unknown")")
-///     print("HTML: \(result.htmlContent)")
-/// } catch WebUIMarkdownError.invalidFrontMatter {
-///     print("Front matter is not properly closed")
-/// } catch WebUIMarkdownError.emptyContent {
-///     print("Content is empty")
-/// } catch {
-///     print("Parsing failed: \(error)")
-/// }
-///
-/// // Safe version - returns default values on error
-/// let safeResult = markdown.parseMarkdownSafely(content)
-/// print("HTML: \(safeResult.htmlContent)")
+/// // Basic rendering
+/// let result = try markdown.parseMarkdown(content)
+/// print("Title: \(result.frontMatter["title"] ?? "Unknown")")
+/// print("HTML: \(result.htmlContent)")
 /// ```
-public struct WebUIMarkdown {
-    /// public init otherwise it breaks
-    public init() {}
+///
+/// ## Enhanced Rendering
+///
+/// ```swift
+/// // Configure enhanced features
+/// let options = MarkdownRenderingOptions.enhanced
+/// let typography = MarkdownTypography.documentation
+/// let markdown = WebUIMarkdown(options: options, typography: typography)
+///
+/// // Render with table of contents
+/// let (html, toc) = try markdown.parseMarkdownWithTableOfContents(content)
+/// print("Content: \(html)")
+/// print("Table of Contents: \(toc)")
+/// ```
+///
+/// ## Error Handling
+///
+/// The module provides both throwing and safe variants of parsing methods for robust error handling.
+public struct WebUIMarkdown: Sendable {
+    
+    // MARK: - Configuration
+    
+    /// Rendering options that control advanced features
+    public let options: MarkdownRenderingOptions
+    
+    /// Typography configuration for styling
+    public let typography: MarkdownTypography
+    
+    // MARK: - Initialization
+    
+    /// Initialize with default configuration
+    public init() {
+        self.options = MarkdownRenderingOptions(codeBlocks: MarkdownRenderingOptions.CodeBlockOptions())
+        self.typography = MarkdownTypography(defaultFontSize: .body)
+    }
+    
+    /// Initialize with custom configuration
+    public init(options: MarkdownRenderingOptions, typography: MarkdownTypography) {
+        self.options = options
+        self.typography = typography
+    }
 
     /// A structure representing a parsed Markdown document, containing front matter and HTML content.
     ///
@@ -70,37 +94,62 @@ public struct WebUIMarkdown {
         }
     }
 
-    /// Parses a Markdown string into front matter and HTML content.
+    /// Parses a Markdown string into front matter and HTML content using enhanced rendering.
     ///
     /// This method processes a Markdown string, separating the front matter (if present) and converting
-    /// the Markdown content into HTML. It handles the complete workflow from extracting front matter
-    /// to rendering the final HTML.
+    /// the Markdown content into HTML with advanced features like syntax highlighting, table of contents,
+    /// interactive code blocks, and mathematical notation support based on the configuration.
     ///
     /// - Parameter content: The raw Markdown string to parse.
-    /// - Returns: A `ParsedMarkdown` instance containing the parsed front matter and HTML content.
-    /// - Throws: `WebUIMarkdownError` if the content cannot be parsed or `HtmlRendererError` if HTML rendering fails.
+    /// - Returns: A `ParsedMarkdown` instance containing the parsed front matter and enhanced HTML content.
+    /// - Throws: `WebUIMarkdownError` if the content cannot be parsed or rendering fails.
     public func parseMarkdown(_ content: String) throws -> ParsedMarkdown {
         guard !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         else {
             throw WebUIMarkdownError.emptyContent
         }
 
-        let (frontMatter, markdownContent) = try extractFrontMatter(
-            from: content)
+        let (frontMatter, markdownContent) = try extractFrontMatter(from: content)
 
-        // Parse the markdown content to HTML
+        // Parse the markdown content to HTML using enhanced renderer
         let document = Markdown.Document(parsing: markdownContent)
-        var renderer = HtmlRenderer()
+        var renderer = EnhancedHTMLRenderer(options: options, typography: typography)
         let html = try renderer.render(document)
 
         return ParsedMarkdown(frontMatter: frontMatter, htmlContent: html)
+    }
+    
+    /// Parses a Markdown string with table of contents generation.
+    ///
+    /// This method provides the same functionality as `parseMarkdown(_:)` but additionally generates
+    /// a table of contents if enabled in the rendering options. The table of contents is returned
+    /// as separate HTML content that can be displayed independently.
+    ///
+    /// - Parameter content: The raw Markdown string to parse.
+    /// - Returns: A tuple containing the parsed result and table of contents HTML.
+    /// - Throws: `WebUIMarkdownError` if the content cannot be parsed or rendering fails.
+    public func parseMarkdownWithTableOfContents(_ content: String) throws -> (result: ParsedMarkdown, tableOfContents: String) {
+        guard !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        else {
+            throw WebUIMarkdownError.emptyContent
+        }
+
+        let (frontMatter, markdownContent) = try extractFrontMatter(from: content)
+
+        // Parse the markdown content to HTML using enhanced renderer
+        let document = Markdown.Document(parsing: markdownContent)
+        var renderer = EnhancedHTMLRenderer(options: options, typography: typography)
+        let (html, toc) = try renderer.renderWithTableOfContents(document)
+
+        let result = ParsedMarkdown(frontMatter: frontMatter, htmlContent: html)
+        return (result, toc)
     }
 
     /// Parses a Markdown string into front matter and HTML content with graceful error handling.
     ///
     /// This is a convenience method that handles errors gracefully by returning default values
     /// when parsing fails. Suitable for use cases where you want to display content even if
-    /// parsing encounters errors.
+    /// parsing encounters errors. Uses enhanced rendering when successful.
     ///
     /// - Parameter content: The raw Markdown string to parse.
     /// - Returns: A `ParsedMarkdown` instance containing the parsed front matter and HTML content.
@@ -109,12 +158,78 @@ public struct WebUIMarkdown {
         do {
             return try parseMarkdown(content)
         } catch {
-            // Return safe fallback content
-            let renderer = HtmlRenderer()
+            // Return safe fallback content using enhanced renderer's escape method
+            let renderer = EnhancedHTMLRenderer(options: options, typography: typography)
             let escapedContent = renderer.escapeHTML(content)
             return ParsedMarkdown(
-                frontMatter: [:], htmlContent: "<pre>\(escapedContent)</pre>")
+                frontMatter: [:], htmlContent: "<pre class=\"markdown-error\">\(escapedContent)</pre>")
         }
+    }
+    
+    /// Safely parses a Markdown string with table of contents generation.
+    ///
+    /// This method provides graceful error handling for table of contents generation.
+    /// If parsing fails, returns the fallback content with an empty table of contents.
+    ///
+    /// - Parameter content: The raw Markdown string to parse.
+    /// - Returns: A tuple containing the parsed result and table of contents HTML.
+    public func parseMarkdownSafelyWithTableOfContents(_ content: String) -> (result: ParsedMarkdown, tableOfContents: String) {
+        do {
+            return try parseMarkdownWithTableOfContents(content)
+        } catch {
+            let fallbackResult = parseMarkdownSafely(content)
+            return (fallbackResult, "")
+        }
+    }
+    
+    // MARK: - CSS Generation
+    
+    /// Generates CSS styles for the configured typography.
+    ///
+    /// This method produces CSS that can be included in HTML documents to style
+    /// the rendered markdown content according to the typography configuration.
+    ///
+    /// - Returns: A CSS string containing styles for all configured typography elements.
+    public func generateCSS() -> String {
+        return typography.generateCSS()
+    }
+    
+    /// Generates advanced CSS styles with enhanced selectors.
+    ///
+    /// This method produces comprehensive CSS including both typography styles and
+    /// advanced selectors for enhanced features like code blocks and table of contents.
+    ///
+    /// - Returns: A CSS string with comprehensive styling for enhanced markdown features.
+    public func generateAdvancedCSS() -> String {
+        return typography.generateAdvancedCSS()
+    }
+    
+    // MARK: - Configuration Access
+    
+    /// Creates a new WebUIMarkdown instance with modified rendering options.
+    ///
+    /// - Parameter options: The new rendering options to use.
+    /// - Returns: A new WebUIMarkdown instance with the specified options.
+    public func withOptions(_ options: MarkdownRenderingOptions) -> WebUIMarkdown {
+        return WebUIMarkdown(options: options, typography: typography)
+    }
+    
+    /// Creates a new WebUIMarkdown instance with modified typography configuration.
+    ///
+    /// - Parameter typography: The new typography configuration to use.
+    /// - Returns: A new WebUIMarkdown instance with the specified typography.
+    public func withTypography(_ typography: MarkdownTypography) -> WebUIMarkdown {
+        return WebUIMarkdown(options: options, typography: typography)
+    }
+    
+    /// Creates a new WebUIMarkdown instance with both options and typography modified.
+    ///
+    /// - Parameters:
+    ///   - options: The new rendering options to use.
+    ///   - typography: The new typography configuration to use.
+    /// - Returns: A new WebUIMarkdown instance with the specified configuration.
+    public func withConfiguration(options: MarkdownRenderingOptions, typography: MarkdownTypography) -> WebUIMarkdown {
+        return WebUIMarkdown(options: options, typography: typography)
     }
 
     /// Extracts front matter and Markdown content from a raw Markdown string.
