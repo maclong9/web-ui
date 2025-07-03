@@ -14,14 +14,14 @@ import Foundation
 ///     Metadata(from: Portfolio.metadata, title: "Home")
 ///   }
 ///
-///   var body: some HTML {
+///   var body: some Markup {
 ///     Card(title: "Hello, world")
 ///   }
 /// }
 /// ```
 public protocol Document {
-    /// The type of HTML content this document produces.
-    associatedtype Body: HTML
+    /// The type of markup content this document produces.
+    associatedtype Body: Markup
 
     /// The metadata configuration for this document.
     ///
@@ -31,7 +31,7 @@ public protocol Document {
 
     /// The main content of the document.
     ///
-    /// This property returns the HTML content that will be rendered as the
+    /// This property returns the markup content that will be rendered as the
     /// body of the page.
     var body: Body { get }
 
@@ -51,7 +51,7 @@ public protocol Document {
     /// Optional theme configuration specific to this document.
     var theme: Theme? { get }
 
-    /// Optional custom HTML to append to this document's head section.
+    /// Optional custom markup to append to this document's head section.
     var head: String? { get }
 }
 

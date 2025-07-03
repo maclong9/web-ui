@@ -218,12 +218,12 @@ public enum Color {
         case _950 = 950
     }
 
-    /// Provides the raw CSS class value for the color and opacity.
+    /// Provides the raw stylesheet class value for the color and opacity.
     ///
-    /// Generates the appropriate string value for use in CSS class names,
+    /// Generates the appropriate string value for use in stylesheet class names,
     /// including opacity formatting when specified.
     ///
-    /// - Returns: A string representing the color in CSS class format.
+    /// - Returns: A string representing the color in stylesheet class format.
     ///
     ///
     /// ## Example

@@ -1,27 +1,27 @@
 import Foundation
 
-/// Utility for building HTML attributes
+/// Utility for building markup attributes
 ///
-/// The `AttributeBuilder` provides helper methods for generating HTML
+/// The `AttributeBuilder` provides helper methods for generating markup
 /// attribute strings in a consistent way across all elements.
 public enum AttributeBuilder {
-    /// Builds a collection of HTML attributes from common parameters
+    /// Builds a collection of markup attributes from common parameters
     ///
     /// - Parameters:
-    ///   - id: Optional unique identifier for the HTML element
-    ///   - classes: Optional array of CSS class names
+    ///   - id: Optional unique identifier for the markup element
+    ///   - classes: Optional array of stylesheet class names
     ///   - role: Optional ARIA role for accessibility
     ///   - label: Optional ARIA label for accessibility
     ///   - data: Optional dictionary of data attributes
     ///   - additional: Optional array of additional attribute strings
-    /// - Returns: Array of attribute strings for use in HTML tags
+    /// - Returns: Array of attribute strings for use in markup tags
     public static func buildAttributes(
-        id: String? = nil,
-        classes: [String]? = nil,
-        role: AriaRole? = nil,
-        label: String? = nil,
-        data: [String: String]? = nil,
-        additional: [String] = []
+        identifier id: String? = nil,
+        styleSheetClasses classes: [String]? = nil,
+        ariaRole role: AriaRole? = nil,
+        ariaLabel label: String? = nil,
+        dataAttributes data: [String: String]? = nil,
+        additionalAttributes additional: [String] = []
     ) -> [String] {
         var attributes: [String] = []
 
@@ -54,17 +54,48 @@ public enum AttributeBuilder {
         attributes.append(contentsOf: additional)
         return attributes
     }
-
-    /// Renders a complete HTML tag with attributes and content
+    
+    /// Builds a collection of markup attributes from common parameters (backward compatibility)
+    ///
+    /// This overload maintains backward compatibility with existing code.
+    /// Consider using the version with clearer parameter labels for new code.
     ///
     /// - Parameters:
-    ///   - tag: The HTML tag name
+    ///   - id: Optional unique identifier for the markup element
+    ///   - classes: Optional array of stylesheet class names
+    ///   - role: Optional ARIA role for accessibility
+    ///   - label: Optional ARIA label for accessibility
+    ///   - data: Optional dictionary of data attributes
+    ///   - additional: Optional array of additional attribute strings
+    /// - Returns: Array of attribute strings for use in markup tags
+    public static func buildAttributes(
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil,
+        additional: [String] = []
+    ) -> [String] {
+        return buildAttributes(
+            identifier: id,
+            styleSheetClasses: classes,
+            ariaRole: role,
+            ariaLabel: label,
+            dataAttributes: data,
+            additionalAttributes: additional
+        )
+    }
+
+    /// Renders a complete markup tag with attributes and content
+    ///
+    /// - Parameters:
+    ///   - tag: The markup tag name
     ///   - attributes: Array of attribute strings
     ///   - content: Optional content to include between opening and closing tags
     ///   - isSelfClosing: Whether this is a self-closing tag
     ///   - noClosingTag: Whether this should be rendered without a self-close and without a seperate close
-    /// - Returns: Complete HTML tag as a string
-    public static func renderTag(
+    /// - Returns: Complete markup tag as a string
+    public static func buildMarkupTag(
         _ tag: String,
         attributes: [String],
         content: String = "",

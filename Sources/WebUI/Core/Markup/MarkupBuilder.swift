@@ -1,17 +1,17 @@
-/// Enables declarative construction of HTML content using Swift's result builder feature.
+/// Enables declarative construction of markup content using Swift's result builder feature.
 ///
-/// `HTMLBuilder` provides a domain-specific language (DSL) for creating HTML structures
+/// `MarkupBuilder` provides a domain-specific language (DSL) for creating markup structures
 /// with a SwiftUI-like syntax. It transforms Swift code written in a declarative style
-/// into a collection of HTML elements, allowing for intuitive, hierarchical composition
+/// into a collection of markup elements, allowing for intuitive, hierarchical composition
 /// of web content.
 ///
-/// This result builder pattern simplifies the creation of complex HTML structures by handling
+/// This result builder pattern simplifies the creation of complex markup structures by handling
 /// the combination of elements, conditional logic, and loops in a natural, Swift-native way.
 ///
 /// - Example:
 ///   ```swift
-///   @HTMLBuilder
-///   func createContent() -> [any HTML] {
+///   @MarkupBuilder
+///   func createContent() -> [any Markup] {
 ///     Heading(.one) { "Welcome" }
 ///     Text { "This is a paragraph" }
 ///     if isLoggedIn {
@@ -22,15 +22,15 @@
 ///   }
 ///   ```
 @resultBuilder
-public struct HTMLBuilder {
-    /// Combines multiple HTML component arrays into a single array.
+public struct MarkupBuilder {
+    /// Combines multiple markup component arrays into a single array.
     ///
-    /// This method joins multiple variadic HTML component lists into a single flat array,
-    /// which is essential for building nested HTML structures from multiple blocks of content.
+    /// This method joins multiple variadic markup component lists into a single flat array,
+    /// which is essential for building nested markup structures from multiple blocks of content.
     ///
     /// - Parameters:
-    ///   - components: Variadic arrays of HTML components, each representing a block of content.
-    /// - Returns: A flattened array of all provided HTML components.
+    ///   - components: Variadic arrays of markup components, each representing a block of content.
+    /// - Returns: A flattened array of all provided markup components.
     ///
     /// - Example:
     ///   ```swift
@@ -40,35 +40,35 @@ public struct HTMLBuilder {
     ///   // [Button, Link]
     ///   // Into: [Heading, Text, Image, Button, Link]
     ///   ```
-    public static func buildBlock(_ components: [any HTML]...) -> [any HTML] {
+    public static func buildBlock(_ components: [any Markup]...) -> [any Markup] {
         components.joined().map { $0 }
     }
 
-    /// Wraps a single HTML entity in an array.
+    /// Wraps a single markup entity in an array.
     ///
-    /// This method converts an individual HTML expression (like a Heading or Text element)
+    /// This method converts an individual markup expression (like a Heading or Text element)
     /// into a component array, which is the standard format for all builder operations.
     ///
     /// - Parameters:
-    ///   - expression: The HTML entity to include in the result.
-    /// - Returns: An array containing the single HTML entity.
+    ///   - expression: The markup entity to include in the result.
+    /// - Returns: An array containing the single markup entity.
     ///
     /// - Example:
     ///   ```swift
     ///   // Converts: Text { "Hello" }
     ///   // Into: [Text { "Hello" }]
     ///   ```
-    public static func buildExpression(_ expression: any HTML) -> [any HTML] {
+    public static func buildExpression(_ expression: any Markup) -> [any Markup] {
         [expression]
     }
 
-    /// Handles optional HTML components in conditional statements.
+    /// Handles optional markup components in conditional statements.
     ///
     /// This method processes the optional result of an `if` statement that doesn't have an `else` clause,
     /// returning the components if present, or an empty array if nil.
     ///
     /// - Parameters:
-    ///   - component: An optional array of HTML components from the conditional.
+    ///   - component: An optional array of markup components from the conditional.
     /// - Returns: The components or an empty array if nil.
     ///
     /// - Example:
@@ -79,17 +79,17 @@ public struct HTMLBuilder {
     ///   }
     ///   // Returns [Heading] if showWelcome is true, or [] if false
     ///   ```
-    public static func buildOptional(_ component: [any HTML]?) -> [any HTML] {
+    public static func buildOptional(_ component: [any Markup]?) -> [any Markup] {
         component ?? []
     }
 
-    /// Resolves the true branch of a conditional HTML structure.
+    /// Resolves the true branch of a conditional markup structure.
     ///
     /// This method handles the first (true) branch of an if-else statement in the builder,
     /// returning components that should be included when the condition is true.
     ///
     /// - Parameters:
-    ///   - component: The HTML components from the true branch of the condition.
+    ///   - component: The markup components from the true branch of the condition.
     /// - Returns: The components from the first branch, unchanged.
     ///
     /// - Example:
@@ -101,17 +101,17 @@ public struct HTMLBuilder {
     ///     Text { "Login required" }
     ///   }
     ///   ```
-    public static func buildEither(first component: [any HTML]) -> [any HTML] {
+    public static func buildEither(first component: [any Markup]) -> [any Markup] {
         component
     }
 
-    /// Resolves the false branch of a conditional HTML structure.
+    /// Resolves the false branch of a conditional markup structure.
     ///
     /// This method handles the second (false) branch of an if-else statement in the builder,
     /// returning components that should be included when the condition is false.
     ///
     /// - Parameters:
-    ///   - component: The HTML components from the false branch of the condition.
+    ///   - component: The markup components from the false branch of the condition.
     /// - Returns: The components from the second branch, unchanged.
     ///
     /// - Example:
@@ -123,19 +123,19 @@ public struct HTMLBuilder {
     ///     Text { "Login required" }
     ///   }
     ///   ```
-    public static func buildEither(second component: [any HTML]) -> [any HTML] {
+    public static func buildEither(second component: [any Markup]) -> [any Markup] {
         component
     }
 
-    /// Flattens an array of HTML component arrays from loop structures.
+    /// Flattens an array of markup component arrays from loop structures.
     ///
     /// This method converts a nested array from a `for` loop or other iterable context
     /// into a single flat array of components. It's essential for building lists and
-    /// other repeating structures in the HTML.
+    /// other repeating structures in the markup.
     ///
     /// - Parameters:
-    ///   - components: An array of HTML component arrays, each from one iteration of the loop.
-    /// - Returns: A flattened array of all HTML components from all iterations.
+    ///   - components: An array of markup component arrays, each from one iteration of the loop.
+    /// - Returns: A flattened array of all markup components from all iterations.
     ///
     /// - Example:
     ///   ```swift
@@ -145,22 +145,22 @@ public struct HTMLBuilder {
     ///   }
     ///   // Converts [[Item1], [Item2], [Item3]] into [Item1, Item2, Item3]
     ///   ```
-    public static func buildArray(_ components: [[any HTML]]) -> [any HTML] {
+    public static func buildArray(_ components: [[any Markup]]) -> [any Markup] {
         components.flatMap { $0 }
     }
 }
 
-/// Type alias for a closure that builds HTML content using the HTML builder DSL.
+/// Type alias for a closure that builds markup content using the markup builder DSL.
 ///
 /// This type is commonly used as a parameter type for component initializers,
-/// allowing them to accept content-building closures with the HTMLBuilder syntax.
+/// allowing them to accept content-building closures with the MarkupBuilder syntax.
 ///
 /// - Example:
 ///   ```swift
-///   func makeSection(content: HTMLContentBuilder) -> Element {
+///   func makeSection(content: MarkupContentBuilder) -> Element {
 ///     return Section {
 ///       content()
 ///     }
 ///   }
 ///   ```
-public typealias HTMLContentBuilder = () -> [any HTML]
+public typealias MarkupContentBuilder = () -> [any Markup]

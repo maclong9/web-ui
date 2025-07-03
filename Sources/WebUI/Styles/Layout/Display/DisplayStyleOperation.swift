@@ -28,10 +28,10 @@ public struct DisplayStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the display style and returns the appropriate CSS classes
+    /// Applies the display style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for display styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         ["display-\(params.type.rawValue)"]
     }
@@ -44,7 +44,7 @@ public struct DisplayStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide display styling
-extension HTML {
+extension Markup {
     /// Sets the CSS display property with optional modifiers.
     ///
     /// - Parameters:
@@ -66,7 +66,7 @@ extension HTML {
     public func display(
         _ type: DisplayType,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = DisplayStyleOperation.Parameters(type: type)
 
         return DisplayStyleOperation.shared.applyTo(

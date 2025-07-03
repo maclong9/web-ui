@@ -14,16 +14,16 @@ public struct Robots {
     /// one exists.
     ///
     /// - Parameters:
-    ///   - baseURL: The optional base URL of the website (e.g., "https://example.com").
-    ///   - generateSitemap: Whether a sitemap is being generated for this website.
+    ///   - baseWebAddress: The optional base web address of the website (e.g., "https://example.com").
+    ///   - shouldGenerateSitemap: Whether a sitemap is being generated for this website.
     ///   - robotsRules: Custom rules to include in the robots.txt file.
     /// - Returns: A string containing the content of the robots.txt file.
     ///
     /// - Example:
     ///   ```swift
     ///   let content = Robots.generateTxt(
-    ///     baseURL: "https://example.com",
-    ///     generateSitemap: true,
+    ///     baseWebAddress: "https://example.com",
+    ///     shouldGenerateSitemap: true,
     ///     robotsRules: [.allowAll()]
     ///   )
     ///   ```
@@ -31,8 +31,8 @@ public struct Robots {
     /// - Note: If custom rules are provided, they will be included in the file.
     ///   Otherwise, a default permissive robots.txt will be generated.
     public static func generateTxt(
-        baseURL: String? = nil,
-        generateSitemap: Bool = false,
+        baseWebAddress: String? = nil,
+        shouldGenerateSitemap: Bool = false,
         robotsRules: [RobotsRule]? = nil
     ) -> String {
         var contentComponents: [String] = []
@@ -48,8 +48,8 @@ public struct Robots {
         }
 
         // Add sitemap reference if applicable
-        if generateSitemap, let baseURL = baseURL {
-            contentComponents.append("Sitemap: \(baseURL)/sitemap.xml")
+        if shouldGenerateSitemap, let baseWebAddress = baseWebAddress {
+            contentComponents.append("Sitemap: \(baseWebAddress)/sitemap.xml")
         }
 
         return contentComponents.joined(separator: "\n")

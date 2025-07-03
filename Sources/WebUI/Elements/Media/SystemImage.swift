@@ -40,7 +40,7 @@ public struct SystemImage: Element {
     /// - Parameters:
     ///   - icon: The Lucide icon to display.
     ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of CSS classnames for styling the icon.
+    ///   - classes: An array of stylesheet classnames for styling the icon.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the icon for accessibility.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
@@ -108,11 +108,11 @@ public struct SystemImage: Element {
         self.data = data
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var allClasses: [String] = []
         var labelText: String
         
@@ -149,7 +149,7 @@ public struct SystemImage: Element {
         case .system: "span"
         }
         
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             tagName, attributes: attributes, content: ""
         )
     }

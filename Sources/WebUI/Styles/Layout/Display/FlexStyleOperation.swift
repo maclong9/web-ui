@@ -52,10 +52,10 @@ public struct FlexStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the flex style and returns the appropriate CSS classes
+    /// Applies the flex style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for flex styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         var classes: [String] = []
 
@@ -155,8 +155,8 @@ public enum FlexGrow: String {
     case one = "1"
 }
 
-// Extension for HTML to provide flex styling
-extension HTML {
+// Extension for Markup to provide flex styling
+extension Markup {
     /// Sets flex container properties with optional modifiers.
     ///
     /// - Parameters:
@@ -165,7 +165,7 @@ extension HTML {
     ///   - align: How to align items along the cross axis.
     ///   - grow: The flex grow factor.
     ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: HTML with updated flex classes.
+    /// - Returns: Markup with updated flex classes.
     ///
     /// ## Example
     ///
@@ -185,7 +185,7 @@ extension HTML {
         align: FlexAlign? = nil,
         grow: FlexGrow? = nil,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = FlexStyleOperation.Parameters(
             direction: direction,
             justify: justify,

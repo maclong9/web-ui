@@ -75,19 +75,19 @@ public struct SitemapEntry: Equatable, Hashable {
     /// Creates a homepage sitemap entry with recommended settings.
     ///
     /// - Parameters:
-    ///   - baseURL: The base URL of the website.
+    ///   - baseWebAddress: The base web address of the website.
     ///   - lastModified: The date when the homepage was last modified.
     /// - Returns: A sitemap entry configured for a homepage.
     ///
     /// - Example:
     ///   ```swift
-    ///   let homepage = SitemapEntry.homepage(baseURL: "https://example.com")
+    ///   let homepage = SitemapEntry.homepage(baseWebAddress: "https://example.com")
     ///   ```
-    public static func homepage(baseURL: String, lastModified: Date? = nil)
+    public static func homepage(baseWebAddress: String, lastModified: Date? = nil)
         -> SitemapEntry
     {
         SitemapEntry(
-            url: baseURL,
+            url: baseWebAddress,
             lastModified: lastModified,
             changeFrequency: .weekly,
             priority: 1.0

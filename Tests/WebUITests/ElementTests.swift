@@ -1362,7 +1362,7 @@ import Testing
 
     @Test("Conditional modifier - type erasure works correctly")
     func testConditionalModifierTypeErasure() async throws {
-        // This test ensures that the AnyHTML type erasure doesn't break functionality
+        // This test ensures that the AnyMarkup type erasure doesn't break functionality
         let elements = [
             Text("First").if(true) { $0.addClass("first") },
             Text("Second").hidden(when: false),

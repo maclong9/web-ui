@@ -13,7 +13,7 @@ public struct Link: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML anchor link with string title.
     ///
@@ -24,7 +24,7 @@ public struct Link: Element {
     ///   - destination: URL or path the link points to.
     ///   - newTab: Opens in a new tab if true, optional.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the link.
+    ///   - classes: An array of stylesheet classnames for styling the link.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when link text isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the link.
@@ -64,7 +64,7 @@ public struct Link: Element {
     ///   - to: URL or path the link points to.
     ///   - newTab: Opens in a new tab if true, optional.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the link.
+    ///   - classes: An array of stylesheet classnames for styling the link.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when link text isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the link.
@@ -84,7 +84,7 @@ public struct Link: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.destination = destination
         self.newTab = newTab
@@ -96,11 +96,11 @@ public struct Link: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -116,7 +116,7 @@ public struct Link: Element {
             attributes.append("rel=\"noreferrer\"")
         }
         let content = contentBuilder().map { $0.render() }.joined()
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "a", attributes: attributes, content: content)
     }
 }

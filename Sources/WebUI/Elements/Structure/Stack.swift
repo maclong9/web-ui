@@ -26,13 +26,13 @@ public struct Stack: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML div element for generic content grouping.
     ///
     /// - Parameters:
     ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
-    ///   - classes: An array of CSS classnames for styling the div container.
+    ///   - classes: An array of stylesheet classnames for styling the div container.
     ///   - role: ARIA role of the element for accessibility and screen readers.
     ///   - label: ARIA label to describe the element's purpose for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data related to the container.
@@ -52,7 +52,7 @@ public struct Stack: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.id = id
         self.classes = classes
@@ -62,11 +62,11 @@ public struct Stack: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -76,7 +76,7 @@ public struct Stack: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "div", attributes: attributes, content: content)
     }
 }

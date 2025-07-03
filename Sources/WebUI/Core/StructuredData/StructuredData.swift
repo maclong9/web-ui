@@ -14,7 +14,7 @@ public struct StructuredData {
     /// Returns a copy of the raw data dictionary.
     ///
     /// - Returns: A dictionary containing the structured data properties.
-    public func getData() -> [String: Any] {
+    public func retrieveStructuredDataDictionary() -> [String: Any] {
         data
     }
 
@@ -53,7 +53,7 @@ public struct StructuredData {
     /// Converts the structured data to a JSON string.
     ///
     /// - Returns: A JSON string representation of the structured data, or an empty string if serialization fails.
-    public func toJSON() -> String {
+    public func convertToJsonString() -> String {
         var jsonObject: [String: Any] = [
             "@context": "https://schema.org",
             "@type": type.rawValue,
@@ -74,5 +74,25 @@ public struct StructuredData {
         }
 
         return ""
+    }
+
+    // MARK: - Backward Compatibility
+
+    /// Backward compatibility alias for `retrieveStructuredDataDictionary()`.
+    ///
+    /// - Deprecated: Use `retrieveStructuredDataDictionary()` instead.
+    /// - Returns: A dictionary containing the structured data properties.
+    @available(*, deprecated, message: "Use retrieveStructuredDataDictionary() instead")
+    public func getData() -> [String: Any] {
+        return retrieveStructuredDataDictionary()
+    }
+
+    /// Backward compatibility alias for `convertToJsonString()`.
+    ///
+    /// - Deprecated: Use `convertToJsonString()` instead.
+    /// - Returns: A JSON string representation of the structured data.
+    @available(*, deprecated, message: "Use convertToJsonString() instead")
+    public func toJSON() -> String {
+        return convertToJsonString()
     }
 }

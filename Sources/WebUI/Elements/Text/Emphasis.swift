@@ -1,6 +1,6 @@
 import Foundation
 
-/// Creates HTML emphasis elements for highlighting important text.
+/// Creates markup emphasis elements for highlighting important text.
 ///
 /// Represents emphasized text with semantic importance, typically displayed in italics.
 /// Emphasis elements are used to draw attention to text within another body of text
@@ -11,16 +11,16 @@ public struct Emphasis: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: HTMLContentBuilder
+    private let contentBuilder: MarkupContentBuilder
 
-    /// Creates a new HTML emphasis element with string content.
+    /// Creates a new markup emphasis element with string content.
     ///
     /// This is the preferred SwiftUI-like initializer for creating emphasized text.
     ///
     /// - Parameters:
     ///   - content: The text content to be emphasized.
-    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the emphasized text.
+    ///   - id: Unique identifier for the markup element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of stylesheet classnames for styling the emphasized text.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the element.
@@ -46,11 +46,11 @@ public struct Emphasis: Element {
         self.contentBuilder = { [content] }
     }
 
-    /// Creates a new HTML emphasis element using HTMLBuilder closure syntax.
+    /// Creates a new markup emphasis element using MarkupBuilder closure syntax.
     ///
     /// - Parameters:
-    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the emphasized text.
+    ///   - id: Unique identifier for the markup element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of stylesheet classnames for styling the emphasized text.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the element.
@@ -69,7 +69,7 @@ public struct Emphasis: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @HTMLBuilder content: @escaping HTMLContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.id = id
         self.classes = classes
@@ -79,11 +79,11 @@ public struct Emphasis: Element {
         self.contentBuilder = content
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -93,7 +93,7 @@ public struct Emphasis: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "em", attributes: attributes, content: content)
     }
 }

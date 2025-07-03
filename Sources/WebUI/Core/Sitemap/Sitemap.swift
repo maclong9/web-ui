@@ -18,15 +18,15 @@ public struct Sitemap {
     /// follows the Sitemap protocol specification from sitemaps.org.
     ///
     /// - Parameters:
-    ///   - baseURL: The base URL of the website (e.g., "https://example.com").
+    ///   - baseWebAddress: The base web address of the website (e.g., "https://example.com").
     ///   - routes: The document routes in the website.
     ///   - customEntries: Additional sitemap entries to include.
-    /// - Returns: A string containing the XML content of the sitemap.
+    /// - Returns: A string containing the extensible markup language content of the sitemap.
     ///
     /// - Example:
     ///   ```swift
-    ///   let sitemapXML = Sitemap.generateXML(
-    ///     baseURL: "https://example.com",
+    ///   let sitemapMarkup = Sitemap.generateExtensibleMarkupLanguageDocument(
+    ///     baseWebAddress: "https://example.com",
     ///     routes: website.routes,
     ///     customEntries: additionalEntries
     ///   )
@@ -34,8 +34,8 @@ public struct Sitemap {
     ///
     /// - Note: If any route has a `metadata.date` value, it will be used as the lastmod date
     ///   in the sitemap. Priority is set based on the path depth (home page gets 1.0).
-    public static func generateXML(
-        baseURL: String,
+    public static func generateExtensibleMarkupLanguageDocument(
+        baseWebAddress: String,
         routes: [any Document],
         customEntries: [SitemapEntry]? = nil
     ) -> String {
@@ -49,7 +49,7 @@ public struct Sitemap {
         // Add entries for all routes
         for route in routes {
             let path = route.path ?? "index"
-            let url = "\(baseURL)/\(path == "index" ? "" : "\(path).html")"
+            let url = "\(baseWebAddress)/\(path == "index" ? "" : "\(path).html")"
 
             var urlComponents = ["  <url>", "    <loc>\(url)</loc>"]
 
@@ -115,15 +115,36 @@ public struct Sitemap {
         return xmlComponents.joined(separator: "\n")
     }
 
-    /// Validates if a URL is properly formatted for inclusion in a sitemap.
+    /// Validates if a web address is properly formatted for inclusion in a sitemap.
     ///
-    /// - Parameter url: The URL to validate.
-    /// - Returns: True if the URL is valid for a sitemap, false otherwise.
+    /// - Parameter url: The web address to validate.
+    /// - Returns: True if the web address is valid for a sitemap, false otherwise.
     public static func isValidURL(_ url: String) -> Bool {
         guard let url = URL(string: url) else {
             return false
         }
 
         return url.scheme != nil && url.host != nil
+    }
+
+    /// Backward compatibility method for generating XML sitemap content.
+    ///
+    /// - Deprecated: Use `generateExtensibleMarkupLanguageDocument(baseWebAddress:routes:customEntries:)` instead.
+    /// - Parameters:
+    ///   - baseURL: The base URL of the website.
+    ///   - routes: The document routes in the website.
+    ///   - customEntries: Additional sitemap entries to include.
+    /// - Returns: A string containing the XML content of the sitemap.
+    @available(*, deprecated, message: "Use generateExtensibleMarkupLanguageDocument(baseWebAddress:routes:customEntries:) instead")
+    public static func generateXML(
+        baseURL: String,
+        routes: [any Document],
+        customEntries: [SitemapEntry]? = nil
+    ) -> String {
+        return generateExtensibleMarkupLanguageDocument(
+            baseWebAddress: baseURL,
+            routes: routes,
+            customEntries: customEntries
+        )
     }
 }

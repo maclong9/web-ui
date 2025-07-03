@@ -52,34 +52,34 @@ extension Element {
     ///     }
     ///   }
     /// ```
-    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> some HTML {
+    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> some Markup {
         let builder = ResponsiveBuilder(element: self)
         let modification = content()
         modification.apply(to: builder)
-        return HTMLString(content: builder.element.render())
+        return MarkupString(content: builder.element.render())
     }
 }
 
-extension HTML {
+extension Markup {
     /// Applies responsive styling across different breakpoints with a declarative syntax.
     ///
     /// This method provides a clean, declarative way to define styles for multiple
     /// breakpoints in a single block, improving code readability and maintainability.
     ///
     /// - Parameter content: A closure defining responsive style configurations using the result builder.
-    /// - Returns: An HTML element with responsive styles applied.
-    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> AnyHTML {
-        // Wrap HTML in an Element to use responsive functionality
-        let elementWrapper = HTMLElementWrapper(self)
+    /// - Returns: A markup element with responsive styles applied.
+    public func on(@ResponsiveStyleBuilder _ content: () -> ResponsiveModification) -> AnyMarkup {
+        // Wrap Markup in an Element to use responsive functionality
+        let elementWrapper = MarkupElementWrapper(self)
         let builder = ResponsiveBuilder(element: elementWrapper)
         let modification = content()
         modification.apply(to: builder)
-        return AnyHTML(HTMLString(content: builder.element.render()))
+        return AnyMarkup(MarkupString(content: builder.element.render()))
     }
 }
 
-/// A wrapper that converts HTML to Element for responsive functionality
-private struct HTMLElementWrapper<Content: HTML>: Element {
+/// A wrapper that converts Markup to Element for responsive functionality
+private struct MarkupElementWrapper<Content: Markup>: Element {
     private let content: Content
 
     init(_ content: Content) {
@@ -334,21 +334,21 @@ public class ResponsiveBuilder {
             self.base = base
         }
 
-        var body: HTMLString {
-            HTMLString(content: base.render())
+        var body: MarkupString {
+            MarkupString(content: base.render())
         }
     }
 
     /// Wrapper to convert HTML back to Element
-    private struct ElementWrapper<T: HTML>: Element {
+    private struct ElementWrapper<T: Markup>: Element {
         private let htmlContent: T
 
         init(_ htmlContent: T) {
             self.htmlContent = htmlContent
         }
 
-        var body: HTMLString {
-            HTMLString(content: htmlContent.render())
+        var body: MarkupString {
+            MarkupString(content: htmlContent.render())
         }
     }
 
@@ -373,7 +373,7 @@ public class ResponsiveBuilder {
 }
 
 /// A smart style modifier that deduplicates redundant classes
-struct StyleModifierWithDeduplication<T: HTML>: HTML {
+struct StyleModifierWithDeduplication<T: Markup>: Markup {
     private let content: T
     private let classes: [String]
 
@@ -427,7 +427,7 @@ struct StyleModifierWithDeduplication<T: HTML>: HTML {
         return Set(classString.split(separator: " ").map(String.init))
     }
 
-    var body: some HTML {
+    var body: some Markup {
         let filteredClasses = filterRedundantModifierClasses(classes)
         return content.addingClasses(filteredClasses)
     }

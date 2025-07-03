@@ -37,7 +37,7 @@ public struct Video: Element {
     ///   - loop: Repeats video playback if true, optional.
     ///   - size: Video size dimensions, optional.
     ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of CSS classnames for styling the video player.
+    ///   - classes: An array of stylesheet classnames for styling the video player.
     ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
     ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
     ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the video player.
@@ -80,11 +80,11 @@ public struct Video: Element {
         self.data = data
     }
 
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: buildMarkupTag())
     }
 
-    private func renderTag() -> String {
+    private func buildMarkupTag() -> String {
         var attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
@@ -121,10 +121,10 @@ public struct Video: Element {
             {
                 sourceAttributes.append(typeAttr)
             }
-            return AttributeBuilder.renderTag(
+            return AttributeBuilder.buildMarkupTag(
                 "source", attributes: sourceAttributes, hasNoClosingTag: true)
         }.joined()
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "video",
             attributes: attributes,
             content:

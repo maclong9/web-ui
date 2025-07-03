@@ -259,7 +259,7 @@ public struct Metadata {
         }
         // Structured Data
         if let structuredData = structuredData {
-            let jsonString = structuredData.toJSON()
+            let jsonString = structuredData.convertToJsonString()
             if !jsonString.isEmpty {
                 baseTags.append(
                     "<script type=\"application/ld+json\">\n\(jsonString)\n</script>"

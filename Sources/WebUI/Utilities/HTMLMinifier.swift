@@ -1,9 +1,9 @@
 import Foundation
 
-/// Provides HTML minification functionality to reduce file size and improve performance.
+/// Provides markup minification functionality to reduce file size and improve performance.
 ///
 /// The `HTMLMinifier` removes unnecessary whitespace, comments, and redundant
-/// formatting from HTML content while preserving the structure and
+/// formatting from markup content while preserving the structure and
 /// functionality of the document.  This optimization reduces bandwidth usage
 /// and improves page load times.
 ///
@@ -21,19 +21,19 @@ import Foundation
 /// ```
 public struct HTMLMinifier {
 
-    /// Minifies HTML content by removing unnecessary whitespace and formatting.
+    /// Minifies markup content by removing unnecessary whitespace and formatting.
     ///
     /// This method performs the following optimizations:
     /// - Removes leading and trailing whitespace from lines
     /// - Collapses multiple consecutive whitespace characters into single spaces
     /// - Removes empty lines
     /// - Preserves content within `<pre>`, `<code>`, `<script>`, and `<style>` tags
-    /// - Removes HTML comments (except conditional comments for IE)
-    /// - Removes whitespace around certain HTML tags
+    /// - Removes markup comments (except conditional comments for IE)
+    /// - Removes whitespace around certain markup tags
     ///
     /// - Parameters:
-    ///   - html: The HTML content to minify.
-    /// - Returns: Minified HTML content as a string.
+    ///   - html: The markup content to minify.
+    /// - Returns: Minified markup content as a string.
     ///
     /// ## Example
     /// ```swift
@@ -70,7 +70,7 @@ public struct HTMLMinifier {
         return result.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    /// Removes HTML comments while preserving conditional comments for Internet Explorer.
+    /// Removes markup comments while preserving conditional comments for Internet Explorer.
     private static func removeComments(from html: String) -> String {
         let pattern = "<!--(?!\\[if).*?-->"
         do {

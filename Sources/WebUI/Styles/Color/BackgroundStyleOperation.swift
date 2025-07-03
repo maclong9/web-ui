@@ -29,10 +29,10 @@ public struct BackgroundStyleOperation: StyleOperation, @unchecked Sendable {
         }
     }
 
-    /// Applies the background style and returns the appropriate CSS classes
+    /// Applies the background style and returns the appropriate stylesheet classes
     ///
     /// - Parameter params: The parameters for background styling
-    /// - Returns: An array of CSS class names to be applied to elements
+    /// - Returns: An array of stylesheet class names to be applied to elements
     public func applyClasses(params: Parameters) -> [String] {
         ["bg-\(params.color.rawValue)"]
     }
@@ -45,7 +45,7 @@ public struct BackgroundStyleOperation: StyleOperation, @unchecked Sendable {
 }
 
 // Extension for Element to provide background styling
-extension HTML {
+extension Markup {
     /// Applies background color to the element.
     ///
     /// Adds a background color class based on the provided color and optional modifiers.
@@ -70,7 +70,7 @@ extension HTML {
     public func background(
         color: Color,
         on modifiers: Modifier...
-    ) -> some HTML {
+    ) -> some Markup {
         let params = BackgroundStyleOperation.Parameters(color: color)
 
         return BackgroundStyleOperation.shared.applyTo(

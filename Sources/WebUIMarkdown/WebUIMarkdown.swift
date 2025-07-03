@@ -3,11 +3,11 @@ import Markdown
 
 /// A module for parsing and rendering Markdown content with front matter support.
 ///
-/// This module provides functionality to transform Markdown text into HTML and extract
+/// This module provides functionality to transform Markdown text into markup and extract
 /// front matter metadata, making it suitable for content-driven websites and applications.
 /// A module for parsing and rendering Markdown content with front matter support and configurable code block rendering.
 ///
-/// This module provides functionality to transform Markdown text into HTML and extract
+/// This module provides functionality to transform Markdown text into markup and extract
 /// front matter metadata, making it suitable for content-driven websites and applications.
 /// Code block rendering features such as syntax highlighting, filename display, copy button,
 /// and line numbers can be enabled or disabled via boolean flags.

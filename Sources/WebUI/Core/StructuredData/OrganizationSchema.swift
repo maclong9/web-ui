@@ -6,7 +6,7 @@ extension StructuredData {
     /// - Parameters:
     ///   - name: The name of the organization.
     ///   - logo: The URL to the organization's logo.
-    ///   - url: The URL of the organization's website.
+    ///   - webAddress: The web address of the organization's website.
     ///   - contactPoint: Optional contact information.
     ///   - sameAs: Optional array of URLs that also represent the entity.
     /// - Returns: A structured data object for an organization.
@@ -16,21 +16,21 @@ extension StructuredData {
     ///   let orgData = StructuredData.organization(
     ///     name: "WebUI Technologies",
     ///     logo: "https://example.com/logo.png",
-    ///     url: "https://example.com",
+    ///     webAddress: "https://example.com",
     ///     sameAs: ["https://twitter.com/webui", "https://github.com/webui"]
     ///   )
     ///   ```
     public static func organization(
         name: String,
         logo: String,
-        url: String,
+        webAddress: String,
         contactPoint: [String: Any]? = nil,
         sameAs: [String]? = nil
     ) -> StructuredData {
         var data: [String: Any] = [
             "name": name,
             "logo": logo,
-            "url": url,
+            "url": webAddress,
         ]
 
         if let contactPoint = contactPoint {
