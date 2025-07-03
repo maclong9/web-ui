@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Typography Type Definitions
 
 /// Text size options for typography
-public enum TextSize: Hashable {
+public enum TextSize: Hashable, Sendable {
     case caption2
     case caption
     case footnote
@@ -19,11 +19,11 @@ public enum TextSize: Hashable {
     case custom(Double)
     
     /// Medium is an alias for body
-    public static let medium: TextSize = .body
+    @MainActor public static let medium: TextSize = .body
 }
 
 /// Font weight options
-public enum Weight: Hashable {
+public enum Weight: Hashable, Sendable {
     case ultraLight
     case thin
     case light
@@ -36,7 +36,7 @@ public enum Weight: Hashable {
 }
 
 /// Text alignment options
-public enum Alignment: Hashable {
+public enum Alignment: Hashable, Sendable {
     case leading
     case center
     case trailing
@@ -44,7 +44,7 @@ public enum Alignment: Hashable {
 }
 
 /// Line height options
-public enum Leading: Hashable {
+public enum Leading: Hashable, Sendable {
     case tight
     case snug
     case normal
@@ -53,7 +53,7 @@ public enum Leading: Hashable {
 }
 
 /// Letter spacing options
-public enum Tracking: Hashable {
+public enum Tracking: Hashable, Sendable {
     case tighter
     case tight
     case normal
@@ -63,7 +63,7 @@ public enum Tracking: Hashable {
 }
 
 /// Text decoration options
-public enum Decoration: Hashable {
+public enum Decoration: Hashable, Sendable {
     case none
     case underline
     case strikethrough
@@ -97,12 +97,12 @@ public enum Decoration: Hashable {
 ///     }
 /// }
 /// ```
-public struct MarkdownTypography {
+public struct MarkdownTypography: Sendable {
     
     // MARK: - Typography Style Definitions
     
     /// A typography style that can be applied to markdown elements.
-    public struct TypographyStyle {
+    public struct TypographyStyle: Sendable {
         /// Font styling properties
         public var font: FontProperties?
         
@@ -160,7 +160,7 @@ public struct MarkdownTypography {
     // MARK: - Style Property Types
     
     /// Font properties for typography styling
-    public struct FontProperties {
+    public struct FontProperties: Sendable {
         public let family: String?
         public let size: TextSize?
         public let weight: Weight?
@@ -195,7 +195,7 @@ public struct MarkdownTypography {
     }
     
     /// Background properties for styling
-    public struct BackgroundProperties {
+    public struct BackgroundProperties: Sendable {
         public let color: String?
         public let opacity: Double?
         
@@ -206,7 +206,7 @@ public struct MarkdownTypography {
     }
     
     /// Padding properties
-    public struct PaddingProperties {
+    public struct PaddingProperties: Sendable {
         public let top: String?
         public let right: String?
         public let bottom: String?
@@ -235,7 +235,7 @@ public struct MarkdownTypography {
     }
     
     /// Margin properties
-    public struct MarginProperties {
+    public struct MarginProperties: Sendable {
         public let top: String?
         public let right: String?
         public let bottom: String?
@@ -264,7 +264,7 @@ public struct MarkdownTypography {
     }
     
     /// Border properties
-    public struct BorderProperties {
+    public struct BorderProperties: Sendable {
         public let width: String?
         public let style: String?
         public let color: String?
@@ -281,7 +281,7 @@ public struct MarkdownTypography {
     // MARK: - Element Types
     
     /// Heading levels for typography configuration
-    public enum HeadingLevel: Int, CaseIterable {
+    public enum HeadingLevel: Int, CaseIterable, Sendable {
         case h1 = 1, h2 = 2, h3 = 3, h4 = 4, h5 = 5, h6 = 6
         
         /// HTML tag name for the heading level
@@ -296,12 +296,12 @@ public struct MarkdownTypography {
     }
     
     /// Markdown element types for styling
-    public enum ElementType: String, CaseIterable {
+    public enum ElementType: String, CaseIterable, Sendable {
         case paragraph = "p"
         case emphasis = "em"
         case strong = "strong"
         case code = "code"
-        case inlineCode = "code"
+        case inlineCode = "code-inline"
         case codeBlock = "pre"
         case blockquote = "blockquote"
         case orderedList = "ol"
@@ -349,7 +349,7 @@ public struct MarkdownTypography {
         elements: [ElementType: TypographyStyle] = [:],
         selectors: [String: TypographyStyle] = [:],
         defaultFontFamily: String = "system-ui, -apple-system, sans-serif",
-        defaultFontSize: TextSize = .medium,
+        defaultFontSize: TextSize,
         enableResponsiveTypography: Bool = true
     ) {
         self.headings = headings
@@ -438,19 +438,20 @@ public struct MarkdownTypography {
                 font: FontProperties(family: "ui-monospace, Menlo, Monaco, monospace"),
                 background: BackgroundProperties(color: "rgb(248 250 252)"),
                 padding: PaddingProperties(all: "1rem"),
-                border: BorderProperties(radius: "0.5rem"),
-                margins: MarginProperties(bottom: "1rem")
+                margins: MarginProperties(bottom: "1rem"),
+                border: BorderProperties(radius: "0.5rem")
             ),
             .blockquote: TypographyStyle(
                 padding: PaddingProperties(left: "1rem"),
-                border: BorderProperties(width: "0", style: "solid", color: "rgb(229 231 235)"),
                 margins: MarginProperties(bottom: "1rem"),
+                border: BorderProperties(width: "0", style: "solid", color: "rgb(229 231 235)"),
                 customProperties: ["border-left-width": "4px"]
             ),
             .link: TypographyStyle(
                 font: FontProperties(color: "rgb(59 130 246)", textDecoration: .underline)
             )
-        ]
+        ],
+        defaultFontSize: .body
     )
     
     /// Clean, minimal typography suitable for documentation
@@ -480,14 +481,15 @@ public struct MarkdownTypography {
                 font: FontProperties(family: "ui-monospace, Menlo, Monaco, monospace", size: .footnote),
                 background: BackgroundProperties(color: "rgb(248 250 252)"),
                 padding: PaddingProperties(vertical: "0.125rem", horizontal: "0.375rem"),
-                border: BorderProperties(radius: "0.25rem", width: "1px", style: "solid", color: "rgb(229 231 235)")
+                border: BorderProperties(width: "1px", style: "solid", color: "rgb(229 231 235)", radius: "0.25rem")
             )
         ],
-        defaultFontFamily: "ui-sans-serif, system-ui, sans-serif"
+        defaultFontFamily: "ui-sans-serif, system-ui, sans-serif",
+        defaultFontSize: .body
     )
     
     /// Bold, high-contrast typography suitable for marketing content
-    public static let marketing = MarkdownTypography(
+    @MainActor public static let marketing = MarkdownTypography(
         headings: [
             .h1: TypographyStyle(
                 font: FontProperties(size: .extraLarge, weight: .black, lineHeight: .tight),
@@ -506,7 +508,8 @@ public struct MarkdownTypography {
             .strong: TypographyStyle(
                 font: FontProperties(weight: .bold, color: "rgb(16 185 129)")
             )
-        ]
+        ],
+        defaultFontSize: .body
     )
     
     // MARK: - CSS Generation

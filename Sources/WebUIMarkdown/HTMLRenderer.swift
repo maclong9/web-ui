@@ -345,7 +345,7 @@ public struct HtmlRenderer {
 }
 
 /// Errors that can occur during WebUIMarkdown operations.
-public enum WebUIMarkdownError: Error, LocalizedError {
+public enum WebUIMarkdownError: Error, LocalizedError, Equatable {
     /// Front matter delimiter is opened but not properly closed.
     case invalidFrontMatter
     /// No front matter found in the document.
