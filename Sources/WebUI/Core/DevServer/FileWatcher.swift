@@ -197,9 +197,16 @@ public final class FileWatcher: @unchecked Sendable {
         )
         
         if let stream = fsEventStream {
-            FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
-            FSEventStreamStart(stream)
-            logger.info("FSEvents watcher started successfully")
+            if #available(macOS 13.0, *) {
+                let queue = DispatchQueue(label: "com.webui.filewatcher.fsevents")
+                FSEventStreamSetDispatchQueue(stream, queue)
+                FSEventStreamStart(stream)
+                logger.info("FSEvents watcher started successfully (using DispatchQueue)")
+            } else {
+                FSEventStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
+                FSEventStreamStart(stream)
+                logger.info("FSEvents watcher started successfully (using RunLoop)")
+            }
         } else {
             logger.error("Failed to create FSEvents stream")
             startPollingWatcher()
@@ -209,7 +216,13 @@ public final class FileWatcher: @unchecked Sendable {
     private func stopFSEventsWatcher() {
         if let stream = fsEventStream {
             FSEventStreamStop(stream)
-            FSEventStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
+            if #available(macOS 13.0, *) {
+                // Proper unscheduling for macOS 13+
+                FSEventStreamSetDispatchQueue(stream, nil)
+            } else {
+                // Pre-macOS 13 behavior
+                FSEventStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(), CFRunLoopMode.defaultMode.rawValue)
+            }
             FSEventStreamInvalidate(stream)
             FSEventStreamRelease(stream)
             fsEventStream = nil
