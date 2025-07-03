@@ -3,31 +3,89 @@ import Foundation
 /// Creates HTML elements for system images/icons using SVG or icon fonts.
 ///
 /// Represents system icons that can be used in buttons, labels, and other UI elements.
-/// This component provides a simple way to include common icons in web interfaces.
+/// This component supports both traditional system icons and Lucide icons, providing
+/// flexibility for different icon systems while maintaining a consistent API.
 ///
-/// ## Example
+/// ## Usage with Lucide Icons
 /// ```swift
-/// SystemImage("checkmark")
-/// SystemImage("trash", classes: ["icon-danger"])
+/// SystemImage(.airplay)                        // Lucide enum
+/// SystemImage("airplay")                      // String (auto-detects Lucide)
+/// SystemImage(.heart, classes: ["favorite"])  // With custom styling
+/// ```
+///
+/// ## Traditional System Icons
+/// ```swift
+/// SystemImage("checkmark")                    // Legacy system icon
 /// SystemImage("arrow.down", classes: ["download-icon"])
 /// ```
 public struct SystemImage: Element {
-    private let name: String
+    private let iconType: IconType
     private let id: String?
     private let classes: [String]?
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
+    
+    /// The type of icon being rendered.
+    private enum IconType {
+        case lucide(LucideIcon)
+        case system(String)
+    }
 
-    /// Creates a new system image element.
+    /// Creates a new system image element using a LucideIcon.
+    ///
+    /// This initializer provides type-safe access to Lucide icons and
+    /// automatically configures the appropriate CSS classes.
     ///
     /// - Parameters:
-    ///   - name: The name of the system image/icon.
+    ///   - icon: The Lucide icon to display.
     ///   - id: Unique identifier for the HTML element.
     ///   - classes: An array of stylesheet classnames for styling the icon.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the icon for accessibility.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
+    ///
+    /// ## Example
+    /// ```swift
+    /// SystemImage(.airplay)
+    /// SystemImage(.heart, classes: ["favorite-icon"])
+    /// SystemImage(.settings, label: "Open settings")
+    /// ```
+    public init(
+        _ icon: LucideIcon,
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil
+    ) {
+        self.iconType = .lucide(icon)
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+    }
+
+    /// Creates a new system image element using a string identifier.
+    ///
+    /// This initializer automatically detects whether the string corresponds
+    /// to a known Lucide icon or should be treated as a traditional system icon.
+    ///
+    /// - Parameters:
+    ///   - name: The name/identifier of the icon.
+    ///   - id: Unique identifier for the HTML element.
+    ///   - classes: An array of CSS classnames for styling the icon.
+    ///   - role: ARIA role of the element for accessibility.
+    ///   - label: ARIA label to describe the icon for accessibility.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data.
+    ///
+    /// ## Example
+    /// ```swift
+    /// SystemImage("airplay")                    // Auto-detects as Lucide
+    /// SystemImage("checkmark")                  // Traditional system icon
+    /// SystemImage("custom-icon", classes: ["my-style"])
+    /// ```
     public init(
         _ name: String,
         id: String? = nil,
@@ -36,7 +94,13 @@ public struct SystemImage: Element {
         label: String? = nil,
         data: [String: String]? = nil
     ) {
-        self.name = name
+        // Check if this is a known Lucide icon
+        if let lucideIcon = LucideIcon(rawValue: name) {
+            self.iconType = .lucide(lucideIcon)
+        } else {
+            self.iconType = .system(name)
+        }
+        
         self.id = id
         self.classes = classes
         self.role = role
@@ -49,8 +113,24 @@ public struct SystemImage: Element {
     }
 
     private func buildMarkupTag() -> String {
-        // Combine base icon classes with custom classes
-        var allClasses = ["system-image", "icon-\(name.replacingOccurrences(of: ".", with: "-"))"]
+        var allClasses: [String] = []
+        var labelText: String
+        
+        switch iconType {
+        case .lucide(let icon):
+            // Use Lucide CSS classes
+            allClasses.append("lucide")
+            allClasses.append(icon.cssClass)
+            labelText = label ?? icon.displayName
+            
+        case .system(let name):
+            // Use traditional system icon classes
+            allClasses.append("system-image")
+            allClasses.append("icon-\(name.replacingOccurrences(of: ".", with: "-"))")
+            labelText = label ?? name
+        }
+        
+        // Add custom classes
         if let classes = classes {
             allClasses.append(contentsOf: classes)
         }
@@ -59,14 +139,18 @@ public struct SystemImage: Element {
             id: id,
             classes: allClasses,
             role: role,
-            label: label ?? name,
+            label: labelText,
             data: data
         )
         
-        // Render as a span with stylesheet classes for icon fonts/CSS icons
-        // This allows flexibility for different icon systems (Font Awesome, Feather, etc.)
+        // Use <i> for Lucide icons (icon font convention), <span> for system icons
+        let tagName = switch iconType {
+        case .lucide: "i"
+        case .system: "span"
+        }
+        
         return AttributeBuilder.buildMarkupTag(
-            "span", attributes: attributes, content: ""
+            tagName, attributes: attributes, content: ""
         )
     }
 }

@@ -111,6 +111,59 @@ public struct Button: Element {
         }
     }
 
+    /// Creates a new HTML button with string title and Lucide icon.
+    ///
+    /// This initializer provides type-safe access to Lucide icons in buttons,
+    /// following SwiftUI patterns with enhanced icon support.
+    ///
+    /// - Parameters:
+    ///   - title: The button's text content.
+    ///   - systemImage: Lucide icon to display before the text.
+    ///   - type: Button type (submit or reset), optional.
+    ///   - autofocus: When true, automatically focuses the button when the page loads, optional.
+    ///   - onClick: JavaScript function to execute when the button is clicked, optional.
+    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
+    ///   - classes: An array of CSS classnames for styling the button.
+    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
+    ///   - label: ARIA label to describe the element for accessibility when button text isn't sufficient.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the button.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Button("Save", systemImage: .check, type: .submit)
+    /// Button("Delete", systemImage: .trash, onClick: "confirmDelete()")
+    /// Button("Settings", systemImage: .settings, classes: ["icon-button"])
+    /// ```
+    public init(
+        _ title: String,
+        systemImage: LucideIcon,
+        type: ButtonType? = nil,
+        autofocus: Bool? = nil,
+        onClick: String? = nil,
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil
+    ) {
+        self.type = type
+        self.autofocus = autofocus
+        self.onClick = onClick
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        
+        // Create content builder that includes both Lucide icon and text
+        self.contentBuilder = {
+            [
+                SystemImage(systemImage, classes: ["button-icon"]),
+                " \(title)"
+            ]
+        }
+    }
+
     /// Creates a new HTML button using HTMLBuilder closure syntax.
     ///
     /// - Parameters:
