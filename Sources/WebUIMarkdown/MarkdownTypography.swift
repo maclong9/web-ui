@@ -862,20 +862,27 @@ public struct MarkdownTypography: Sendable {
     
     // MARK: - Advanced CSS Generation
     
-    /// Generate complete CSS stylesheet for this typography configuration with selectors
+    /// Generate complete CSS stylesheet for this typography configuration with enhanced selectors
     public func generateAdvancedCSS() -> String {
-        var css: [String] = []
+        var cssRules: [String] = []
         
-        // Generate heading styles
+        // Base font family with enhanced selectors
+        cssRules.append(".markdown-content { font-family: \(defaultFontFamily); font-size: \(defaultFontSize.cssValue); }")
+        
+        // Generate heading styles with enhanced selectors
         for (level, style) in headings {
             let selector = ".markdown-content \(level.tagName), .\(level.cssClassName)"
-            css.append(generateCSSRule(selector: selector, style: style))
+            if !style.generateCSS().isEmpty {
+                cssRules.append("\(selector) { \(style.generateCSS()) }")
+            }
         }
         
-        // Generate element styles
+        // Generate element styles with enhanced selectors
         for (element, style) in elements {
-            let selector = ".markdown-content \(element.rawValue), .\(element.cssClassName)"
-            css.append(generateCSSRule(selector: selector, style: style))
+            let selector = ".markdown-content \(element.cssSelector), .\(element.cssClassName)"
+            if !style.generateCSS().isEmpty {
+                cssRules.append("\(selector) { \(style.generateCSS()) }")
+            }
         }
         
         // Generate custom selector styles
@@ -883,10 +890,12 @@ public struct MarkdownTypography: Sendable {
             let fullSelector = selector.hasPrefix(".") || selector.hasPrefix("#") 
                 ? ".markdown-content \(selector)" 
                 : ".markdown-content .\(selector)"
-            css.append(generateCSSRule(selector: fullSelector, style: style))
+            if !style.generateCSS().isEmpty {
+                cssRules.append("\(fullSelector) { \(style.generateCSS()) }")
+            }
         }
         
-        return css.joined(separator: "\n\n")
+        return cssRules.joined(separator: "\n")
     }
     
     /// Generate a CSS rule for a specific selector and style

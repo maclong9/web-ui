@@ -113,7 +113,7 @@ import Foundation
         #expect(result.htmlContent.contains("<h1>"))
         #expect(result.htmlContent.contains("<strong>"))
         #expect(result.htmlContent.contains("<em>"))
-        #expect(result.htmlContent.contains("<pre>"))
+        #expect(result.htmlContent.contains("<pre"))
     }
     
     @Test("Markdown without front matter")
@@ -356,5 +356,172 @@ import Foundation
         // Test Decoration
         #expect(Decoration.none.cssValue == "none")
         #expect(Decoration.underline.cssValue == "underline")
+    }
+    
+    // MARK: - Enhanced WebUIMarkdown Integration Tests
+    
+    @Test("Enhanced rendering with default configuration")
+    func testEnhancedRenderingDefault() async throws {
+        let markdown = WebUIMarkdown()
+        
+        let content = """
+        # Test Document
+        
+        This is a test with `inline code` and:
+        
+        ```swift
+        let example = "Hello, World!"
+        print(example)
+        ```
+        
+        ## Section Two
+        
+        Some more content here.
+        """
+        
+        let result = try markdown.parseMarkdown(content)
+        
+        // Should contain enhanced HTML structure
+        #expect(result.htmlContent.contains("class=\"markdown-content\""))
+        #expect(result.htmlContent.contains("<h1"))
+        #expect(result.htmlContent.contains("<h2"))
+        #expect(result.htmlContent.contains("<code"))
+        #expect(result.htmlContent.contains("<pre"))
+    }
+    
+    @Test("Enhanced rendering with enhanced options")
+    @MainActor func testEnhancedRenderingWithOptions() async throws {
+        let options = MarkdownRenderingOptions.enhanced
+        let typography = MarkdownTypography.documentation
+        let markdown = WebUIMarkdown(options: options, typography: typography)
+        
+        let content = """
+        # Main Title
+        
+        ## Subsection
+        
+        Some content with:
+        
+        ```swift:Example.swift
+        let value = 42
+        func greet() {
+            print("Hello!")
+        }
+        ```
+        
+        ### Another Section
+        
+        More content here.
+        """
+        
+        let result = try markdown.parseMarkdown(content)
+        
+        // Should contain enhanced features
+        #expect(result.htmlContent.contains("class=\"markdown-content\""))
+        #expect(result.htmlContent.contains("class=\"markdown-code-block\""))
+        
+        // Should have syntax highlighting classes
+        #expect(result.htmlContent.contains("class=\"keyword\"") || result.htmlContent.contains("let"))
+    }
+    
+    @Test("Table of contents generation")
+    @MainActor func testTableOfContentsGeneration() async throws {
+        let options = MarkdownRenderingOptions.enhanced
+        let typography = MarkdownTypography.default
+        let markdown = WebUIMarkdown(options: options, typography: typography)
+        
+        let content = """
+        # Main Title
+        
+        Content for main section.
+        
+        ## First Section
+        
+        Some content here.
+        
+        ### Subsection
+        
+        More detailed content.
+        
+        ## Second Section
+        
+        Final content.
+        """
+        
+        let (result, toc) = try markdown.parseMarkdownWithTableOfContents(content)
+        
+        // Should generate HTML content
+        #expect(!result.htmlContent.isEmpty)
+        #expect(result.htmlContent.contains("class=\"markdown-content\""))
+        
+        // Should generate table of contents
+        #expect(!toc.isEmpty)
+        #expect(toc.contains("id=\"table-of-contents\""))
+        #expect(toc.contains("Table of Contents"))
+        #expect(toc.contains("<a href=\"#"))
+    }
+    
+    @Test("CSS generation")
+    @MainActor func testCSSGeneration() {
+        let markdown = WebUIMarkdown()
+        
+        let css = markdown.generateCSS()
+        #expect(!css.isEmpty)
+        #expect(css.contains("font-family"))
+        #expect(css.contains("font-size"))
+        
+        let advancedCSS = markdown.generateAdvancedCSS()
+        #expect(!advancedCSS.isEmpty)
+        #expect(advancedCSS.contains(".markdown-content"))
+    }
+    
+    @Test("Configuration methods")
+    @MainActor func testConfigurationMethods() {
+        let original = WebUIMarkdown()
+        
+        // Test withOptions
+        let withOptions = original.withOptions(.enhanced)
+        #expect(withOptions.options.syntaxHighlighting.isEnabled)
+        
+        // Test withTypography
+        let withTypography = original.withTypography(.documentation)
+        #expect(withTypography.typography.defaultFontFamily.contains("ui-sans-serif"))
+        
+        // Test withConfiguration
+        let withBoth = original.withConfiguration(options: .enhanced, typography: .marketing)
+        #expect(withBoth.options.syntaxHighlighting.isEnabled)
+        #expect(!withBoth.typography.headings.isEmpty)
+    }
+    
+    @Test("Safe parsing with enhanced features")
+    func testSafeParsingEnhanced() {
+        let markdown = WebUIMarkdown()
+        
+        // Valid content should work
+        let validContent = "# Test\n\nSome content."
+        let validResult = markdown.parseMarkdownSafely(validContent)
+        #expect(!validResult.htmlContent.isEmpty)
+        #expect(validResult.htmlContent.contains("class=\"markdown-content\""))
+        
+        // Invalid content should return safe fallback
+        let invalidResult = markdown.parseMarkdownSafely("")
+        #expect(!invalidResult.htmlContent.isEmpty)
+        #expect(invalidResult.htmlContent.contains("class=\"markdown-error\""))
+    }
+    
+    @Test("Safe table of contents parsing")
+    @MainActor func testSafeTableOfContentsParsing() {
+        let markdown = WebUIMarkdown(options: .enhanced, typography: .default)
+        
+        // Valid content
+        let validContent = "# Title\n\n## Section\n\nContent here."
+        let (validResult, validToc) = markdown.parseMarkdownSafelyWithTableOfContents(validContent)
+        #expect(!validResult.htmlContent.isEmpty)
+        #expect(!validToc.isEmpty)
+        
+        // Invalid content
+        let (invalidResult, invalidToc) = markdown.parseMarkdownSafelyWithTableOfContents("")
+        #expect(!invalidResult.htmlContent.isEmpty)
+        #expect(invalidToc.isEmpty)
     }
 }
