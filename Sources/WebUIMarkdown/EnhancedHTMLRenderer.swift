@@ -77,8 +77,8 @@ public struct EnhancedHTMLRenderer {
     
     /// Initialize the enhanced HTML renderer
     public init(
-        options: MarkdownRenderingOptions = .basic,
-        typography: MarkdownTypography = .default
+        options: MarkdownRenderingOptions,
+        typography: MarkdownTypography
     ) {
         self.options = options
         self.typography = typography
@@ -527,7 +527,7 @@ public struct EnhancedHTMLRenderer {
         highlighted = highlighted.replacingOccurrences(
             of: "//.*$",
             with: "<span class=\"comment\">$0</span>",
-            options: [.regularExpression, .anchorsMatchLines]
+            options: [.regularExpression]
         )
         
         return highlighted

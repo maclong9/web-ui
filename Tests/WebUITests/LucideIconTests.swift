@@ -287,7 +287,7 @@ import Foundation
                 Metadata(site: "Test", title: "Test Page")
             }
             
-            var body: some HTML {
+            var body: some Markup {
                 Icon(.heart)
             }
             

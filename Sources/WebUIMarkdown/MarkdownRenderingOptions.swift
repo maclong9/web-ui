@@ -21,12 +21,12 @@ import Foundation
 ///
 /// let markdown = WebUIMarkdown(renderingOptions: options)
 /// ```
-public struct MarkdownRenderingOptions {
+public struct MarkdownRenderingOptions: Sendable {
     
     // MARK: - Syntax Highlighting Configuration
     
     /// Configuration for syntax highlighting functionality.
-    public enum SyntaxHighlighting {
+    public enum SyntaxHighlighting: Sendable {
         /// Syntax highlighting is disabled
         case disabled
         /// Syntax highlighting is enabled for specified languages
@@ -58,7 +58,7 @@ public struct MarkdownRenderingOptions {
     }
     
     /// Supported programming languages for syntax highlighting.
-    public enum SupportedLanguage: String, CaseIterable, Hashable {
+    public enum SupportedLanguage: String, CaseIterable, Hashable, Sendable {
         case swift = "swift"
         case javascript = "javascript"
         case typescript = "typescript"
@@ -116,7 +116,7 @@ public struct MarkdownRenderingOptions {
     // MARK: - Table of Contents Configuration
     
     /// Configuration for table of contents generation.
-    public enum TableOfContents {
+    public enum TableOfContents: Sendable {
         /// Table of contents is disabled
         case disabled
         /// Table of contents is enabled with specified options
@@ -156,7 +156,7 @@ public struct MarkdownRenderingOptions {
     // MARK: - Code Block Configuration
     
     /// Configuration for enhanced code block features.
-    public struct CodeBlockOptions {
+    public struct CodeBlockOptions: Sendable {
         /// Whether to show a copy button for code blocks
         public let copyButton: Bool
         
@@ -198,17 +198,17 @@ public struct MarkdownRenderingOptions {
         }
         
         /// Default configuration with all features disabled
-        public static let disabled = CodeBlockOptions()
+        @MainActor public static let disabled = CodeBlockOptions()
         
         /// Basic configuration with essential features enabled
-        public static let basic = CodeBlockOptions(
+        @MainActor public static let basic = CodeBlockOptions(
             copyButton: true,
             lineNumbers: true,
             showFileName: true
         )
         
         /// Full-featured configuration with all features enabled
-        public static let enhanced = CodeBlockOptions(
+        @MainActor public static let enhanced = CodeBlockOptions(
             copyButton: true,
             lineNumbers: true,
             showFileName: true,
@@ -220,7 +220,7 @@ public struct MarkdownRenderingOptions {
     // MARK: - Mathematical Notation Configuration
     
     /// Configuration for mathematical notation support.
-    public enum MathSupport {
+    public enum MathSupport: Sendable {
         /// Mathematical notation is disabled
         case disabled
         /// Mathematical notation is enabled with specified rendering
@@ -248,7 +248,7 @@ public struct MarkdownRenderingOptions {
     }
     
     /// Methods for rendering mathematical notation.
-    public enum MathRenderer {
+    public enum MathRenderer: Sendable {
         /// Render math as basic HTML with limited formatting
         case html
         /// Render math using MathML (future extension point)
@@ -291,7 +291,7 @@ public struct MarkdownRenderingOptions {
     public init(
         syntaxHighlighting: SyntaxHighlighting = .disabled,
         tableOfContents: TableOfContents = .disabled,
-        codeBlocks: CodeBlockOptions = .disabled,
+        codeBlocks: CodeBlockOptions,
         mathSupport: MathSupport = .disabled,
         enhancedAccessibility: Bool = true,
         performanceOptimizations: Bool = true
@@ -307,13 +307,13 @@ public struct MarkdownRenderingOptions {
     // MARK: - Preset Configurations
     
     /// Basic configuration with minimal enhancements
-    public static let basic = MarkdownRenderingOptions(
+    @MainActor public static let basic = MarkdownRenderingOptions(
         syntaxHighlighting: .enabledForAll,
         codeBlocks: .basic
     )
     
     /// Enhanced configuration with most features enabled
-    public static let enhanced = MarkdownRenderingOptions(
+    @MainActor public static let enhanced = MarkdownRenderingOptions(
         syntaxHighlighting: .enabledForAll,
         tableOfContents: .enabled(maxDepth: 4),
         codeBlocks: .enhanced,
@@ -321,7 +321,7 @@ public struct MarkdownRenderingOptions {
     )
     
     /// Minimal configuration for performance-critical applications
-    public static let minimal = MarkdownRenderingOptions(
+    @MainActor public static let minimal = MarkdownRenderingOptions(
         syntaxHighlighting: .disabled,
         tableOfContents: .disabled,
         codeBlocks: .disabled,
@@ -331,7 +331,7 @@ public struct MarkdownRenderingOptions {
     )
     
     /// Documentation-focused configuration
-    public static let documentation = MarkdownRenderingOptions(
+    @MainActor public static let documentation = MarkdownRenderingOptions(
         syntaxHighlighting: .enabled(languages: [.swift, .javascript, .typescript, .json, .yaml]),
         tableOfContents: .enabled(maxDepth: 3),
         codeBlocks: CodeBlockOptions(

@@ -117,8 +117,8 @@ public struct Icon: Element {
         self.data = data
     }
     
-    public var body: some HTML {
-        HTMLString(content: renderTag())
+    public var body: some Markup {
+        MarkupString(content: renderTag())
     }
     
     private func renderTag() -> String {
@@ -149,7 +149,7 @@ public struct Icon: Element {
         
         // Render as an inline element (i) for icon fonts
         // Using <i> is the standard convention for icon fonts
-        return AttributeBuilder.renderTag(
+        return AttributeBuilder.buildMarkupTag(
             "i", attributes: attributes, content: ""
         )
     }

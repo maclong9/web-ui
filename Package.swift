@@ -26,5 +26,6 @@ let package = Package(
             ]
         ),
         .testTarget(name: "WebUITests", dependencies: ["WebUI"]),
+        .testTarget(name: "WebUIMarkdownTests", dependencies: ["WebUIMarkdown"]),
     ]
 )
