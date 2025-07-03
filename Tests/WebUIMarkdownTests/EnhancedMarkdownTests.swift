@@ -229,4 +229,132 @@ import Foundation
         #expect(result.htmlContent.contains("&gt;"))
         #expect(result.htmlContent.contains("&amp;"))
     }
+    
+    // MARK: - Enhanced Typography Tests
+    
+    @Test("Typography style merging")
+    @MainActor func testTypographyStyleMerging() {
+        let baseStyle = MarkdownTypography.TypographyStyle(
+            font: MarkdownTypography.FontProperties(size: .body, weight: .regular),
+            margins: MarkdownTypography.MarginProperties(bottom: "1rem")
+        )
+        
+        let overrideStyle = MarkdownTypography.TypographyStyle(
+            font: MarkdownTypography.FontProperties(weight: .bold),
+            padding: MarkdownTypography.PaddingProperties(all: "0.5rem")
+        )
+        
+        let merged = baseStyle.merging(with: overrideStyle)
+        
+        // Should keep base size but override weight
+        #expect(merged.font?.size == .body)
+        #expect(merged.font?.weight == .bold)
+        // Should keep base margins and add padding
+        #expect(merged.margins?.bottom == "1rem")
+        #expect(merged.padding?.all == "0.5rem")
+    }
+    
+    @Test("Typography CSS generation")
+    @MainActor func testTypographyCSSGeneration() {
+        let style = MarkdownTypography.TypographyStyle(
+            font: MarkdownTypography.FontProperties(
+                family: "Arial, sans-serif",
+                size: .headline,
+                weight: .bold,
+                color: "rgb(0 0 0)"
+            ),
+            padding: MarkdownTypography.PaddingProperties(right: "0.5rem", left: "0.5rem"),
+            margins: MarkdownTypography.MarginProperties(bottom: "1rem")
+        )
+        
+        let css = style.generateCSS()
+        
+        #expect(css.contains("font-family: Arial, sans-serif"))
+        #expect(css.contains("font-size: 1.125rem"))
+        #expect(css.contains("font-weight: 700"))
+        #expect(css.contains("color: rgb(0 0 0)"))
+        #expect(css.contains("margin-bottom: 1rem"))
+        #expect(css.contains("padding-left: 0.5rem"))
+        #expect(css.contains("padding-right: 0.5rem"))
+    }
+    
+    @Test("Typography composition and inheritance")
+    @MainActor func testTypographyComposition() {
+        let baseTypography = MarkdownTypography.default
+        let customTypography = MarkdownTypography(
+            headings: [
+                .h1: MarkdownTypography.TypographyStyle(
+                    font: MarkdownTypography.FontProperties(weight: .black)
+                )
+            ],
+            elements: [
+                .paragraph: MarkdownTypography.TypographyStyle(
+                    font: MarkdownTypography.FontProperties(lineHeight: .loose)
+                )
+            ],
+            defaultFontSize: .body
+        )
+        
+        let merged = baseTypography.merging(with: customTypography)
+        
+        // Should have custom h1 weight
+        #expect(merged.headings[.h1]?.font?.weight == .black)
+        // Should have custom paragraph line height
+        #expect(merged.elements[.paragraph]?.font?.lineHeight == .loose)
+        // Should retain base h2 style
+        #expect(merged.headings[.h2] != nil)
+    }
+    
+    @Test("Typography selector helpers")
+    func testTypographySelectorHelpers() {
+        let idSelectors = MarkdownTypography.id("hero", style: MarkdownTypography.TypographyStyle())
+        let classSelectors = MarkdownTypography.class("highlight", style: MarkdownTypography.TypographyStyle())
+        
+        #expect(idSelectors["#hero"] != nil)
+        #expect(classSelectors[".highlight"] != nil)
+    }
+    
+    @Test("Typography presets availability")
+    @MainActor func testTypographyPresets() {
+        // Test all presets are available and configured
+        let defaultTypography = MarkdownTypography.default
+        let documentationTypography = MarkdownTypography.documentation
+        let marketingTypography = MarkdownTypography.marketing
+        let articleTypography = MarkdownTypography.article
+        let blogTypography = MarkdownTypography.blog
+        
+        #expect(!defaultTypography.headings.isEmpty)
+        #expect(!documentationTypography.headings.isEmpty)
+        #expect(!marketingTypography.headings.isEmpty)
+        #expect(!articleTypography.headings.isEmpty)
+        #expect(!blogTypography.headings.isEmpty)
+        
+        // Each should have different font families
+        #expect(defaultTypography.defaultFontFamily != articleTypography.defaultFontFamily)
+        #expect(documentationTypography.defaultFontFamily != blogTypography.defaultFontFamily)
+    }
+    
+    @Test("CSS value generation for enums")
+    func testCSSValueGeneration() {
+        // Test TextSize
+        #expect(TextSize.body.cssValue == "1rem")
+        #expect(TextSize.extraLarge.cssValue == "2rem")
+        #expect(TextSize.custom(1.5).cssValue == "1.5rem")
+        
+        // Test Weight
+        #expect(Weight.regular.cssValue == "400")
+        #expect(Weight.bold.cssValue == "700")
+        
+        // Test Leading
+        #expect(Leading.tight.cssValue == "1.25")
+        #expect(Leading.relaxed.cssValue == "1.625")
+        
+        // Test Tracking
+        #expect(Tracking.normal.cssValue == "0")
+        #expect(Tracking.wide.cssValue == "0.025em")
+        
+        // Test Decoration
+        #expect(Decoration.none.cssValue == "none")
+        #expect(Decoration.underline.cssValue == "underline")
+    }
 }
