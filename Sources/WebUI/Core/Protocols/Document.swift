@@ -53,6 +53,9 @@ public protocol Document {
 
     /// Optional custom markup to append to this document's head section.
     var head: String? { get }
+
+    /// Optional view transition configuration for this document.
+    var viewTransitions: DocumentViewTransitionConfiguration? { get }
 }
 
 // MARK: - Default Implementations
@@ -72,6 +75,9 @@ extension Document {
 
     /// Default head implementation returns nil.
     public var head: String? { nil }
+
+    /// Default view transitions implementation returns nil.
+    public var viewTransitions: DocumentViewTransitionConfiguration? { nil }
 
     /// Creates a concrete Document instance for rendering.
     public func render() throws -> String {

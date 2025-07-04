@@ -39,7 +39,19 @@ public struct Metadata {
     ///
     /// - Returns: A string combining the title, separator, and site name, handling nil values appropriately.
     public var pageTitle: String {
-        "\(title ?? "")\(titleSeparator ?? "")\(site ?? "")"
+        let titlePart = title ?? ""
+        let sitePart = site ?? ""
+        
+        // Only include separator if both title and site are present
+        if !titlePart.isEmpty && !sitePart.isEmpty {
+            return "\(titlePart)\(titleSeparator ?? "")\(sitePart)"
+        } else if !titlePart.isEmpty {
+            return titlePart
+        } else if !sitePart.isEmpty {
+            return sitePart
+        } else {
+            return ""
+        }
     }
 
     /// Creates a new metadata configuration for an HTML document.
