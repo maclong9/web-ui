@@ -57,4 +57,36 @@ public enum StyleUtilities {
         let modifierPrefix = modifiers.map { $0.rawValue }.joined()
         return baseClasses.map { "\(modifierPrefix)\($0)" }
     }
+    
+    /// Combines multiple classes with multiple modifiers separately
+    ///
+    /// This function applies each modifier to each class separately, generating
+    /// all combinations. This is useful for cases where you want each modifier
+    /// to apply independently to all classes.
+    ///
+    /// - Parameters:
+    ///   - baseClasses: The base class names
+    ///   - modifiers: The modifiers to apply
+    /// - Returns: The combined class names with each modifier applied to each class
+    public static func combineClassesWithSeparateModifiers(
+        _ baseClasses: [String], withModifiers modifiers: [Modifier]
+    ) -> [String] {
+        if baseClasses.isEmpty {
+            return []
+        }
+
+        if modifiers.isEmpty {
+            return baseClasses
+        }
+
+        // Generate separate combinations for each modifier
+        var result: [String] = []
+        for modifier in modifiers {
+            let prefix = modifier.rawValue
+            for baseClass in baseClasses {
+                result.append("\(prefix)\(baseClass)")
+            }
+        }
+        return result
+    }
 }

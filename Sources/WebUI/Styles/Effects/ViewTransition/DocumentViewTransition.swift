@@ -48,15 +48,6 @@ public struct DocumentViewTransitionConfiguration: Sendable {
 
 /// Extension to add view transition support to Documents
 extension Document {
-    /// View transition configuration for this document.
-    ///
-    /// Override this property to configure document-level view transitions.
-    /// When specified, generates CSS and JavaScript for smooth page transitions.
-    ///
-    /// - Returns: The view transition configuration, or nil for no document-level transitions
-    public var viewTransitions: DocumentViewTransitionConfiguration? {
-        nil
-    }
 
     /// Generate CSS for document-level view transitions.
     ///

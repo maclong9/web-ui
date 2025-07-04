@@ -115,6 +115,26 @@ public struct ViewTransitionStyleOperation: StyleOperation, Sendable {
 
         return classes
     }
+    
+    /// Override applyTo to use separate modifier behavior for view transitions
+    ///
+    /// This ensures that each modifier applies to all view transition classes separately,
+    /// which is the expected behavior for CSS View Transitions.
+    ///
+    /// - Parameters:
+    ///   - content: The markup content to apply styles to
+    ///   - params: The parameters for this style operation
+    ///   - modifiers: The modifiers to apply (e.g., .hover, .md)
+    /// - Returns: A new element with the styles applied
+    public func applyTo<T: Markup>(
+        _ content: T, params: Parameters, modifiers: [Modifier] = []
+    ) -> StyleModifier<T> {
+        let classes = applyClasses(params: params)
+        let newClasses = StyleUtilities.combineClassesWithSeparateModifiers(
+            classes, withModifiers: modifiers)
+
+        return StyleModifier(content: content, classes: newClasses)
+    }
 
     private init() {}
 }

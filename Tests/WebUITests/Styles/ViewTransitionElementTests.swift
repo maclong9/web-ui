@@ -160,10 +160,8 @@ struct ViewTransitionElementTests {
     func testResponsiveBuilderWithStateAndViewTransitions() async throws {
         let element = Stack()
             .on {
-                hover {
-                    fadeTransition(duration: 150)
-                    md { scaleTransition(.scale, origin: .center, duration: 200) }
-                }
+                hover { fadeTransition(duration: 150) }
+                modifiers(.hover, .md) { scaleTransition(.scale, origin: .center, duration: 200) }
                 focus { slideTransition(.up, duration: 250) }
             }
         let rendered = element.render()
