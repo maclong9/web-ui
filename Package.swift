@@ -10,6 +10,8 @@ let package = Package(
     products: [
         .library(name: "WebUI", targets: ["WebUI"]),
         .library(name: "WebUIMarkdown", targets: ["WebUIMarkdown"]),
+        .library(name: "WebUIDevServer", targets: ["WebUIDevServer"]),
+        .executable(name: "DevServerExample", targets: ["DevServerExample"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-markdown", from: "0.6.0"),
@@ -18,6 +20,7 @@ let package = Package(
     targets: [
         .target(
             name: "WebUI",
+            exclude: ["Core/DevServer", "Components/UI"]
         ),
         .target(
             name: "WebUIMarkdown",
@@ -25,7 +28,18 @@ let package = Package(
                 .product(name: "Markdown", package: "swift-markdown")
             ]
         ),
+        .target(
+            name: "WebUIDevServer",
+            path: "Sources/WebUI/Core/DevServer"
+        ),
+        .executableTarget(
+            name: "DevServerExample",
+            dependencies: ["WebUIDevServer"],
+            path: "Examples",
+            sources: ["DevServerExample.swift"]
+        ),
         .testTarget(name: "WebUITests", dependencies: ["WebUI"]),
         .testTarget(name: "WebUIMarkdownTests", dependencies: ["WebUIMarkdown"]),
+        .testTarget(name: "WebUIDevServerTests", dependencies: ["WebUIDevServer"]),
     ]
 )
