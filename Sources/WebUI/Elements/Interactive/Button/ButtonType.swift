@@ -2,6 +2,9 @@
 ///
 /// Specifies the purpose and behavior of buttons within forms.
 public enum ButtonType: String {
+    /// Regular button without specific form behavior.
+    case button
+    
     /// Submits the form data to the server.
     case submit
 

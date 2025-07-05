@@ -1,359 +1,334 @@
 import Foundation
 
-/// Property wrapper for component-level state that is isolated to a specific element instance.
+// MARK: - @State Property Wrapper
+
+/// A property wrapper that creates reactive state with automatic JavaScript generation.
 ///
-/// `@ComponentState` creates reactive state that automatically updates the UI when changed.
-/// This state is scoped to the individual component and does not persist across sessions.
+/// `@State` manages local component state that can be updated from both Swift and JavaScript.
+/// It automatically generates vanilla JavaScript code for two-way binding when used in elements.
+///
+/// ## Usage
+///
+/// ```swift
+/// struct Counter: Element {
+///     @State private var count = 0
+///     
+///     var body: some Markup {
+///         Stack {
+///             Text { "Count: \(count)" }
+///             Button("Increment") {
+///                 count += 1
+///             }
+///         }
+///     }
+/// }
+/// ```
+@propertyWrapper
+public struct State<Value: Codable & Sendable>: StateProtocol, Sendable {
+    
+    private let storage: StateStorage<Value>
+    
+    /// The current value of the state
+    public var wrappedValue: Value {
+        get { storage.value }
+        set { 
+            storage.setValue(newValue)
+            onChange?(newValue)
+        }
+    }
+    
+    /// Provides access to the State instance itself
+    public var projectedValue: State<Value> {
+        return self
+    }
+    
+    /// Unique identifier for this state instance
+    public var stateID: String? {
+        get { storage.stateID }
+        set { storage.stateID = newValue }
+    }
+    
+    /// Whether this state should generate JavaScript binding code
+    public let generatesJavaScript: Bool = true
+    
+    /// Callback triggered when the state value changes
+    public var onChange: (@Sendable (Value) -> Void)? {
+        get { storage.onChange }
+        set { storage.onChange = newValue }
+    }
+    
+    /// Creates a new state instance with an initial value.
+    ///
+    /// - Parameter wrappedValue: The initial value for the state
+    public init(wrappedValue: Value) {
+        self.storage = StateStorage(initialValue: wrappedValue)
+        
+        // Auto-register with the global state manager
+        let id = StateManager.shared.registerState(self)
+        self.stateID = id
+    }
+    
+    /// Creates a new state instance with an initial value and custom ID.
+    ///
+    /// - Parameters:
+    ///   - wrappedValue: The initial value for the state
+    ///   - id: Custom identifier for the state
+    public init(wrappedValue: Value, id: String) {
+        self.storage = StateStorage(initialValue: wrappedValue)
+        self.stateID = id
+        
+        // Register with the global state manager using custom ID
+        StateManager.shared.registerState(self, withID: id)
+    }
+}
+
+// MARK: - @Binding Property Wrapper
+
+/// A property wrapper that creates a two-way binding to external state.
+///
+/// `@Binding` enables child components to read and write to parent state
+/// without owning the state themselves. This creates a reactive connection
+/// between parent and child components.
 ///
 /// ## Usage
 ///
 /// ```swift
 /// struct ToggleButton: Element {
-///     @ComponentState var isPressed = false
+///     @Binding var isEnabled: Bool
 ///     
-///     var body: some Element {
-///         button {
-///             isPressed ? "Pressed" : "Not Pressed"
-///         }
-///         .onClick { isPressed.toggle() }
-///         .class(isPressed ? "pressed" : "")
-///     }
-/// }
-/// ```
-@propertyWrapper
-public struct ComponentState<Value: Codable>: @unchecked Sendable {
-    private let key: String
-    private let stateManager: StateManager
-    private var _wrappedValue: Value
-    
-    /// The current value of the state
-    public var wrappedValue: Value {
-        get {
-            return stateManager.getState(key: key, scope: .component, as: Value.self) ?? _wrappedValue
-        }
-        set {
-            _wrappedValue = newValue
-            stateManager.updateState(key: key, value: newValue, scope: .component)
-        }
-    }
-    
-    /// Provides access to the state binding for two-way data binding
-    public var projectedValue: StateBinding<Value> {
-        return StateBinding(
-            get: { self.wrappedValue },
-            set: { value in 
-                // Update the state manager, which will handle the internal state
-                self.stateManager.updateState(key: self.key, value: value, scope: .component)
-            }
-        )
-    }
-    
-    /// Creates a new component state with the specified initial value
-    ///
-    /// - Parameter wrappedValue: Initial value for the state
-    public init(wrappedValue: Value) {
-        self.key = UUID().uuidString
-        self.stateManager = StateManager.shared
-        self._wrappedValue = wrappedValue
-        
-        // Register the initial state
-        self.stateManager.registerState(key: key, initialValue: wrappedValue, scope: .component)
-    }
-    
-    /// Creates a new component state with a custom key and initial value
-    ///
-    /// - Parameters:
-    ///   - key: Custom key for the state (useful for debugging and persistence)
-    ///   - wrappedValue: Initial value for the state
-    public init(key: String, wrappedValue: Value) {
-        self.key = key
-        self.stateManager = StateManager.shared
-        self._wrappedValue = wrappedValue
-        
-        // Register the initial state
-        self.stateManager.registerState(key: key, initialValue: wrappedValue, scope: .component)
-    }
-}
-
-/// Property wrapper for shared state that can be accessed across multiple components.
-///
-/// `@SharedState` creates reactive state that is shared across component instances.
-/// This state can optionally persist across sessions depending on configuration.
-///
-/// ## Usage
-///
-/// ```swift
-/// struct UserProfile: Element {
-///     @SharedState("currentUser") var user: User?
-///     @SharedState("isLoggedIn") var isLoggedIn = false
-///     
-///     var body: some Element {
-///         if isLoggedIn, let user = user {
-///             div {
-///                 "Welcome, \\(user.name)!"
-///             }
-///         } else {
-///             div {
-///                 "Please log in"
-///             }
+///     var body: some Markup {
+///         Button(isEnabled ? "Enabled" : "Disabled") {
+///             isEnabled.toggle()
 ///         }
 ///     }
 /// }
 /// ```
 @propertyWrapper
-public struct SharedState<Value: Codable>: @unchecked Sendable {
-    private let key: String
-    private let stateManager: StateManager
-    private var _wrappedValue: Value
+public struct Binding<Value: Codable & Sendable>: StateProtocol, Sendable {
     
-    /// The current value of the shared state
-    public var wrappedValue: Value {
-        get {
-            return stateManager.getState(key: key, scope: .shared, as: Value.self) ?? _wrappedValue
-        }
-        set {
-            _wrappedValue = newValue
-            stateManager.updateState(key: key, value: newValue, scope: .shared)
-        }
-    }
-    
-    /// Provides access to the state binding for two-way data binding
-    public var projectedValue: StateBinding<Value> {
-        return StateBinding(
-            get: { self.wrappedValue },
-            set: { value in 
-                self.stateManager.updateState(key: self.key, value: value, scope: .shared)
-            }
-        )
-    }
-    
-    /// Creates a new shared state with the specified key and initial value
-    ///
-    /// - Parameters:
-    ///   - key: Unique key for the shared state
-    ///   - wrappedValue: Initial value for the state
-    public init(_ key: String, wrappedValue: Value) {
-        self.key = key
-        self.stateManager = StateManager.shared
-        self._wrappedValue = wrappedValue
-        
-        // Register the initial state
-        self.stateManager.registerState(key: key, initialValue: wrappedValue, scope: .shared)
-    }
-}
-
-/// Property wrapper for global application state.
-///
-/// `@GlobalState` creates reactive state that is available application-wide.
-/// This state typically persists across sessions and represents core application data.
-///
-/// ## Usage
-///
-/// ```swift
-/// struct AppSettings: Element {
-///     @GlobalState("theme") var theme = "light"
-///     @GlobalState("language") var language = "en"
-///     
-///     var body: some Element {
-///         div {
-///             "Current theme: \\(theme)"
-///         }
-///         .class("theme-\\(theme)")
-///     }
-/// }
-/// ```
-@propertyWrapper
-public struct GlobalState<Value: Codable>: @unchecked Sendable {
-    private let key: String
-    private let stateManager: StateManager
-    private var _wrappedValue: Value
-    
-    /// The current value of the global state
-    public var wrappedValue: Value {
-        get {
-            return stateManager.getState(key: key, scope: .global, as: Value.self) ?? _wrappedValue
-        }
-        set {
-            _wrappedValue = newValue
-            stateManager.updateState(key: key, value: newValue, scope: .global)
-        }
-    }
-    
-    /// Provides access to the state binding for two-way data binding
-    public var projectedValue: StateBinding<Value> {
-        return StateBinding(
-            get: { self.wrappedValue },
-            set: { value in 
-                self.stateManager.updateState(key: self.key, value: value, scope: .global)
-            }
-        )
-    }
-    
-    /// Creates a new global state with the specified key and initial value
-    ///
-    /// - Parameters:
-    ///   - key: Unique key for the global state
-    ///   - wrappedValue: Initial value for the state
-    public init(_ key: String, wrappedValue: Value) {
-        self.key = key
-        self.stateManager = StateManager.shared
-        self._wrappedValue = wrappedValue
-        
-        // Register the initial state
-        self.stateManager.registerState(key: key, initialValue: wrappedValue, scope: .global)
-    }
-}
-
-/// Property wrapper for session-specific state that persists during the user session.
-///
-/// `@SessionState` creates reactive state that persists for the duration of the user session.
-/// This state is automatically cleared when the session ends.
-///
-/// ## Usage
-///
-/// ```swift
-/// struct ShoppingCart: Element {
-///     @SessionState("cartItems") var items: [CartItem] = []
-///     @SessionState("cartTotal") var total: Double = 0.0
-///     
-///     var body: some Element {
-///         div {
-///             "Cart Total: $\\(String(format: "%.2f", total))"
-///             "Items: \\(items.count)"
-///         }
-///     }
-/// }
-/// ```
-@propertyWrapper
-public struct SessionState<Value: Codable>: @unchecked Sendable {
-    private let key: String
-    private let stateManager: StateManager
-    private var _wrappedValue: Value
-    
-    /// The current value of the session state
-    public var wrappedValue: Value {
-        get {
-            return stateManager.getState(key: key, scope: .session, as: Value.self) ?? _wrappedValue
-        }
-        set {
-            _wrappedValue = newValue
-            stateManager.updateState(key: key, value: newValue, scope: .session)
-        }
-    }
-    
-    /// Provides access to the state binding for two-way data binding
-    public var projectedValue: StateBinding<Value> {
-        return StateBinding(
-            get: { self.wrappedValue },
-            set: { value in 
-                self.stateManager.updateState(key: self.key, value: value, scope: .session)
-            }
-        )
-    }
-    
-    /// Creates a new session state with the specified key and initial value
-    ///
-    /// - Parameters:
-    ///   - key: Unique key for the session state
-    ///   - wrappedValue: Initial value for the state
-    public init(_ key: String, wrappedValue: Value) {
-        self.key = key
-        self.stateManager = StateManager.shared
-        self._wrappedValue = wrappedValue
-        
-        // Register the initial state
-        self.stateManager.registerState(key: key, initialValue: wrappedValue, scope: .session)
-    }
-}
-
-/// A binding represents a reference to a state value that can be read and written.
-///
-/// `StateBinding` provides two-way data binding capabilities for WebUI state management.
-/// It allows components to both read and modify state values through a unified interface.
-///
-/// ## Usage
-///
-/// ```swift
-/// struct TextInput: Element {
-///     @ComponentState var text = ""
-///     
-///     var body: some Element {
-///         input()
-///             .type(.text)
-///             .value($text) // Uses the projected value (StateBinding)
-///     }
-/// }
-/// ```
-public struct StateBinding<Value>: @unchecked Sendable {
-    private let getValue: () -> Value
-    private let setValue: (Value) -> Void
+    private let getter: @Sendable () -> Value
+    private let setter: @Sendable (Value) -> Void
+    private let storage: BindingStorage<Value>
     
     /// The current value of the binding
     public var wrappedValue: Value {
-        get { getValue() }
-        nonmutating set { setValue(newValue) }
+        get { getter() }
+        set { 
+            setter(newValue)
+            onChange?(newValue)
+        }
     }
     
-    /// Creates a new state binding with get and set closures
+    /// Provides access to the Binding instance itself
+    public var projectedValue: Binding<Value> {
+        return self
+    }
+    
+    /// Unique identifier for this binding instance
+    public var stateID: String? {
+        get { storage.stateID }
+        set { storage.stateID = newValue }
+    }
+    
+    /// Whether this binding should generate JavaScript binding code
+    public let generatesJavaScript: Bool = true
+    
+    /// Callback triggered when the binding value changes
+    public var onChange: (@Sendable (Value) -> Void)? {
+        get { storage.onChange }
+        set { storage.onChange = newValue }
+    }
+    
+    /// Creates a new binding with getter and setter functions.
     ///
     /// - Parameters:
-    ///   - get: Closure to retrieve the current value
-    ///   - set: Closure to update the value
-    public init(get: @escaping () -> Value, set: @escaping (Value) -> Void) {
-        self.getValue = get
-        self.setValue = set
+    ///   - get: Function to get the current value
+    ///   - set: Function to set a new value
+    public init(get: @escaping @Sendable () -> Value, set: @escaping @Sendable (Value) -> Void) {
+        self.getter = get
+        self.setter = set
+        self.storage = BindingStorage<Value>()
+        
+        // Auto-register with the global state manager
+        let id = StateManager.shared.registerState(self)
+        self.stateID = id
+    }
+}
+
+// MARK: - @Published Property Wrapper
+
+/// A property wrapper that publishes changes to subscribers.
+///
+/// `@Published` is similar to `@State` but designed for observable objects
+/// that need to notify multiple subscribers of state changes. It's particularly
+/// useful for view models and shared state objects.
+///
+/// ## Usage
+///
+/// ```swift
+/// class UserViewModel: ObservableObject {
+///     @Published var name: String = ""
+///     @Published var email: String = ""
+/// }
+/// ```
+@propertyWrapper
+public struct Published<Value: Codable & Sendable>: StateProtocol, Sendable {
+    
+    private let storage: PublishedStorage<Value>
+    
+    /// The current value of the published property
+    public var wrappedValue: Value {
+        get { storage.value }
+        set { 
+            storage.setValue(newValue)
+            onChange?(newValue)
+            // Notify all subscribers
+            storage.notifySubscribers(newValue)
+        }
     }
     
-    /// Updates the bound value
+    /// Provides access to the Published instance itself
+    public var projectedValue: Published<Value> {
+        return self
+    }
+    
+    /// Unique identifier for this published property
+    public var stateID: String? {
+        get { storage.stateID }
+        set { storage.stateID = newValue }
+    }
+    
+    /// Whether this published property should generate JavaScript binding code
+    public let generatesJavaScript: Bool = true
+    
+    /// Callback triggered when the published value changes
+    public var onChange: (@Sendable (Value) -> Void)? {
+        get { storage.onChange }
+        set { storage.onChange = newValue }
+    }
+    
+    /// Creates a new published property with an initial value.
     ///
-    /// - Parameter newValue: The new value to set
-    public func update(_ newValue: Value) {
-        setValue(newValue)
+    /// - Parameter wrappedValue: The initial value for the published property
+    public init(wrappedValue: Value) {
+        self.storage = PublishedStorage(initialValue: wrappedValue)
+        
+        // Auto-register with the global state manager
+        let id = StateManager.shared.registerState(self)
+        self.stateID = id
+    }
+    
+    /// Adds a subscriber to be notified of value changes.
+    ///
+    /// - Parameter subscriber: Callback to be called when value changes
+    public func addSubscriber(_ subscriber: @escaping @Sendable (Value) -> Void) {
+        storage.addSubscriber(subscriber)
+    }
+    
+    /// Removes all subscribers.
+    public func removeAllSubscribers() {
+        storage.removeAllSubscribers()
     }
 }
 
-// MARK: - State Subscription Extensions
+// MARK: - Storage Implementations
 
-extension ComponentState {
-    /// Subscribes to changes in this component state
-    ///
-    /// - Parameter callback: Callback to invoke when the state changes
-    /// - Returns: A function to unsubscribe from changes
-    @discardableResult
-    public func onChange(_ callback: @escaping (Value) -> Void) -> () -> Void {
-        return stateManager.subscribe(to: key, scope: .component, callback: callback)
+/// Thread-safe storage for State values
+private final class StateStorage<Value: Codable & Sendable>: @unchecked Sendable {
+    private let lock = NSLock()
+    private var _value: Value
+    var stateID: String?
+    var onChange: (@Sendable (Value) -> Void)?
+    
+    init(initialValue: Value) {
+        self._value = initialValue
+    }
+    
+    var value: Value {
+        lock.withLock { _value }
+    }
+    
+    func setValue(_ newValue: Value) {
+        lock.withLock {
+            _value = newValue
+        }
     }
 }
 
-extension SharedState {
-    /// Subscribes to changes in this shared state
-    ///
-    /// - Parameter callback: Callback to invoke when the state changes
-    /// - Returns: A function to unsubscribe from changes
-    @discardableResult
-    public func onChange(_ callback: @escaping (Value) -> Void) -> () -> Void {
-        return stateManager.subscribe(to: key, scope: .shared, callback: callback)
+/// Thread-safe storage for Binding state
+private final class BindingStorage<Value: Codable & Sendable>: @unchecked Sendable {
+    var stateID: String?
+    var onChange: (@Sendable (Value) -> Void)?
+}
+
+/// Thread-safe storage for Published values with subscriber management
+private final class PublishedStorage<Value: Codable & Sendable>: @unchecked Sendable {
+    private let lock = NSLock()
+    private var _value: Value
+    private var subscribers: [(@Sendable (Value) -> Void)] = []
+    var stateID: String?
+    var onChange: (@Sendable (Value) -> Void)?
+    
+    init(initialValue: Value) {
+        self._value = initialValue
+    }
+    
+    var value: Value {
+        lock.withLock { _value }
+    }
+    
+    func setValue(_ newValue: Value) {
+        lock.withLock {
+            _value = newValue
+        }
+    }
+    
+    func addSubscriber(_ subscriber: @escaping @Sendable (Value) -> Void) {
+        lock.withLock {
+            subscribers.append(subscriber)
+        }
+    }
+    
+    func removeAllSubscribers() {
+        lock.withLock {
+            subscribers.removeAll()
+        }
+    }
+    
+    func notifySubscribers(_ value: Value) {
+        let currentSubscribers = lock.withLock { subscribers }
+        for subscriber in currentSubscribers {
+            subscriber(value)
+        }
     }
 }
 
-extension GlobalState {
-    /// Subscribes to changes in this global state
+// MARK: - Convenience Extensions
+
+extension State {
+    /// Creates a binding to this state.
     ///
-    /// - Parameter callback: Callback to invoke when the state changes
-    /// - Returns: A function to unsubscribe from changes
-    @discardableResult
-    public func onChange(_ callback: @escaping (Value) -> Void) -> () -> Void {
-        return stateManager.subscribe(to: key, scope: .global, callback: callback)
+    /// - Returns: A Binding that reads and writes to this state
+    public func binding() -> Binding<Value> {
+        return Binding(
+            get: { [storage] in storage.value },
+            set: { [storage] newValue in 
+                storage.setValue(newValue)
+                storage.onChange?(newValue)
+            }
+        )
     }
 }
 
-extension SessionState {
-    /// Subscribes to changes in this session state
+extension Binding {
+    /// Creates a constant binding with a fixed value.
     ///
-    /// - Parameter callback: Callback to invoke when the state changes
-    /// - Returns: A function to unsubscribe from changes
-    @discardableResult
-    public func onChange(_ callback: @escaping (Value) -> Void) -> () -> Void {
-        return stateManager.subscribe(to: key, scope: .session, callback: callback)
+    /// - Parameter value: The constant value
+    /// - Returns: A binding that always returns the same value
+    public static func constant(_ value: Value) -> Binding<Value> {
+        return Binding(
+            get: { value },
+            set: { _ in } // No-op setter for constant bindings
+        )
     }
 }
