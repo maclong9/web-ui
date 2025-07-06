@@ -1,4 +1,5 @@
 import Testing
+import Foundation
 @testable import WebUI
 
 @Suite("Property Wrapper Tests")
@@ -94,8 +95,8 @@ struct PropertyWrapperTests {
         @SharedState("shared_count", wrappedValue: 0) var sharedCount
         
         // Test projected values (bindings)
-        let countBinding = $count
-        let sharedCountBinding = $sharedCount
+        var countBinding = $count
+        var sharedCountBinding = $sharedCount
         
         #expect(countBinding.wrappedValue == 0)
         #expect(sharedCountBinding.wrappedValue == 0)
@@ -189,18 +190,18 @@ struct PropertyWrapperTests {
     @Test("State subscription with property wrappers")
     func stateSubscriptionWithPropertyWrappers() async {
         // Create state manager instances for testing
-        let stateManager = StateManager()
+        let stateManager = StateManager(configuration: StateManager.StateConfiguration())
         
         // Test state subscription directly through state manager
         await confirmation("State subscription works") { confirmation in
-            stateManager.registerState(key: "test", initialValue: 0, scope: .component)
+            stateManager.registerState(key: "test", initialValue: 0, scope: StateScope.component)
             
-            let _ = stateManager.subscribe(to: "test", scope: .component) { (newValue: Int) in
+            let _ = stateManager.subscribe(to: "test", scope: StateScope.component) { (newValue: Int) in
                 #expect(newValue == 42)
                 confirmation()
             }
             
-            stateManager.updateState(key: "test", value: 42, scope: .component)
+            stateManager.updateState(key: "test", value: 42, scope: StateScope.component)
         }
     }
     
@@ -232,21 +233,34 @@ struct PropertyWrapperTests {
     
     @Test("StateBinding manual creation")
     func stateBindingManualCreation() {
-        var backingValue = "initial"
+        final class BackingStore: @unchecked Sendable {
+            private let lock = NSLock()
+            private var _value = "initial"
+            
+            func get() -> String {
+                lock.withLock { _value }
+            }
+            
+            func set(_ newValue: String) {
+                lock.withLock { _value = newValue }
+            }
+        }
+        
+        let store = BackingStore()
         
         let binding = StateBinding<String>(
-            get: { backingValue },
-            set: { backingValue = $0 }
+            get: { store.get() },
+            set: { store.set($0) }
         )
         
         #expect(binding.wrappedValue == "initial")
         
-        binding.wrappedValue = "updated"
-        #expect(backingValue == "updated")
+        binding.update("updated")
+        #expect(store.get() == "updated")
         #expect(binding.wrappedValue == "updated")
         
         binding.update("final")
-        #expect(backingValue == "final")
+        #expect(store.get() == "final")
         #expect(binding.wrappedValue == "final")
     }
     

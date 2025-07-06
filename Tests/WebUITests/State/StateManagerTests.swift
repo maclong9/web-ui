@@ -12,9 +12,9 @@ struct StateManagerTests {
         ))
         
         // Test registering a new state value
-        stateManager.registerState(key: "test", initialValue: "hello", scope: .component)
+        stateManager.registerState(key: "test", initialValue: "hello", scope: StateScope.component)
         
-        let value = stateManager.getState(key: "test", scope: .component, as: String.self)
+        let value = stateManager.getState(key: "test", scope: StateScope.component, as: String.self)
         #expect(value == "hello")
     }
     
@@ -26,10 +26,10 @@ struct StateManagerTests {
         ))
         
         // Test updating state value
-        stateManager.registerState(key: "counter", initialValue: 0, scope: .component)
-        stateManager.updateState(key: "counter", value: 5, scope: .component)
+        stateManager.registerState(key: "counter", initialValue: 0, scope: StateScope.component)
+        stateManager.updateState(key: "counter", value: 5, scope: StateScope.component)
         
-        let value = stateManager.getState(key: "counter", scope: .component, as: Int.self)
+        let value = stateManager.getState(key: "counter", scope: StateScope.component, as: Int.self)
         #expect(value == 5)
     }
     
@@ -41,13 +41,13 @@ struct StateManagerTests {
         ))
         
         // Test that different scopes maintain separate state
-        stateManager.registerState(key: "value", initialValue: "component", scope: .component)
-        stateManager.registerState(key: "value", initialValue: "shared", scope: .shared)
-        stateManager.registerState(key: "value", initialValue: "global", scope: .global)
+        stateManager.registerState(key: "value", initialValue: "component", scope: StateScope.component)
+        stateManager.registerState(key: "value", initialValue: "shared", scope: StateScope.shared)
+        stateManager.registerState(key: "value", initialValue: "global", scope: StateScope.global)
         
-        #expect(stateManager.getState(key: "value", scope: .component, as: String.self) == "component")
-        #expect(stateManager.getState(key: "value", scope: .shared, as: String.self) == "shared")
-        #expect(stateManager.getState(key: "value", scope: .global, as: String.self) == "global")
+        #expect(stateManager.getState(key: "value", scope: StateScope.component, as: String.self) == "component")
+        #expect(stateManager.getState(key: "value", scope: StateScope.shared, as: String.self) == "shared")
+        #expect(stateManager.getState(key: "value", scope: StateScope.global, as: String.self) == "global")
     }
     
     @Test("State subscription and notifications")
@@ -58,14 +58,14 @@ struct StateManagerTests {
         ))
         
         await confirmation("State subscription callback") { confirmation in
-            stateManager.registerState(key: "observable", initialValue: 0, scope: .component)
+            stateManager.registerState(key: "observable", initialValue: 0, scope: StateScope.component)
             
-            let _ = stateManager.subscribe(to: "observable", scope: .component) { (newValue: Int) in
+            let _ = stateManager.subscribe(to: "observable", scope: StateScope.component) { (newValue: Int) in
                 #expect(newValue == 42)
                 confirmation()
             }
             
-            stateManager.updateState(key: "observable", value: 42, scope: .component)
+            stateManager.updateState(key: "observable", value: 42, scope: StateScope.component)
         }
     }
     
@@ -77,15 +77,15 @@ struct StateManagerTests {
         ))
         
         // Test clearing state for a scope
-        stateManager.registerState(key: "temp1", initialValue: "value1", scope: .component)
-        stateManager.registerState(key: "temp2", initialValue: "value2", scope: .component)
-        stateManager.registerState(key: "persist", initialValue: "value3", scope: .shared)
+        stateManager.registerState(key: "temp1", initialValue: "value1", scope: StateScope.component)
+        stateManager.registerState(key: "temp2", initialValue: "value2", scope: StateScope.component)
+        stateManager.registerState(key: "persist", initialValue: "value3", scope: StateScope.shared)
         
-        stateManager.clearState(scope: .component)
+        stateManager.clearState(scope: StateScope.component)
         
-        #expect(stateManager.getState(key: "temp1", scope: .component, as: String.self) == nil)
-        #expect(stateManager.getState(key: "temp2", scope: .component, as: String.self) == nil)
-        #expect(stateManager.getState(key: "persist", scope: .shared, as: String.self) == "value3")
+        #expect(stateManager.getState(key: "temp1", scope: StateScope.component, as: String.self) == nil)
+        #expect(stateManager.getState(key: "temp2", scope: StateScope.component, as: String.self) == nil)
+        #expect(stateManager.getState(key: "persist", scope: StateScope.shared, as: String.self) == "value3")
     }
     
     @Test("Debug history tracking")
@@ -96,9 +96,9 @@ struct StateManagerTests {
         ))
         
         // Test debug history tracking
-        stateManager.registerState(key: "tracked", initialValue: 0, scope: .component)
-        stateManager.updateState(key: "tracked", value: 1, scope: .component)
-        stateManager.updateState(key: "tracked", value: 2, scope: .component)
+        stateManager.registerState(key: "tracked", initialValue: 0, scope: StateScope.component)
+        stateManager.updateState(key: "tracked", value: 1, scope: StateScope.component)
+        stateManager.updateState(key: "tracked", value: 2, scope: StateScope.component)
         
         let history = stateManager.getDebugHistory()
         #expect(history.count >= 3) // Initial registration + 2 updates
@@ -116,8 +116,8 @@ struct StateManagerTests {
         ))
         
         // Test that JavaScript generation doesn't crash
-        stateManager.registerState(key: "jsTest", initialValue: true, scope: .component)
-        stateManager.registerState(key: "counter", initialValue: 0, scope: .shared)
+        stateManager.registerState(key: "jsTest", initialValue: true, scope: StateScope.component)
+        stateManager.registerState(key: "counter", initialValue: 0, scope: StateScope.shared)
         
         let javascript = stateManager.generateJavaScript()
         
@@ -135,16 +135,16 @@ struct StateManagerTests {
         ))
         
         // Test exporting and importing state
-        stateManager.registerState(key: "export1", initialValue: "value1", scope: .component)
-        stateManager.registerState(key: "export2", initialValue: 42, scope: .shared)
+        stateManager.registerState(key: "export1", initialValue: "value1", scope: StateScope.component)
+        stateManager.registerState(key: "export2", initialValue: 42, scope: StateScope.shared)
         
         let exported = stateManager.exportStateJSON()
         
-        let newStateManager = StateManager()
+        let newStateManager = StateManager(configuration: StateManager.StateConfiguration())
         newStateManager.importStateJSON(exported)
         
-        #expect(newStateManager.getState(key: "export1", scope: .component, as: String.self) == "value1")
-        #expect(newStateManager.getState(key: "export2", scope: .shared, as: Int.self) == 42)
+        #expect(newStateManager.getState(key: "export1", scope: StateScope.component, as: String.self) == "value1")
+        #expect(newStateManager.getState(key: "export2", scope: StateScope.shared, as: Int.self) == 42)
     }
     
     @Test("Codable type compliance")
@@ -161,16 +161,16 @@ struct StateManagerTests {
         }
         
         let testData = TestStruct(name: "Test", age: 25)
-        stateManager.registerState(key: "struct", initialValue: testData, scope: .component)
+        stateManager.registerState(key: "struct", initialValue: testData, scope: StateScope.component)
         
-        let retrieved = stateManager.getState(key: "struct", scope: .component, as: TestStruct.self)
+        let retrieved = stateManager.getState(key: "struct", scope: StateScope.component, as: TestStruct.self)
         #expect(retrieved == testData)
         
         // Test arrays
         let testArray = [1, 2, 3, 4, 5]
-        stateManager.registerState(key: "array", initialValue: testArray, scope: .shared)
+        stateManager.registerState(key: "array", initialValue: testArray, scope: StateScope.shared)
         
-        let retrievedArray = stateManager.getState(key: "array", scope: .shared, as: [Int].self)
+        let retrievedArray = stateManager.getState(key: "array", scope: StateScope.shared, as: [Int].self)
         #expect(retrievedArray == testArray)
     }
     
@@ -182,18 +182,18 @@ struct StateManagerTests {
         ))
         
         // Test thread safety with concurrent access
-        stateManager.registerState(key: "concurrent", initialValue: 0, scope: .component)
+        stateManager.registerState(key: "concurrent", initialValue: 0, scope: StateScope.component)
         
         await withTaskGroup(of: Void.self) { group in
             for i in 1...100 {
                 group.addTask {
-                    stateManager.updateState(key: "concurrent", value: i, scope: .component)
+                    stateManager.updateState(key: "concurrent", value: i, scope: StateScope.component)
                 }
             }
         }
         
         // Verify final state is some valid value
-        let finalValue = stateManager.getState(key: "concurrent", scope: .component, as: Int.self)
+        let finalValue = stateManager.getState(key: "concurrent", scope: StateScope.component, as: Int.self)
         #expect(finalValue != nil)
         #expect(finalValue! > 0)
         #expect(finalValue! <= 100)
@@ -208,27 +208,27 @@ struct StateManagerTests {
         
         // Test multiple subscribers to the same state
         await confirmation("All subscribers notified", expectedCount: 3) { confirmation in
-            stateManager.registerState(key: "multiSub", initialValue: "initial", scope: .shared)
+            stateManager.registerState(key: "multiSub", initialValue: "initial", scope: StateScope.shared)
             
-            let _ = stateManager.subscribe(to: "multiSub", scope: .shared) { (newValue: String) in
+            let _ = stateManager.subscribe(to: "multiSub", scope: StateScope.shared) { (newValue: String) in
                 if newValue == "updated" {
                     confirmation()
                 }
             }
             
-            let _ = stateManager.subscribe(to: "multiSub", scope: .shared) { (newValue: String) in
+            let _ = stateManager.subscribe(to: "multiSub", scope: StateScope.shared) { (newValue: String) in
                 if newValue == "updated" {
                     confirmation()
                 }
             }
             
-            let _ = stateManager.subscribe(to: "multiSub", scope: .shared) { (newValue: String) in
+            let _ = stateManager.subscribe(to: "multiSub", scope: StateScope.shared) { (newValue: String) in
                 if newValue == "updated" {
                     confirmation()
                 }
             }
             
-            stateManager.updateState(key: "multiSub", value: "updated", scope: .shared)
+            stateManager.updateState(key: "multiSub", value: "updated", scope: StateScope.shared)
         }
     }
     

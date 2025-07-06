@@ -21,7 +21,7 @@ import Foundation
 /// Helper function to create state-aware data attributes for HTML elements
 public func stateDataAttributes(
     key: String,
-    scope: StateManager.StateScope = .component,
+    scope: StateScope = .component,
     bindings: [String] = []
 ) -> [String: String] {
     var attributes: [String: String] = [:]
