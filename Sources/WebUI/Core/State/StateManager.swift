@@ -196,7 +196,7 @@ public final class StateManager: @unchecked Sendable {
         guard isJavaScriptGenerationEnabled else { return "" }
         
         let generator = JavaScriptGenerator()
-        return generator.generateCompleteScript(for: stateStorage.getAllStates())
+        return generator.generateCompleteScript(for: stateStorage.getAllStates(), configuration: configuration)
     }
     
     /// Generates JavaScript for a specific state instance.
@@ -210,7 +210,7 @@ public final class StateManager: @unchecked Sendable {
         }
         
         let generator = JavaScriptGenerator()
-        return generator.generateStateScript(for: state, withID: id)
+        return generator.generateStateScript(for: state, withID: id, configuration: configuration)
     }
     
     // MARK: - State Inspection

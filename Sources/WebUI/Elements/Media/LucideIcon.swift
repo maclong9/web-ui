@@ -14,7 +14,7 @@ import Foundation
 /// ```
 ///
 /// Reference: https://lucide.dev/icons/
-public enum LucideIcon: String, CaseIterable {
+public enum LucideIcon: String, CaseIterable, Sendable {
     // MARK: - Navigation & UI
     case arrowLeft = "arrow-left"
     case arrowRight = "arrow-right"
@@ -218,6 +218,10 @@ public enum LucideIcon: String, CaseIterable {
     case cameraOff = "camera-off"
     case film = "film"
     case gamepad = "gamepad-2"
+    
+    // MARK: - Additional Icons
+    case home = "home"
+    case loader2 = "loader-2"
     
     /// Returns the CSS class name for this Lucide icon.
     ///

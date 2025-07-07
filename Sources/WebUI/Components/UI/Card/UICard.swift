@@ -92,74 +92,65 @@ public struct UICard<Content: Markup, Header: Markup, Footer: Markup>: Component
     
     // MARK: - Element Implementation
     
-    public var body: some Markup {
+    public var body: MarkupString {
         let allClasses = baseStyles.classes + 
                         (variantStyles[variant] ?? .empty).classes +
                         customClasses
         
         let allData = buildDataAttributes()
         
-        return cardContainer(
-            classes: allClasses,
-            data: allData
-        ) {
-            if let header = header {
-                cardHeader { header }
-            }
-            
-            cardContent { content }
-            
-            if let footer = footer {
-                cardFooter { footer }
-            }
-        }
-    }
-    
-    @MarkupBuilder
-    private func cardContainer<T: Markup>(
-        classes: [String],
-        data: [String: String],
-        @MarkupBuilder content: () -> T
-    ) -> some Markup {
         if interactive {
             // Interactive cards use section with button semantics
-            let interactiveData = data.merging(["interactive": "true"]) { _, new in new }
-            return Section(
-                classes: classes,
+            let interactiveData = allData.merging(["interactive": "true"]) { _, new in new }
+            let element = Section(
+                classes: allClasses,
                 role: .button,
-                data: interactiveData,
-                content: content
-            )
+                data: interactiveData
+            ) {
+                if let headerContent = header {
+                    Section(classes: ["card-header"]) {
+                        headerContent
+                    }
+                }
+                
+                Section(classes: ["card-content"]) {
+                    content
+                }
+                
+                if let footerContent = footer {
+                    Section(classes: ["card-footer"]) {
+                        footerContent
+                    }
+                }
+            }
+            return MarkupString(content: element.render())
         } else {
             // Static cards use article semantics
-            return Article(
-                classes: classes,
-                data: data,
-                content: content
-            )
+            let element = Article(
+                classes: allClasses,
+                data: allData
+            ) {
+                if let headerContent = header {
+                    Section(classes: ["card-header"]) {
+                        headerContent
+                    }
+                }
+                
+                Section(classes: ["card-content"]) {
+                    content
+                }
+                
+                if let footerContent = footer {
+                    Section(classes: ["card-footer"]) {
+                        footerContent
+                    }
+                }
+            }
+            return MarkupString(content: element.render())
         }
     }
     
-    @MarkupBuilder
-    private func cardHeader<T: Markup>(@MarkupBuilder content: () -> T) -> some Markup {
-        Header(classes: ["card-header"]) {
-            content()
-        }
-    }
-    
-    @MarkupBuilder
-    private func cardContent<T: Markup>(@MarkupBuilder content: () -> T) -> some Markup {
-        Section(classes: ["card-content"]) {
-            content()
-        }
-    }
-    
-    @MarkupBuilder
-    private func cardFooter<T: Markup>(@MarkupBuilder content: () -> T) -> some Markup {
-        Footer(classes: ["card-footer"]) {
-            content()
-        }
-    }
+    // MARK: - Helper Methods
     
     private func buildDataAttributes() -> [String: String] {
         var attributes: [String: String] = [:]
@@ -298,6 +289,11 @@ public struct EmptyMarkup: Markup {
 
 // MARK: - Specialized Card Types
 
+// Note: The following factory methods are commented out due to a design issue
+// with @MarkupBuilder returning [any Markup] instead of concrete types.
+// This is a broader codebase issue that needs to be addressed separately.
+
+/*
 extension UICard {
     /// Creates a feature card with highlighted styling.
     ///
@@ -308,16 +304,14 @@ extension UICard {
     public static func feature(
         title: String,
         description: String
-    ) -> UICard<Text, Heading, EmptyMarkup> {
-        return UICard<Text, Heading, EmptyMarkup>(
+    ) -> UICard<MarkupString, MarkupString, EmptyMarkup> {
+        return UICard<MarkupString, MarkupString, EmptyMarkup>(
             variant: .primary,
             customClasses: ["feature-card"],
-            header: {
-                Heading(.headline, classes: ["card-title"]) { title }
-            },
-            footer: EmptyMarkup.init
+            header: { MarkupString(content: Heading(.headline, classes: ["card-title"]) { title }.render()) },
+            footer: { EmptyMarkup() }
         ) {
-            ElementBuilder.text(description, classes: ["card-description"])
+            MarkupString(content: ElementBuilder.text(description, classes: ["card-description"]).render())
         }
     }
     
@@ -332,19 +326,18 @@ extension UICard {
         label: String,
         value: String,
         change: String? = nil
-    ) -> UICard<Section, EmptyMarkup, Text> {
-        return UICard<Section, EmptyMarkup, Text>(
+    ) -> UICard<MarkupString, EmptyMarkup, MarkupString> {
+        return UICard<MarkupString, EmptyMarkup, MarkupString>(
             variant: .default,
             customClasses: ["stats-card"],
-            header: EmptyMarkup.init,
-            footer: {
-                ElementBuilder.text(change ?? "", classes: change != nil ? ["stats-change"] : [])
-            }
+            header: { EmptyMarkup() },
+            footer: { MarkupString(content: ElementBuilder.text(change ?? "", classes: change != nil ? ["stats-change"] : []).render()) }
         ) {
-            ElementBuilder.section(classes: ["stats-content"]) {
+            MarkupString(content: ElementBuilder.section(classes: ["stats-content"]) {
                 ElementBuilder.text(value, classes: ["stats-value"])
                 ElementBuilder.text(label, classes: ["stats-label"])
-            }
+            }.render())
         }
     }
 }
+*/

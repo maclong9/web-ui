@@ -68,56 +68,123 @@ public struct AnimationTiming: Sendable {
 // MARK: - Easing Functions
 
 /// CSS easing functions for animation timing
-public enum EasingFunction: String, Sendable {
+public enum EasingFunction: Sendable {
     // Standard easing functions
-    case linear = "linear"
-    case ease = "ease"
-    case easeIn = "ease-in"
-    case easeOut = "ease-out"
-    case easeInOut = "ease-in-out"
+    case linear
+    case ease
+    case easeIn
+    case easeOut
+    case easeInOut
     
     // Cubic bezier easing functions
-    case easeInSine = "cubic-bezier(0.12, 0, 0.39, 0)"
-    case easeOutSine = "cubic-bezier(0.61, 1, 0.88, 1)"
-    case easeInOutSine = "cubic-bezier(0.37, 0, 0.63, 1)"
+    case easeInSine
+    case easeOutSine
+    case easeInOutSine
     
-    case easeInQuad = "cubic-bezier(0.11, 0, 0.5, 0)"
-    case easeOutQuad = "cubic-bezier(0.5, 1, 0.89, 1)"
-    case easeInOutQuad = "cubic-bezier(0.45, 0, 0.55, 1)"
+    case easeInQuad
+    case easeOutQuad
+    case easeInOutQuad
     
-    case easeInCubic = "cubic-bezier(0.32, 0, 0.67, 0)"
-    case easeOutCubic = "cubic-bezier(0.33, 1, 0.68, 1)"
-    case easeInOutCubic = "cubic-bezier(0.65, 0, 0.35, 1)"
+    case easeInCubic
+    case easeOutCubic
+    case easeInOutCubic
     
-    case easeInQuart = "cubic-bezier(0.5, 0, 0.75, 0)"
-    case easeOutQuart = "cubic-bezier(0.25, 1, 0.5, 1)"
-    case easeInOutQuart = "cubic-bezier(0.76, 0, 0.24, 1)"
+    case easeInQuart
+    case easeOutQuart
+    case easeInOutQuart
     
-    case easeInQuint = "cubic-bezier(0.64, 0, 0.78, 0)"
-    case easeOutQuint = "cubic-bezier(0.22, 1, 0.36, 1)"
-    case easeInOutQuint = "cubic-bezier(0.83, 0, 0.17, 1)"
+    case easeInQuint
+    case easeOutQuint
+    case easeInOutQuint
     
-    case easeInExpo = "cubic-bezier(0.7, 0, 0.84, 0)"
-    case easeOutExpo = "cubic-bezier(0.16, 1, 0.3, 1)"
-    case easeInOutExpo = "cubic-bezier(0.87, 0, 0.13, 1)"
+    case easeInExpo
+    case easeOutExpo
+    case easeInOutExpo
     
-    case easeInCirc = "cubic-bezier(0.55, 0, 1, 0.45)"
-    case easeOutCirc = "cubic-bezier(0, 0.55, 0.45, 1)"
-    case easeInOutCirc = "cubic-bezier(0.85, 0, 0.15, 1)"
+    case easeInCirc
+    case easeOutCirc
+    case easeInOutCirc
     
-    case easeInBack = "cubic-bezier(0.36, 0, 0.66, -0.56)"
-    case easeOutBack = "cubic-bezier(0.34, 1.56, 0.64, 1)"
-    case easeInOutBack = "cubic-bezier(0.68, -0.6, 0.32, 1.6)"
+    case easeInBack
+    case easeOutBack
+    case easeInOutBack
     
     // Custom cubic bezier
     case custom(String)
     
     public var rawValue: String {
         switch self {
-        case .custom(let value):
-            return value
-        default:
-            return (Mirror(reflecting: self).children.first?.value as? String) ?? "ease"
+        case .linear: return "linear"
+        case .ease: return "ease"
+        case .easeIn: return "ease-in"
+        case .easeOut: return "ease-out"
+        case .easeInOut: return "ease-in-out"
+        case .easeInSine: return "cubic-bezier(0.12, 0, 0.39, 0)"
+        case .easeOutSine: return "cubic-bezier(0.61, 1, 0.88, 1)"
+        case .easeInOutSine: return "cubic-bezier(0.37, 0, 0.63, 1)"
+        case .easeInQuad: return "cubic-bezier(0.11, 0, 0.5, 0)"
+        case .easeOutQuad: return "cubic-bezier(0.5, 1, 0.89, 1)"
+        case .easeInOutQuad: return "cubic-bezier(0.45, 0, 0.55, 1)"
+        case .easeInCubic: return "cubic-bezier(0.32, 0, 0.67, 0)"
+        case .easeOutCubic: return "cubic-bezier(0.33, 1, 0.68, 1)"
+        case .easeInOutCubic: return "cubic-bezier(0.65, 0, 0.35, 1)"
+        case .easeInQuart: return "cubic-bezier(0.5, 0, 0.75, 0)"
+        case .easeOutQuart: return "cubic-bezier(0.25, 1, 0.5, 1)"
+        case .easeInOutQuart: return "cubic-bezier(0.76, 0, 0.24, 1)"
+        case .easeInQuint: return "cubic-bezier(0.64, 0, 0.78, 0)"
+        case .easeOutQuint: return "cubic-bezier(0.22, 1, 0.36, 1)"
+        case .easeInOutQuint: return "cubic-bezier(0.83, 0, 0.17, 1)"
+        case .easeInExpo: return "cubic-bezier(0.7, 0, 0.84, 0)"
+        case .easeOutExpo: return "cubic-bezier(0.16, 1, 0.3, 1)"
+        case .easeInOutExpo: return "cubic-bezier(0.87, 0, 0.13, 1)"
+        case .easeInCirc: return "cubic-bezier(0.55, 0, 1, 0.45)"
+        case .easeOutCirc: return "cubic-bezier(0, 0.55, 0.45, 1)"
+        case .easeInOutCirc: return "cubic-bezier(0.85, 0, 0.15, 1)"
+        case .easeInBack: return "cubic-bezier(0.36, 0, 0.66, -0.56)"
+        case .easeOutBack: return "cubic-bezier(0.34, 1.56, 0.64, 1)"
+        case .easeInOutBack: return "cubic-bezier(0.68, -0.6, 0.32, 1.6)"
+        case .custom(let value): return value
+        }
+    }
+    
+    /// Create an EasingFunction from a raw value string
+    public init?(rawValue: String) {
+        switch rawValue {
+        case "linear": self = .linear
+        case "ease": self = .ease
+        case "ease-in": self = .easeIn
+        case "ease-out": self = .easeOut
+        case "ease-in-out": self = .easeInOut
+        case "cubic-bezier(0.12, 0, 0.39, 0)": self = .easeInSine
+        case "cubic-bezier(0.61, 1, 0.88, 1)": self = .easeOutSine
+        case "cubic-bezier(0.37, 0, 0.63, 1)": self = .easeInOutSine
+        case "cubic-bezier(0.11, 0, 0.5, 0)": self = .easeInQuad
+        case "cubic-bezier(0.5, 1, 0.89, 1)": self = .easeOutQuad
+        case "cubic-bezier(0.45, 0, 0.55, 1)": self = .easeInOutQuad
+        case "cubic-bezier(0.32, 0, 0.67, 0)": self = .easeInCubic
+        case "cubic-bezier(0.33, 1, 0.68, 1)": self = .easeOutCubic
+        case "cubic-bezier(0.65, 0, 0.35, 1)": self = .easeInOutCubic
+        case "cubic-bezier(0.5, 0, 0.75, 0)": self = .easeInQuart
+        case "cubic-bezier(0.25, 1, 0.5, 1)": self = .easeOutQuart
+        case "cubic-bezier(0.76, 0, 0.24, 1)": self = .easeInOutQuart
+        case "cubic-bezier(0.64, 0, 0.78, 0)": self = .easeInQuint
+        case "cubic-bezier(0.22, 1, 0.36, 1)": self = .easeOutQuint
+        case "cubic-bezier(0.83, 0, 0.17, 1)": self = .easeInOutQuint
+        case "cubic-bezier(0.7, 0, 0.84, 0)": self = .easeInExpo
+        case "cubic-bezier(0.16, 1, 0.3, 1)": self = .easeOutExpo
+        case "cubic-bezier(0.87, 0, 0.13, 1)": self = .easeInOutExpo
+        case "cubic-bezier(0.55, 0, 1, 0.45)": self = .easeInCirc
+        case "cubic-bezier(0, 0.55, 0.45, 1)": self = .easeOutCirc
+        case "cubic-bezier(0.85, 0, 0.15, 1)": self = .easeInOutCirc
+        case "cubic-bezier(0.36, 0, 0.66, -0.56)": self = .easeInBack
+        case "cubic-bezier(0.34, 1.56, 0.64, 1)": self = .easeOutBack
+        case "cubic-bezier(0.68, -0.6, 0.32, 1.6)": self = .easeInOutBack
+        default: 
+            if rawValue.hasPrefix("cubic-bezier(") {
+                self = .custom(rawValue)
+            } else {
+                return nil
+            }
         }
     }
 }

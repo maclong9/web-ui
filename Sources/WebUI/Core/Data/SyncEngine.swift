@@ -264,7 +264,11 @@ extension SyncEngine {
             // 3. Sync to persistent storage if available
             if let persistentRepo = persistentRepository {
                 let currentItems = try await localRepository.getAll()
-                await persistentRepo.setAll(currentItems)
+                // Clear and recreate all items in persistent storage
+                await persistentRepo.invalidateAll()
+                for item in currentItems {
+                    try? await persistentRepo.create(item)
+                }
             }
             
         } catch {
@@ -313,7 +317,7 @@ extension SyncEngine {
         var conflicts = 0
         
         // Process queued operations
-        let operations = operationQueue.sorted { $0.priority > $1.priority }
+        let operations = operationQueue.sorted(by: { $0.priority > $1.priority })
         operationQueue.removeAll()
         
         for operation in operations {

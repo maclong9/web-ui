@@ -260,13 +260,26 @@ public final class DataService: ObservableObject {
 
 // MARK: - State Integration Example
 
+/// Simple error wrapper that conforms to Codable
+public struct ViewModelError: Error, Codable, Sendable {
+    public let message: String
+    
+    public init(_ message: String) {
+        self.message = message
+    }
+    
+    public init(_ error: Error) {
+        self.message = error.localizedDescription
+    }
+}
+
 /// Example showing integration with WebUI state management
 @MainActor
 public final class UserListViewModel: ObservableObject {
     
     @Published public private(set) var users: [User] = []
     @Published public private(set) var isLoading = false
-    @Published public private(set) var error: Error?
+    @Published public private(set) var error: ViewModelError?
     
     private let dataService: DataService
     private var observationTask: Task<Void, Never>?
@@ -286,7 +299,7 @@ public final class UserListViewModel: ObservableObject {
             startObserving()
             
         } catch {
-            self.error = error
+            self.error = ViewModelError(error)
         }
         
         isLoading = false
@@ -304,7 +317,7 @@ public final class UserListViewModel: ObservableObject {
             await dataService.userSyncEngine.queueCreate(createdUser, priority: .high)
             
         } catch {
-            self.error = error
+            self.error = ViewModelError(error)
         }
     }
     
@@ -314,7 +327,7 @@ public final class UserListViewModel: ObservableObject {
             await dataService.userSyncEngine.queueDelete(id: id, priority: .high)
             
         } catch {
-            self.error = error
+            self.error = ViewModelError(error)
         }
     }
     

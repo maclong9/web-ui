@@ -81,23 +81,27 @@ extension DataSource {
     public func fetchBatch(ids: [DataType.ID]) async throws -> [DataType.ID: DataType] {
         var results: [DataType.ID: DataType] = [:]
         
-        await withThrowingTaskGroup(of: (DataType.ID, DataType?).self) { group in
-            for id in ids {
-                group.addTask {
-                    do {
-                        let item = try await self.fetch(id: id)
-                        return (id, item)
-                    } catch {
-                        return (id, nil)
+        do {
+            try await withThrowingTaskGroup(of: (DataType.ID, DataType?).self) { group in
+                for id in ids {
+                    group.addTask {
+                        do {
+                            let item = try await self.fetch(id: id)
+                            return (id, item)
+                        } catch {
+                            return (id, nil)
+                        }
+                    }
+                }
+                
+                for try await (id, item) in group {
+                    if let item = item {
+                        results[id] = item
                     }
                 }
             }
-            
-            for await (id, item) in group {
-                if let item = item {
-                    results[id] = item
-                }
-            }
+        } catch {
+            // Should not happen since individual tasks don't throw
         }
         
         return results
@@ -148,7 +152,7 @@ public protocol ObservableDataSource: DataSource {
 }
 
 /// Represents a change event in an observable data source
-public enum DataSourceChange<DataType: Identifiable & Sendable>: Sendable {
+public enum DataSourceChange<DataType: Identifiable & Sendable>: Sendable where DataType.ID: Sendable {
     case created(DataType)
     case updated(DataType)
     case deleted(DataType.ID)

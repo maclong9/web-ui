@@ -143,9 +143,9 @@ public struct BuiltAnimationSequence: Animation {
 /// Represents a conditional animation that can be enabled or disabled
 public struct ConditionalAnimation: Animation {
     private let animation: Animation
-    private let condition: () -> Bool
+    private let condition: @Sendable () -> Bool
     
-    public init(_ animation: Animation, when condition: @escaping () -> Bool) {
+    public init(_ animation: Animation, when condition: @escaping @Sendable () -> Bool) {
         self.animation = animation
         self.condition = condition
     }
@@ -242,7 +242,7 @@ public struct TimelineAnimation: Animation {
     private let keyframes: [TimelineKeyframe]
     private let totalDuration: TimeInterval
     
-    public struct TimelineKeyframe {
+    public struct TimelineKeyframe: Sendable {
         let time: TimeInterval // 0.0 to 1.0
         let properties: [AnimationProperty]
         

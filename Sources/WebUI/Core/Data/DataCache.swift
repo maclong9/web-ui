@@ -280,10 +280,10 @@ public actor InMemoryCache<DataType: Codable & Sendable & Identifiable>: DataCac
         entries.removeAll()
         accessOrder.removeAll()
         
-        stats = CacheStats(
-            hits: stats.hits,
-            misses: stats.misses,
-            evictions: stats.evictions,
+        _stats = CacheStats(
+            hits: _stats.hits,
+            misses: _stats.misses,
+            evictions: _stats.evictions,
             size: 0,
             maxSize: maxSize
         )
