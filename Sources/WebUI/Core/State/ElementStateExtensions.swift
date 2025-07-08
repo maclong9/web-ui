@@ -115,7 +115,7 @@ extension Element {
     ///   - className: CSS class to add
     ///   - condition: JavaScript expression that evaluates to boolean
     /// - Returns: The element with conditional classes
-    public func class(_ className: String, when condition: String) -> Element {
+    public func className(_ className: String, when condition: String) -> Element {
         return self.classes([className], when: condition)
     }
     
