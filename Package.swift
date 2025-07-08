@@ -23,12 +23,7 @@ let package = Package(
                 .product(name: "Markdown", package: "swift-markdown")
             ]
         ),
-        .target(
-            name: "WebUIDevServer",
-            path: "Sources/WebUI/Core/DevServer"
-        ),
         .testTarget(name: "WebUITests", dependencies: ["WebUI"]),
         .testTarget(name: "WebUIMarkdownTests", dependencies: ["WebUIMarkdown"]),
-        .testTarget(name: "WebUIDevServerTests", dependencies: ["WebUIDevServer"]),
     ]
 )

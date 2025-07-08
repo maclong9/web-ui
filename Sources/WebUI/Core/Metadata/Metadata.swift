@@ -79,7 +79,7 @@ public struct Metadata {
     ///     title: "Welcome",
     ///     titleSeparator: " | ",
     ///     description: "A modern website built with WebUI",
-    ///     author: "John Doe",
+    ///     author: "Jane Doe",
     ///     keywords: ["swift", "web", "ui"],
     ///     locale: .en,
     ///     themeColor: ThemeColor("#3366ff"),

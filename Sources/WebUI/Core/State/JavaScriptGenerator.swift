@@ -414,20 +414,37 @@ public struct JavaScriptGenerator: Sendable {
     /// - Parameter value: The value to serialize
     /// - Returns: JSON string representation
     private func serializeToJSON(_ value: Any) -> String {
+        // Handle basic types first
+        if let stringValue = value as? String {
+            return "\"\(stringValue.replacingOccurrences(of: "\"", with: "\\\""))\""
+        } else if let boolValue = value as? Bool {
+            return boolValue ? "true" : "false"
+        } else if let intValue = value as? Int {
+            return String(intValue)
+        } else if let doubleValue = value as? Double {
+            return String(doubleValue)
+        } else if let floatValue = value as? Float {
+            return String(floatValue)
+        }
+        
+        // Try to encode Codable types using JSONEncoder first
+        if let codableValue = value as? any Codable {
+            do {
+                let encoder = JSONEncoder()
+                let data = try encoder.encode(AnyEncodable(codableValue))
+                return String(data: data, encoding: .utf8) ?? "null"
+            } catch {
+                // Continue to next approach
+            }
+        }
+        
+        // Try JSON serialization for Foundation types (Array, Dictionary, etc.)
         do {
             let data = try JSONSerialization.data(withJSONObject: value, options: [])
             return String(data: data, encoding: .utf8) ?? "null"
         } catch {
-            // Fallback for non-JSON serializable types
-            if let stringValue = value as? String {
-                return "\"\(stringValue.replacingOccurrences(of: "\"", with: "\\\""))\""
-            } else if let numberValue = value as? NSNumber {
-                return numberValue.stringValue
-            } else if let boolValue = value as? Bool {
-                return boolValue ? "true" : "false"
-            } else {
-                return "null"
-            }
+            // Final fallback - try to convert to string representation
+            return "\"\(String(describing: value).replacingOccurrences(of: "\"", with: "\\\""))\""
         }
     }
 }
@@ -495,4 +512,19 @@ public enum ButtonAction {
     case decrement
     case toggle
     case custom(String)
+}
+
+// MARK: - Helper Types
+
+/// Helper type to encode any Codable value
+private struct AnyEncodable: Encodable {
+    private let encodableValue: any Encodable
+    
+    init(_ value: any Codable) {
+        self.encodableValue = value
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        try encodableValue.encode(to: encoder)
+    }
 }

@@ -140,9 +140,6 @@ public struct ClickHandlerMarkup<Content: Markup>: Markup {
     }
     
     private func addClickHandler(to html: String) -> String {
-        // Generate unique ID for the element if it doesn't have one
-        let elementID = "webui-element-\(UUID().uuidString.prefix(8))"
-        
         // Find the first opening tag
         guard let tagRange = html.range(of: "<[^>]+>", options: .regularExpression) else {
             return html // Return original if no tag found
@@ -150,12 +147,18 @@ public struct ClickHandlerMarkup<Content: Markup>: Markup {
         
         let tag = html[tagRange]
         var modifiedTag = String(tag)
+        var actualElementID: String
         
-        // Add ID if not present
-        if !modifiedTag.contains(" id=\"") {
+        // Extract existing ID or generate new one
+        if let idMatch = modifiedTag.range(of: "id=\"([^\"]+)\"", options: .regularExpression) {
+            let idString = String(modifiedTag[idMatch])
+            actualElementID = String(idString.dropFirst(4).dropLast(1)) // Remove id=" and "
+        } else {
+            // Generate unique ID for the element if it doesn't have one
+            actualElementID = "webui-element-\(UUID().uuidString.prefix(8))"
             modifiedTag = modifiedTag.replacingOccurrences(
                 of: ">$",
-                with: " id=\"\(elementID)\">",
+                with: " id=\"\(actualElementID)\">",
                 options: .regularExpression
             )
         }
@@ -165,7 +168,7 @@ public struct ClickHandlerMarkup<Content: Markup>: Markup {
         // Generate the click handler script
         let generator = JavaScriptGenerator()
         let clickScript = generator.generateButtonHandler(
-            buttonID: elementID,
+            buttonID: actualElementID,
             stateID: stateID,
             action: action
         )
@@ -324,3 +327,8 @@ extension UInt8: Numeric {}
 extension UInt16: Numeric {}
 extension UInt32: Numeric {}
 extension UInt64: Numeric {}
+
+// MARK: - Type Aliases for Backward Compatibility
+
+/// Type alias for ButtonAction to support StateAction naming in tests
+public typealias StateAction = ButtonAction

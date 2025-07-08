@@ -20,7 +20,7 @@ extension StructuredData {
     ///   let articleData = StructuredData.article(
     ///     headline: "How to Use WebUI",
     ///     image: "https://example.com/images/article.jpg",
-    ///     author: "John Doe",
+    ///     author: "Jane Doe",
     ///     publisher: "WebUI Blog",
     ///     datePublished: Date(),
     ///     description: "A guide to using WebUI for Swift developers"
@@ -36,7 +36,7 @@ extension StructuredData {
     ///   let articleWithOrg = StructuredData.article(
     ///     headline: "How to Use WebUI",
     ///     image: "https://example.com/images/article.jpg",
-    ///     author: "John Doe",
+    ///     author: "Jane Doe",
     ///     publisher: orgPublisher,
     ///     datePublished: Date(),
     ///     description: "A guide to using WebUI for Swift developers"

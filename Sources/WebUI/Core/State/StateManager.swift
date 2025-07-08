@@ -20,7 +20,7 @@ public enum StateScope: String, CaseIterable, Codable, Sendable {
 ///
 /// ```swift
 /// let stateManager = StateManager.shared
-/// let userState = State(initialValue: "John Doe")
+/// let userState = State(initialValue: "Jane Doe")
 /// stateManager.registerState(userState, withID: "userName")
 /// ```
 public final class StateManager: @unchecked Sendable {
