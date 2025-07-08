@@ -135,6 +135,9 @@ extension Website {
             }
         }
 
+        // Generate state scripts first (before building routes)
+        try generateStateScripts(in: outputDirectory)
+
         // Build each route
         let routes = try self.routes  // Fetch routes, propagating errors
         for route in routes {
@@ -155,6 +158,9 @@ extension Website {
     private func buildRoute(_ route: any Document, in directory: URL) throws {
         // Get the route's path, defaulting to index for root
         let path = route.path ?? "index"
+
+        // Generate document-specific state scripts if needed
+        try route.generateStateScripts(in: directory, path: path)
 
         // Create the full path for the HTML file
         var components = path.split(separator: "/")
