@@ -366,4 +366,3 @@ struct MetadataTests {
         #expect(json.contains("\"streetAddress\":\"123 Main St\""))
     }
 }
-

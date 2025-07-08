@@ -7,7 +7,7 @@ import Foundation
 /// This extension enables any Markup element to include JavaScript generation
 /// and state binding attributes in the rendered output.
 extension Markup {
-    
+
     /// Binds this markup element to a state instance for automatic updates.
     ///
     /// This method adds the necessary data attributes to enable JavaScript
@@ -18,18 +18,18 @@ extension Markup {
     ///   - property: The DOM property to bind (textContent, value, checked, etc.)
     /// - Returns: Modified markup with state binding attributes
     public func bindToState<T: Codable & Sendable>(
-        _ state: any StateProtocol<T>, 
+        _ state: any StateProtocol<T>,
         property: DOMProperty = .textContent
     ) -> StateBoundMarkup<Self> {
         let stateID = state.stateID ?? "uninitialized_state"
-        
+
         return StateBoundMarkup(
             content: self,
             stateID: stateID,
             property: property
         )
     }
-    
+
     /// Adds a click handler that updates the specified state.
     ///
     /// This method generates JavaScript that will execute when the element
@@ -44,14 +44,14 @@ extension Markup {
         action: ButtonAction
     ) -> ClickHandlerMarkup<Self> {
         let stateID = state.stateID ?? "uninitialized_state"
-        
+
         return ClickHandlerMarkup(
             content: self,
             stateID: stateID,
             action: action
         )
     }
-    
+
     /// Includes JavaScript state management code in the rendered output.
     ///
     /// This method adds a script tag containing the generated JavaScript
@@ -59,7 +59,7 @@ extension Markup {
     ///
     /// - Returns: Modified markup with embedded JavaScript
     public func includeStateManagement() -> StateManagementMarkup<Self> {
-        return StateManagementMarkup(content: self)
+        StateManagementMarkup(content: self)
     }
 }
 
@@ -85,36 +85,36 @@ public struct StateBoundMarkup<Content: Markup>: Markup {
     private let content: Content
     private let stateID: String
     private let property: DOMProperty
-    
+
     public init(content: Content, stateID: String, property: DOMProperty) {
         self.content = content
         self.stateID = stateID
         self.property = property
     }
-    
+
     public var body: MarkupString {
         let renderedContent = content.render()
         let enhancedContent = addStateAttributes(to: renderedContent)
         return MarkupString(content: enhancedContent)
     }
-    
+
     private func addStateAttributes(to html: String) -> String {
         // Find the first opening tag
         guard let tagRange = html.range(of: "<[^>]+>", options: .regularExpression) else {
             // If no tag found, wrap in a span
             return "<span data-webui-state=\"\(stateID)\" data-webui-property=\"\(property.rawValue)\">\(html)</span>"
         }
-        
+
         let tag = html[tagRange]
         let stateAttributes = " data-webui-state=\"\(stateID)\" data-webui-property=\"\(property.rawValue)\""
-        
+
         // Insert state attributes before the closing >
         let modifiedTag = String(tag).replacingOccurrences(
             of: ">$",
             with: "\(stateAttributes)>",
             options: .regularExpression
         )
-        
+
         return html.replacingCharacters(in: tagRange, with: modifiedTag)
     }
 }
@@ -126,33 +126,33 @@ public struct ClickHandlerMarkup<Content: Markup>: Markup {
     private let content: Content
     private let stateID: String
     private let action: ButtonAction
-    
+
     public init(content: Content, stateID: String, action: ButtonAction) {
         self.content = content
         self.stateID = stateID
         self.action = action
     }
-    
+
     public var body: MarkupString {
         let renderedContent = content.render()
         let enhancedContent = addClickHandler(to: renderedContent)
         return MarkupString(content: enhancedContent)
     }
-    
+
     private func addClickHandler(to html: String) -> String {
         // Find the first opening tag
         guard let tagRange = html.range(of: "<[^>]+>", options: .regularExpression) else {
-            return html // Return original if no tag found
+            return html  // Return original if no tag found
         }
-        
+
         let tag = html[tagRange]
         var modifiedTag = String(tag)
         var actualElementID: String
-        
+
         // Extract existing ID or generate new one
         if let idMatch = modifiedTag.range(of: "id=\"([^\"]+)\"", options: .regularExpression) {
             let idString = String(modifiedTag[idMatch])
-            actualElementID = String(idString.dropFirst(4).dropLast(1)) // Remove id=" and "
+            actualElementID = String(idString.dropFirst(4).dropLast(1))  // Remove id=" and "
         } else {
             // Generate unique ID for the element if it doesn't have one
             actualElementID = "webui-element-\(UUID().uuidString.prefix(8))"
@@ -162,9 +162,9 @@ public struct ClickHandlerMarkup<Content: Markup>: Markup {
                 options: .regularExpression
             )
         }
-        
+
         let htmlWithID = html.replacingCharacters(in: tagRange, with: modifiedTag)
-        
+
         // Generate the click handler script
         let generator = JavaScriptGenerator()
         let clickScript = generator.generateButtonHandler(
@@ -172,7 +172,7 @@ public struct ClickHandlerMarkup<Content: Markup>: Markup {
             stateID: stateID,
             action: action
         )
-        
+
         // Append the script after the element
         return "\(htmlWithID)\n<script>\n\(clickScript)\n</script>"
     }
@@ -183,15 +183,15 @@ public struct ClickHandlerMarkup<Content: Markup>: Markup {
 /// A markup container that includes the complete state management JavaScript.
 public struct StateManagementMarkup<Content: Markup>: Markup {
     private let content: Content
-    
+
     public init(content: Content) {
         self.content = content
     }
-    
+
     public var body: MarkupString {
         let renderedContent = content.render()
         let stateScript = generateStateScript()
-        
+
         // Insert the script before the closing </body> tag if present
         if let bodyEndRange = renderedContent.range(of: "</body>", options: [.caseInsensitive, .backwards]) {
             let contentWithScript = renderedContent.replacingCharacters(
@@ -204,12 +204,12 @@ public struct StateManagementMarkup<Content: Markup>: Markup {
             return MarkupString(content: "\(renderedContent)\n\(stateScript)")
         }
     }
-    
+
     private func generateStateScript() -> String {
         let generator = JavaScriptGenerator()
         let stateManager = StateManager.shared
         let allStates = stateManager.getAllStateIDs()
-        
+
         // Get all registered states for JavaScript generation
         var stateData: [String: any StateProtocolErased] = [:]
         for stateID in allStates {
@@ -217,7 +217,7 @@ public struct StateManagementMarkup<Content: Markup>: Markup {
                 stateData[stateID] = state
             }
         }
-        
+
         let script = generator.generateCompleteScript(for: stateData)
         return "<script>\n\(script)\n</script>"
     }
@@ -227,7 +227,7 @@ public struct StateManagementMarkup<Content: Markup>: Markup {
 
 /// Extensions to common Element types for convenient state integration.
 extension Element {
-    
+
     /// Creates a button that increments a numeric state when clicked.
     ///
     /// - Parameters:
@@ -238,10 +238,10 @@ extension Element {
         _ text: String,
         state: any StateProtocol<T>
     ) -> ClickHandlerMarkup<Button> {
-        return Button(text)
+        Button(text)
             .onClick(state, action: .increment)
     }
-    
+
     /// Creates a button that toggles a boolean state when clicked.
     ///
     /// - Parameters:
@@ -252,7 +252,7 @@ extension Element {
         _ text: String,
         state: any StateProtocol<Bool>
     ) -> ClickHandlerMarkup<Button> {
-        return Button(text)
+        Button(text)
             .onClick(state, action: .toggle)
     }
 }
@@ -265,10 +265,10 @@ extension Element {
 /// - Returns: Text element bound to the state
 public func StateText<T: Codable & Sendable>(_ state: any StateProtocol<T>) -> StateBoundMarkup<Text> {
     let stateID = state.stateID ?? "uninitialized_state"
-    
+
     // Get current value for initial display
     let currentValue = StateManager.shared.getStateValue(withID: stateID) ?? ""
-    
+
     return Text(String(describing: currentValue))
         .bindToState(state, property: .textContent)
 }

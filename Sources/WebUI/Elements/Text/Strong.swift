@@ -70,7 +70,11 @@ public struct Strong: Element {
     ///   "Important security notice"
     /// }
     /// ```
-    @available(*, deprecated, message: "Use Strong(_:) string initializer instead for better SwiftUI compatibility. Example: Strong(\"Important text\")")
+    @available(
+        *, deprecated,
+        message:
+            "Use Strong(_:) string initializer instead for better SwiftUI compatibility. Example: Strong(\"Important text\")"
+    )
     public init(
         id: String? = nil,
         classes: [String]? = nil,

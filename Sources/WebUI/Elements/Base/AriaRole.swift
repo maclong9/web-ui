@@ -91,17 +91,17 @@ public enum AriaRole: String {
     ///
     /// Used for non-critical updates and status information.
     case status
-    
+
     /// Identifies a separator element.
     ///
     /// Used for visual separators like dividers or horizontal rules.
     case separator
-    
+
     /// Identifies an alert dialog.
     ///
     /// Used for modal dialogs that interrupt the user with critical information.
     case alertdialog
-    
+
     /// Identifies a menu of choices or commands.
     ///
     /// Used for popup menus and dropdown menus.

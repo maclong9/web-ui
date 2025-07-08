@@ -24,6 +24,6 @@ public struct Group<Content: Markup>: Markup {
     }
 
     public var body: MarkupString {
-        return MarkupString(content: content.render())
+        MarkupString(content: content.render())
     }
 }

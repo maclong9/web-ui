@@ -16,7 +16,7 @@ public struct Text: Element {
     ///
     /// This is the preferred SwiftUI-like initializer for creating text elements.
     /// Uses `<p>` for multiple sentences, `<span>` for one or fewer.
-    /// 
+    ///
     /// The content string is automatically checked for localization keys. If the string
     /// appears to be a localization key (e.g., "welcome_message", "app.title"), it will
     /// be resolved using the current localization settings.
@@ -48,12 +48,12 @@ public struct Text: Element {
         self.role = role
         self.label = label
         self.data = data
-        
+
         // Resolve localization if the content appears to be a localization key
         let resolvedContent = LocalizationManager.shared.resolveIfLocalizationKey(content)
         self.contentBuilder = { [resolvedContent] }
     }
-    
+
     /// Creates a new text element with explicit localization key support.
     ///
     /// This initializer provides explicit control over localization, allowing you to
@@ -87,7 +87,7 @@ public struct Text: Element {
         self.role = role
         self.label = label
         self.data = data
-        
+
         // Resolve the localization key explicitly
         let resolvedContent = LocalizationManager.shared.resolveKey(localizationKey)
         self.contentBuilder = { [resolvedContent] }

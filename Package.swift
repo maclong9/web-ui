@@ -4,9 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "web-ui",
-    platforms: [
-        .macOS(.v15),
-    ],
+    platforms: [.macOS(.v15)],
     products: [
         .library(name: "WebUI", targets: ["WebUI"]),
         .library(name: "WebUIMarkdown", targets: ["WebUIMarkdown"]),

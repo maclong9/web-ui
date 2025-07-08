@@ -17,26 +17,26 @@ public enum TextSize: Hashable, Sendable {
     case large
     case extraLarge
     case custom(Double)
-    
+
     /// Medium is an alias for body
     @MainActor public static let medium: TextSize = .body
-    
+
     /// CSS value for this text size
     public var cssValue: String {
         switch self {
-        case .caption2: return "0.75rem"
-        case .caption: return "0.8125rem"
-        case .footnote: return "0.875rem"
-        case .subheadline: return "0.9375rem"
-        case .callout: return "1rem"
-        case .body: return "1rem"
-        case .headline: return "1.125rem"
-        case .title3: return "1.25rem"
-        case .title2: return "1.375rem"
-        case .title: return "1.5rem"
-        case .large: return "1.75rem"
-        case .extraLarge: return "2rem"
-        case .custom(let size): return "\(size)rem"
+            case .caption2: return "0.75rem"
+            case .caption: return "0.8125rem"
+            case .footnote: return "0.875rem"
+            case .subheadline: return "0.9375rem"
+            case .callout: return "1rem"
+            case .body: return "1rem"
+            case .headline: return "1.125rem"
+            case .title3: return "1.25rem"
+            case .title2: return "1.375rem"
+            case .title: return "1.5rem"
+            case .large: return "1.75rem"
+            case .extraLarge: return "2rem"
+            case .custom(let size): return "\(size)rem"
         }
     }
 }
@@ -52,19 +52,19 @@ public enum Weight: Hashable, Sendable {
     case bold
     case heavy
     case black
-    
+
     /// CSS value for this weight
     public var cssValue: String {
         switch self {
-        case .ultraLight: return "100"
-        case .thin: return "200"
-        case .light: return "300"
-        case .regular: return "400"
-        case .medium: return "500"
-        case .semibold: return "600"
-        case .bold: return "700"
-        case .heavy: return "800"
-        case .black: return "900"
+            case .ultraLight: return "100"
+            case .thin: return "200"
+            case .light: return "300"
+            case .regular: return "400"
+            case .medium: return "500"
+            case .semibold: return "600"
+            case .bold: return "700"
+            case .heavy: return "800"
+            case .black: return "900"
         }
     }
 }
@@ -75,14 +75,14 @@ public enum Alignment: Hashable, Sendable {
     case center
     case trailing
     case justified
-    
+
     /// CSS value for this alignment
     public var cssValue: String {
         switch self {
-        case .leading: return "left"
-        case .center: return "center"
-        case .trailing: return "right"
-        case .justified: return "justify"
+            case .leading: return "left"
+            case .center: return "center"
+            case .trailing: return "right"
+            case .justified: return "justify"
         }
     }
 }
@@ -94,15 +94,15 @@ public enum Leading: Hashable, Sendable {
     case normal
     case relaxed
     case loose
-    
+
     /// CSS value for this line height
     public var cssValue: String {
         switch self {
-        case .tight: return "1.25"
-        case .snug: return "1.375"
-        case .normal: return "1.5"
-        case .relaxed: return "1.625"
-        case .loose: return "2"
+            case .tight: return "1.25"
+            case .snug: return "1.375"
+            case .normal: return "1.5"
+            case .relaxed: return "1.625"
+            case .loose: return "2"
         }
     }
 }
@@ -115,16 +115,16 @@ public enum Tracking: Hashable, Sendable {
     case wide
     case wider
     case widest
-    
+
     /// CSS value for this letter spacing
     public var cssValue: String {
         switch self {
-        case .tighter: return "-0.05em"
-        case .tight: return "-0.025em"
-        case .normal: return "0"
-        case .wide: return "0.025em"
-        case .wider: return "0.05em"
-        case .widest: return "0.1em"
+            case .tighter: return "-0.05em"
+            case .tight: return "-0.025em"
+            case .normal: return "0"
+            case .wide: return "0.025em"
+            case .wider: return "0.05em"
+            case .widest: return "0.1em"
         }
     }
 }
@@ -134,13 +134,13 @@ public enum Decoration: Hashable, Sendable {
     case none
     case underline
     case strikethrough
-    
+
     /// CSS value for this decoration
     public var cssValue: String {
         switch self {
-        case .none: return "none"
-        case .underline: return "underline"
-        case .strikethrough: return "line-through"
+            case .none: return "none"
+            case .underline: return "underline"
+            case .strikethrough: return "line-through"
         }
     }
 }
@@ -160,12 +160,12 @@ public enum Decoration: Hashable, Sendable {
 ///         font(size: .extraLarge, weight: .bold)
 ///         spacing(bottom: .large)
 ///     }
-///     
+///
 ///     body {
 ///         font(family: "system-ui", size: .medium)
 ///         spacing(bottom: .medium)
 ///     }
-///     
+///
 ///     code {
 ///         font(family: "monospace")
 ///         background(color: .gray(._100))
@@ -174,32 +174,32 @@ public enum Decoration: Hashable, Sendable {
 /// }
 /// ```
 public struct MarkdownTypography: Sendable {
-    
+
     // MARK: - Typography Style Definitions
-    
+
     /// A typography style that can be applied to markdown elements.
     public struct TypographyStyle: Sendable {
         /// Font styling properties
         public var font: FontProperties?
-        
+
         /// Background styling properties
         public var background: BackgroundProperties?
-        
+
         /// Padding properties
         public var padding: PaddingProperties?
-        
+
         /// Margin properties
         public var margins: MarginProperties?
-        
+
         /// Border properties
         public var border: BorderProperties?
-        
+
         /// Additional CSS classes to apply
         public var cssClasses: Set<String>
-        
+
         /// Additional CSS properties as key-value pairs
         public var customProperties: [String: String]
-        
+
         /// Initialize a typography style
         public init(
             font: FontProperties? = nil,
@@ -218,7 +218,7 @@ public struct MarkdownTypography: Sendable {
             self.cssClasses = cssClasses
             self.customProperties = customProperties
         }
-        
+
         /// Merge this style with another, with the other style taking precedence
         public func merging(with other: TypographyStyle) -> TypographyStyle {
             // Merge font properties individually to preserve existing values
@@ -238,7 +238,7 @@ public struct MarkdownTypography: Sendable {
             } else {
                 mergedFont = other.font ?? self.font
             }
-            
+
             return TypographyStyle(
                 font: mergedFont,
                 background: other.background ?? self.background,
@@ -249,11 +249,11 @@ public struct MarkdownTypography: Sendable {
                 customProperties: self.customProperties.merging(other.customProperties) { _, new in new }
             )
         }
-        
+
         /// Generate CSS declaration for this style
         public func generateCSS() -> String {
             var cssProperties: [String] = []
-            
+
             // Font properties
             if let font = font {
                 if let family = font.family {
@@ -281,7 +281,7 @@ public struct MarkdownTypography: Sendable {
                     cssProperties.append("text-transform: \(textTransform)")
                 }
             }
-            
+
             // Background properties
             if let background = background {
                 if let color = background.color {
@@ -291,7 +291,7 @@ public struct MarkdownTypography: Sendable {
                     cssProperties.append("background-opacity: \(opacity)")
                 }
             }
-            
+
             // Padding properties
             if let padding = padding {
                 if let top = padding.top { cssProperties.append("padding-top: \(top)") }
@@ -299,7 +299,7 @@ public struct MarkdownTypography: Sendable {
                 if let bottom = padding.bottom { cssProperties.append("padding-bottom: \(bottom)") }
                 if let left = padding.left { cssProperties.append("padding-left: \(left)") }
             }
-            
+
             // Margin properties
             if let margins = margins {
                 if let top = margins.top { cssProperties.append("margin-top: \(top)") }
@@ -307,7 +307,7 @@ public struct MarkdownTypography: Sendable {
                 if let bottom = margins.bottom { cssProperties.append("margin-bottom: \(bottom)") }
                 if let left = margins.left { cssProperties.append("margin-left: \(left)") }
             }
-            
+
             // Border properties
             if let border = border {
                 if let width = border.width { cssProperties.append("border-width: \(width)") }
@@ -315,23 +315,23 @@ public struct MarkdownTypography: Sendable {
                 if let color = border.color { cssProperties.append("border-color: \(color)") }
                 if let radius = border.radius { cssProperties.append("border-radius: \(radius)") }
             }
-            
+
             // Custom properties
             for (key, value) in customProperties {
                 cssProperties.append("\(key): \(value)")
             }
-            
+
             return cssProperties.joined(separator: "; ")
         }
-        
+
         /// Merge this style with another style, with the other style taking precedence
         public func merged(with other: TypographyStyle) -> TypographyStyle {
-            return self.merging(with: other)
+            self.merging(with: other)
         }
     }
-    
+
     // MARK: - Style Property Types
-    
+
     /// Font properties for typography styling
     public struct FontProperties: Sendable {
         public let family: String?
@@ -343,7 +343,7 @@ public struct MarkdownTypography: Sendable {
         public let letterSpacing: Tracking?
         public let textDecoration: Decoration?
         public let textTransform: String?
-        
+
         public init(
             family: String? = nil,
             size: TextSize? = nil,
@@ -366,46 +366,46 @@ public struct MarkdownTypography: Sendable {
             self.textTransform = textTransform
         }
     }
-    
+
     /// Background properties for styling
     public struct BackgroundProperties: Sendable {
         public let color: String?
         public let opacity: Double?
-        
+
         public init(color: String? = nil, opacity: Double? = nil) {
             self.color = color
             self.opacity = opacity
         }
     }
-    
+
     /// Padding properties
     public struct PaddingProperties: Sendable {
         public let top: String?
         public let right: String?
         public let bottom: String?
         public let left: String?
-        
+
         public init(top: String? = nil, right: String? = nil, bottom: String? = nil, left: String? = nil) {
             self.top = top
             self.right = right
             self.bottom = bottom
             self.left = left
         }
-        
+
         public init(all: String) {
             self.top = all
             self.right = all
             self.bottom = all
             self.left = all
         }
-        
+
         public init(vertical: String, horizontal: String) {
             self.top = vertical
             self.bottom = vertical
             self.left = horizontal
             self.right = horizontal
         }
-        
+
         /// Computed property for checking if all padding is set to the same value
         public var all: String? {
             if let top = top, top == right && top == bottom && top == left {
@@ -413,7 +413,7 @@ public struct MarkdownTypography: Sendable {
             }
             return nil
         }
-        
+
         /// Computed property for vertical padding (top/bottom)
         public var vertical: String? {
             if let top = top, top == bottom {
@@ -421,7 +421,7 @@ public struct MarkdownTypography: Sendable {
             }
             return nil
         }
-        
+
         /// Computed property for horizontal padding (left/right)
         public var horizontal: String? {
             if let left = left, left == right {
@@ -430,35 +430,35 @@ public struct MarkdownTypography: Sendable {
             return nil
         }
     }
-    
+
     /// Margin properties
     public struct MarginProperties: Sendable {
         public let top: String?
         public let right: String?
         public let bottom: String?
         public let left: String?
-        
+
         public init(top: String? = nil, right: String? = nil, bottom: String? = nil, left: String? = nil) {
             self.top = top
             self.right = right
             self.bottom = bottom
             self.left = left
         }
-        
+
         public init(all: String) {
             self.top = all
             self.right = all
             self.bottom = all
             self.left = all
         }
-        
+
         public init(vertical: String, horizontal: String) {
             self.top = vertical
             self.bottom = vertical
             self.left = horizontal
             self.right = horizontal
         }
-        
+
         /// Computed property for checking if all margins are set to the same value
         public var all: String? {
             if let top = top, top == right && top == bottom && top == left {
@@ -466,7 +466,7 @@ public struct MarkdownTypography: Sendable {
             }
             return nil
         }
-        
+
         /// Computed property for vertical margins (top/bottom)
         public var vertical: String? {
             if let top = top, top == bottom {
@@ -474,7 +474,7 @@ public struct MarkdownTypography: Sendable {
             }
             return nil
         }
-        
+
         /// Computed property for horizontal margins (left/right)
         public var horizontal: String? {
             if let left = left, left == right {
@@ -483,14 +483,14 @@ public struct MarkdownTypography: Sendable {
             return nil
         }
     }
-    
+
     /// Border properties
     public struct BorderProperties: Sendable {
         public let width: String?
         public let style: String?
         public let color: String?
         public let radius: String?
-        
+
         public init(width: String? = nil, style: String? = nil, color: String? = nil, radius: String? = nil) {
             self.width = width
             self.style = style
@@ -498,24 +498,29 @@ public struct MarkdownTypography: Sendable {
             self.radius = radius
         }
     }
-    
+
     // MARK: - Element Types
-    
+
     /// Heading levels for typography configuration
     public enum HeadingLevel: Int, CaseIterable, Sendable {
-        case h1 = 1, h2 = 2, h3 = 3, h4 = 4, h5 = 5, h6 = 6
-        
+        case h1 = 1
+        case h2 = 2
+        case h3 = 3
+        case h4 = 4
+        case h5 = 5
+        case h6 = 6
+
         /// HTML tag name for the heading level
         public var tagName: String {
-            return "h\(self.rawValue)"
+            "h\(self.rawValue)"
         }
-        
+
         /// CSS class name for the heading level
         public var cssClassName: String {
-            return "markdown-heading-\(self.rawValue)"
+            "markdown-heading-\(self.rawValue)"
         }
     }
-    
+
     /// Markdown element types for styling
     public enum ElementType: String, CaseIterable, Sendable {
         case paragraph = "p"
@@ -535,45 +540,45 @@ public struct MarkdownTypography: Sendable {
         case tableCell = "td"
         case tableRow = "tr"
         case horizontalRule = "hr"
-        
+
         /// CSS class name for the element type
         public var cssClassName: String {
-            return "markdown-\(self.rawValue)"
+            "markdown-\(self.rawValue)"
         }
-        
+
         /// CSS selector for the element type
         public var cssSelector: String {
             switch self {
-            case .inlineCode:
-                return "code:not(pre code)" // Target inline code, not code inside pre blocks
-            default:
-                return self.rawValue
+                case .inlineCode:
+                    return "code:not(pre code)"  // Target inline code, not code inside pre blocks
+                default:
+                    return self.rawValue
             }
         }
     }
-    
+
     // MARK: - Configuration Properties
-    
+
     /// Typography styles for different heading levels
     public var headings: [HeadingLevel: TypographyStyle]
-    
+
     /// Typography styles for different element types
     public var elements: [ElementType: TypographyStyle]
-    
+
     /// Typography styles for specific CSS selectors (IDs and classes)
     public var selectors: [String: TypographyStyle]
-    
+
     /// Default font family to use as fallback
     public var defaultFontFamily: String
-    
+
     /// Default font size to use as fallback
     public var defaultFontSize: TextSize
-    
+
     /// Whether to include responsive typography adjustments
     public var enableResponsiveTypography: Bool
-    
+
     // MARK: - Initialization
-    
+
     /// Initialize typography configuration
     public init(
         headings: [HeadingLevel: TypographyStyle] = [:],
@@ -590,26 +595,26 @@ public struct MarkdownTypography: Sendable {
         self.defaultFontSize = defaultFontSize
         self.enableResponsiveTypography = enableResponsiveTypography
     }
-    
+
     // MARK: - Style Composition and Inheritance
-    
+
     /// Creates a new typography configuration by merging with another
     public func merging(with other: MarkdownTypography) -> MarkdownTypography {
         var mergedHeadings = self.headings
         for (level, style) in other.headings {
             mergedHeadings[level] = mergedHeadings[level]?.merging(with: style) ?? style
         }
-        
+
         var mergedElements = self.elements
         for (element, style) in other.elements {
             mergedElements[element] = mergedElements[element]?.merging(with: style) ?? style
         }
-        
+
         var mergedSelectors = self.selectors
         for (selector, style) in other.selectors {
             mergedSelectors[selector] = mergedSelectors[selector]?.merging(with: style) ?? style
         }
-        
+
         return MarkdownTypography(
             headings: mergedHeadings,
             elements: mergedElements,
@@ -619,10 +624,10 @@ public struct MarkdownTypography: Sendable {
             enableResponsiveTypography: other.enableResponsiveTypography
         )
     }
-    
+
     /// Creates a copy with modified heading styles
     public func withHeadings(_ headings: [HeadingLevel: TypographyStyle]) -> MarkdownTypography {
-        return MarkdownTypography(
+        MarkdownTypography(
             headings: headings,
             elements: self.elements,
             selectors: self.selectors,
@@ -631,10 +636,10 @@ public struct MarkdownTypography: Sendable {
             enableResponsiveTypography: self.enableResponsiveTypography
         )
     }
-    
+
     /// Creates a copy with modified element styles
     public func withElements(_ elements: [ElementType: TypographyStyle]) -> MarkdownTypography {
-        return MarkdownTypography(
+        MarkdownTypography(
             headings: self.headings,
             elements: elements,
             selectors: self.selectors,
@@ -643,10 +648,10 @@ public struct MarkdownTypography: Sendable {
             enableResponsiveTypography: self.enableResponsiveTypography
         )
     }
-    
+
     /// Creates a copy with additional selector styles
     public func withSelectors(_ selectors: [String: TypographyStyle]) -> MarkdownTypography {
-        return MarkdownTypography(
+        MarkdownTypography(
             headings: self.headings,
             elements: self.elements,
             selectors: selectors,
@@ -655,16 +660,16 @@ public struct MarkdownTypography: Sendable {
             enableResponsiveTypography: self.enableResponsiveTypography
         )
     }
-    
+
     // MARK: - CSS Generation
-    
+
     /// Generate complete CSS stylesheet for this typography configuration
     public func generateCSS() -> String {
         var cssRules: [String] = []
-        
+
         // Base font family
         cssRules.append("body { font-family: \(defaultFontFamily); font-size: \(defaultFontSize.cssValue); }")
-        
+
         // Heading styles
         for (level, style) in headings {
             let selector = "h\(level.rawValue)"
@@ -672,7 +677,7 @@ public struct MarkdownTypography: Sendable {
                 cssRules.append("\(selector) { \(style.generateCSS()) }")
             }
         }
-        
+
         // Element styles
         for (element, style) in elements {
             let selector = element.cssSelector
@@ -680,70 +685,70 @@ public struct MarkdownTypography: Sendable {
                 cssRules.append("\(selector) { \(style.generateCSS()) }")
             }
         }
-        
+
         // Custom selector styles
         for (selector, style) in selectors {
             if !style.generateCSS().isEmpty {
                 cssRules.append("\(selector) { \(style.generateCSS()) }")
             }
         }
-        
+
         return cssRules.joined(separator: "\n")
     }
-    
+
     // MARK: - Selector Helpers
-    
+
     /// Create an ID selector style
     public static func id(_ id: String, style: TypographyStyle) -> [String: TypographyStyle] {
-        return ["#\(id)": style]
+        ["#\(id)": style]
     }
-    
+
     /// Create a class selector style
     public static func `class`(_ className: String, style: TypographyStyle) -> [String: TypographyStyle] {
-        return [".\(className)": style]
+        [".\(className)": style]
     }
-    
+
     /// Create an element selector style
     public static func element(_ tagName: String, style: TypographyStyle) -> [String: TypographyStyle] {
-        return [tagName: style]
+        [tagName: style]
     }
-    
+
     // MARK: - Builder Methods
-    
+
     /// Set typography style for a specific heading level
     public mutating func heading(_ level: HeadingLevel, style: TypographyStyle) {
         headings[level] = style
     }
-    
+
     /// Set typography style for a specific element type
     public mutating func element(_ type: ElementType, style: TypographyStyle) {
         elements[type] = style
     }
-    
+
     /// Set typography style for a specific CSS selector
     public mutating func selector(_ selector: String, style: TypographyStyle) {
         selectors[selector] = style
     }
-    
+
     // MARK: - Style Retrieval
-    
+
     /// Get the typography style for a heading level
     public func style(for heading: HeadingLevel) -> TypographyStyle? {
-        return headings[heading]
+        headings[heading]
     }
-    
+
     /// Get the typography style for an element type
     public func style(for element: ElementType) -> TypographyStyle? {
-        return elements[element]
+        elements[element]
     }
-    
+
     /// Get the typography style for a CSS selector
     public func style(for selector: String) -> TypographyStyle? {
-        return selectors[selector]
+        selectors[selector]
     }
-    
+
     // MARK: - Preset Configurations
-    
+
     /// Default typography configuration with sensible defaults
     public static let `default` = MarkdownTypography(
         headings: [
@@ -770,7 +775,7 @@ public struct MarkdownTypography: Sendable {
             .h6: TypographyStyle(
                 font: FontProperties(size: .footnote, weight: .medium),
                 margins: MarginProperties(bottom: "0.5rem")
-            )
+            ),
         ],
         elements: [
             .paragraph: TypographyStyle(
@@ -797,11 +802,11 @@ public struct MarkdownTypography: Sendable {
             ),
             .link: TypographyStyle(
                 font: FontProperties(color: "rgb(59 130 246)", textDecoration: .underline)
-            )
+            ),
         ],
         defaultFontSize: .body
     )
-    
+
     /// Clean, minimal typography suitable for documentation
     public static let documentation = MarkdownTypography(
         headings: [
@@ -818,7 +823,7 @@ public struct MarkdownTypography: Sendable {
             .h3: TypographyStyle(
                 font: FontProperties(size: .title, weight: .semibold),
                 margins: MarginProperties(top: "1.5rem", bottom: "0.75rem")
-            )
+            ),
         ],
         elements: [
             .paragraph: TypographyStyle(
@@ -830,12 +835,12 @@ public struct MarkdownTypography: Sendable {
                 background: BackgroundProperties(color: "rgb(248 250 252)"),
                 padding: PaddingProperties(vertical: "0.125rem", horizontal: "0.375rem"),
                 border: BorderProperties(width: "1px", style: "solid", color: "rgb(229 231 235)", radius: "0.25rem")
-            )
+            ),
         ],
         defaultFontFamily: "ui-sans-serif, system-ui, sans-serif",
         defaultFontSize: .body
     )
-    
+
     /// Bold, high-contrast typography suitable for marketing content
     @MainActor public static let marketing = MarkdownTypography(
         headings: [
@@ -846,7 +851,7 @@ public struct MarkdownTypography: Sendable {
             .h2: TypographyStyle(
                 font: FontProperties(size: .large, weight: .bold, lineHeight: .tight),
                 margins: MarginProperties(top: "2rem", bottom: "1rem")
-            )
+            ),
         ],
         elements: [
             .paragraph: TypographyStyle(
@@ -855,20 +860,21 @@ public struct MarkdownTypography: Sendable {
             ),
             .strong: TypographyStyle(
                 font: FontProperties(weight: .bold, color: "rgb(16 185 129)")
-            )
+            ),
         ],
         defaultFontSize: .body
     )
-    
+
     // MARK: - Advanced CSS Generation
-    
+
     /// Generate complete CSS stylesheet for this typography configuration with enhanced selectors
     public func generateAdvancedCSS() -> String {
         var cssRules: [String] = []
-        
+
         // Base font family with enhanced selectors
-        cssRules.append(".markdown-content { font-family: \(defaultFontFamily); font-size: \(defaultFontSize.cssValue); }")
-        
+        cssRules.append(
+            ".markdown-content { font-family: \(defaultFontFamily); font-size: \(defaultFontSize.cssValue); }")
+
         // Generate heading styles with enhanced selectors
         for (level, style) in headings {
             let selector = ".markdown-content \(level.tagName), .\(level.cssClassName)"
@@ -876,7 +882,7 @@ public struct MarkdownTypography: Sendable {
                 cssRules.append("\(selector) { \(style.generateCSS()) }")
             }
         }
-        
+
         // Generate element styles with enhanced selectors
         for (element, style) in elements {
             let selector = ".markdown-content \(element.cssSelector), .\(element.cssClassName)"
@@ -884,24 +890,25 @@ public struct MarkdownTypography: Sendable {
                 cssRules.append("\(selector) { \(style.generateCSS()) }")
             }
         }
-        
+
         // Generate custom selector styles
         for (selector, style) in selectors {
-            let fullSelector = selector.hasPrefix(".") || selector.hasPrefix("#") 
-                ? ".markdown-content \(selector)" 
+            let fullSelector =
+                selector.hasPrefix(".") || selector.hasPrefix("#")
+                ? ".markdown-content \(selector)"
                 : ".markdown-content .\(selector)"
             if !style.generateCSS().isEmpty {
                 cssRules.append("\(fullSelector) { \(style.generateCSS()) }")
             }
         }
-        
+
         return cssRules.joined(separator: "\n")
     }
-    
+
     /// Generate a CSS rule for a specific selector and style
     private func generateCSSRule(selector: String, style: TypographyStyle) -> String {
         var properties: [String] = []
-        
+
         // Font properties
         if let font = style.font {
             if let family = font.family {
@@ -932,7 +939,7 @@ public struct MarkdownTypography: Sendable {
                 properties.append("text-transform: \(transform);")
             }
         }
-        
+
         // Background properties
         if let background = style.background {
             if let color = background.color {
@@ -942,7 +949,7 @@ public struct MarkdownTypography: Sendable {
                 properties.append("opacity: \(opacity);")
             }
         }
-        
+
         // Padding properties
         if let padding = style.padding {
             if let top = padding.top { properties.append("padding-top: \(top);") }
@@ -950,7 +957,7 @@ public struct MarkdownTypography: Sendable {
             if let bottom = padding.bottom { properties.append("padding-bottom: \(bottom);") }
             if let left = padding.left { properties.append("padding-left: \(left);") }
         }
-        
+
         // Margin properties
         if let margins = style.margins {
             if let top = margins.top { properties.append("margin-top: \(top);") }
@@ -958,7 +965,7 @@ public struct MarkdownTypography: Sendable {
             if let bottom = margins.bottom { properties.append("margin-bottom: \(bottom);") }
             if let left = margins.left { properties.append("margin-left: \(left);") }
         }
-        
+
         // Border properties
         if let border = style.border {
             if let width = border.width { properties.append("border-width: \(width);") }
@@ -966,22 +973,21 @@ public struct MarkdownTypography: Sendable {
             if let color = border.color { properties.append("border-color: \(color);") }
             if let radius = border.radius { properties.append("border-radius: \(radius);") }
         }
-        
+
         // Custom properties
         for (property, value) in style.customProperties {
             properties.append("\(property): \(value);")
         }
-        
+
         let indentedProperties = properties.map { "  \($0)" }.joined(separator: "\n")
         return "\(selector) {\n\(indentedProperties)\n}"
     }
 }
 
-
 // MARK: - Additional Typography Presets
 
 extension MarkdownTypography {
-    
+
     /// Article-focused typography with enhanced readability
     @MainActor public static let article = MarkdownTypography(
         headings: [
@@ -996,7 +1002,7 @@ extension MarkdownTypography {
             .h3: TypographyStyle(
                 font: FontProperties(size: .title, weight: .semibold),
                 margins: MarginProperties(top: "2rem", bottom: "1rem")
-            )
+            ),
         ],
         elements: [
             .paragraph: TypographyStyle(
@@ -1009,12 +1015,12 @@ extension MarkdownTypography {
                 margins: MarginProperties(top: "2rem", bottom: "2rem"),
                 border: BorderProperties(width: "0", style: "solid", color: "rgb(209 213 219)"),
                 customProperties: ["border-left-width": "4px"]
-            )
+            ),
         ],
         defaultFontFamily: "Georgia, 'Times New Roman', serif",
         defaultFontSize: .callout
     )
-    
+
     /// Blog-optimized typography for content-heavy sites
     @MainActor public static let blog = MarkdownTypography(
         headings: [
@@ -1029,7 +1035,7 @@ extension MarkdownTypography {
             .h3: TypographyStyle(
                 font: FontProperties(size: .title, weight: .semibold),
                 margins: MarginProperties(top: "2rem", bottom: "0.75rem")
-            )
+            ),
         ],
         elements: [
             .paragraph: TypographyStyle(
@@ -1045,7 +1051,7 @@ extension MarkdownTypography {
                 background: BackgroundProperties(color: "rgb(249 250 251)"),
                 padding: PaddingProperties(vertical: "0.125rem", horizontal: "0.375rem"),
                 border: BorderProperties(width: "1px", style: "solid", color: "rgb(229 231 235)", radius: "0.375rem")
-            )
+            ),
         ],
         defaultFontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
         defaultFontSize: .body

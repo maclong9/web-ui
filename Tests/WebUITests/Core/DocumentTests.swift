@@ -338,4 +338,3 @@ struct DocumentTests {
         #expect(rendered.contains("<style>body { color: red; }</style>"))
     }
 }
-

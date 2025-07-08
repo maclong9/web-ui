@@ -44,7 +44,7 @@ extension OrderedList {
         data: [String: String]? = nil,
         @MarkupBuilder content: @escaping MarkupContentBuilder
     ) -> List {
-        return List(
+        List(
             type: .ordered,
             style: style,
             id: id,

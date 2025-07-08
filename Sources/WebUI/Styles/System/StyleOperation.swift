@@ -75,7 +75,7 @@ extension StyleOperation {
     /// - Parameter configuration: The parameters for this style operation
     /// - Returns: An array of stylesheet class names to be applied
     public func applyClasses(using configuration: Parameters) -> [String] {
-        return applyClasses(params: configuration)
+        applyClasses(params: configuration)
     }
     /// Adapts this style operation for use with Element extensions
     ///
@@ -132,9 +132,9 @@ extension StyleOperation {
             _ = applyToBuilder(builder, params: params)
         }
     }
-    
+
     // MARK: - Improved Clarity Methods
-    
+
     /// Adapts this style operation for use with Element extensions (improved clarity)
     ///
     /// - Parameters:
@@ -145,7 +145,7 @@ extension StyleOperation {
     public func applyTo<T: Markup>(
         _ content: T, using configuration: Parameters, modifiers: [Modifier] = []
     ) -> StyleModifier<T> {
-        return applyTo(content, params: configuration, modifiers: modifiers)
+        applyTo(content, params: configuration, modifiers: modifiers)
     }
 
     /// Applies style to an element and returns the modified element (improved clarity)
@@ -158,7 +158,7 @@ extension StyleOperation {
     public func applyToElement<T: Markup>(
         _ element: T, using configuration: Parameters, modifiers: Modifier...
     ) -> StyleModifier<T> {
-        return applyTo(element, params: configuration, modifiers: Array(modifiers))
+        applyTo(element, params: configuration, modifiers: Array(modifiers))
     }
 
     /// Internal adapter for use with the responsive builder (improved clarity)
@@ -170,7 +170,7 @@ extension StyleOperation {
     public func applyToBuilder(_ builder: ResponsiveBuilder, using configuration: Parameters)
         -> ResponsiveBuilder
     {
-        return applyToBuilder(builder, params: configuration)
+        applyToBuilder(builder, params: configuration)
     }
 
     /// Adapts this style operation for use with the Declaritive result builder syntax (improved clarity)
@@ -178,6 +178,6 @@ extension StyleOperation {
     /// - Parameter configuration: The parameters for this style operation
     /// - Returns: A responsive modification that can be used in responsive blocks
     public func asModification(using configuration: Parameters) -> ResponsiveModification {
-        return asModification(params: configuration)
+        asModification(params: configuration)
     }
 }

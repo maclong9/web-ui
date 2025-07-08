@@ -356,7 +356,7 @@ struct DocumentViewTransitionTests {
                     description: "Test website"
                 )
             }
-            
+
             @WebsiteRouteBuilder
             var routes: [any Document] {
                 // Empty routes for test

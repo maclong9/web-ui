@@ -51,38 +51,38 @@ public struct Option: Element {
 
     public var body: MarkupString {
         var attributes: [String] = []
-        
+
         attributes.append("value=\"\(value)\"")
-        
+
         if let selected = selected, selected {
             attributes.append("selected")
         }
-        
+
         if let disabled = disabled, disabled {
             attributes.append("disabled")
         }
-        
+
         if let label = label {
             attributes.append("label=\"\(label)\"")
         }
-        
+
         if let id = id {
             attributes.append("id=\"\(id)\"")
         }
-        
+
         if let classes = classes, !classes.isEmpty {
             attributes.append("class=\"\(classes.joined(separator: " "))\"")
         }
-        
+
         if let data = data {
             for (key, value) in data {
                 attributes.append("data-\(key)=\"\(value)\"")
             }
         }
-        
+
         let attributeString = attributes.isEmpty ? "" : " " + attributes.joined(separator: " ")
         let content = contentBuilder().map { $0.render() }.joined()
-        
+
         return MarkupString(content: "<option\(attributeString)>\(content)</option>")
     }
 }

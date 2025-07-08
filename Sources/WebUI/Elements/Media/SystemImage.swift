@@ -25,7 +25,7 @@ public struct SystemImage: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    
+
     /// The type of icon being rendered.
     private enum IconType {
         case lucide(LucideIcon)
@@ -100,7 +100,7 @@ public struct SystemImage: Element {
         } else {
             self.iconType = .system(name)
         }
-        
+
         self.id = id
         self.classes = classes
         self.role = role
@@ -115,26 +115,26 @@ public struct SystemImage: Element {
     private func buildMarkupTag() -> String {
         var allClasses: [String] = []
         var labelText: String
-        
+
         switch iconType {
-        case .lucide(let icon):
-            // Use Lucide CSS classes
-            allClasses.append("lucide")
-            allClasses.append(icon.cssClass)
-            labelText = label ?? icon.displayName
-            
-        case .system(let name):
-            // Use traditional system icon classes
-            allClasses.append("system-image")
-            allClasses.append("icon-\(name.replacingOccurrences(of: ".", with: "-"))")
-            labelText = label ?? name
+            case .lucide(let icon):
+                // Use Lucide CSS classes
+                allClasses.append("lucide")
+                allClasses.append(icon.cssClass)
+                labelText = label ?? icon.displayName
+
+            case .system(let name):
+                // Use traditional system icon classes
+                allClasses.append("system-image")
+                allClasses.append("icon-\(name.replacingOccurrences(of: ".", with: "-"))")
+                labelText = label ?? name
         }
-        
+
         // Add custom classes
         if let classes = classes {
             allClasses.append(contentsOf: classes)
         }
-        
+
         let attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: allClasses,
@@ -142,13 +142,14 @@ public struct SystemImage: Element {
             label: labelText,
             data: data
         )
-        
+
         // Use <i> for Lucide icons (icon font convention), <span> for system icons
-        let tagName = switch iconType {
-        case .lucide: "i"
-        case .system: "span"
-        }
-        
+        let tagName =
+            switch iconType {
+                case .lucide: "i"
+                case .system: "span"
+            }
+
         return AttributeBuilder.buildMarkupTag(
             tagName, attributes: attributes, content: ""
         )

@@ -62,7 +62,11 @@ public struct Emphasis: Element {
     ///   "Important information"
     /// }
     /// ```
-    @available(*, deprecated, message: "Use Emphasis(_:) string initializer instead for better SwiftUI compatibility. Example: Emphasis(\"Important text\")")
+    @available(
+        *, deprecated,
+        message:
+            "Use Emphasis(_:) string initializer instead for better SwiftUI compatibility. Example: Emphasis(\"Important text\")"
+    )
     public init(
         id: String? = nil,
         classes: [String]? = nil,

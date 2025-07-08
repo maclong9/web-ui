@@ -41,7 +41,7 @@ public struct Metadata {
     public var pageTitle: String {
         let titlePart = title ?? ""
         let sitePart = site ?? ""
-        
+
         // Only include separator if both title and site are present
         if !titlePart.isEmpty && !sitePart.isEmpty {
             return "\(titlePart)\(titleSeparator ?? "")\(sitePart)"

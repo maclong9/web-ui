@@ -54,7 +54,7 @@ public enum AttributeBuilder {
         attributes.append(contentsOf: additional)
         return attributes
     }
-    
+
     /// Builds a collection of markup attributes from common parameters (backward compatibility)
     ///
     /// This overload maintains backward compatibility with existing code.
@@ -76,7 +76,7 @@ public enum AttributeBuilder {
         data: [String: String]? = nil,
         additional: [String] = []
     ) -> [String] {
-        return buildAttributes(
+        buildAttributes(
             identifier: id,
             styleSheetClasses: classes,
             ariaRole: role,

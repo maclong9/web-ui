@@ -12,7 +12,7 @@ import Foundation
 /// ```swift
 /// struct Counter: Element {
 ///     @State private var count = 0
-///     
+///
 ///     var body: some Markup {
 ///         Stack {
 ///             Text { "Count: \(count)" }
@@ -25,49 +25,49 @@ import Foundation
 /// ```
 @propertyWrapper
 public struct State<Value: Codable & Sendable>: StateProtocol, Sendable {
-    
+
     private let storage: StateStorage<Value>
-    
+
     /// The current value of the state
     public var wrappedValue: Value {
         get { storage.value }
-        set { 
+        set {
             storage.setValue(newValue)
             onChange?(newValue)
         }
     }
-    
+
     /// Provides access to the State instance itself
     public var projectedValue: State<Value> {
-        return self
+        self
     }
-    
+
     /// Unique identifier for this state instance
     public var stateID: String? {
         get { storage.stateID }
         set { storage.stateID = newValue }
     }
-    
+
     /// Whether this state should generate JavaScript binding code
     public let generatesJavaScript: Bool = true
-    
+
     /// Callback triggered when the state value changes
     public var onChange: (@Sendable (Value) -> Void)? {
         get { storage.onChange }
         set { storage.onChange = newValue }
     }
-    
+
     /// Creates a new state instance with an initial value.
     ///
     /// - Parameter wrappedValue: The initial value for the state
     public init(wrappedValue: Value) {
         self.storage = StateStorage(initialValue: wrappedValue)
-        
+
         // Auto-register with the global state manager
         let id = StateManager.shared.registerState(self)
         self.stateID = id
     }
-    
+
     /// Creates a new state instance with an initial value and custom ID.
     ///
     /// - Parameters:
@@ -76,7 +76,7 @@ public struct State<Value: Codable & Sendable>: StateProtocol, Sendable {
     public init(wrappedValue: Value, id: String) {
         self.storage = StateStorage(initialValue: wrappedValue)
         self.stateID = id
-        
+
         // Register with the global state manager using custom ID
         StateManager.shared.registerState(self, withID: id)
     }
@@ -95,7 +95,7 @@ public struct State<Value: Codable & Sendable>: StateProtocol, Sendable {
 /// ```swift
 /// struct ToggleButton: Element {
 ///     @Binding var isEnabled: Bool
-///     
+///
 ///     var body: some Markup {
 ///         Button(isEnabled ? "Enabled" : "Disabled") {
 ///             isEnabled.toggle()
@@ -105,40 +105,40 @@ public struct State<Value: Codable & Sendable>: StateProtocol, Sendable {
 /// ```
 @propertyWrapper
 public struct Binding<Value: Codable & Sendable>: StateProtocol, Sendable {
-    
+
     private let getter: @Sendable () -> Value
     private let setter: @Sendable (Value) -> Void
     private let storage: BindingStorage<Value>
-    
+
     /// The current value of the binding
     public var wrappedValue: Value {
         get { getter() }
-        set { 
+        set {
             setter(newValue)
             onChange?(newValue)
         }
     }
-    
+
     /// Provides access to the Binding instance itself
     public var projectedValue: Binding<Value> {
-        return self
+        self
     }
-    
+
     /// Unique identifier for this binding instance
     public var stateID: String? {
         get { storage.stateID }
         set { storage.stateID = newValue }
     }
-    
+
     /// Whether this binding should generate JavaScript binding code
     public let generatesJavaScript: Bool = true
-    
+
     /// Callback triggered when the binding value changes
     public var onChange: (@Sendable (Value) -> Void)? {
         get { storage.onChange }
         set { storage.onChange = newValue }
     }
-    
+
     /// Creates a new binding with getter and setter functions.
     ///
     /// - Parameters:
@@ -148,7 +148,7 @@ public struct Binding<Value: Codable & Sendable>: StateProtocol, Sendable {
         self.getter = get
         self.setter = set
         self.storage = BindingStorage<Value>()
-        
+
         // Auto-register with the global state manager
         let id = StateManager.shared.registerState(self)
         self.stateID = id
@@ -173,58 +173,58 @@ public struct Binding<Value: Codable & Sendable>: StateProtocol, Sendable {
 /// ```
 @propertyWrapper
 public struct Published<Value: Codable & Sendable>: StateProtocol, Sendable {
-    
+
     private let storage: PublishedStorage<Value>
-    
+
     /// The current value of the published property
     public var wrappedValue: Value {
         get { storage.value }
-        set { 
+        set {
             storage.setValue(newValue)
             onChange?(newValue)
             // Notify all subscribers
             storage.notifySubscribers(newValue)
         }
     }
-    
+
     /// Provides access to the Published instance itself
     public var projectedValue: Published<Value> {
-        return self
+        self
     }
-    
+
     /// Unique identifier for this published property
     public var stateID: String? {
         get { storage.stateID }
         set { storage.stateID = newValue }
     }
-    
+
     /// Whether this published property should generate JavaScript binding code
     public let generatesJavaScript: Bool = true
-    
+
     /// Callback triggered when the published value changes
     public var onChange: (@Sendable (Value) -> Void)? {
         get { storage.onChange }
         set { storage.onChange = newValue }
     }
-    
+
     /// Creates a new published property with an initial value.
     ///
     /// - Parameter wrappedValue: The initial value for the published property
     public init(wrappedValue: Value) {
         self.storage = PublishedStorage(initialValue: wrappedValue)
-        
+
         // Auto-register with the global state manager
         let id = StateManager.shared.registerState(self)
         self.stateID = id
     }
-    
+
     /// Adds a subscriber to be notified of value changes.
     ///
     /// - Parameter subscriber: Callback to be called when value changes
     public func addSubscriber(_ subscriber: @escaping @Sendable (Value) -> Void) {
         storage.addSubscriber(subscriber)
     }
-    
+
     /// Removes all subscribers.
     public func removeAllSubscribers() {
         storage.removeAllSubscribers()
@@ -239,15 +239,15 @@ private final class StateStorage<Value: Codable & Sendable>: @unchecked Sendable
     private var _value: Value
     var stateID: String?
     var onChange: (@Sendable (Value) -> Void)?
-    
+
     init(initialValue: Value) {
         self._value = initialValue
     }
-    
+
     var value: Value {
         lock.withLock { _value }
     }
-    
+
     func setValue(_ newValue: Value) {
         lock.withLock {
             _value = newValue
@@ -268,33 +268,33 @@ private final class PublishedStorage<Value: Codable & Sendable>: @unchecked Send
     private var subscribers: [(@Sendable (Value) -> Void)] = []
     var stateID: String?
     var onChange: (@Sendable (Value) -> Void)?
-    
+
     init(initialValue: Value) {
         self._value = initialValue
     }
-    
+
     var value: Value {
         lock.withLock { _value }
     }
-    
+
     func setValue(_ newValue: Value) {
         lock.withLock {
             _value = newValue
         }
     }
-    
+
     func addSubscriber(_ subscriber: @escaping @Sendable (Value) -> Void) {
         lock.withLock {
             subscribers.append(subscriber)
         }
     }
-    
+
     func removeAllSubscribers() {
         lock.withLock {
             subscribers.removeAll()
         }
     }
-    
+
     func notifySubscribers(_ value: Value) {
         let currentSubscribers = lock.withLock { subscribers }
         for subscriber in currentSubscribers {
@@ -310,9 +310,9 @@ extension State {
     ///
     /// - Returns: A Binding that reads and writes to this state
     public func binding() -> Binding<Value> {
-        return Binding(
+        Binding(
             get: { [storage] in storage.value },
-            set: { [storage] newValue in 
+            set: { [storage] newValue in
                 storage.setValue(newValue)
                 storage.onChange?(newValue)
             }
@@ -326,9 +326,9 @@ extension Binding {
     /// - Parameter value: The constant value
     /// - Returns: A binding that always returns the same value
     public static func constant(_ value: Value) -> Binding<Value> {
-        return Binding(
+        Binding(
             get: { value },
-            set: { _ in } // No-op setter for constant bindings
+            set: { _ in }  // No-op setter for constant bindings
         )
     }
 }
@@ -346,7 +346,7 @@ extension Binding {
 /// struct MyComponent: Element {
 ///     @ComponentState var count = 0
 ///     @ComponentState(key: "customKey") var value = "hello"
-///     
+///
 ///     var body: some Markup {
 ///         // Component implementation
 ///     }
@@ -354,58 +354,58 @@ extension Binding {
 /// ```
 @propertyWrapper
 public struct ComponentState<Value: Codable & Sendable>: StateProtocol, Sendable {
-    
+
     private let storage: StateStorage<Value>
     private let key: String?
-    
+
     /// The current value of the state
     public var wrappedValue: Value {
         get { storage.value }
-        set { 
+        set {
             storage.setValue(newValue)
             onChange?(newValue)
         }
     }
-    
+
     /// Provides access to the ComponentState instance itself with binding functionality
     public var projectedValue: ComponentState<Value> {
-        return self
+        self
     }
-    
+
     /// Updates the value using the wrapped value setter
     ///
     /// - Parameter newValue: The new value to set
     public mutating func update(_ newValue: Value) {
         self.wrappedValue = newValue
     }
-    
+
     /// Unique identifier for this state instance
     public var stateID: String? {
         get { storage.stateID }
         set { storage.stateID = newValue }
     }
-    
+
     /// Whether this state should generate JavaScript binding code
     public let generatesJavaScript: Bool = true
-    
+
     /// Callback triggered when the state value changes
     public var onChange: (@Sendable (Value) -> Void)? {
         get { storage.onChange }
         set { storage.onChange = newValue }
     }
-    
+
     /// Creates a new component state with an initial value.
     ///
     /// - Parameter wrappedValue: The initial value for the state
     public init(wrappedValue: Value) {
         self.storage = StateStorage(initialValue: wrappedValue)
         self.key = nil
-        
+
         // Auto-register with the global state manager
         let id = StateManager.shared.registerState(self)
         self.stateID = id
     }
-    
+
     /// Creates a new component state with a custom key and initial value.
     ///
     /// - Parameters:
@@ -415,7 +415,7 @@ public struct ComponentState<Value: Codable & Sendable>: StateProtocol, Sendable
         self.storage = StateStorage(initialValue: wrappedValue)
         self.key = key
         self.stateID = key
-        
+
         // Register with the global state manager using custom key
         StateManager.shared.registerState(self, withID: key)
     }
@@ -441,46 +441,46 @@ public struct ComponentState<Value: Codable & Sendable>: StateProtocol, Sendable
 /// ```
 @propertyWrapper
 public struct SharedState<Value: Codable & Sendable>: StateProtocol, Sendable {
-    
+
     private let storage: SharedStateStorage<Value>
     private let key: String
-    
+
     /// The current value of the state
     public var wrappedValue: Value {
         get { storage.value }
-        set { 
+        set {
             storage.setValue(newValue)
             onChange?(newValue)
         }
     }
-    
+
     /// Provides access to the SharedState instance itself with binding functionality
     public var projectedValue: SharedState<Value> {
-        return self
+        self
     }
-    
+
     /// Updates the value using the wrapped value setter
     ///
     /// - Parameter newValue: The new value to set
     public mutating func update(_ newValue: Value) {
         self.wrappedValue = newValue
     }
-    
+
     /// Unique identifier for this state instance
     public var stateID: String? {
         get { storage.stateID }
         set { storage.stateID = newValue }
     }
-    
+
     /// Whether this state should generate JavaScript binding code
     public let generatesJavaScript: Bool = true
-    
+
     /// Callback triggered when the state value changes
     public var onChange: (@Sendable (Value) -> Void)? {
         get { storage.onChange }
         set { storage.onChange = newValue }
     }
-    
+
     /// Creates a new shared state with a key and initial value.
     ///
     /// - Parameters:
@@ -490,7 +490,7 @@ public struct SharedState<Value: Codable & Sendable>: StateProtocol, Sendable {
         self.key = key
         self.storage = ScopedStateContainers.shared.getOrCreate(key: key, initialValue: wrappedValue)
         self.stateID = "shared.\(key)"
-        
+
         // Register with the global state manager
         StateManager.shared.registerState(self, withID: self.stateID!)
     }
@@ -513,39 +513,39 @@ public struct SharedState<Value: Codable & Sendable>: StateProtocol, Sendable {
 /// ```
 @propertyWrapper
 public struct GlobalState<Value: Codable & Sendable>: StateProtocol, Sendable {
-    
+
     private let storage: GlobalStateStorage<Value>
     private let key: String
-    
+
     /// The current value of the state
     public var wrappedValue: Value {
         get { storage.value }
-        set { 
+        set {
             storage.setValue(newValue)
             onChange?(newValue)
         }
     }
-    
+
     /// Provides access to the GlobalState instance itself
     public var projectedValue: GlobalState<Value> {
-        return self
+        self
     }
-    
+
     /// Unique identifier for this state instance
     public var stateID: String? {
         get { storage.stateID }
         set { storage.stateID = newValue }
     }
-    
+
     /// Whether this state should generate JavaScript binding code
     public let generatesJavaScript: Bool = true
-    
+
     /// Callback triggered when the state value changes
     public var onChange: (@Sendable (Value) -> Void)? {
         get { storage.onChange }
         set { storage.onChange = newValue }
     }
-    
+
     /// Creates a new global state with a key and initial value.
     ///
     /// - Parameters:
@@ -555,7 +555,7 @@ public struct GlobalState<Value: Codable & Sendable>: StateProtocol, Sendable {
         self.key = key
         self.storage = ScopedStateContainers.global.getOrCreate(key: key, initialValue: wrappedValue)
         self.stateID = "global.\(key)"
-        
+
         // Register with the global state manager
         StateManager.shared.registerState(self, withID: self.stateID!)
     }
@@ -578,39 +578,39 @@ public struct GlobalState<Value: Codable & Sendable>: StateProtocol, Sendable {
 /// ```
 @propertyWrapper
 public struct SessionState<Value: Codable & Sendable>: StateProtocol, Sendable {
-    
+
     private let storage: SessionStateStorage<Value>
     private let key: String
-    
+
     /// The current value of the state
     public var wrappedValue: Value {
         get { storage.value }
-        set { 
+        set {
             storage.setValue(newValue)
             onChange?(newValue)
         }
     }
-    
+
     /// Provides access to the SessionState instance itself
     public var projectedValue: SessionState<Value> {
-        return self
+        self
     }
-    
+
     /// Unique identifier for this state instance
     public var stateID: String? {
         get { storage.stateID }
         set { storage.stateID = newValue }
     }
-    
+
     /// Whether this state should generate JavaScript binding code
     public let generatesJavaScript: Bool = true
-    
+
     /// Callback triggered when the state value changes
     public var onChange: (@Sendable (Value) -> Void)? {
         get { storage.onChange }
         set { storage.onChange = newValue }
     }
-    
+
     /// Creates a new session state with a key and initial value.
     ///
     /// - Parameters:
@@ -620,7 +620,7 @@ public struct SessionState<Value: Codable & Sendable>: StateProtocol, Sendable {
         self.key = key
         self.storage = ScopedStateContainers.session.getOrCreate(key: key, initialValue: wrappedValue)
         self.stateID = "session.\(key)"
-        
+
         // Register with the global state manager
         StateManager.shared.registerState(self, withID: self.stateID!)
     }
@@ -643,16 +643,16 @@ public struct SessionState<Value: Codable & Sendable>: StateProtocol, Sendable {
 /// )
 /// ```
 public struct StateBinding<Value: Codable & Sendable>: Sendable {
-    
+
     private let getter: @Sendable () -> Value
     private let setter: @Sendable (Value) -> Void
-    
+
     /// The current value of the binding
     public var wrappedValue: Value {
         get { getter() }
         set { setter(newValue) }
     }
-    
+
     /// Creates a new state binding with getter and setter functions.
     ///
     /// - Parameters:
@@ -662,7 +662,7 @@ public struct StateBinding<Value: Codable & Sendable>: Sendable {
         self.getter = get
         self.setter = set
     }
-    
+
     /// Updates the value using the setter function.
     ///
     /// - Parameter newValue: The new value to set
@@ -687,17 +687,17 @@ private final class SharedStateStorage<Value: Codable & Sendable>: @unchecked Se
     var stateID: String?
     var onChange: (@Sendable (Value) -> Void)?
     private let key: String
-    
+
     init(key: String, initialValue: Value) {
         self.key = key
         self._value = initialValue
         self.stateID = "shared.\(key)"
     }
-    
+
     var value: Value {
         lock.withLock { _value }
     }
-    
+
     func setValue(_ newValue: Value) {
         lock.withLock {
             _value = newValue
@@ -709,9 +709,9 @@ private final class SharedStateStorage<Value: Codable & Sendable>: @unchecked Se
 private final class SharedStateContainer: @unchecked Sendable {
     private let lock = NSLock()
     private var storages: [String: Any] = [:]
-    
+
     func getOrCreate<Value: Codable & Sendable>(key: String, initialValue: Value) -> SharedStateStorage<Value> {
-        return lock.withLock {
+        lock.withLock {
             if let existing = storages[key] as? SharedStateStorage<Value> {
                 return existing
             } else {
@@ -730,17 +730,17 @@ private final class GlobalStateStorage<Value: Codable & Sendable>: @unchecked Se
     var stateID: String?
     var onChange: (@Sendable (Value) -> Void)?
     private let key: String
-    
+
     init(key: String, initialValue: Value) {
         self.key = key
         self._value = initialValue
         self.stateID = "global.\(key)"
     }
-    
+
     var value: Value {
         lock.withLock { _value }
     }
-    
+
     func setValue(_ newValue: Value) {
         lock.withLock {
             _value = newValue
@@ -752,9 +752,9 @@ private final class GlobalStateStorage<Value: Codable & Sendable>: @unchecked Se
 private final class GlobalStateContainer: @unchecked Sendable {
     private let lock = NSLock()
     private var storages: [String: Any] = [:]
-    
+
     func getOrCreate<Value: Codable & Sendable>(key: String, initialValue: Value) -> GlobalStateStorage<Value> {
-        return lock.withLock {
+        lock.withLock {
             if let existing = storages[key] as? GlobalStateStorage<Value> {
                 return existing
             } else {
@@ -773,17 +773,17 @@ private final class SessionStateStorage<Value: Codable & Sendable>: @unchecked S
     var stateID: String?
     var onChange: (@Sendable (Value) -> Void)?
     private let key: String
-    
+
     init(key: String, initialValue: Value) {
         self.key = key
         self._value = initialValue
         self.stateID = "session.\(key)"
     }
-    
+
     var value: Value {
         lock.withLock { _value }
     }
-    
+
     func setValue(_ newValue: Value) {
         lock.withLock {
             _value = newValue
@@ -795,9 +795,9 @@ private final class SessionStateStorage<Value: Codable & Sendable>: @unchecked S
 private final class SessionStateContainer: @unchecked Sendable {
     private let lock = NSLock()
     private var storages: [String: Any] = [:]
-    
+
     func getOrCreate<Value: Codable & Sendable>(key: String, initialValue: Value) -> SessionStateStorage<Value> {
-        return lock.withLock {
+        lock.withLock {
             if let existing = storages[key] as? SessionStateStorage<Value> {
                 return existing
             } else {

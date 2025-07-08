@@ -68,7 +68,11 @@ public struct Heading: Element {
     ///   "Section Title"
     /// }
     /// ```
-    @available(*, deprecated, message: "Use Heading(_:_:) string initializer instead for better SwiftUI compatibility. Example: Heading(.title, \"Section Title\")")
+    @available(
+        *, deprecated,
+        message:
+            "Use Heading(_:_:) string initializer instead for better SwiftUI compatibility. Example: Heading(.title, \"Section Title\")"
+    )
     public init(
         _ level: HeadingLevel,
         id: String? = nil,

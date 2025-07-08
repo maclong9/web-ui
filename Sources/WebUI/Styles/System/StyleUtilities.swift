@@ -57,7 +57,7 @@ public enum StyleUtilities {
         let modifierPrefix = modifiers.map { $0.rawValue }.joined()
         return baseClasses.map { "\(modifierPrefix)\($0)" }
     }
-    
+
     /// Combines multiple classes with multiple modifiers separately
     ///
     /// This function applies each modifier to each class separately, generating

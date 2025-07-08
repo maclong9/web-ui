@@ -19,7 +19,7 @@ import Markdown
 /// ---
 /// # Hello World
 /// This is a sample post with `inline code` and:
-/// 
+///
 /// ```swift
 /// let example = "syntax highlighted code"
 /// ```
@@ -49,23 +49,23 @@ import Markdown
 ///
 /// The module provides both throwing and safe variants of parsing methods for robust error handling.
 public struct WebUIMarkdown: Sendable {
-    
+
     // MARK: - Configuration
-    
+
     /// Rendering options that control advanced features
     public let options: MarkdownRenderingOptions
-    
+
     /// Typography configuration for styling
     public let typography: MarkdownTypography
-    
+
     // MARK: - Initialization
-    
+
     /// Initialize with default configuration
     public init() {
         self.options = MarkdownRenderingOptions(codeBlocks: MarkdownRenderingOptions.CodeBlockOptions())
         self.typography = MarkdownTypography(defaultFontSize: .body)
     }
-    
+
     /// Initialize with custom configuration
     public init(options: MarkdownRenderingOptions, typography: MarkdownTypography) {
         self.options = options
@@ -118,7 +118,7 @@ public struct WebUIMarkdown: Sendable {
 
         return ParsedMarkdown(frontMatter: frontMatter, htmlContent: html)
     }
-    
+
     /// Parses a Markdown string with table of contents generation.
     ///
     /// This method provides the same functionality as `parseMarkdown(_:)` but additionally generates
@@ -128,7 +128,9 @@ public struct WebUIMarkdown: Sendable {
     /// - Parameter content: The raw Markdown string to parse.
     /// - Returns: A tuple containing the parsed result and table of contents HTML.
     /// - Throws: `WebUIMarkdownError` if the content cannot be parsed or rendering fails.
-    public func parseMarkdownWithTableOfContents(_ content: String) throws -> (result: ParsedMarkdown, tableOfContents: String) {
+    public func parseMarkdownWithTableOfContents(_ content: String) throws -> (
+        result: ParsedMarkdown, tableOfContents: String
+    ) {
         guard !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         else {
             throw WebUIMarkdownError.emptyContent
@@ -165,7 +167,7 @@ public struct WebUIMarkdown: Sendable {
                 frontMatter: [:], htmlContent: "<pre class=\"markdown-error\">\(escapedContent)</pre>")
         }
     }
-    
+
     /// Safely parses a Markdown string with table of contents generation.
     ///
     /// This method provides graceful error handling for table of contents generation.
@@ -173,7 +175,9 @@ public struct WebUIMarkdown: Sendable {
     ///
     /// - Parameter content: The raw Markdown string to parse.
     /// - Returns: A tuple containing the parsed result and table of contents HTML.
-    public func parseMarkdownSafelyWithTableOfContents(_ content: String) -> (result: ParsedMarkdown, tableOfContents: String) {
+    public func parseMarkdownSafelyWithTableOfContents(_ content: String) -> (
+        result: ParsedMarkdown, tableOfContents: String
+    ) {
         do {
             return try parseMarkdownWithTableOfContents(content)
         } catch {
@@ -181,9 +185,9 @@ public struct WebUIMarkdown: Sendable {
             return (fallbackResult, "")
         }
     }
-    
+
     // MARK: - CSS Generation
-    
+
     /// Generates CSS styles for the configured typography.
     ///
     /// This method produces CSS that can be included in HTML documents to style
@@ -191,9 +195,9 @@ public struct WebUIMarkdown: Sendable {
     ///
     /// - Returns: A CSS string containing styles for all configured typography elements.
     public func generateCSS() -> String {
-        return typography.generateCSS()
+        typography.generateCSS()
     }
-    
+
     /// Generates advanced CSS styles with enhanced selectors.
     ///
     /// This method produces comprehensive CSS including both typography styles and
@@ -201,27 +205,27 @@ public struct WebUIMarkdown: Sendable {
     ///
     /// - Returns: A CSS string with comprehensive styling for enhanced markdown features.
     public func generateAdvancedCSS() -> String {
-        return typography.generateAdvancedCSS()
+        typography.generateAdvancedCSS()
     }
-    
+
     // MARK: - Configuration Access
-    
+
     /// Creates a new WebUIMarkdown instance with modified rendering options.
     ///
     /// - Parameter options: The new rendering options to use.
     /// - Returns: A new WebUIMarkdown instance with the specified options.
     public func withOptions(_ options: MarkdownRenderingOptions) -> WebUIMarkdown {
-        return WebUIMarkdown(options: options, typography: typography)
+        WebUIMarkdown(options: options, typography: typography)
     }
-    
+
     /// Creates a new WebUIMarkdown instance with modified typography configuration.
     ///
     /// - Parameter typography: The new typography configuration to use.
     /// - Returns: A new WebUIMarkdown instance with the specified typography.
     public func withTypography(_ typography: MarkdownTypography) -> WebUIMarkdown {
-        return WebUIMarkdown(options: options, typography: typography)
+        WebUIMarkdown(options: options, typography: typography)
     }
-    
+
     /// Creates a new WebUIMarkdown instance with both options and typography modified.
     ///
     /// - Parameters:
@@ -229,7 +233,7 @@ public struct WebUIMarkdown: Sendable {
     ///   - typography: The new typography configuration to use.
     /// - Returns: A new WebUIMarkdown instance with the specified configuration.
     public func withConfiguration(options: MarkdownRenderingOptions, typography: MarkdownTypography) -> WebUIMarkdown {
-        return WebUIMarkdown(options: options, typography: typography)
+        WebUIMarkdown(options: options, typography: typography)
     }
 
     /// Extracts front matter and Markdown content from a raw Markdown string.

@@ -61,7 +61,11 @@ public struct Code: Element {
     ///   "let x = 42"
     /// }
     /// ```
-    @available(*, deprecated, message: "Use Code(_:) string initializer instead for better SwiftUI compatibility. Example: Code(\"let x = 42\")")
+    @available(
+        *, deprecated,
+        message:
+            "Use Code(_:) string initializer instead for better SwiftUI compatibility. Example: Code(\"let x = 42\")"
+    )
     public init(
         id: String? = nil,
         classes: [String]? = nil,

@@ -101,12 +101,12 @@ public struct Button: Element {
         self.role = role
         self.label = label
         self.data = data
-        
+
         // Create content builder that includes both icon and text
         self.contentBuilder = {
             [
                 SystemImage(systemImage, classes: ["button-icon"]),
-                " \(title)"
+                " \(title)",
             ]
         }
     }
@@ -154,12 +154,12 @@ public struct Button: Element {
         self.role = role
         self.label = label
         self.data = data
-        
+
         // Create content builder that includes both Lucide icon and text
         self.contentBuilder = {
             [
                 SystemImage(systemImage, classes: ["button-icon"]),
-                " \(title)"
+                " \(title)",
             ]
         }
     }
@@ -185,7 +185,11 @@ public struct Button: Element {
     /// .background(color: .blue(.600))
     /// .padding(.all, length: 2)
     /// ```
-    @available(*, deprecated, message: "Use Button(_:) string initializer instead for better SwiftUI compatibility. Example: Button(\"Save Changes\", type: .submit)")
+    @available(
+        *, deprecated,
+        message:
+            "Use Button(_:) string initializer instead for better SwiftUI compatibility. Example: Button(\"Save Changes\", type: .submit)"
+    )
     public init(
         type: ButtonType? = nil,
         autofocus: Bool? = nil,

@@ -135,13 +135,16 @@ public struct Sitemap {
     ///   - routes: The document routes in the website.
     ///   - customEntries: Additional sitemap entries to include.
     /// - Returns: A string containing the XML content of the sitemap.
-    @available(*, deprecated, message: "Use generateExtensibleMarkupLanguageDocument(baseWebAddress:routes:customEntries:) instead")
+    @available(
+        *, deprecated,
+        message: "Use generateExtensibleMarkupLanguageDocument(baseWebAddress:routes:customEntries:) instead"
+    )
     public static func generateXML(
         baseURL: String,
         routes: [any Document],
         customEntries: [SitemapEntry]? = nil
     ) -> String {
-        return generateExtensibleMarkupLanguageDocument(
+        generateExtensibleMarkupLanguageDocument(
             baseWebAddress: baseURL,
             routes: routes,
             customEntries: customEntries

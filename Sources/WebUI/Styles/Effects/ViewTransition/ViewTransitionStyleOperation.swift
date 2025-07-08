@@ -115,7 +115,7 @@ public struct ViewTransitionStyleOperation: StyleOperation, Sendable {
 
         return classes
     }
-    
+
     /// Override applyTo to use separate modifier behavior for view transitions
     ///
     /// This ensures that each modifier applies to all view transition classes separately,
@@ -138,7 +138,6 @@ public struct ViewTransitionStyleOperation: StyleOperation, Sendable {
 
     private init() {}
 }
-
 
 // MARK: - Markup Extension
 extension Markup {

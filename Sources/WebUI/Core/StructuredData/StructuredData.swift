@@ -84,7 +84,7 @@ public struct StructuredData {
     /// - Returns: A dictionary containing the structured data properties.
     @available(*, deprecated, message: "Use retrieveStructuredDataDictionary() instead")
     public func getData() -> [String: Any] {
-        return retrieveStructuredDataDictionary()
+        retrieveStructuredDataDictionary()
     }
 
     /// Backward compatibility alias for `convertToJsonString()`.
@@ -93,6 +93,6 @@ public struct StructuredData {
     /// - Returns: A JSON string representation of the structured data.
     @available(*, deprecated, message: "Use convertToJsonString() instead")
     public func toJSON() -> String {
-        return convertToJsonString()
+        convertToJsonString()
     }
 }

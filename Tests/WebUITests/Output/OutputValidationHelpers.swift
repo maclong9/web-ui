@@ -1,4 +1,5 @@
 import Foundation
+
 @testable import WebUI
 
 // MARK: - Test Helpers for Output Validation
@@ -7,9 +8,9 @@ extension Element {
     /// Renders the element to HTML string for testing
     func render() -> String {
         // Use the built-in render method from Markup protocol
-        return self.body.render()
+        self.body.render()
     }
-    
+
     /// Extracts CSS classes from the rendered HTML
     func extractCSSClasses() -> [String] {
         let htmlOutput = self.render()
@@ -28,14 +29,14 @@ extension Markup {
 /// Helper function to extract CSS classes from HTML string
 func extractCSSClassesFromHTML(_ html: String) -> [String] {
     var classes: [String] = []
-    
+
     // Use regex to find class attributes
     let classPattern = #"class\s*=\s*[\"']([^\"']*)[\"']"#
-    
+
     do {
         let regex = try NSRegularExpression(pattern: classPattern, options: .caseInsensitive)
         let matches = regex.matches(in: html, options: [], range: NSRange(location: 0, length: html.count))
-        
+
         for match in matches {
             if let range = Range(match.range(at: 1), in: html) {
                 let classString = String(html[range])
@@ -46,7 +47,7 @@ func extractCSSClassesFromHTML(_ html: String) -> [String] {
     } catch {
         print("Regex error: \(error)")
     }
-    
+
     return classes.filter { !$0.isEmpty }
 }
 
@@ -70,19 +71,19 @@ extension Element {
     func customCSS(_ property: String, value: String) -> some Element {
         // This would need to be implemented in the actual Element protocol
         // For now, return self for compilation
-        return self
+        self
     }
-    
+
     /// Test method for click handlers
     func onClick(_ handler: String) -> some Element {
         // This would need to be implemented in the actual Element protocol
-        return self
+        self
     }
-    
+
     /// Test method for data attributes
     func data(_ key: String, _ value: String) -> some Element {
         // This would need to be implemented in the actual Element protocol
-        return self
+        self
     }
 }
 

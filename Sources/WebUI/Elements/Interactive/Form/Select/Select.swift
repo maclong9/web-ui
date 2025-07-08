@@ -67,50 +67,50 @@ public struct Select: Element {
 
     public var body: MarkupString {
         var attributes: [String] = []
-        
+
         attributes.append("name=\"\(name)\"")
-        
+
         if let required = required, required {
             attributes.append("required")
         }
-        
+
         if let disabled = disabled, disabled {
             attributes.append("disabled")
         }
-        
+
         if let multiple = multiple, multiple {
             attributes.append("multiple")
         }
-        
+
         if let size = size {
             attributes.append("size=\"\(size)\"")
         }
-        
+
         if let id = id {
             attributes.append("id=\"\(id)\"")
         }
-        
+
         if let classes = classes, !classes.isEmpty {
             attributes.append("class=\"\(classes.joined(separator: " "))\"")
         }
-        
+
         if let role = role {
             attributes.append("role=\"\(role.rawValue)\"")
         }
-        
+
         if let label = label {
             attributes.append("aria-label=\"\(label)\"")
         }
-        
+
         if let data = data {
             for (key, value) in data {
                 attributes.append("data-\(key)=\"\(value)\"")
             }
         }
-        
+
         let attributeString = attributes.isEmpty ? "" : " " + attributes.joined(separator: " ")
         let content = contentBuilder().map { $0.render() }.joined()
-        
+
         return MarkupString(content: "<select\(attributeString)>\(content)</select>")
     }
 }

@@ -11,9 +11,9 @@ import Foundation
 /// The generated code follows modern JavaScript standards without requiring
 /// any build tools or frameworks.
 public struct JavaScriptGenerator: Sendable {
-    
+
     // MARK: - Main Generation Methods
-    
+
     /// Generates a complete JavaScript script for all provided states.
     ///
     /// This method creates a self-contained script that includes:
@@ -26,23 +26,25 @@ public struct JavaScriptGenerator: Sendable {
     ///   - states: Dictionary of state ID to state instance
     ///   - configuration: StateManager configuration for customizing output
     /// - Returns: Complete JavaScript code as a string
-    public func generateCompleteScript(for states: [String: any StateProtocolErased], configuration: StateManager.StateConfiguration) -> String {
+    public func generateCompleteScript(
+        for states: [String: any StateProtocolErased], configuration: StateManager.StateConfiguration
+    ) -> String {
         var scriptParts: [String] = []
-        
+
         // Add the core state management framework
         scriptParts.append(generateStateFramework(configuration: configuration))
-        
+
         // Add individual state instances
         for (stateID, state) in states {
             scriptParts.append(generateStateScript(for: state, withID: stateID, configuration: configuration))
         }
-        
+
         // Add initialization code
         scriptParts.append(generateInitializationCode(for: Array(states.keys), configuration: configuration))
-        
+
         return scriptParts.joined(separator: "\n\n")
     }
-    
+
     /// Generates a complete JavaScript script for all provided states using default configuration.
     ///
     /// This method creates a self-contained script that includes:
@@ -57,7 +59,7 @@ public struct JavaScriptGenerator: Sendable {
         let defaultConfiguration = StateManager.StateConfiguration()
         return generateCompleteScript(for: states, configuration: defaultConfiguration)
     }
-    
+
     /// Generates JavaScript for a specific state instance.
     ///
     /// - Parameters:
@@ -65,16 +67,18 @@ public struct JavaScriptGenerator: Sendable {
     ///   - stateID: The unique identifier for the state
     ///   - configuration: StateManager configuration for customizing output
     /// - Returns: JavaScript code for the specific state
-    public func generateStateScript(for state: any StateProtocolErased, withID stateID: String, configuration: StateManager.StateConfiguration) -> String {
+    public func generateStateScript(
+        for state: any StateProtocolErased, withID stateID: String, configuration: StateManager.StateConfiguration
+    ) -> String {
         let initialValue = state.currentValue
         let jsonValue = serializeToJSON(initialValue)
-        
+
         return """
-        // State: \(stateID)
-        WebUIStateManager.createState('\(stateID)', \(jsonValue));
-        """
+            // State: \(stateID)
+            WebUIStateManager.createState('\(stateID)', \(jsonValue));
+            """
     }
-    
+
     /// Generates JavaScript for a specific state instance using default configuration.
     ///
     /// - Parameters:
@@ -85,9 +89,9 @@ public struct JavaScriptGenerator: Sendable {
         let defaultConfiguration = StateManager.StateConfiguration()
         return generateStateScript(for: state, withID: stateID, configuration: defaultConfiguration)
     }
-    
+
     // MARK: - Framework Generation
-    
+
     /// Generates the core WebUI state management framework in vanilla JavaScript.
     ///
     /// This creates a global `WebUIStateManager` object that manages all application state
@@ -96,7 +100,7 @@ public struct JavaScriptGenerator: Sendable {
     /// - Parameter configuration: StateManager configuration for customizing output
     /// - Returns: Core framework JavaScript code
     private func generateStateFramework(configuration: StateManager.StateConfiguration) -> String {
-        return """
+        """
         /**
          * WebUI State Management Framework
          * Pure vanilla JavaScript state management with reactive updates
@@ -375,40 +379,43 @@ public struct JavaScriptGenerator: Sendable {
         })();
         """
     }
-    
+
     /// Generates initialization code that sets up all states and bindings.
     ///
     /// - Parameters:
     ///   - stateIDs: Array of state identifiers to initialize
     ///   - configuration: StateManager configuration for customizing output
     /// - Returns: JavaScript initialization code
-    private func generateInitializationCode(for stateIDs: [String], configuration: StateManager.StateConfiguration) -> String {
+    private func generateInitializationCode(for stateIDs: [String], configuration: StateManager.StateConfiguration)
+        -> String
+    {
         var initParts: [String] = []
-        
-        initParts.append("""
-        // Initialize WebUI when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            // Auto-bind elements with data-webui-state attributes
-            document.querySelectorAll('[data-webui-state]').forEach(element => {
-                const stateId = element.getAttribute('data-webui-state');
-                const property = element.getAttribute('data-webui-property') || 'textContent';
-                WebUIStateManager.bindElement(stateId, element.id || element.getAttribute('data-webui-id'), property);
+
+        initParts.append(
+            """
+            // Initialize WebUI when DOM is ready
+            document.addEventListener('DOMContentLoaded', function() {
+                // Auto-bind elements with data-webui-state attributes
+                document.querySelectorAll('[data-webui-state]').forEach(element => {
+                    const stateId = element.getAttribute('data-webui-state');
+                    const property = element.getAttribute('data-webui-property') || 'textContent';
+                    WebUIStateManager.bindElement(stateId, element.id || element.getAttribute('data-webui-id'), property);
+                });
+                
+                // Set up development server connection in development mode
+                if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                    WebUIStateManager.setupServerSync();
+                }
+                
+                console.log('WebUI: State management initialized with states:', [\(stateIDs.map { "'\($0)'" }.joined(separator: ", "))]);
             });
-            
-            // Set up development server connection in development mode
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                WebUIStateManager.setupServerSync();
-            }
-            
-            console.log('WebUI: State management initialized with states:', [\(stateIDs.map { "'\($0)'" }.joined(separator: ", "))]);
-        });
-        """)
-        
+            """)
+
         return initParts.joined(separator: "\n\n")
     }
-    
+
     // MARK: - Utilities
-    
+
     /// Serializes a value to JSON string for JavaScript consumption.
     ///
     /// - Parameter value: The value to serialize
@@ -426,7 +433,7 @@ public struct JavaScriptGenerator: Sendable {
         } else if let floatValue = value as? Float {
             return String(floatValue)
         }
-        
+
         // Try to encode Codable types using JSONEncoder first
         if let codableValue = value as? any Codable {
             do {
@@ -437,7 +444,7 @@ public struct JavaScriptGenerator: Sendable {
                 // Continue to next approach
             }
         }
-        
+
         // Try JSON serialization for Foundation types (Array, Dictionary, etc.)
         do {
             let data = try JSONSerialization.data(withJSONObject: value, options: [])
@@ -452,7 +459,7 @@ public struct JavaScriptGenerator: Sendable {
 // MARK: - Event Handling Extensions
 
 extension JavaScriptGenerator {
-    
+
     /// Generates JavaScript for a button click handler that updates state.
     ///
     /// - Parameters:
@@ -462,14 +469,14 @@ extension JavaScriptGenerator {
     /// - Returns: JavaScript code for the event handler
     public func generateButtonHandler(buttonID: String, stateID: String, action: ButtonAction) -> String {
         let actionCode = generateActionCode(for: action, stateID: stateID)
-        
+
         return """
-        document.getElementById('\(buttonID)').addEventListener('click', function() {
-            \(actionCode)
-        });
-        """
+            document.getElementById('\(buttonID)').addEventListener('click', function() {
+                \(actionCode)
+            });
+            """
     }
-    
+
     /// Generates JavaScript for form submission handling.
     ///
     /// - Parameters:
@@ -480,26 +487,26 @@ extension JavaScriptGenerator {
         let updateCodes = stateUpdates.map { fieldName, stateID in
             "WebUIStateManager.setState('\(stateID)', form['\(fieldName)'].value);"
         }.joined(separator: "\n    ")
-        
+
         return """
-        document.getElementById('\(formID)').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const form = event.target;
-            \(updateCodes)
-        });
-        """
+            document.getElementById('\(formID)').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const form = event.target;
+                \(updateCodes)
+            });
+            """
     }
-    
+
     private func generateActionCode(for action: ButtonAction, stateID: String) -> String {
         switch action {
-        case .increment:
-            return "WebUIStateManager.setState('\(stateID)', (WebUIStateManager.getState('\(stateID)') || 0) + 1);"
-        case .decrement:
-            return "WebUIStateManager.setState('\(stateID)', (WebUIStateManager.getState('\(stateID)') || 0) - 1);"
-        case .toggle:
-            return "WebUIStateManager.setState('\(stateID)', !WebUIStateManager.getState('\(stateID)'));"
-        case .custom(let code):
-            return code.replacingOccurrences(of: "$STATE_ID", with: stateID)
+            case .increment:
+                return "WebUIStateManager.setState('\(stateID)', (WebUIStateManager.getState('\(stateID)') || 0) + 1);"
+            case .decrement:
+                return "WebUIStateManager.setState('\(stateID)', (WebUIStateManager.getState('\(stateID)') || 0) - 1);"
+            case .toggle:
+                return "WebUIStateManager.setState('\(stateID)', !WebUIStateManager.getState('\(stateID)'));"
+            case .custom(let code):
+                return code.replacingOccurrences(of: "$STATE_ID", with: stateID)
         }
     }
 }
@@ -519,11 +526,11 @@ public enum ButtonAction {
 /// Helper type to encode any Codable value
 private struct AnyEncodable: Encodable {
     private let encodableValue: any Encodable
-    
+
     init(_ value: any Codable) {
         self.encodableValue = value
     }
-    
+
     func encode(to encoder: Encoder) throws {
         try encodableValue.encode(to: encoder)
     }

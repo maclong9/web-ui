@@ -13,7 +13,7 @@ public struct ElementBuilder {
         data: [String: String] = [:],
         onClick: String? = nil
     ) -> Button {
-        return Button(
+        Button(
             title,
             type: type,
             onClick: disabled ? nil : onClick,
@@ -21,7 +21,7 @@ public struct ElementBuilder {
             data: data.isEmpty ? nil : data
         )
     }
-    
+
     /// Creates an Input with component styling
     public static func input(
         name: String,
@@ -33,7 +33,7 @@ public struct ElementBuilder {
         classes: [String] = [],
         data: [String: String] = [:]
     ) -> Input {
-        return Input(
+        Input(
             name: name,
             type: type,
             value: value,
@@ -43,7 +43,7 @@ public struct ElementBuilder {
             data: data.isEmpty ? nil : data
         )
     }
-    
+
     /// Creates a Section with component styling
     public static func section(
         classes: [String] = [],
@@ -51,20 +51,20 @@ public struct ElementBuilder {
         data: [String: String] = [:],
         @MarkupBuilder content: @escaping MarkupContentBuilder
     ) -> Section {
-        return Section(
+        Section(
             classes: classes.isEmpty ? nil : classes,
             role: role,
             data: data.isEmpty ? nil : data,
             content: content
         )
     }
-    
+
     /// Creates a Text with component styling
     public static func text(
         _ content: String,
         classes: [String] = []
     ) -> Text {
-        return Text(
+        Text(
             content,
             classes: classes.isEmpty ? nil : classes
         )

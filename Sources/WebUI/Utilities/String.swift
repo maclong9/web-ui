@@ -75,6 +75,6 @@ extension String: Markup {
     /// - Returns: A sanitized string suitable for use as a stylesheet variable name.
     @available(*, deprecated, message: "Use sanitizedForStyleSheet() instead")
     public func sanitizedForCSS() -> String {
-        return sanitizedForStyleSheet()
+        sanitizedForStyleSheet()
     }
 }
