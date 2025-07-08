@@ -104,11 +104,6 @@ public struct Text: Element {
     ///   - label: ARIA label to describe the element.
     ///   - data: Dictionary of `data-*` attributes for element relevant storing data.
     ///   - content: Closure providing text content.
-    @available(
-        *, deprecated,
-        message:
-            "Use Text(_:) string initializer instead for better SwiftUI compatibility. Example: Text(\"Hello, world!\")"
-    )
     public init(
         id: String? = nil,
         classes: [String]? = nil,
