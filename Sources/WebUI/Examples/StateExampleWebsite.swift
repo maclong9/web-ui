@@ -64,29 +64,13 @@ public struct StateExampleHomeDocument: Document {
                             .toggle("darkMode"),
                             .expression("currentTheme", "darkMode ? 'dark' : 'light'")
                         ])
-                        .backgroundColor(.blue(.600))
-                        .textColor(.white)
-                        .padding(.small)
-                        .rounded(.md)
                 }
-                .flexDirection(.row)
-                .gap(.medium)
-                .justifyContent(.spaceBetween)
-                .alignItems(.center)
-                .padding(.medium)
-                .backgroundColor(.gray(.100))
-                .rounded(.md)
-                .marginBottom(.large)
                 
                 // Main content
                 Stack {
                     Heading(.title) { "WebUI State Management Examples" }
-                        .textAlign(.center)
-                        .marginBottom(.large)
                     
                     Text("Welcome to the comprehensive WebUI state management examples. Each example demonstrates different aspects of state management in WebUI applications.")
-                        .textAlign(.center)
-                        .marginBottom(.large)
                         .fontSize(.lg)
                     
                     // Example cards
@@ -112,10 +96,6 @@ public struct StateExampleHomeDocument: Document {
                             tags: ["Objects", "Complex", "E-commerce"]
                         )
                     }
-                    .display(.grid)
-                    .gridTemplateColumns(.repeat(3, .fr(1)))
-                    .gap(.large)
-                    .marginBottom(.large)
                     
                     Stack {
                         ExampleCard(
@@ -139,10 +119,6 @@ public struct StateExampleHomeDocument: Document {
                             tags: ["Multi-step", "Navigation", "Forms"]
                         )
                     }
-                    .display(.grid)
-                    .gridTemplateColumns(.repeat(3, .fr(1)))
-                    .gap(.large)
-                    .marginBottom(.large)
                     
                     Stack {
                         ExampleCard(
@@ -159,8 +135,6 @@ public struct StateExampleHomeDocument: Document {
                     // Feature highlights
                     Stack {
                         Heading(.subtitle) { "Key Features Demonstrated" }
-                            .textAlign(.center)
-                            .marginBottom(.medium)
                         
                         Stack {
                             FeatureHighlight(
@@ -178,10 +152,6 @@ public struct StateExampleHomeDocument: Document {
                                 description: "Automatic UI updates when state changes"
                             )
                         }
-                        .display(.grid)
-                        .gridTemplateColumns(.repeat(3, .fr(1)))
-                        .gap(.medium)
-                        .marginBottom(.large)
                         
                         Stack {
                             FeatureHighlight(
@@ -199,16 +169,9 @@ public struct StateExampleHomeDocument: Document {
                                 description: "SwiftUI-like declarative syntax"
                             )
                         }
-                        .display(.grid)
-                        .gridTemplateColumns(.repeat(3, .fr(1)))
-                        .gap(.medium)
                     }
-                    .marginTop(.xl)
                 }
-                .maxWidth(.container(.xl))
-                .margin(.horizontal, .auto)
             }
-            .padding(.large)
             .class("dark-theme", when: "darkMode")
         }
     }
@@ -225,45 +188,17 @@ public struct ExampleCard: Element {
         Link(href: link) {
             Stack {
                 Heading(.h3) { title }
-                    .fontSize(.xl)
-                    .fontWeight(.bold)
-                    .marginBottom(.small)
                 
                 Text(description)
-                    .textColor(.gray(.600))
-                    .marginBottom(.medium)
-                    .lineHeight(.relaxed)
                 
                 // Tags
                 Stack {
                     ForEach(tags) { tag in
                         Text(tag)
-                            .fontSize(.sm)
-                            .padding(.horizontal, .small)
-                            .padding(.vertical, .xs)
-                            .backgroundColor(.blue(.100))
-                            .textColor(.blue(.800))
-                            .rounded(.full)
                     }
                 }
-                .flexDirection(.row)
-                .flexWrap(.wrap)
-                .gap(.xs)
-            }
-            .padding(.large)
-            .backgroundColor(.white)
-            .border(.gray(.200))
-            .rounded(.lg)
-            .shadow(.sm)
-            .transitionProperty(.all)
-            .transitionDuration(.medium)
-            .hover {
-                .shadow(.md)
-                .transform(.translateY(.px(-4)))
             }
         }
-        .textDecoration(.none)
-        .textColor(.inherit)
     }
 }
 
@@ -275,20 +210,9 @@ public struct FeatureHighlight: Element {
     public var body: some Markup {
         Stack {
             Heading(.h4) { title }
-                .fontSize(.lg)
-                .fontWeight(.semibold)
-                .marginBottom(.small)
-                .textColor(.blue(.600))
             
             Text(description)
-                .textColor(.gray(.600))
-                .lineHeight(.relaxed)
         }
-        .padding(.medium)
-        .backgroundColor(.blue(.50))
-        .border(.blue(.200))
-        .rounded(.md)
-        .textAlign(.center)
     }
 }
 

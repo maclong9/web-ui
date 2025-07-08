@@ -23,46 +23,25 @@ public struct CounterExample: Document {
                 
                 Stack {
                     Text("Count: ").text(from: "counter")
-                        .fontSize(.xl)
-                        .fontWeight(.bold)
                     
                     Stack {
                         Button("Increment")
                             .action(.increment("counter"))
-                            .backgroundColor(.blue(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                         
                         Button("Decrement")
                             .action(.decrement("counter"))
-                            .backgroundColor(.red(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                         
                         Button("Add 5")
                             .action(.increment("counter", 5))
                             .backgroundColor(.green(.600))
                             .textColor(.white)
-                            .padding(.medium)
                             .rounded(.md)
                         
                         Button("Reset")
                             .action(.update("counter", 0))
-                            .backgroundColor(.gray(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                     }
-                    .flexDirection(.row)
-                    .gap(.medium)
                 }
-                .gap(.medium)
             }
-            .padding(.large)
-            .maxWidth(.xl)
-            .margin(.horizontal, .auto)
         }
     }
 }
@@ -93,9 +72,6 @@ public struct TodoExample: Document {
                 Stack {
                     Input(name: "newTodo", placeholder: "Enter a new todo...")
                         .bind(to: "newTodo")
-                        .padding(.medium)
-                        .border(.gray(.300))
-                        .rounded(.md)
                     
                     Button("Add Todo")
                         .actions([
@@ -109,22 +85,14 @@ public struct TodoExample: Document {
                         .disabled(when: "newTodo.trim() === ''")
                 }
                 .flexDirection(.row)
-                .gap(.medium)
                 
                 // Todo list
                 Stack {
                     // Dynamic todo items would require custom JavaScript
                     // This is a simplified representation
                     Text("Todo items will be rendered here dynamically")
-                        .padding(.medium)
-                        .backgroundColor(.gray(.100))
-                        .rounded(.md)
                 }
-                .gap(.small)
             }
-            .padding(.large)
-            .maxWidth(.xl)
-            .margin(.horizontal, .auto)
             .gap(.large)
         }
     }
@@ -175,7 +143,6 @@ public struct ThemeHomeDocument: Document {
                         .rounded(.md)
                 }
                 .flexDirection(.row)
-                .gap(.medium)
                 .padding(.medium)
                 .backgroundColor(.gray(.100))
                 .rounded(.md)
@@ -185,10 +152,8 @@ public struct ThemeHomeDocument: Document {
                     Heading(.title) { "Welcome to Theme Switcher" }
                     Text("This content will adapt to the selected theme.")
                 }
-                .padding(.large)
                 .class("theme-content", when: "darkMode")
             }
-            .padding(.large)
             .class("dark-theme", when: "darkMode")
         }
     }
@@ -206,12 +171,8 @@ public struct ThemeAboutDocument: Document {
             Stack {
                 Heading(.title) { "About Theme Switcher" }
                 Text("This page also respects the global theme state.")
-                    .padding(.medium)
-                    .backgroundColor(.gray(.100))
-                    .rounded(.md)
                     .class("dark-theme", when: "darkMode")
             }
-            .padding(.large)
             .class("dark-theme", when: "darkMode")
         }
     }
@@ -256,7 +217,6 @@ public struct ShoppingCartExample: Document {
                         .rounded(.md)
                 }
                 .flexDirection(.row)
-                .gap(.medium)
                 .padding(.medium)
                 .backgroundColor(.gray(.100))
                 .rounded(.md)
@@ -267,23 +227,14 @@ public struct ShoppingCartExample: Document {
                     ProductCard(name: "Product 2", price: 29.99)
                     ProductCard(name: "Product 3", price: 39.99)
                 }
-                .gap(.medium)
                 
                 // Cart details (shown when open)
                 Stack {
                     Text("Cart Details")
-                        .fontWeight(.bold)
-                    Text("Cart items will be listed here")
-                        .padding(.medium)
-                        .backgroundColor(.gray(.100))
-                        .rounded(.md)
+                            Text("Cart items will be listed here")
                 }
                 .show(when: "cartOpen")
-                .gap(.medium)
             }
-            .padding(.large)
-            .maxWidth(.xl)
-            .margin(.horizontal, .auto)
             .gap(.large)
         }
     }
@@ -296,9 +247,7 @@ public struct ProductCard: Element {
     public var body: some Markup {
         Stack {
             Text(name)
-                .fontWeight(.bold)
             Text("$\(price, specifier: "%.2f")")
-                .textColor(.gray(.600))
             
             Button("Add to Cart")
                 .action(.custom("""
@@ -307,15 +256,7 @@ public struct ProductCard: Element {
                     updateCart('itemCount', cart.itemCount + 1);
                     updateCart('total', cart.total + \(price));
                 """))
-                .backgroundColor(.green(.600))
-                .textColor(.white)
-                .padding(.small)
-                .rounded(.md)
         }
-        .padding(.medium)
-        .border(.gray(.300))
-        .rounded(.md)
-        .gap(.small)
     }
 }
 
@@ -349,9 +290,6 @@ public struct FormValidationExample: Document {
                         Label("Email:")
                         Input(name: "email", type: .email, placeholder: "Enter your email")
                             .bind(to: "email")
-                            .padding(.medium)
-                            .border(.gray(.300))
-                            .rounded(.md)
                             .on("input", actions: [
                                 .custom("validateEmail()")
                             ])
@@ -359,9 +297,6 @@ public struct FormValidationExample: Document {
                         Label("Password:")
                         Input(name: "password", type: .password, placeholder: "Enter your password")
                             .bind(to: "password")
-                            .padding(.medium)
-                            .border(.gray(.300))
-                            .rounded(.md)
                             .on("input", actions: [
                                 .custom("validatePassword()")
                             ])
@@ -369,37 +304,21 @@ public struct FormValidationExample: Document {
                         Label("Confirm Password:")
                         Input(name: "confirmPassword", type: .password, placeholder: "Confirm your password")
                             .bind(to: "confirmPassword")
-                            .padding(.medium)
-                            .border(.gray(.300))
-                            .rounded(.md)
                             .on("input", actions: [
                                 .custom("validateConfirmPassword()")
                             ])
                         
                         Button("Submit", type: .submit)
-                            .backgroundColor(.blue(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                             .disabled(when: "!isValid")
                     }
-                    .gap(.medium)
-                }
+                    }
                 
                 // Error messages
                 Stack {
                     Text("Errors will be displayed here")
-                        .textColor(.red(.600))
-                        .padding(.medium)
-                        .backgroundColor(.red(.100))
-                        .rounded(.md)
                 }
                 .show(when: "errors.length > 0")
             }
-            .padding(.large)
-            .maxWidth(.md)
-            .margin(.horizontal, .auto)
-            .gap(.large)
         }
     }
 }
@@ -451,7 +370,6 @@ public struct ModalExample: Document {
                         .rounded(.md)
                 }
                 .flexDirection(.row)
-                .gap(.medium)
                 
                 // Modal overlay
                 Stack {
@@ -459,49 +377,27 @@ public struct ModalExample: Document {
                     Stack {
                         Stack {
                             Text("").text(from: "modalTitle")
-                                .fontWeight(.bold)
-                                .fontSize(.lg)
+                                                .fontSize(.lg)
                             
                             Button("×")
                                 .action(.toggle("modalOpen"))
                                 .backgroundColor(.transparent)
-                                .textColor(.gray(.600))
-                                .fontSize(.xl)
+                                                .fontSize(.xl)
                         }
-                        .flexDirection(.row)
-                        .justifyContent(.spaceBetween)
-                        .alignItems(.center)
                         
                         Text("").text(from: "modalContent")
-                            .padding(.medium)
                         
                         Button("Close")
                             .action(.toggle("modalOpen"))
-                            .backgroundColor(.gray(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                     }
                     .backgroundColor(.white)
                     .padding(.large)
                     .rounded(.lg)
                     .border(.gray(.300))
                     .maxWidth(.md)
-                    .gap(.medium)
-                }
+                    }
                 .show(when: "modalOpen")
-                .position(.fixed)
-                .top(.zero)
-                .left(.zero)
-                .width(.full)
-                .height(.full)
-                .backgroundColor(.black.opacity(0.5))
-                .display(.flex)
-                .justifyContent(.center)
-                .alignItems(.center)
             }
-            .padding(.large)
-            .gap(.large)
         }
     }
 }
@@ -539,7 +435,6 @@ public struct WizardExample: Document {
                     Text(" of ").text(from: "totalSteps")
                 }
                 .fontSize(.lg)
-                .fontWeight(.bold)
                 .textAlign(.center)
                 
                 // Step 1: Basic Info
@@ -547,9 +442,6 @@ public struct WizardExample: Document {
                     Heading(.subtitle) { "Basic Information" }
                     
                     Input(name: "name", placeholder: "Enter your name")
-                        .padding(.medium)
-                        .border(.gray(.300))
-                        .rounded(.md)
                         .on("input", actions: [
                             .updateObject("formData", "name", "event.target.value")
                         ])
@@ -562,16 +454,12 @@ public struct WizardExample: Document {
                         .rounded(.md)
                 }
                 .show(when: "currentStep === 1")
-                .gap(.medium)
                 
                 // Step 2: Contact Info
                 Stack {
                     Heading(.subtitle) { "Contact Information" }
                     
                     Input(name: "email", type: .email, placeholder: "Enter your email")
-                        .padding(.medium)
-                        .border(.gray(.300))
-                        .rounded(.md)
                         .on("input", actions: [
                             .updateObject("formData", "email", "event.target.value")
                         ])
@@ -579,32 +467,18 @@ public struct WizardExample: Document {
                     Stack {
                         Button("Back")
                             .action(.decrement("currentStep"))
-                            .backgroundColor(.gray(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                         
                         Button("Next")
                             .action(.increment("currentStep"))
-                            .backgroundColor(.blue(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                     }
-                    .flexDirection(.row)
-                    .gap(.medium)
                 }
                 .show(when: "currentStep === 2")
-                .gap(.medium)
                 
                 // Step 3: Preferences
                 Stack {
                     Heading(.subtitle) { "Preferences" }
                     
                     TextArea(name: "preferences", placeholder: "Enter your preferences")
-                        .padding(.medium)
-                        .border(.gray(.300))
-                        .rounded(.md)
                         .on("input", actions: [
                             .updateObject("formData", "preferences", "event.target.value")
                         ])
@@ -612,28 +486,16 @@ public struct WizardExample: Document {
                     Stack {
                         Button("Back")
                             .action(.decrement("currentStep"))
-                            .backgroundColor(.gray(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                         
                         Button("Submit")
                             .action(.custom("submitForm()"))
                             .backgroundColor(.green(.600))
                             .textColor(.white)
-                            .padding(.medium)
                             .rounded(.md)
                     }
-                    .flexDirection(.row)
-                    .gap(.medium)
                 }
                 .show(when: "currentStep === 3")
-                .gap(.medium)
             }
-            .padding(.large)
-            .maxWidth(.md)
-            .margin(.horizontal, .auto)
-            .gap(.large)
         }
     }
 }
@@ -669,9 +531,6 @@ public struct SearchExample: Document {
                 Stack {
                     Input(name: "search", placeholder: "Search items...")
                         .bind(to: "searchQuery")
-                        .padding(.medium)
-                        .border(.gray(.300))
-                        .rounded(.md)
                         .on("input", actions: [
                             .custom("debounceSearch()")
                         ])
@@ -687,45 +546,30 @@ public struct SearchExample: Document {
                         .rounded(.md)
                 }
                 .flexDirection(.row)
-                .gap(.medium)
                 
                 // Search status
                 Text("Searching...")
                     .show(when: "isSearching")
-                    .textColor(.gray(.600))
-                
+                    
                 // Search results
                 Stack {
                     Text("Search Results:")
-                        .fontWeight(.bold)
-                        .show(when: "searchResults.length > 0")
+                                .show(when: "searchResults.length > 0")
                     
                     // Results would be dynamically rendered
                     Text("Results will appear here")
-                        .padding(.medium)
-                        .backgroundColor(.gray(.100))
-                        .rounded(.md)
                         .show(when: "searchQuery.length > 0")
                 }
-                .gap(.medium)
                 
                 // All items
                 Stack {
                     Text("All Items:")
-                        .fontWeight(.bold)
-                        .show(when: "searchQuery.length === 0")
+                                .show(when: "searchQuery.length === 0")
                     
                     Text("Apple, Banana, Cherry, Date, Elderberry, Fig, Grape, Honeydew, Kiwi, Lemon")
-                        .padding(.medium)
-                        .backgroundColor(.gray(.100))
-                        .rounded(.md)
                         .show(when: "searchQuery.length === 0")
                 }
-                .gap(.medium)
             }
-            .padding(.large)
-            .maxWidth(.xl)
-            .margin(.horizontal, .auto)
             .gap(.large)
         }
     }

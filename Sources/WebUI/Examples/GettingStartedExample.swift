@@ -69,11 +69,6 @@ public struct WelcomePage: Document {
                         .action(.toggle("darkMode"))
                         .title("Toggle Dark Mode")
                 }
-                .display(.flex)
-                .justifyContent(.spaceBetween)
-                .alignItems(.center)
-                .padding(.medium)
-                .backgroundColor(.blue(.600))
             }
             
             // Main content
@@ -87,28 +82,13 @@ public struct WelcomePage: Document {
                         .show(when: "showWelcome")
                         
                         Text("Visit count: ").text(from: "visitCount")
-                            .fontSize(.lg)
-                            .textColor(.gray(.600))
                         
                         Button("Increment visits")
                             .action(.increment("visitCount"))
-                            .backgroundColor(.green(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                         
                         Button("Hide Welcome")
                             .action(.toggle("showWelcome"))
-                            .backgroundColor(.red(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                     }
-                    .gap(.medium)
-                    .padding(.large)
-                    .backgroundColor(.white)
-                    .rounded(.lg)
-                    .shadow(.sm)
                     
                     // Interactive features section
                     Stack {
@@ -130,28 +110,13 @@ public struct WelcomePage: Document {
                                 description: "Elements show/hide based on state"
                             )
                         }
-                        .display(.grid)
-                        .gridTemplateColumns(.repeat(3, .fr(1)))
-                        .gap(.medium)
                     }
-                    .gap(.medium)
-                    .padding(.large)
-                    .backgroundColor(.blue(.50))
-                    .rounded(.lg)
                 }
-                .maxWidth(.container(.xl))
-                .margin(.horizontal, .auto)
-                .padding(.large)
-                .gap(.xl)
             }
             
             // Footer
             Footer {
                 Text("Built with WebUI State Management")
-                    .textAlign(.center)
-                    .padding(.medium)
-                    .textColor(.gray(.600))
-                    .backgroundColor(.gray(.100))
             }
         }
         .class("dark-theme", when: "darkMode")
@@ -191,11 +156,6 @@ public struct ProfilePage: Document {
                         .action(.toggle("darkMode"))
                         .title("Toggle Dark Mode")
                 }
-                .display(.flex)
-                .justifyContent(.spaceBetween)
-                .alignItems(.center)
-                .padding(.medium)
-                .backgroundColor(.blue(.600))
             }
             
             MainElement {
@@ -208,76 +168,41 @@ public struct ProfilePage: Document {
                         Stack {
                             Text("Name: ").text(from: "userName")
                                 .hide(when: "isEditing")
-                                .fontSize(.lg)
-                                .fontWeight(.bold)
                             
                             Input(name: "userNameEdit", placeholder: "Enter your name")
                                 .bind(to: "userName")
                                 .show(when: "isEditing")
-                                .padding(.medium)
-                                .border(.gray(.300))
-                                .rounded(.md)
                         }
                         
                         // Bio section
                         Stack {
                             Text("Bio:")
-                                .fontWeight(.bold)
                             
                             Text("").text(from: "bio")
                                 .hide(when: "isEditing")
-                                .padding(.medium)
-                                .backgroundColor(.gray(.100))
-                                .rounded(.md)
                             
                             TextArea(name: "bioEdit", placeholder: "Tell us about yourself...")
                                 .bind(to: "bio")
                                 .show(when: "isEditing")
-                                .padding(.medium)
-                                .border(.gray(.300))
-                                .rounded(.md)
                         }
-                        .gap(.small)
                         
                         // Interests
                         Stack {
                             Text("Interests:")
-                                .fontWeight(.bold)
                             
                             Text("Technology, Design") // Static for now
-                                .padding(.medium)
-                                .backgroundColor(.blue(.100))
-                                .rounded(.md)
                         }
-                        .gap(.small)
                         
                         // Edit toggle
                         Button("Edit Profile")
                             .action(.toggle("isEditing"))
                             .hide(when: "isEditing")
-                            .backgroundColor(.blue(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                         
                         Button("Save Changes")
                             .action(.toggle("isEditing"))
                             .show(when: "isEditing")
-                            .backgroundColor(.green(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                     }
-                    .gap(.medium)
-                    .padding(.large)
-                    .backgroundColor(.white)
-                    .rounded(.lg)
-                    .shadow(.sm)
                 }
-                .maxWidth(.container(.md))
-                .margin(.horizontal, .auto)
-                .padding(.large)
-                .gap(.large)
             }
         }
         .class("dark-theme", when: "darkMode")
@@ -317,11 +242,6 @@ public struct SettingsPage: Document {
                         .action(.toggle("darkMode"))
                         .title("Toggle Dark Mode")
                 }
-                .display(.flex)
-                .justifyContent(.spaceBetween)
-                .alignItems(.center)
-                .padding(.medium)
-                .backgroundColor(.blue(.600))
             }
             
             MainElement {
@@ -339,29 +259,16 @@ public struct SettingsPage: Document {
                                     .actions([
                                         .update("darkMode", false)
                                     ])
-                                    .backgroundColor(.white)
-                                    .textColor(.black)
-                                    .border(.gray(.300))
-                                    .padding(.small)
-                                    .rounded(.md)
                                     .class("active", when: "!darkMode")
                                 
                                 Button("Dark")
                                     .actions([
                                         .update("darkMode", true)
                                     ])
-                                    .backgroundColor(.gray(.800))
-                                    .textColor(.white)
-                                    .padding(.small)
-                                    .rounded(.md)
                                     .class("active", when: "darkMode")
                             }
                             .flexDirection(.row)
-                            .gap(.small)
-                        }
-                        .flexDirection(.row)
-                        .justifyContent(.spaceBetween)
-                        .alignItems(.center)
+                            }
                         
                         // Notifications setting
                         Stack {
@@ -370,9 +277,6 @@ public struct SettingsPage: Document {
                             Input(name: "notifications", type: .checkbox)
                                 .bindChecked(to: "notifications")
                         }
-                        .flexDirection(.row)
-                        .justifyContent(.spaceBetween)
-                        .alignItems(.center)
                         
                         // Font size setting
                         Stack {
@@ -385,16 +289,8 @@ public struct SettingsPage: Document {
                                     .attribute("max", "24")
                                 
                                 Text("").text(from: "fontSize")
-                                    .fontSize(.sm)
-                                    .textColor(.gray(.600))
                             }
-                            .flexDirection(.row)
-                            .gap(.medium)
-                            .alignItems(.center)
                         }
-                        .flexDirection(.row)
-                        .justifyContent(.spaceBetween)
-                        .alignItems(.center)
                         
                         // Language setting
                         Stack {
@@ -406,33 +302,14 @@ public struct SettingsPage: Document {
                                 Option(value: "French") { "Français" }
                             }
                             .bind(to: "language")
-                            .padding(.small)
-                            .border(.gray(.300))
-                            .rounded(.md)
                         }
-                        .flexDirection(.row)
-                        .justifyContent(.spaceBetween)
-                        .alignItems(.center)
                         
                         // Save button
                         Button("Save Settings")
                             .action(.custom("alert('Settings saved!')"))
-                            .backgroundColor(.green(.600))
-                            .textColor(.white)
-                            .padding(.medium)
-                            .rounded(.md)
                             .width(.full)
                     }
-                    .gap(.large)
-                    .padding(.large)
-                    .backgroundColor(.white)
-                    .rounded(.lg)
-                    .shadow(.sm)
                 }
-                .maxWidth(.container(.md))
-                .margin(.horizontal, .auto)
-                .padding(.large)
-                .gap(.large)
             }
         }
         .class("dark-theme", when: "darkMode")
@@ -448,20 +325,9 @@ public struct FeatureDemo: Element {
     public var body: some Markup {
         Stack {
             Heading(.h4) { title }
-                .fontSize(.lg)
-                .fontWeight(.semibold)
-                .marginBottom(.small)
-                .textColor(.blue(.600))
             
             Text(description)
-                .textColor(.gray(.600))
-                .lineHeight(.relaxed)
         }
-        .padding(.medium)
-        .backgroundColor(.white)
-        .border(.blue(.200))
-        .rounded(.md)
-        .textAlign(.center)
     }
 }
 
