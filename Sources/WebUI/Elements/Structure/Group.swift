@@ -14,16 +14,16 @@
 /// }
 /// ```
 public struct Group<Content: Markup>: Markup {
-    private let content: Content
+  private let content: Content
 
-    /// Creates a group of markup elements.
-    ///
-    /// - Parameter content: A builder closure that provides the grouped content.
-    public init(@MarkupBuilder content: () -> Content) {
-        self.content = content()
-    }
+  /// Creates a group of markup elements.
+  ///
+  /// - Parameter content: A builder closure that provides the grouped content.
+  public init(@MarkupBuilder content: () -> Content) {
+    self.content = content()
+  }
 
-    public var body: MarkupString {
-        MarkupString(content: content.render())
-    }
+  public var body: MarkupString {
+    MarkupString(content: content.render())
+  }
 }

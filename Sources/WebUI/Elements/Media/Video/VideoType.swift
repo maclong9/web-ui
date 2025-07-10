@@ -16,7 +16,7 @@ import Foundation
 /// )
 /// ```
 public enum VideoType: String {
-    case mp4 = "video/mp4"
-    case webm = "video/webm"
-    case ogg = "video/ogg"
+  case mp4 = "video/mp4"
+  case webm = "video/webm"
+  case ogg = "video/ogg"
 }

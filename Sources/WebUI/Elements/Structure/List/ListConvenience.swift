@@ -10,49 +10,49 @@ public typealias OrderedList = List
 public typealias ListItem = Item
 
 extension List {
-    /// Creates an unordered list (ul)
-    public init(
-        style: ListStyle = .none,
-        id: String? = nil,
-        classes: [String]? = nil,
-        role: AriaRole? = nil,
-        label: String? = nil,
-        data: [String: String]? = nil,
-        @MarkupBuilder content: @escaping MarkupContentBuilder
-    ) {
-        self.init(
-            type: .unordered,
-            style: style,
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data,
-            content: content
-        )
-    }
+  /// Creates an unordered list (ul)
+  public init(
+    style: ListStyle = .none,
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
+    data: [String: String]? = nil,
+    @MarkupBuilder content: @escaping MarkupContentBuilder
+  ) {
+    self.init(
+      type: .unordered,
+      style: style,
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      data: data,
+      content: content
+    )
+  }
 }
 
 extension OrderedList {
-    /// Creates an ordered list (ol)
-    public static func ordered(
-        style: ListStyle = .none,
-        id: String? = nil,
-        classes: [String]? = nil,
-        role: AriaRole? = nil,
-        label: String? = nil,
-        data: [String: String]? = nil,
-        @MarkupBuilder content: @escaping MarkupContentBuilder
-    ) -> List {
-        List(
-            type: .ordered,
-            style: style,
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data,
-            content: content
-        )
-    }
+  /// Creates an ordered list (ol)
+  public static func ordered(
+    style: ListStyle = .none,
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
+    data: [String: String]? = nil,
+    @MarkupBuilder content: @escaping MarkupContentBuilder
+  ) -> List {
+    List(
+      type: .ordered,
+      style: style,
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      data: data,
+      content: content
+    )
+  }
 }

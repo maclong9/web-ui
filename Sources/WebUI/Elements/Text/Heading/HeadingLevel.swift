@@ -12,16 +12,16 @@
 /// }
 /// ```
 public enum HeadingLevel: String {
-    /// Large title, most prominent heading (h1).
-    case largeTitle = "h1"
-    /// Title, second most prominent heading (h2).
-    case title = "h2"
-    /// Headline, third most prominent heading (h3).
-    case headline = "h3"
-    /// Subheadline, fourth most prominent heading (h4).
-    case subheadline = "h4"
-    /// Body, fifth most prominent heading (h5).
-    case body = "h5"
-    /// Footnote, least prominent heading (h6).
-    case footnote = "h6"
+  /// Large title, most prominent heading (h1).
+  case largeTitle = "h1"
+  /// Title, second most prominent heading (h2).
+  case title = "h2"
+  /// Headline, third most prominent heading (h3).
+  case headline = "h3"
+  /// Subheadline, fourth most prominent heading (h4).
+  case subheadline = "h4"
+  /// Body, fifth most prominent heading (h5).
+  case body = "h5"
+  /// Footnote, least prominent heading (h6).
+  case footnote = "h6"
 }

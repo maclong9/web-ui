@@ -16,63 +16,63 @@
 ///   }
 ///   ```
 public struct Main: Element {
-    private let id: String?
-    private let classes: [String]?
-    private let role: AriaRole?
-    private let label: String?
-    private let data: [String: String]?
-    private let contentBuilder: MarkupContentBuilder
+  private let id: String?
+  private let classes: [String]?
+  private let role: AriaRole?
+  private let label: String?
+  private let data: [String: String]?
+  private let contentBuilder: MarkupContentBuilder
 
-    /// Creates a new HTML main element.
-    ///
-    /// - Parameters:
-    ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
-    ///   - classes: An array of stylesheet classnames for styling the main content area.
-    ///   - role: ARIA role of the element for accessibility and screen readers.
-    ///   - label: ARIA label to describe the element's purpose (e.g., "Main Content").
-    ///   - data: Dictionary of `data-*` attributes for storing custom data related to the main content.
-    ///   - content: Closure providing the primary content of the page, typically including articles, sections, and other content elements.
-    ///
-    /// ## Example
-    /// ```swift
-    /// Main(classes: ["site-main"]) {
-    ///     Article {
-    ///         Heading(.title) { "Welcome" }
-    ///         Text { "This is the main content of the page." }
-    ///     }
-    /// }
-    /// ```
-    public init(
-        id: String? = nil,
-        classes: [String]? = nil,
-        role: AriaRole? = nil,
-        label: String? = nil,
-        data: [String: String]? = nil,
-        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
-    ) {
-        self.id = id
-        self.classes = classes
-        self.role = role
-        self.label = label
-        self.data = data
-        self.contentBuilder = content
-    }
+  /// Creates a new HTML main element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier for the HTML element, useful for styling and scripting.
+  ///   - classes: An array of stylesheet classnames for styling the main content area.
+  ///   - role: ARIA role of the element for accessibility and screen readers.
+  ///   - label: ARIA label to describe the element's purpose (e.g., "Main Content").
+  ///   - data: Dictionary of `data-*` attributes for storing custom data related to the main content.
+  ///   - content: Closure providing the primary content of the page, typically including articles, sections, and other content elements.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Main(classes: ["site-main"]) {
+  ///     Article {
+  ///         Heading(.title) { "Welcome" }
+  ///         Text { "This is the main content of the page." }
+  ///     }
+  /// }
+  /// ```
+  public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
+    data: [String: String]? = nil,
+    @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
+  ) {
+    self.id = id
+    self.classes = classes
+    self.role = role
+    self.label = label
+    self.data = data
+    self.contentBuilder = content
+  }
 
-    public var body: some Markup {
-        MarkupString(content: buildMarkupTag())
-    }
+  public var body: some Markup {
+    MarkupString(content: buildMarkupTag())
+  }
 
-    private func buildMarkupTag() -> String {
-        let attributes = AttributeBuilder.buildAttributes(
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data
-        )
-        let content = contentBuilder().map { $0.render() }.joined()
+  private func buildMarkupTag() -> String {
+    let attributes = AttributeBuilder.buildAttributes(
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      data: data
+    )
+    let content = contentBuilder().map { $0.render() }.joined()
 
-        return AttributeBuilder.buildMarkupTag(
-            "main", attributes: attributes, content: content)
-    }
+    return AttributeBuilder.buildMarkupTag(
+      "main", attributes: attributes, content: content)
+  }
 }

@@ -5,161 +5,161 @@ import Foundation
 /// Provides a unified implementation for outline styling that can be used across
 /// Element methods and the Declarative DSL functions.
 public struct OutlineStyleOperation: StyleOperation, @unchecked Sendable {
-    /// Parameters for outline styling
-    public struct Parameters {
-        /// The outline width
-        public let width: Int?
+  /// Parameters for outline styling
+  public struct Parameters {
+    /// The outline width
+    public let width: Int?
 
-        /// The outline style (solid, dashed, etc.)
-        public let style: BorderStyle?
+    /// The outline style (solid, dashed, etc.)
+    public let style: BorderStyle?
 
-        /// The outline color
-        public let color: Color?
+    /// The outline color
+    public let color: Color?
 
-        /// The outline offset
-        public let offset: Int?
+    /// The outline offset
+    public let offset: Int?
 
-        /// Creates parameters for outline styling
-        ///
-        /// - Parameters:
-        ///   - width: The outline width
-        ///   - style: The outline style
-        ///   - color: The outline color
-        ///   - offset: The outline offset
-        public init(
-            width: Int? = nil,
-            style: BorderStyle? = nil,
-            color: Color? = nil,
-            offset: Int? = nil
-        ) {
-            self.width = width
-            self.style = style
-            self.color = color
-            self.offset = offset
-        }
-
-        /// Creates parameters from a StyleParameters container
-        ///
-        /// - Parameter params: The style parameters container
-        /// - Returns: OutlineStyleOperation.Parameters
-        public static func from(_ params: StyleParameters) -> Parameters {
-            Parameters(
-                width: params.get("width"),
-                style: params.get("style"),
-                color: params.get("color"),
-                offset: params.get("offset")
-            )
-        }
-    }
-
-    /// Applies the outline style and returns the appropriate stylesheet classes
+    /// Creates parameters for outline styling
     ///
-    /// - Parameter params: The parameters for outline styling
-    /// - Returns: An array of stylesheet class names to be applied to elements
-    public func applyClasses(params: Parameters) -> [String] {
-        var classes: [String] = []
-
-        if let width = params.width {
-            classes.append("outline-\(width)")
-        }
-
-        if let style = params.style {
-            classes.append("outline-\(style.rawValue)")
-        }
-
-        if let color = params.color {
-            classes.append("outline-\(color.rawValue)")
-        }
-
-        if let offset = params.offset {
-            classes.append("outline-offset-\(offset)")
-        }
-
-        if classes.isEmpty {
-            classes.append("outline")
-        }
-
-        return classes
+    /// - Parameters:
+    ///   - width: The outline width
+    ///   - style: The outline style
+    ///   - color: The outline color
+    ///   - offset: The outline offset
+    public init(
+      width: Int? = nil,
+      style: BorderStyle? = nil,
+      color: Color? = nil,
+      offset: Int? = nil
+    ) {
+      self.width = width
+      self.style = style
+      self.color = color
+      self.offset = offset
     }
 
-    /// Shared instance for use across the framework
-    public static let shared = OutlineStyleOperation()
+    /// Creates parameters from a StyleParameters container
+    ///
+    /// - Parameter params: The style parameters container
+    /// - Returns: OutlineStyleOperation.Parameters
+    public static func from(_ params: StyleParameters) -> Parameters {
+      Parameters(
+        width: params.get("width"),
+        style: params.get("style"),
+        color: params.get("color"),
+        offset: params.get("offset")
+      )
+    }
+  }
 
-    /// Private initializer to enforce singleton usage
-    private init() {}
+  /// Applies the outline style and returns the appropriate stylesheet classes
+  ///
+  /// - Parameter params: The parameters for outline styling
+  /// - Returns: An array of stylesheet class names to be applied to elements
+  public func applyClasses(params: Parameters) -> [String] {
+    var classes: [String] = []
+
+    if let width = params.width {
+      classes.append("outline-\(width)")
+    }
+
+    if let style = params.style {
+      classes.append("outline-\(style.rawValue)")
+    }
+
+    if let color = params.color {
+      classes.append("outline-\(color.rawValue)")
+    }
+
+    if let offset = params.offset {
+      classes.append("outline-offset-\(offset)")
+    }
+
+    if classes.isEmpty {
+      classes.append("outline")
+    }
+
+    return classes
+  }
+
+  /// Shared instance for use across the framework
+  public static let shared = OutlineStyleOperation()
+
+  /// Private initializer to enforce singleton usage
+  private init() {}
 }
 
 // Extension for HTML to provide outline styling
 extension Markup {
-    /// Sets outline properties with optional modifiers.
-    ///
-    /// - Parameters:
-    ///   - width: The outline width.
-    ///   - style: The outline style (solid, dashed, etc.).
-    ///   - color: The outline color.
-    ///   - offset: The outline offset in pixels.
-    ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: Markup with updated outline classes.
-    ///
-    /// ## Example
-    /// ```swift
-    /// // Add a basic outline
-    /// Stack()(tag: "div").outline()
-    ///
-    /// // Add a 2px outline with color
-    /// Stack()(tag: "div").outline(of: 2, color: .blue(._500))
-    ///
-    /// // Add a dashed outline on focus
-    /// Stack()(tag: "div").outline(style: .dashed, on: .focus)
-    /// ```
-    public func outline(
-        of width: Int? = nil,
-        style: BorderStyle? = nil,
-        color: Color? = nil,
-        offset: Int? = nil,
-        on modifiers: Modifier...
-    ) -> some Markup {
-        let params = OutlineStyleOperation.Parameters(
-            width: width,
-            style: style,
-            color: color,
-            offset: offset
-        )
+  /// Sets outline properties with optional modifiers.
+  ///
+  /// - Parameters:
+  ///   - width: The outline width.
+  ///   - style: The outline style (solid, dashed, etc.).
+  ///   - color: The outline color.
+  ///   - offset: The outline offset in pixels.
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
+  /// - Returns: Markup with updated outline classes.
+  ///
+  /// ## Example
+  /// ```swift
+  /// // Add a basic outline
+  /// Stack()(tag: "div").outline()
+  ///
+  /// // Add a 2px outline with color
+  /// Stack()(tag: "div").outline(of: 2, color: .blue(._500))
+  ///
+  /// // Add a dashed outline on focus
+  /// Stack()(tag: "div").outline(style: .dashed, on: .focus)
+  /// ```
+  public func outline(
+    of width: Int? = nil,
+    style: BorderStyle? = nil,
+    color: Color? = nil,
+    offset: Int? = nil,
+    on modifiers: Modifier...
+  ) -> some Markup {
+    let params = OutlineStyleOperation.Parameters(
+      width: width,
+      style: style,
+      color: color,
+      offset: offset
+    )
 
-        return OutlineStyleOperation.shared.applyTo(
-            self,
-            params: params,
-            modifiers: modifiers
-        )
-    }
+    return OutlineStyleOperation.shared.applyTo(
+      self,
+      params: params,
+      modifiers: modifiers
+    )
+  }
 }
 
 // Extension for ResponsiveBuilder to provide outline styling
 extension ResponsiveBuilder {
-    /// Sets outline properties in a responsive context.
-    ///
-    /// - Parameters:
-    ///   - width: The outline width.
-    ///   - style: The outline style (solid, dashed, etc.).
-    ///   - color: The outline color.
-    ///   - offset: The outline offset in pixels.
-    /// - Returns: The builder for method chaining.
-    @discardableResult
-    public func outline(
-        of width: Int? = nil,
-        style: BorderStyle? = nil,
-        color: Color? = nil,
-        offset: Int? = nil
-    ) -> ResponsiveBuilder {
-        let params = OutlineStyleOperation.Parameters(
-            width: width,
-            style: style,
-            color: color,
-            offset: offset
-        )
+  /// Sets outline properties in a responsive context.
+  ///
+  /// - Parameters:
+  ///   - width: The outline width.
+  ///   - style: The outline style (solid, dashed, etc.).
+  ///   - color: The outline color.
+  ///   - offset: The outline offset in pixels.
+  /// - Returns: The builder for method chaining.
+  @discardableResult
+  public func outline(
+    of width: Int? = nil,
+    style: BorderStyle? = nil,
+    color: Color? = nil,
+    offset: Int? = nil
+  ) -> ResponsiveBuilder {
+    let params = OutlineStyleOperation.Parameters(
+      width: width,
+      style: style,
+      color: color,
+      offset: offset
+    )
 
-        return OutlineStyleOperation.shared.applyToBuilder(self, params: params)
-    }
+    return OutlineStyleOperation.shared.applyToBuilder(self, params: params)
+  }
 }
 
 // Global function for Declarative DSL
@@ -172,17 +172,17 @@ extension ResponsiveBuilder {
 ///   - offset: The outline offset in pixels.
 /// - Returns: A responsive modification for outline.
 public func outline(
-    of width: Int? = nil,
-    style: BorderStyle? = nil,
-    color: Color? = nil,
-    offset: Int? = nil
+  of width: Int? = nil,
+  style: BorderStyle? = nil,
+  color: Color? = nil,
+  offset: Int? = nil
 ) -> ResponsiveModification {
-    let params = OutlineStyleOperation.Parameters(
-        width: width,
-        style: style,
-        color: color,
-        offset: offset
-    )
+  let params = OutlineStyleOperation.Parameters(
+    width: width,
+    style: style,
+    color: color,
+    offset: offset
+  )
 
-    return OutlineStyleOperation.shared.asModification(params: params)
+  return OutlineStyleOperation.shared.asModification(params: params)
 }

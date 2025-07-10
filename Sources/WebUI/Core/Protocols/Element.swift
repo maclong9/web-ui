@@ -19,12 +19,12 @@ import Foundation
 /// }
 /// ```
 public protocol Element: Markup {
-    /// The content and structure of this element.
-    ///
-    /// The `body` property defines the element's layout and content hierarchy.
-    /// This pattern mirrors SwiftUI's declarative syntax, making the code more
-    /// intuitive and maintainable.
-    ///
-    /// - Returns: A composition of markup elements that make up this component.
-    var body: Body { get }
+  /// The content and structure of this element.
+  ///
+  /// The `body` property defines the element's layout and content hierarchy.
+  /// This pattern mirrors SwiftUI's declarative syntax, making the code more
+  /// intuitive and maintainable.
+  ///
+  /// - Returns: A composition of markup elements that make up this component.
+  var body: Body { get }
 }

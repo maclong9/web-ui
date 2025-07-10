@@ -15,10 +15,10 @@ import Foundation
 /// )
 /// ```
 public enum ImageType: String {
-    case gif = "image/gif"
-    case icon = "image/x-icon"
-    case jpeg = "image/jpeg"
-    case png = "image/png"
-    case svg = "image/svg+xml"
-    case webp = "image/webp"
+  case gif = "image/gif"
+  case icon = "image/x-icon"
+  case jpeg = "image/jpeg"
+  case png = "image/png"
+  case svg = "image/svg+xml"
+  case webp = "image/webp"
 }

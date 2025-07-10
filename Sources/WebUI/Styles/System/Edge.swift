@@ -11,38 +11,38 @@
 ///   .margins(.top, length: 2)        // Adds margin to just the top edge
 /// ```
 public enum Edge: String {
-    /// Applies to all edges (top, right, bottom, and left).
-    ///
-    /// Use when you want uniform spacing on all sides of an element.
-    case all = ""
+  /// Applies to all edges (top, right, bottom, and left).
+  ///
+  /// Use when you want uniform spacing on all sides of an element.
+  case all = ""
 
-    /// Applies to the top edge only.
-    ///
-    /// Use when you need to control spacing above an element.
-    case top = "t"
+  /// Applies to the top edge only.
+  ///
+  /// Use when you need to control spacing above an element.
+  case top = "t"
 
-    /// Applies to the leading (left) edge only.
-    ///
-    /// Use when you need to control spacing to the left of an element.
-    case leading = "l"
+  /// Applies to the leading (left) edge only.
+  ///
+  /// Use when you need to control spacing to the left of an element.
+  case leading = "l"
 
-    /// Applies to the trailing (right) edge only.
-    ///
-    /// Use when you need to control spacing to the right of an element.
-    case trailing = "r"
+  /// Applies to the trailing (right) edge only.
+  ///
+  /// Use when you need to control spacing to the right of an element.
+  case trailing = "r"
 
-    /// Applies to the bottom edge only.
-    ///
-    /// Use when you need to control spacing below an element.
-    case bottom = "b"
+  /// Applies to the bottom edge only.
+  ///
+  /// Use when you need to control spacing below an element.
+  case bottom = "b"
 
-    /// Applies to both leading and trailing edges (horizontal axis).
-    ///
-    /// Use when you want equal spacing on both left and right sides.
-    case horizontal = "x"
+  /// Applies to both leading and trailing edges (horizontal axis).
+  ///
+  /// Use when you want equal spacing on both left and right sides.
+  case horizontal = "x"
 
-    /// Applies to both top and bottom edges (vertical axis).
-    ///
-    /// Use when you want equal spacing on both top and bottom sides.
-    case vertical = "y"
+  /// Applies to both top and bottom edges (vertical axis).
+  ///
+  /// Use when you want equal spacing on both top and bottom sides.
+  case vertical = "y"
 }

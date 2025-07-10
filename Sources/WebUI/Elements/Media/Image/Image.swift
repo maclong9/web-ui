@@ -16,84 +16,84 @@ import Foundation
 /// )
 /// ```
 public struct Image: Element {
-    private let source: String
-    private let description: String
-    private let type: ImageType?
-    private let size: MediaSize?
-    private let id: String?
-    private let classes: [String]?
-    private let role: AriaRole?
-    private let label: String?
-    private let data: [String: String]?
+  private let source: String
+  private let description: String
+  private let type: ImageType?
+  private let size: MediaSize?
+  private let id: String?
+  private let classes: [String]?
+  private let role: AriaRole?
+  private let label: String?
+  private let data: [String: String]?
 
-    /// Creates a new HTML image element.
-    ///
-    /// - Parameters:
-    ///   - source: The image source URL or path.
-    ///   - description: The alt text for the image for accessibility and SEO.
-    ///   - type: The MIME type of the image, optional.
-    ///   - size: The size of the image in pixels, optional.
-    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of stylesheet classnames for styling the image.
-    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
-    ///   - label: ARIA label to describe the element for accessibility when alt text isn't sufficient.
-    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the image.
-    public init(
-        source: String,
-        description: String,
-        type: ImageType? = nil,
-        size: MediaSize? = nil,
-        id: String? = nil,
-        classes: [String]? = nil,
-        role: AriaRole? = nil,
-        label: String? = nil,
-        data: [String: String]? = nil
-    ) {
-        self.source = source
-        self.description = description
-        self.type = type
-        self.size = size
-        self.id = id
-        self.classes = classes
-        self.role = role
-        self.label = label
-        self.data = data
-    }
+  /// Creates a new HTML image element.
+  ///
+  /// - Parameters:
+  ///   - source: The image source URL or path.
+  ///   - description: The alt text for the image for accessibility and SEO.
+  ///   - type: The MIME type of the image, optional.
+  ///   - size: The size of the image in pixels, optional.
+  ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
+  ///   - classes: An array of stylesheet classnames for styling the image.
+  ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
+  ///   - label: ARIA label to describe the element for accessibility when alt text isn't sufficient.
+  ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the image.
+  public init(
+    source: String,
+    description: String,
+    type: ImageType? = nil,
+    size: MediaSize? = nil,
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
+    data: [String: String]? = nil
+  ) {
+    self.source = source
+    self.description = description
+    self.type = type
+    self.size = size
+    self.id = id
+    self.classes = classes
+    self.role = role
+    self.label = label
+    self.data = data
+  }
 
-    public var body: some Markup {
-        MarkupString(content: buildMarkupTag())
-    }
+  public var body: some Markup {
+    MarkupString(content: buildMarkupTag())
+  }
 
-    private func buildMarkupTag() -> String {
-        var attributes = AttributeBuilder.buildAttributes(
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data
-        )
-        if let srcAttr = Attribute.string("src", source) {
-            attributes.insert(srcAttr, at: 0)
-        }
-        if let altAttr = Attribute.string("alt", description) {
-            attributes.insert(altAttr, at: 1)
-        }
-        if let type, let typeAttr = Attribute.string("type", type.rawValue) {
-            attributes.append(typeAttr)
-        }
-        if let size = size {
-            if let width = size.width,
-                let widthAttr = Attribute.string("width", "\(width)")
-            {
-                attributes.append(widthAttr)
-            }
-            if let height = size.height,
-                let heightAttr = Attribute.string("height", "\(height)")
-            {
-                attributes.append(heightAttr)
-            }
-        }
-        return AttributeBuilder.buildMarkupTag(
-            "img", attributes: attributes, isSelfClosing: true)
+  private func buildMarkupTag() -> String {
+    var attributes = AttributeBuilder.buildAttributes(
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      data: data
+    )
+    if let srcAttr = Attribute.string("src", source) {
+      attributes.insert(srcAttr, at: 0)
     }
+    if let altAttr = Attribute.string("alt", description) {
+      attributes.insert(altAttr, at: 1)
+    }
+    if let type, let typeAttr = Attribute.string("type", type.rawValue) {
+      attributes.append(typeAttr)
+    }
+    if let size = size {
+      if let width = size.width,
+        let widthAttr = Attribute.string("width", "\(width)")
+      {
+        attributes.append(widthAttr)
+      }
+      if let height = size.height,
+        let heightAttr = Attribute.string("height", "\(height)")
+      {
+        attributes.append(heightAttr)
+      }
+    }
+    return AttributeBuilder.buildMarkupTag(
+      "img", attributes: attributes, isSelfClosing: true)
+  }
 }

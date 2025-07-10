@@ -5,117 +5,117 @@ import Foundation
 /// Provides a unified implementation for overflow styling that can be used across
 /// Element methods and the Declarative DSL functions.
 public struct OverflowStyleOperation: StyleOperation, @unchecked Sendable {
-    /// Parameters for overflow styling
-    public struct Parameters {
-        /// The overflow type
-        public let type: OverflowType
+  /// Parameters for overflow styling
+  public struct Parameters {
+    /// The overflow type
+    public let type: OverflowType
 
-        /// The axis to apply overflow to
-        public let axis: Axis
+    /// The axis to apply overflow to
+    public let axis: Axis
 
-        /// Creates parameters for overflow styling
-        ///
-        /// - Parameters:
-        ///   - type: The overflow type
-        ///   - axis: The axis to apply overflow to
-        public init(
-            type: OverflowType,
-            axis: Axis = .both
-        ) {
-            self.type = type
-            self.axis = axis
-        }
-
-        /// Creates parameters from a StyleParameters container
-        ///
-        /// - Parameter params: The style parameters container
-        /// - Returns: OverflowStyleOperation.Parameters
-        public static func from(_ params: StyleParameters) -> Parameters {
-            Parameters(
-                type: params.get("type")!,
-                axis: params.get("axis", default: .both)
-            )
-        }
-    }
-
-    /// Applies the overflow style and returns the appropriate stylesheet classes
+    /// Creates parameters for overflow styling
     ///
-    /// - Parameter params: The parameters for overflow styling
-    /// - Returns: An array of stylesheet class names to be applied to elements
-    public func applyClasses(params: Parameters) -> [String] {
-        let axisString =
-            params.axis.rawValue.isEmpty ? "" : "-\(params.axis.rawValue)"
-        return ["overflow\(axisString)-\(params.type.rawValue)"]
+    /// - Parameters:
+    ///   - type: The overflow type
+    ///   - axis: The axis to apply overflow to
+    public init(
+      type: OverflowType,
+      axis: Axis = .both
+    ) {
+      self.type = type
+      self.axis = axis
     }
 
-    /// Shared instance for use across the framework
-    public static let shared = OverflowStyleOperation()
+    /// Creates parameters from a StyleParameters container
+    ///
+    /// - Parameter params: The style parameters container
+    /// - Returns: OverflowStyleOperation.Parameters
+    public static func from(_ params: StyleParameters) -> Parameters {
+      Parameters(
+        type: params.get("type")!,
+        axis: params.get("axis", default: .both)
+      )
+    }
+  }
 
-    /// Private initializer to enforce singleton usage
-    private init() {}
+  /// Applies the overflow style and returns the appropriate stylesheet classes
+  ///
+  /// - Parameter params: The parameters for overflow styling
+  /// - Returns: An array of stylesheet class names to be applied to elements
+  public func applyClasses(params: Parameters) -> [String] {
+    let axisString =
+      params.axis.rawValue.isEmpty ? "" : "-\(params.axis.rawValue)"
+    return ["overflow\(axisString)-\(params.type.rawValue)"]
+  }
+
+  /// Shared instance for use across the framework
+  public static let shared = OverflowStyleOperation()
+
+  /// Private initializer to enforce singleton usage
+  private init() {}
 }
 
 // Extension for Element to provide overflow styling
 extension Markup {
-    /// Applies overflow styling to the element.
-    ///
-    /// Sets how overflowing content is handled, optionally on a specific axis and with modifiers.
-    ///
-    /// - Parameters:
-    ///   - type: Determines the overflow behavior (e.g., hidden, scroll).
-    ///   - axis: Specifies the axis for overflow (defaults to both).
-    ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
-    /// - Returns: A new element with updated overflow classes.
-    ///
-    /// ## Example
-    /// ```swift
-    /// Stack(classes: ["content-container"])
-    ///   .overflow(.scroll, axis: .horizontal)
-    ///   .frame(height: .spacing(300))
-    ///
-    /// Stack(classes: ["image-container"])
-    ///   .overflow(.hidden)
-    ///   .rounded(.lg)
-    /// ```
-    public func overflow(
-        _ type: OverflowType,
-        axis: Axis = .both,
-        on modifiers: Modifier...
-    ) -> some Markup {
-        let params = OverflowStyleOperation.Parameters(
-            type: type,
-            axis: axis
-        )
+  /// Applies overflow styling to the element.
+  ///
+  /// Sets how overflowing content is handled, optionally on a specific axis and with modifiers.
+  ///
+  /// - Parameters:
+  ///   - type: Determines the overflow behavior (e.g., hidden, scroll).
+  ///   - axis: Specifies the axis for overflow (defaults to both).
+  ///   - modifiers: Zero or more modifiers (e.g., `.hover`, `.md`) to scope the styles.
+  /// - Returns: A new element with updated overflow classes.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Stack(classes: ["content-container"])
+  ///   .overflow(.scroll, axis: .horizontal)
+  ///   .frame(height: .spacing(300))
+  ///
+  /// Stack(classes: ["image-container"])
+  ///   .overflow(.hidden)
+  ///   .rounded(.lg)
+  /// ```
+  public func overflow(
+    _ type: OverflowType,
+    axis: Axis = .both,
+    on modifiers: Modifier...
+  ) -> some Markup {
+    let params = OverflowStyleOperation.Parameters(
+      type: type,
+      axis: axis
+    )
 
-        return OverflowStyleOperation.shared.applyTo(
-            self,
-            params: params,
-            modifiers: Array(modifiers)
-        )
-    }
+    return OverflowStyleOperation.shared.applyTo(
+      self,
+      params: params,
+      modifiers: Array(modifiers)
+    )
+  }
 }
 
 // Extension for ResponsiveBuilder to provide overflow styling
 extension ResponsiveBuilder {
-    /// Applies overflow styling in a responsive context.
-    ///
-    /// - Parameters:
-    ///   - type: The overflow type.
-    ///   - axis: The axis to apply overflow to.
-    /// - Returns: The builder for method chaining.
-    @discardableResult
-    public func overflow(
-        _ type: OverflowType,
-        axis: Axis = .both
-    ) -> ResponsiveBuilder {
-        let params = OverflowStyleOperation.Parameters(
-            type: type,
-            axis: axis
-        )
+  /// Applies overflow styling in a responsive context.
+  ///
+  /// - Parameters:
+  ///   - type: The overflow type.
+  ///   - axis: The axis to apply overflow to.
+  /// - Returns: The builder for method chaining.
+  @discardableResult
+  public func overflow(
+    _ type: OverflowType,
+    axis: Axis = .both
+  ) -> ResponsiveBuilder {
+    let params = OverflowStyleOperation.Parameters(
+      type: type,
+      axis: axis
+    )
 
-        return OverflowStyleOperation.shared.applyToBuilder(
-            self, params: params)
-    }
+    return OverflowStyleOperation.shared.applyToBuilder(
+      self, params: params)
+  }
 }
 
 // Global function for Declarative DSL
@@ -126,13 +126,13 @@ extension ResponsiveBuilder {
 ///   - axis: The axis to apply overflow to.
 /// - Returns: A responsive modification for overflow.
 public func overflow(
-    _ type: OverflowType,
-    axis: Axis = .both
+  _ type: OverflowType,
+  axis: Axis = .both
 ) -> ResponsiveModification {
-    let params = OverflowStyleOperation.Parameters(
-        type: type,
-        axis: axis
-    )
+  let params = OverflowStyleOperation.Parameters(
+    type: type,
+    axis: axis
+  )
 
-    return OverflowStyleOperation.shared.asModification(params: params)
+  return OverflowStyleOperation.shared.asModification(params: params)
 }

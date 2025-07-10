@@ -18,67 +18,67 @@ import Foundation
 /// }
 /// ```
 public struct Preformatted: Element {
-    private let id: String?
-    private let classes: [String]?
-    private let role: AriaRole?
-    private let label: String?
-    private let data: [String: String]?
-    private let contentBuilder: MarkupContentBuilder
+  private let id: String?
+  private let classes: [String]?
+  private let role: AriaRole?
+  private let label: String?
+  private let data: [String: String]?
+  private let contentBuilder: MarkupContentBuilder
 
-    /// Creates a new HTML preformatted element.
-    ///
-    /// - Parameters:
-    ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
-    ///   - classes: An array of stylesheet classnames for styling the preformatted text.
-    ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
-    ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
-    ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the element.
-    ///   - content: Closure providing the preformatted content to be displayed.
-    ///
-    /// ## Example
-    /// ```swift
-    /// Preformatted(
-    ///   classes: ["code-block", "language-swift"],
-    ///   role: .code
-    /// ) {
-    ///   """
-    ///   struct Person {
-    ///     let name: String
-    ///     let age: Int
-    ///   }
-    ///   """
-    /// }
-    /// ```
-    public init(
-        id: String? = nil,
-        classes: [String]? = nil,
-        role: AriaRole? = nil,
-        label: String? = nil,
-        data: [String: String]? = nil,
-        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
-    ) {
-        self.id = id
-        self.classes = classes
-        self.role = role
-        self.label = label
-        self.data = data
-        self.contentBuilder = content
-    }
+  /// Creates a new HTML preformatted element.
+  ///
+  /// - Parameters:
+  ///   - id: Unique identifier for the HTML element, useful for JavaScript interaction and styling.
+  ///   - classes: An array of stylesheet classnames for styling the preformatted text.
+  ///   - role: ARIA role of the element for accessibility, enhancing screen reader interpretation.
+  ///   - label: ARIA label to describe the element for accessibility when context isn't sufficient.
+  ///   - data: Dictionary of `data-*` attributes for storing custom data relevant to the element.
+  ///   - content: Closure providing the preformatted content to be displayed.
+  ///
+  /// ## Example
+  /// ```swift
+  /// Preformatted(
+  ///   classes: ["code-block", "language-swift"],
+  ///   role: .code
+  /// ) {
+  ///   """
+  ///   struct Person {
+  ///     let name: String
+  ///     let age: Int
+  ///   }
+  ///   """
+  /// }
+  /// ```
+  public init(
+    id: String? = nil,
+    classes: [String]? = nil,
+    role: AriaRole? = nil,
+    label: String? = nil,
+    data: [String: String]? = nil,
+    @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
+  ) {
+    self.id = id
+    self.classes = classes
+    self.role = role
+    self.label = label
+    self.data = data
+    self.contentBuilder = content
+  }
 
-    public var body: some Markup {
-        MarkupString(content: buildMarkupTag())
-    }
+  public var body: some Markup {
+    MarkupString(content: buildMarkupTag())
+  }
 
-    private func buildMarkupTag() -> String {
-        let attributes = AttributeBuilder.buildAttributes(
-            id: id,
-            classes: classes,
-            role: role,
-            label: label,
-            data: data
-        )
-        let content = HTMLEscaper.escapeContent(contentBuilder().map { $0.render() }.joined())
-        return AttributeBuilder.buildMarkupTag(
-            "pre", attributes: attributes, content: content)
-    }
+  private func buildMarkupTag() -> String {
+    let attributes = AttributeBuilder.buildAttributes(
+      id: id,
+      classes: classes,
+      role: role,
+      label: label,
+      data: data
+    )
+    let content = HTMLEscaper.escapeContent(contentBuilder().map { $0.render() }.joined())
+    return AttributeBuilder.buildMarkupTag(
+      "pre", attributes: attributes, content: content)
+  }
 }

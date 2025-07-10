@@ -12,18 +12,18 @@ import Foundation
 /// Video(sources: [("movie.mp4", .mp4)], size: size)
 /// ```
 public struct MediaSize {
-    /// The width of the media in pixels.
-    public let width: Int?
-    /// The height of the media in pixels.
-    public let height: Int?
+  /// The width of the media in pixels.
+  public let width: Int?
+  /// The height of the media in pixels.
+  public let height: Int?
 
-    /// Creates a new media size specification.
-    ///
-    /// - Parameters:
-    ///   - width: Width dimension in pixels, optional.
-    ///   - height: Height dimension in pixels, optional.
-    public init(width: Int? = nil, height: Int? = nil) {
-        self.width = width
-        self.height = height
-    }
+  /// Creates a new media size specification.
+  ///
+  /// - Parameters:
+  ///   - width: Width dimension in pixels, optional.
+  ///   - height: Height dimension in pixels, optional.
+  public init(width: Int? = nil, height: Int? = nil) {
+    self.width = width
+    self.height = height
+  }
 }

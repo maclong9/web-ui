@@ -5,187 +5,187 @@ import Testing
 
 @Suite("Performance Tests") struct PerformanceTests {
 
-    // MARK: - String Initializer Performance
+  // MARK: - String Initializer Performance
 
-    @Test("Text string initializer performance")
-    func testTextStringInitializerPerformance() async throws {
-        let startTime = CFAbsoluteTimeGetCurrent()
+  @Test("Text string initializer performance")
+  func testTextStringInitializerPerformance() async throws {
+    let startTime = CFAbsoluteTimeGetCurrent()
 
-        // Test creating and rendering 1000 Text elements with string initializer
-        for i in 0..<1000 {
-            let text = Text("Performance test content \(i)")
-            _ = text.render()
-        }
-
-        let endTime = CFAbsoluteTimeGetCurrent()
-        let executionTime = (endTime - startTime) * 1000  // Convert to milliseconds
-
-        print("Text string initializer: \(executionTime)ms for 1000 elements")
-
-        // Should complete within reasonable time (< 100ms on modern hardware)
-        #expect(executionTime < 200.0)
+    // Test creating and rendering 1000 Text elements with string initializer
+    for i in 0..<1000 {
+      let text = Text("Performance test content \(i)")
+      _ = text.render()
     }
 
-    @Test("Button string initializer performance")
-    func testButtonStringInitializerPerformance() async throws {
-        let startTime = CFAbsoluteTimeGetCurrent()
+    let endTime = CFAbsoluteTimeGetCurrent()
+    let executionTime = (endTime - startTime) * 1000  // Convert to milliseconds
 
-        // Test creating and rendering 1000 Button elements with string initializer
-        for i in 0..<1000 {
-            let button = Button("Button \(i)", type: .submit)
-            _ = button.render()
-        }
+    print("Text string initializer: \(executionTime)ms for 1000 elements")
 
-        let endTime = CFAbsoluteTimeGetCurrent()
-        let executionTime = (endTime - startTime) * 1000
+    // Should complete within reasonable time (< 100ms on modern hardware)
+    #expect(executionTime < 200.0)
+  }
 
-        print("Button string initializer: \(executionTime)ms for 1000 elements")
-        #expect(executionTime < 200.0)
+  @Test("Button string initializer performance")
+  func testButtonStringInitializerPerformance() async throws {
+    let startTime = CFAbsoluteTimeGetCurrent()
+
+    // Test creating and rendering 1000 Button elements with string initializer
+    for i in 0..<1000 {
+      let button = Button("Button \(i)", type: .submit)
+      _ = button.render()
     }
 
-    @Test("Heading string initializer performance")
-    func testHeadingStringInitializerPerformance() async throws {
-        let startTime = CFAbsoluteTimeGetCurrent()
+    let endTime = CFAbsoluteTimeGetCurrent()
+    let executionTime = (endTime - startTime) * 1000
 
-        // Test creating and rendering 1000 Heading elements with string initializer
-        for i in 0..<1000 {
-            let heading = Heading(.title, "Heading \(i)")
-            _ = heading.render()
-        }
+    print("Button string initializer: \(executionTime)ms for 1000 elements")
+    #expect(executionTime < 200.0)
+  }
 
-        let endTime = CFAbsoluteTimeGetCurrent()
-        let executionTime = (endTime - startTime) * 1000
+  @Test("Heading string initializer performance")
+  func testHeadingStringInitializerPerformance() async throws {
+    let startTime = CFAbsoluteTimeGetCurrent()
 
-        print("Heading string initializer: \(executionTime)ms for 1000 elements")
-        #expect(executionTime < 200.0)
+    // Test creating and rendering 1000 Heading elements with string initializer
+    for i in 0..<1000 {
+      let heading = Heading(.title, "Heading \(i)")
+      _ = heading.render()
     }
 
-    @Test("Link string initializer performance")
-    func testLinkStringInitializerPerformance() async throws {
-        let startTime = CFAbsoluteTimeGetCurrent()
+    let endTime = CFAbsoluteTimeGetCurrent()
+    let executionTime = (endTime - startTime) * 1000
 
-        // Test creating and rendering 1000 Link elements with string initializer
-        for i in 0..<1000 {
-            let link = Link("Link \(i)", to: "/page\(i)")
-            _ = link.render()
-        }
+    print("Heading string initializer: \(executionTime)ms for 1000 elements")
+    #expect(executionTime < 200.0)
+  }
 
-        let endTime = CFAbsoluteTimeGetCurrent()
-        let executionTime = (endTime - startTime) * 1000
+  @Test("Link string initializer performance")
+  func testLinkStringInitializerPerformance() async throws {
+    let startTime = CFAbsoluteTimeGetCurrent()
 
-        print("Link string initializer: \(executionTime)ms for 1000 elements")
-        #expect(executionTime < 200.0)
+    // Test creating and rendering 1000 Link elements with string initializer
+    for i in 0..<1000 {
+      let link = Link("Link \(i)", to: "/page\(i)")
+      _ = link.render()
     }
 
-    // MARK: - Conditional Modifier Performance
+    let endTime = CFAbsoluteTimeGetCurrent()
+    let executionTime = (endTime - startTime) * 1000
 
-    @Test("Conditional if modifier performance")
-    func testConditionalIfModifierPerformance() async throws {
-        let startTime = CFAbsoluteTimeGetCurrent()
+    print("Link string initializer: \(executionTime)ms for 1000 elements")
+    #expect(executionTime < 200.0)
+  }
 
-        // Test 1000 conditional modifiers
-        for i in 0..<1000 {
-            let isHighlighted = i % 2 == 0
-            let element = Text("Content \(i)")
-                .if(isHighlighted) { $0.addClass("highlight") }
-            _ = element.render()
-        }
+  // MARK: - Conditional Modifier Performance
 
-        let endTime = CFAbsoluteTimeGetCurrent()
-        let executionTime = (endTime - startTime) * 1000
+  @Test("Conditional if modifier performance")
+  func testConditionalIfModifierPerformance() async throws {
+    let startTime = CFAbsoluteTimeGetCurrent()
 
-        print("Conditional if modifier: \(executionTime)ms for 1000 elements")
-        #expect(executionTime < 300.0)
+    // Test 1000 conditional modifiers
+    for i in 0..<1000 {
+      let isHighlighted = i % 2 == 0
+      let element = Text("Content \(i)")
+        .if(isHighlighted) { $0.addClass("highlight") }
+      _ = element.render()
     }
 
-    @Test("Hidden when modifier performance")
-    func testHiddenWhenModifierPerformance() async throws {
-        let startTime = CFAbsoluteTimeGetCurrent()
+    let endTime = CFAbsoluteTimeGetCurrent()
+    let executionTime = (endTime - startTime) * 1000
 
-        // Test 1000 hidden when modifiers
-        for i in 0..<1000 {
-            let shouldHide = i % 3 == 0
-            let element = Text("Content \(i)")
-                .hidden(when: shouldHide)
-            _ = element.render()
-        }
+    print("Conditional if modifier: \(executionTime)ms for 1000 elements")
+    #expect(executionTime < 300.0)
+  }
 
-        let endTime = CFAbsoluteTimeGetCurrent()
-        let executionTime = (endTime - startTime) * 1000
+  @Test("Hidden when modifier performance")
+  func testHiddenWhenModifierPerformance() async throws {
+    let startTime = CFAbsoluteTimeGetCurrent()
 
-        print("Hidden when modifier: \(executionTime)ms for 1000 elements")
-        #expect(executionTime < 300.0)
+    // Test 1000 hidden when modifiers
+    for i in 0..<1000 {
+      let shouldHide = i % 3 == 0
+      let element = Text("Content \(i)")
+        .hidden(when: shouldHide)
+      _ = element.render()
     }
 
-    // MARK: - Complex Structure Performance
+    let endTime = CFAbsoluteTimeGetCurrent()
+    let executionTime = (endTime - startTime) * 1000
 
-    @Test("Complex structure with new APIs performance")
-    func testComplexStructurePerformance() async throws {
-        let startTime = CFAbsoluteTimeGetCurrent()
+    print("Hidden when modifier: \(executionTime)ms for 1000 elements")
+    #expect(executionTime < 300.0)
+  }
 
-        // Test creating complex structures using new APIs
-        for i in 0..<100 {
-            let page = Stack {
-                Header {
-                    Heading(.largeTitle, "Page \(i)")
-                    Navigation {
-                        Link("Home", to: "/")
-                        Link("About", to: "/about")
-                        Link("Contact", to: "/contact")
-                    }
-                }
+  // MARK: - Complex Structure Performance
 
-                Main {
-                    Article {
-                        Heading(.title, "Article Title \(i)")
-                        Text("Article content goes here. This is paragraph \(i).")
-                            .if(i % 2 == 0) { $0.addClass("highlighted") }
+  @Test("Complex structure with new APIs performance")
+  func testComplexStructurePerformance() async throws {
+    let startTime = CFAbsoluteTimeGetCurrent()
 
-                        Button("Read More")
-                            .hidden(when: i > 50)
-                    }
-                }
-
-                Footer {
-                    Text("Copyright © 2025")
-                }
-            }
-
-            _ = page.render()
+    // Test creating complex structures using new APIs
+    for i in 0..<100 {
+      let page = Stack {
+        Header {
+          Heading(.largeTitle, "Page \(i)")
+          Navigation {
+            Link("Home", to: "/")
+            Link("About", to: "/about")
+            Link("Contact", to: "/contact")
+          }
         }
 
-        let endTime = CFAbsoluteTimeGetCurrent()
-        let executionTime = (endTime - startTime) * 1000
+        Main {
+          Article {
+            Heading(.title, "Article Title \(i)")
+            Text("Article content goes here. This is paragraph \(i).")
+              .if(i % 2 == 0) { $0.addClass("highlighted") }
 
-        print("Complex structure: \(executionTime)ms for 100 pages")
-        #expect(executionTime < 500.0)
-    }
-
-    // MARK: - Memory Usage Test
-
-    @Test("Memory usage with large structures")
-    func testMemoryUsage() async throws {
-        // Create a large structure and ensure it doesn't consume excessive memory
-        let largeStructure = Stack {
-            for i in 0..<1000 {
-                Text("Item \(i)")
-                    .if(i % 2 == 0) { $0.addClass("even") }
-                    .hidden(when: i > 900)
-            }
+            Button("Read More")
+              .hidden(when: i > 50)
+          }
         }
 
-        let startTime = CFAbsoluteTimeGetCurrent()
-        let rendered = largeStructure.render()
-        let endTime = CFAbsoluteTimeGetCurrent()
-        let executionTime = (endTime - startTime) * 1000
+        Footer {
+          Text("Copyright © 2025")
+        }
+      }
 
-        print("Large structure render: \(executionTime)ms for 1000 nested elements")
-
-        // Verify output contains expected content
-        #expect(rendered.contains("Item 0"))
-        #expect(rendered.contains("Item 999"))
-
-        // Should complete within reasonable time
-        #expect(executionTime < 1000.0)
+      _ = page.render()
     }
+
+    let endTime = CFAbsoluteTimeGetCurrent()
+    let executionTime = (endTime - startTime) * 1000
+
+    print("Complex structure: \(executionTime)ms for 100 pages")
+    #expect(executionTime < 500.0)
+  }
+
+  // MARK: - Memory Usage Test
+
+  @Test("Memory usage with large structures")
+  func testMemoryUsage() async throws {
+    // Create a large structure and ensure it doesn't consume excessive memory
+    let largeStructure = Stack {
+      for i in 0..<1000 {
+        Text("Item \(i)")
+          .if(i % 2 == 0) { $0.addClass("even") }
+          .hidden(when: i > 900)
+      }
+    }
+
+    let startTime = CFAbsoluteTimeGetCurrent()
+    let rendered = largeStructure.render()
+    let endTime = CFAbsoluteTimeGetCurrent()
+    let executionTime = (endTime - startTime) * 1000
+
+    print("Large structure render: \(executionTime)ms for 1000 nested elements")
+
+    // Verify output contains expected content
+    #expect(rendered.contains("Item 0"))
+    #expect(rendered.contains("Item 999"))
+
+    // Should complete within reasonable time
+    #expect(executionTime < 1000.0)
+  }
 }

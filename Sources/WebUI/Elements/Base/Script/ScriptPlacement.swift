@@ -1,3 +1,3 @@
 public enum ScriptPlacement {
-    case head, body
+  case head, body
 }

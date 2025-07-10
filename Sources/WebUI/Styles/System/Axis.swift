@@ -17,18 +17,18 @@
 ///   .spacing(.y, length: 4)      // Add vertical spacing between children
 /// ```
 public enum Axis: String {
-    /// Applies to the horizontal (x) axis only.
-    ///
-    /// Use when you need to control behavior along the left-right direction.
-    case horizontal = "x"
+  /// Applies to the horizontal (x) axis only.
+  ///
+  /// Use when you need to control behavior along the left-right direction.
+  case horizontal = "x"
 
-    /// Applies to the vertical (y) axis only.
-    ///
-    /// Use when you need to control behavior along the top-bottom direction.
-    case vertical = "y"
+  /// Applies to the vertical (y) axis only.
+  ///
+  /// Use when you need to control behavior along the top-bottom direction.
+  case vertical = "y"
 
-    /// Applies to both horizontal and vertical axes simultaneously.
-    ///
-    /// Use when you need to apply the same behavior in both directions.
-    case both = ""
+  /// Applies to both horizontal and vertical axes simultaneously.
+  ///
+  /// Use when you need to apply the same behavior in both directions.
+  case both = ""
 }

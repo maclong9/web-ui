@@ -3,20 +3,20 @@
 /// Content type affects how social media platforms and search engines
 /// categorize and display the content.
 public enum ContentType: String {
-    /// Standard website content type.
-    case website
-    /// Article or blog post content type.
-    case article
-    /// Video content type.
-    case video
-    /// Personal or organizational profile content type.
-    case profile
-    /// Audio content type.
-    case audio
-    /// Image content type.
-    case image
-    /// Document content type.
-    case document
-    /// File content type.
-    case file
+  /// Standard website content type.
+  case website
+  /// Article or blog post content type.
+  case article
+  /// Video content type.
+  case video
+  /// Personal or organizational profile content type.
+  case profile
+  /// Audio content type.
+  case audio
+  /// Image content type.
+  case image
+  /// Document content type.
+  case document
+  /// File content type.
+  case file
 }

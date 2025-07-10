@@ -15,7 +15,7 @@
 /// )
 /// ```
 public enum AudioType: String {
-    case mp3 = "audio/mpeg"
-    case ogg = "audio/ogg"
-    case wav = "audio/wav"
+  case mp3 = "audio/mpeg"
+  case ogg = "audio/ogg"
+  case wav = "audio/wav"
 }
