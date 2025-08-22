@@ -101,6 +101,7 @@ extension Document {
                 <title>\(metadata.pageTitle)</title>
                 \(optionalTags.joined(separator: "\n"))
                 <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+                <script src="https://unpkg.com/lucide@latest"></script>
                 <meta name="generator" content="WebUI" />
                 \(head ?? "")
               </head>
