@@ -75,8 +75,25 @@ extension Document {
 
     /// Creates a concrete Document instance for rendering.
     public func render() throws -> String {
+        return try render(websiteContext: nil)
+    }
+    
+    /// Creates a concrete Document instance for rendering with Website context.
+    public func render(websiteContext: (any Website)?) throws -> String {
         var optionalTags: [String] = metadata.tags + []
         var bodyTags: [String] = []
+        
+        // Add Website-level scripts first (so Document scripts can override)
+        if let websiteScripts = websiteContext?.scripts {
+            for script in websiteScripts {
+                let scriptTag = script.render()
+                script.placement == .head
+                    ? optionalTags.append(scriptTag)
+                    : bodyTags.append(scriptTag)
+            }
+        }
+        
+        // Add Document-level scripts (these take precedence)
         if let scripts = scripts {
             for script in scripts {
                 let scriptTag = script.render()
@@ -85,6 +102,17 @@ extension Document {
                     : bodyTags.append(scriptTag)
             }
         }
+        
+        // Add Website-level stylesheets first
+        if let websiteStylesheets = websiteContext?.stylesheets {
+            for stylesheet in websiteStylesheets {
+                optionalTags.append(
+                    "<link rel=\"stylesheet\" href=\"\(stylesheet)\">"
+                )
+            }
+        }
+        
+        // Add Document-level stylesheets (these take precedence)
         if let stylesheets = stylesheets {
             for stylesheet in stylesheets {
                 optionalTags.append(
@@ -92,6 +120,19 @@ extension Document {
                 )
             }
         }
+        
+        // Combine Website and Document head content
+        var combinedHead = ""
+        if let websiteHead = websiteContext?.head {
+            combinedHead += websiteHead
+        }
+        if let documentHead = head {
+            if !combinedHead.isEmpty {
+                combinedHead += "\n"
+            }
+            combinedHead += documentHead
+        }
+        
         let html = """
             <!DOCTYPE html>
             <html lang="\(metadata.locale.rawValue)">
@@ -103,7 +144,7 @@ extension Document {
                 <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
                 <script src="https://unpkg.com/lucide@latest"></script>
                 <meta name="generator" content="WebUI" />
-                \(head ?? "")
+                \(combinedHead.isEmpty ? "" : combinedHead)
               </head>
               \(body.render())
               \(bodyTags.joined(separator: "\n"))
