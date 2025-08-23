@@ -12,7 +12,7 @@ on:
         description: 'Custom build command (if not using CLI)'
         required: false
         type: string
-        default: 'webui-cli build --verbose'
+        default: 'webui build --verbose'
       output-directory:
         description: 'Output directory path'
         required: false
@@ -47,67 +47,56 @@ jobs:
         id: cli-version
         run: |
           if [ "${{ inputs.webui-cli-version }}" = "latest" ]; then
-            # More robust version extraction using jq or fallback method
             VERSION=$(curl -s https://api.github.com/repos/maclong9/web-ui/releases/latest | \
               grep '"tag_name"' | \
               head -1 | \
               cut -d '"' -f 4)
-            
-            # Fallback if VERSION is empty
+
             if [ -z "$VERSION" ]; then
               echo "Warning: Could not get version from API, using fallback"
               VERSION="v1.2.0"
             fi
-            
+
             echo "Using latest WebUI CLI version: $VERSION"
           else
             VERSION="${{ inputs.webui-cli-version }}"
             echo "Using specified WebUI CLI version: $VERSION"
           fi
-          
-          # Ensure VERSION is not empty before setting output
+
           if [ -z "$VERSION" ]; then
             echo "Error: VERSION is empty"
             exit 1
           fi
-          
+
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Cache WebUI CLI Binary
         uses: actions/cache@v4
         id: cache-cli
         with:
-          path: ~/webui-cli
-          key: webui-cli-${{ steps.cli-version.outputs.version }}
+          path: ~/webui
+          key: webui-${{ steps.cli-version.outputs.version }}
 
       - name: Download WebUI CLI
         if: steps.cache-cli.outputs.cache-hit != 'true'
         run: |
           echo "📥 Downloading WebUI CLI ${{ steps.cli-version.outputs.version }}"
-          
-          # Download from GitHub releases
-          curl -L -o webui-cli-macos.tar.gz \
-            "https://github.com/maclong9/web-ui/releases/download/${{ steps.cli-version.outputs.version }}/webui-cli-macos.tar.gz"
-          
-          # Extract binary
-          tar -xzf webui-cli-macos.tar.gz
-          
-          # Move to cache location
-          mv webui-cli ~/webui-cli
-          chmod +x ~/webui-cli
-          
-          # Verify it works
-          ~/webui-cli --version
-          
+
+          # Adjust architecture if needed
+          ARCH="arm64"
+          curl -L -o webui \
+            "https://github.com/maclong9/web-ui/releases/download/${{ steps.cli-version.outputs.version }}/webui-macos-${ARCH}"
+
+          mv webui ~/webui
+          chmod +x ~/webui
+
+          ~/webui --version
           echo "✅ WebUI CLI downloaded and cached"
 
       - name: Install WebUI CLI to PATH
         run: |
-          # Copy from cache to a location in PATH
-          sudo cp ~/webui-cli /usr/local/bin/webui-cli
-          
-          # Verify installation
-          webui-cli --version
+          sudo cp ~/webui /usr/local/bin/webui
+          webui --version
           echo "✅ WebUI CLI ready"
 
       - name: Cache Generated Site
@@ -126,21 +115,19 @@ jobs:
       - name: Validate Build Output
         run: |
           OUTPUT_PATH="${{ inputs.working-directory }}/${{ inputs.output-directory }}"
-          
+
           if [ ! -d "$OUTPUT_PATH" ]; then
             echo "❌ Output directory not found: $OUTPUT_PATH"
             exit 1
           fi
-          
+
           FILE_COUNT=$(find "$OUTPUT_PATH" -type f | wc -l)
           if [ "$FILE_COUNT" -eq 0 ]; then
             echo "❌ No files generated in output directory"
             exit 1
           fi
-          
+
           echo "✅ Build validation passed: $FILE_COUNT files generated"
-          
-          # Show some details about the generated site
           echo "📁 Generated files (first 10):"
           find "$OUTPUT_PATH" -type f -name "*.html" | head -10 | sed 's/^/  /'
 
@@ -152,39 +139,39 @@ jobs:
           echo "🔧 Configuring Git user"
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-      
+
           SOURCE="${{ inputs.working-directory }}/${{ inputs.output-directory }}"
           echo "📁 Copying from output directory: $SOURCE"
-      
+
           if [ ! -d "$SOURCE" ]; then
             echo "❌ ERROR: Directory '$SOURCE' does not exist"
             exit 1
           fi
-      
+
           if [ -z "$(ls -A "$SOURCE")" ]; then
             echo "❌ ERROR: Directory '$SOURCE' is empty"
             exit 1
           fi
-      
+
           echo "📦 Files in output directory before checkout:"
           ls -la "$SOURCE"
-      
+
           echo "🧳 Moving site output to temp_output/"
           mkdir -p temp_output
           cp -r "$SOURCE"/. ~/temp_output/
-      
+
           echo "🌿 Switching to static branch: ${{ inputs.static-branch }}"
           git checkout -B "${{ inputs.static-branch }}"
-      
+
           echo "🧹 Cleaning current contents"
           rm -rf ./*
-      
+
           echo "📥 Copying files back from temp_output/"
           cp -r ~/temp_output/* .
-      
+
           echo "🧽 Cleaning up"
           rm -rf ~/temp_output "$SOURCE" .gitignore .github .build .swift-format Public Articles
-      
+
           echo "📝 Git add & commit"
           git add .
           git commit -m "Update static site content - built with WebUI CLI ${{ steps.cli-version.outputs.version }}"
@@ -200,8 +187,9 @@ jobs:
           echo "- **Output Directory:** ${{ inputs.output-directory }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Cache Hit (CLI):** ${{ steps.cache-cli.outputs.cache-hit }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Cache Hit (Site):** ${{ steps.cache-site-output.outputs.cache-hit }}" >> $GITHUB_STEP_SUMMARY
-          
+
           if [ -d "${{ inputs.working-directory }}/${{ inputs.output-directory }}" ]; then
             FILE_COUNT=$(find "${{ inputs.working-directory }}/${{ inputs.output-directory }}" -type f | wc -l)
             echo "- **Generated Files:** $FILE_COUNT" >> $GITHUB_STEP_SUMMARY
           fi
+
