@@ -1,0 +1,154 @@
+name: Build and Release WebUI CLI
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag version (e.g., v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build-cli:
+    runs-on: macos-15
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v2
+        with:
+          swift-version: "6.1"
+
+      - name: Cache Swift Build
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: ${{ runner.os }}-swift-cli-${{ hashFiles('Package.swift', 'Sources/WebUICLI/**') }}
+          restore-keys: |
+            ${{ runner.os }}-swift-cli-
+
+      - name: Resolve dependencies
+        run: swift package resolve
+
+      - name: Build CLI for release
+        run: |
+          swift build -c release --product webui-cli
+          
+      - name: Create universal binary
+        run: |
+          # Create output directory
+          mkdir -p release
+          
+          # Copy the built binary
+          cp .build/release/webui-cli release/webui-cli
+          
+          # Make sure it's executable
+          chmod +x release/webui-cli
+          
+          # Verify the binary works
+          ./release/webui-cli --version
+
+      - name: Test CLI functionality
+        run: |
+          # Test basic commands
+          ./release/webui-cli --help
+          
+          # Test init command in a temp directory
+          mkdir test-project
+          cd test-project
+          ../release/webui-cli init TestSite --verbose
+          
+          # Verify project structure
+          [ -f TestSite/Package.swift ] || exit 1
+          [ -f TestSite/Sources/Application/main.swift ] || exit 1
+          
+          echo "✅ CLI functionality test passed"
+
+      - name: Package binary
+        run: |
+          cd release
+          tar -czf webui-cli-macos.tar.gz webui-cli
+          
+          # Create checksums
+          shasum -a 256 webui-cli-macos.tar.gz > webui-cli-macos.tar.gz.sha256
+          
+          # Show package info
+          ls -la
+          cat webui-cli-macos.tar.gz.sha256
+
+      - name: Determine tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ inputs.tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: WebUI CLI ${{ steps.tag.outputs.tag }}
+          body: |
+            # WebUI CLI ${{ steps.tag.outputs.tag }}
+            
+            Pre-built WebUI CLI binary for macOS (universal).
+            
+            ## Installation
+            
+            ```bash
+            # Download and extract
+            curl -L -o webui-cli-macos.tar.gz https://github.com/maclong9/web-ui/releases/download/${{ steps.tag.outputs.tag }}/webui-cli-macos.tar.gz
+            tar -xzf webui-cli-macos.tar.gz
+            
+            # Make executable and move to PATH
+            chmod +x webui-cli
+            sudo mv webui-cli /usr/local/bin/
+            
+            # Verify installation
+            webui-cli --version
+            ```
+            
+            ## Usage
+            
+            ```bash
+            # Initialize new project
+            webui-cli init MyProject
+            
+            # Build static site
+            webui-cli build
+            
+            # Serve locally
+            webui-cli serve
+            ```
+            
+            ## Checksums
+            
+            ```
+            $(cat release/webui-cli-macos.tar.gz.sha256)
+            ```
+          files: |
+            release/webui-cli-macos.tar.gz
+            release/webui-cli-macos.tar.gz.sha256
+          draft: false
+          prerelease: ${{ contains(steps.tag.outputs.tag, 'beta') || contains(steps.tag.outputs.tag, 'alpha') || contains(steps.tag.outputs.tag, 'rc') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update latest release info
+        if: ${{ !contains(steps.tag.outputs.tag, 'beta') && !contains(steps.tag.outputs.tag, 'alpha') && !contains(steps.tag.outputs.tag, 'rc') }}
+        run: |
+          echo "Latest stable release: ${{ steps.tag.outputs.tag }}" > LATEST_RELEASE.txt
+          echo "Download URL: https://github.com/maclong9/web-ui/releases/download/${{ steps.tag.outputs.tag }}/webui-cli-macos.tar.gz" >> LATEST_RELEASE.txt
+          
+          # This could be used by other workflows to get the latest CLI version
+          echo "latest_version=${{ steps.tag.outputs.tag }}" >> $GITHUB_ENV
