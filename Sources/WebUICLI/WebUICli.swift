@@ -3,6 +3,7 @@ import Foundation
 import WebUI
 import WebUIMarkdown
 
+@main
 struct WebUICLI: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "webui-cli",
