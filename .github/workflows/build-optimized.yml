@@ -85,7 +85,7 @@ jobs:
           # Adjust architecture if needed
           ARCH="arm64"
           curl -L -o webui \
-            "https://github.com/maclong9/web-ui/releases/download/${{ steps.cli-version.outputs.version }}/webui-macos-${ARCH}"
+            "https://github.com/maclong9/web-ui/releases/download/${{ steps.cli-version.outputs.version }}/webui"
 
           mv webui ~/webui
           chmod +x ~/webui
