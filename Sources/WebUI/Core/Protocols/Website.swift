@@ -171,8 +171,8 @@ extension Website {
             throw WebsiteBuildError.directoryCreationFailed(path: fullPath.path)
         }
 
-        // Generate HTML content by building document tree
-        let html = try route.render()
+        // Generate HTML content by building document tree with website-level configuration
+        let html = try route.render(websiteScripts: scripts, websiteStylesheets: stylesheets, websiteHead: head)
 
         // Write the HTML file
         guard let data = html.data(using: String.Encoding.utf8) else {

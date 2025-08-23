@@ -75,18 +75,27 @@ extension Document {
 
     /// Creates a concrete Document instance for rendering.
     public func render() throws -> String {
+        return try render(websiteScripts: nil, websiteStylesheets: nil, websiteHead: nil)
+    }
+    
+    /// Creates a concrete Document instance for rendering with website-level configuration.
+    public func render(websiteScripts: [Script]?, websiteStylesheets: [String]?, websiteHead: String?) throws -> String {
         var optionalTags: [String] = metadata.tags + []
         var bodyTags: [String] = []
-        if let scripts = scripts {
-            for script in scripts {
+        // Combine website scripts with document scripts
+        let allScripts = (websiteScripts ?? []) + (scripts ?? [])
+        if !allScripts.isEmpty {
+            for script in allScripts {
                 let scriptTag = script.render()
                 script.placement == .head
                     ? optionalTags.append(scriptTag)
                     : bodyTags.append(scriptTag)
             }
         }
-        if let stylesheets = stylesheets {
-            for stylesheet in stylesheets {
+        // Combine website stylesheets with document stylesheets
+        let allStylesheets = (websiteStylesheets ?? []) + (stylesheets ?? [])
+        if !allStylesheets.isEmpty {
+            for stylesheet in allStylesheets {
                 optionalTags.append(
                     "<link rel=\"stylesheet\" href=\"\(stylesheet)\">"
                 )
@@ -103,7 +112,7 @@ extension Document {
                 <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
                 <script src="https://unpkg.com/lucide@latest"></script>
                 <meta name="generator" content="WebUI" />
-                \(head ?? "")
+                \(websiteHead ?? "")\(head ?? "")
               </head>
               \(body.render())
               \(bodyTags.joined(separator: "\n"))
