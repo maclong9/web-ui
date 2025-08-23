@@ -43,27 +43,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Get latest WebUI CLI version
+      - name: Get WebUI CLI version
         id: cli-version
         run: |
           if [ "${{ inputs.webui-cli-version }}" = "latest" ]; then
-            VERSION=$(curl -s https://api.github.com/repos/maclong9/web-ui/releases/latest | \
-              grep '"tag_name"' | \
-              head -1 | \
-              cut -d '"' -f 4)
-
-            if [ -z "$VERSION" ]; then
-              echo "Warning: Could not get version from API, using fallback"
-              VERSION="v1.2.0"
-            fi
-
+            VERSION=$(curl -s https://api.github.com/repos/maclong9/web-ui/releases/latest | jq -r .tag_name)
             echo "Using latest WebUI CLI version: $VERSION"
           else
             VERSION="${{ inputs.webui-cli-version }}"
             echo "Using specified WebUI CLI version: $VERSION"
           fi
 
-          if [ -z "$VERSION" ]; then
+          if [ -z "$VERSION" ] || [ "$VERSION" = "null" ]; then
             echo "Error: VERSION is empty"
             exit 1
           fi
@@ -80,14 +71,13 @@ jobs:
       - name: Download WebUI CLI
         if: steps.cache-cli.outputs.cache-hit != 'true'
         run: |
-          echo "📥 Downloading WebUI CLI ${{ steps.cli-version.outputs.version }}"
+          VERSION="${{ steps.cli-version.outputs.version }}"
+          echo "📥 Downloading WebUI CLI $VERSION"
 
-          # Adjust architecture if needed
-          ARCH="arm64"
-          curl -L -o webui \
-            "https://github.com/maclong9/web-ui/releases/download/${{ steps.cli-version.outputs.version }}/webui"
+          # adjust asset name if release has multiple files
+          ASSET_URL="https://github.com/maclong9/web-ui/releases/download/$VERSION/webui"
 
-          mv webui ~/webui
+          curl -L -o ~/webui "$ASSET_URL"
           chmod +x ~/webui
 
           ~/webui --version
@@ -192,4 +182,3 @@ jobs:
             FILE_COUNT=$(find "${{ inputs.working-directory }}/${{ inputs.output-directory }}" -type f | wc -l)
             echo "- **Generated Files:** $FILE_COUNT" >> $GITHUB_STEP_SUMMARY
           fi
-
