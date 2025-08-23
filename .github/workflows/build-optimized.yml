@@ -47,12 +47,30 @@ jobs:
         id: cli-version
         run: |
           if [ "${{ inputs.webui-cli-version }}" = "latest" ]; then
-            VERSION=$(curl -s https://api.github.com/repos/maclong9/web-ui/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+            # More robust version extraction using jq or fallback method
+            VERSION=$(curl -s https://api.github.com/repos/maclong9/web-ui/releases/latest | \
+              grep '"tag_name"' | \
+              head -1 | \
+              cut -d '"' -f 4)
+            
+            # Fallback if VERSION is empty
+            if [ -z "$VERSION" ]; then
+              echo "Warning: Could not get version from API, using fallback"
+              VERSION="v1.2.0"
+            fi
+            
             echo "Using latest WebUI CLI version: $VERSION"
           else
             VERSION="${{ inputs.webui-cli-version }}"
             echo "Using specified WebUI CLI version: $VERSION"
           fi
+          
+          # Ensure VERSION is not empty before setting output
+          if [ -z "$VERSION" ]; then
+            echo "Error: VERSION is empty"
+            exit 1
+          fi
+          
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Cache WebUI CLI Binary
