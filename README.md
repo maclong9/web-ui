@@ -47,13 +47,6 @@ and consistent manner. It is inspired by modern web development practices and
 aims to provide a seamless experience for developers building static sites or
 dynamic web applications.
 
-### Built With
-
-- [Swift](https://swift.org)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Apple Swift Logging](https://github.com/apple/swift-log)
-- [Swift Markdown](https://github.com/apple/swift-markdown)
-
 ## Getting Started
 
 ### Prerequisites
@@ -71,8 +64,8 @@ curl -fsSL https://raw.githubusercontent.com/maclong9/web-ui/main/initialize.swi
   swift - [--template|-t static|server] your-project-name
 ```
 
-> [!NOTE]
-> If you pass no template the static one will be used by default.
+> [!WARNING]
+> This is a work in progress and not fully finished. If you pass no template the static one will be used by default.
 
 ### Manually
 
