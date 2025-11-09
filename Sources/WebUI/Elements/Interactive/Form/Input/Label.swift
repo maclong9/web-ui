@@ -78,6 +78,10 @@ public struct Label: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.buildMarkupTag(
-            "label", attributes: attributes, content: content)
+            "label",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

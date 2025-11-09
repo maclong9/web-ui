@@ -1,54 +1,45 @@
-/// Generates an HTML list item element (`<li>`).
+import Foundation
+
+/// Generates an HTML td element for table data cells.
 ///
-/// `Item` elements should be used as children of a `List` element to represent
-/// individual entries in a list. Each item can contain any markup content.
+/// The `TableCell` element represents a data cell in a table row.
 ///
 /// ## Example
 /// ```swift
-/// Item {
-///   Text { "This is a list item with " }
-///   Strong { "bold text" }
-/// }
-/// // Renders: <li><span>This is a list item with </span><strong>bold text</strong></li>
+/// TableCell("John Doe", classes: ["px-4", "py-2"])
+/// TableCell("30", classes: ["text-center"])
 /// ```
-public struct Item: Element {
+public struct TableCell: Element {
+    private let text: String
     private let id: String?
     private let classes: [String]?
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: MarkupContentBuilder
 
-    /// Creates a new HTML list item element.
+    /// Creates a new HTML td element.
     ///
     /// - Parameters:
+    ///   - text: The text content of the data cell.
     ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of stylesheet classnames for styling the list item.
+    ///   - classes: An array of stylesheet classnames for styling.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
-    ///   - content: Closure providing the list item's content (text or other HTML elements).
-    ///
-    /// ## Example
-    /// ```swift
-    /// Item {
-    ///   "List item content"
-    /// }
-    /// ```
     public init(
+        _ text: String,
         id: String? = nil,
         classes: [String]? = nil,
         role: AriaRole? = nil,
         label: String? = nil,
-        data: [String: String]? = nil,
-        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
+        data: [String: String]? = nil
     ) {
+        self.text = text
         self.id = id
         self.classes = classes
         self.role = role
         self.label = label
         self.data = data
-        self.contentBuilder = content
     }
 
     public var body: some Markup {
@@ -63,13 +54,11 @@ public struct Item: Element {
             label: label,
             data: data
         )
-        let content = contentBuilder().map { $0.render() }.joined()
 
         return AttributeBuilder.buildMarkupTag(
-            "li",
+            "td",
             attributes: attributes,
-            content: content,
-            escapeContent: false  // Content is already rendered markup
+            content: text
         )
     }
 }

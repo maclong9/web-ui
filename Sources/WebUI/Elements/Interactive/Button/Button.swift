@@ -233,6 +233,10 @@ public struct Button: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.buildMarkupTag(
-            "button", attributes: attributes, content: content)
+            "button",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

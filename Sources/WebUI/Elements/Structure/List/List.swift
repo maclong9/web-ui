@@ -82,6 +82,10 @@ public struct List: Element {
         let content = contentBuilder().map { $0.render() }.joined()
 
         return AttributeBuilder.buildMarkupTag(
-            type.rawValue, attributes: attributes, content: content)
+            type.rawValue,
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

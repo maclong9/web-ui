@@ -71,6 +71,10 @@ public struct Header: Element {
         let content = contentBuilder().map { $0.render() }.joined()
 
         return AttributeBuilder.buildMarkupTag(
-            "header", attributes: attributes, content: content)
+            "header",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

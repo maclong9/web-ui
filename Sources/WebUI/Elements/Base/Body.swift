@@ -67,6 +67,11 @@ public struct BodyWrapper: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined().render()
 
-        return AttributeBuilder.buildMarkupTag("body", attributes: attributes, content: content)
+        return AttributeBuilder.buildMarkupTag(
+            "body",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

@@ -11,6 +11,16 @@ public enum InputType: String {
     case email
     /// Numeric input field optimized for number entry, often with increment/decrement controls.
     case number
+    /// Date picker input field for selecting dates.
+    case date
+    /// URL input field with validation for web addresses.
+    case url
+    /// Telephone number input field optimized for phone number entry.
+    case tel
+    /// Search input field optimized for search queries.
+    case search
+    /// Radio button input for single selection from multiple options.
+    case radio
     /// Checkbox input for boolean (yes/no) selections.
     case checkbox
     /// Submit button input that triggers form submission when clicked.

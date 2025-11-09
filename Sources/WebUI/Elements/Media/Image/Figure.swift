@@ -85,10 +85,17 @@ public struct Figure: Element {
 
         let pictureElement = renderPictureElement()
         let figcaptionElement = AttributeBuilder.buildMarkupTag(
-            "figcaption", attributes: [], content: description)
+            "figcaption",
+            attributes: [],
+            content: description,
+            escapeContent: true  // Description is plain text
+        )
         return AttributeBuilder.buildMarkupTag(
-            "figure", attributes: attributes,
-            content: pictureElement + figcaptionElement)
+            "figure",
+            attributes: attributes,
+            content: pictureElement + figcaptionElement,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 
     private func renderPictureElement() -> String {
@@ -134,6 +141,10 @@ public struct Figure: Element {
         content += AttributeBuilder.buildMarkupTag(
             "img", attributes: imgAttributes, isSelfClosing: true)
         return AttributeBuilder.buildMarkupTag(
-            "picture", attributes: [], content: content)
+            "picture",
+            attributes: [],
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

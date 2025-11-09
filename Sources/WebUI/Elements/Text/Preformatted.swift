@@ -77,8 +77,12 @@ public struct Preformatted: Element {
             label: label,
             data: data
         )
-        let content = HTMLEscaper.escapeContent(contentBuilder().map { $0.render() }.joined())
+        let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.buildMarkupTag(
-            "pre", attributes: attributes, content: content)
+            "pre",
+            attributes: attributes,
+            content: content,
+            escapeContent: true
+        )
     }
 }

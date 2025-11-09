@@ -117,6 +117,10 @@ public struct Link: Element {
         }
         let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.buildMarkupTag(
-            "a", attributes: attributes, content: content)
+            "a",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

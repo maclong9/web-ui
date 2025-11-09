@@ -20,6 +20,10 @@ public struct Input: Element {
     private let required: Bool?
     /// Whether a checkbox input is initially checked.
     private let checked: Bool?
+    /// ID of a datalist element for autocomplete suggestions.
+    private let list: String?
+    /// Whether the input is read-only.
+    private let readonly: Bool?
     private let id: String?
     private let classes: [String]?
     private let role: AriaRole?
@@ -37,6 +41,8 @@ public struct Input: Element {
     ///   - autofocus: Automatically focuses the input on page load if true, optional.
     ///   - required: When true, the input must be filled before form submission, optional.
     ///   - checked: For checkbox inputs, indicates if initially checked, optional.
+    ///   - list: ID of a datalist element providing autocomplete suggestions, optional.
+    ///   - readonly: Whether the input is read-only (user cannot modify), optional.
     ///   - id: Unique identifier for the HTML element, useful for labels and JavaScript.
     ///   - classes: An array of stylesheet classnames for styling the input.
     ///   - role: ARIA role of the element for accessibility.
@@ -66,6 +72,8 @@ public struct Input: Element {
         autofocus: Bool? = nil,
         required: Bool? = nil,
         checked: Bool? = nil,
+        list: String? = nil,
+        readonly: Bool? = nil,
         id: String? = nil,
         classes: [String]? = nil,
         role: AriaRole? = nil,
@@ -80,6 +88,8 @@ public struct Input: Element {
         self.autofocus = autofocus
         self.required = required
         self.checked = checked
+        self.list = list
+        self.readonly = readonly
         self.id = id
         self.classes = classes
         self.role = role
@@ -122,6 +132,12 @@ public struct Input: Element {
         }
         if let checked, checked {
             attributes.append("checked")
+        }
+        if let list, let listAttr = Attribute.string("list", list) {
+            attributes.append(listAttr)
+        }
+        if let readonly, readonly {
+            attributes.append("readonly")
         }
         if let on = on {
             attributes.append(on)

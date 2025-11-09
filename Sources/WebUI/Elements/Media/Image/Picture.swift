@@ -110,6 +110,10 @@ public struct Picture: Element {
         ).render()
 
         return AttributeBuilder.buildMarkupTag(
-            "picture", attributes: attributes, content: content)
+            "picture",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

@@ -79,6 +79,10 @@ public struct Time: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.buildMarkupTag(
-            "time", attributes: attributes, content: content)
+            "time",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

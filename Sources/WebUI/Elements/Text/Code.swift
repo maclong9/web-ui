@@ -92,6 +92,10 @@ public struct Code: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.buildMarkupTag(
-            "code", attributes: attributes, content: content)
+            "code",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

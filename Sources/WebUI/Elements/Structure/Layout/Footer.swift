@@ -73,6 +73,10 @@ public struct Footer: Element {
         let content = contentBuilder().map { $0.render() }.joined()
 
         return AttributeBuilder.buildMarkupTag(
-            "footer", attributes: attributes, content: content)
+            "footer",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

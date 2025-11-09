@@ -78,6 +78,10 @@ public struct Abbreviation: Element {
         )
         let content = contentBuilder().map { $0.render() }.joined()
         return AttributeBuilder.buildMarkupTag(
-            "abbr", attributes: attributes, content: content)
+            "abbr",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

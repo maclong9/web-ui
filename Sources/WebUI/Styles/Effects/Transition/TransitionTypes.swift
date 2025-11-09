@@ -16,8 +16,8 @@ public enum TransitionProperty: String {
 
 /// Defines easing functions for transitions.
 ///
-/// Specifies the timing curve for transition animations.
-public enum Easing: String {
+/// Specifies the timing curve for transition animations, including custom cubic-bezier curves.
+public enum Easing {
     /// Applies a linear timing function.
     case linear
     /// Applies an ease-in timing function.
@@ -25,7 +25,20 @@ public enum Easing: String {
     /// Applies an ease-out timing function.
     case out
     /// Applies an ease-in-out timing function.
-    case inOut = "in-out"
+    case inOut
+    /// Custom cubic-bezier timing function (x1, y1, x2, y2)
+    case cubicBezier(Double, Double, Double, Double)
+
+    public var value: String {
+        switch self {
+        case .linear: return "linear"
+        case .in: return "in"
+        case .out: return "out"
+        case .inOut: return "in-out"
+        case .cubicBezier(let x1, let y1, let x2, let y2):
+            return "cubic-bezier(\(x1),\(y1),\(x2),\(y2))"
+        }
+    }
 }
 
 // Implementation has been moved to TransitionStyleOperation.swift

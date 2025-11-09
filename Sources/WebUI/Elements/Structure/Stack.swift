@@ -26,6 +26,7 @@ public struct Stack: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
+    private let style: String?
     private let contentBuilder: MarkupContentBuilder
 
     /// Creates a new HTML div element for generic content grouping.
@@ -36,6 +37,7 @@ public struct Stack: Element {
     ///   - role: ARIA role of the element for accessibility and screen readers.
     ///   - label: ARIA label to describe the element's purpose for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data related to the container.
+    ///   - style: Inline CSS styles to apply to the element.
     ///   - content: Closure providing the container's content elements.
     ///
     /// ## Example
@@ -52,6 +54,7 @@ public struct Stack: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
+        style: String? = nil,
         @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
     ) {
         self.id = id
@@ -59,6 +62,7 @@ public struct Stack: Element {
         self.role = role
         self.label = label
         self.data = data
+        self.style = style
         self.contentBuilder = content
     }
 
@@ -67,16 +71,26 @@ public struct Stack: Element {
     }
 
     private func buildMarkupTag() -> String {
-        let attributes = AttributeBuilder.buildAttributes(
+        var attributes = AttributeBuilder.buildAttributes(
             id: id,
             classes: classes,
             role: role,
             label: label,
             data: data
         )
+
+        // Add inline style if provided
+        if let style, let styleAttr = Attribute.string("style", style) {
+            attributes.append(styleAttr)
+        }
+
         let content = contentBuilder().map { $0.render() }.joined()
 
         return AttributeBuilder.buildMarkupTag(
-            "div", attributes: attributes, content: content)
+            "div",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Content is already rendered markup
+        )
     }
 }

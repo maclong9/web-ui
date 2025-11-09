@@ -92,6 +92,7 @@ public enum AttributeBuilder {
     ///   - tag: The markup tag name
     ///   - attributes: Array of attribute strings
     ///   - content: Optional content to include between opening and closing tags
+    ///   - escapeContent: Whether to HTML-escape the content (default: true for security)
     ///   - isSelfClosing: Whether this is a self-closing tag
     ///   - noClosingTag: Whether this should be rendered without a self-close and without a seperate close
     /// - Returns: Complete markup tag as a string
@@ -99,8 +100,9 @@ public enum AttributeBuilder {
         _ tag: String,
         attributes: [String],
         content: String = "",
+        escapeContent: Bool = true,
         isSelfClosing: Bool = false,
-        hasNoClosingTag: Bool = false,
+        hasNoClosingTag: Bool = false
     ) -> String {
         let attributeString =
             attributes.isEmpty ? "" : " " + attributes.joined(separator: " ")
@@ -109,7 +111,8 @@ public enum AttributeBuilder {
         } else if hasNoClosingTag {
             return "<\(tag)\(attributeString)>"
         } else {
-            return "<\(tag)\(attributeString)>\(content)</\(tag)>"
+            let safeContent = escapeContent ? HTMLEscaper.escape(content) : content
+            return "<\(tag)\(attributeString)>\(safeContent)</\(tag)>"
         }
     }
 }

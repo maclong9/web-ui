@@ -111,7 +111,8 @@ public struct Audio: Element {
             "audio",
             attributes: attributes,
             content:
-                "\(sourceElements)Your browser does not support the audio element."
+                "\(sourceElements)Your browser does not support the audio element.",
+            escapeContent: false  // sourceElements is already rendered markup
         )
     }
 }

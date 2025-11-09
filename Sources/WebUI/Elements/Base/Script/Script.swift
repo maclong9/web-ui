@@ -43,6 +43,10 @@ public struct Script: Element {
         )
 
         return AttributeBuilder.buildMarkupTag(
-            "script", attributes: attributes, content: content())
+            "script",
+            attributes: attributes,
+            content: content(),
+            escapeContent: false  // Scripts contain trusted developer code, not user input
+        )
     }
 }

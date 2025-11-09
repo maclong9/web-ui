@@ -5,9 +5,11 @@ public enum Attribute {
     ///   - name: Attribute name (e.g., "id", "class", "src").
     ///   - value: Attribute value, optional.
     /// - Returns: Formatted attribute string (e.g., `id="header"`) or nil if value is empty.
+    /// - Note: Automatically escapes attribute values to prevent XSS and attribute injection attacks.
     public static func string(_ name: String, _ value: String?) -> String? {
         guard let value = value, !value.isEmpty else { return nil }
-        return "\(name)=\"\(value)\""
+        let escapedValue = HTMLEscaper.escapeAttribute(value)
+        return "\(name)=\"\(escapedValue)\""
     }
 
     /// Builds a boolean markup attribute if enabled.

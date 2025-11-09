@@ -7,15 +7,14 @@ extension String: Markup {
     /// Renders the string as markup content.
     ///
     /// This implementation allows plain strings to be used directly in markup content builders.
-    /// No escaping is performed here; escaping should be handled where appropriate.
+    /// Strings render as-is; escaping is handled by elements that consume user text.
     ///
-    /// - Returns: The string as-is.
+    /// - Returns: The string unchanged.
     ///
     /// - Example:
     ///   ```swift
-    ///   let userInput = "Hello <script>alert('XSS')</script> & goodbye"
     ///   let content: [any Markup] = [
-    ///     userInput,
+    ///     "Some text",
     ///     Heading(.one) { "Title" }
     ///   ]
     ///   ```

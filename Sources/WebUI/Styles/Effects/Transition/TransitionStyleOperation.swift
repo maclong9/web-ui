@@ -70,7 +70,14 @@ public struct TransitionStyleOperation: StyleOperation, @unchecked Sendable {
         }
 
         if let easing = params.easing {
-            classes.append("ease-\(easing.rawValue)")
+            switch easing {
+            case .linear, .in, .out, .inOut:
+                // Standard Tailwind easing classes
+                classes.append("ease-\(easing.value)")
+            case .cubicBezier:
+                // Custom cubic-bezier via arbitrary value
+                classes.append("[transition-timing-function:\(easing.value)]")
+            }
         }
 
         if let delay = params.delay {

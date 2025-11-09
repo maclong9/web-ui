@@ -146,7 +146,11 @@ public struct Text: Element {
             data: data
         )
 
-        return
-            "<\(tag)\(attributes.count > 0 ? " " : "")\(attributes.joined(separator: " "))>\(HTMLEscaper.escape(renderedContent))</\(tag)>"
+        return AttributeBuilder.buildMarkupTag(
+            tag,
+            attributes: attributes,
+            content: renderedContent,
+            escapeContent: true
+        )
     }
 }

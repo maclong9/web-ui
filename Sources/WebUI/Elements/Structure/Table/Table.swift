@@ -1,17 +1,28 @@
-/// Generates an HTML list item element (`<li>`).
+import Foundation
+
+/// Generates an HTML table element for displaying tabular data.
 ///
-/// `Item` elements should be used as children of a `List` element to represent
-/// individual entries in a list. Each item can contain any markup content.
+/// The `Table` element creates a structured table with support for headers, body, and footer sections.
+/// Tables are ideal for presenting data in rows and columns with clear relationships.
 ///
 /// ## Example
 /// ```swift
-/// Item {
-///   Text { "This is a list item with " }
-///   Strong { "bold text" }
+/// Table(classes: ["w-full"]) {
+///   TableHead {
+///     TableRow {
+///       TableHeader("Name")
+///       TableHeader("Age")
+///     }
+///   }
+///   TableBody {
+///     TableRow {
+///       TableCell("John")
+///       TableCell("30")
+///     }
+///   }
 /// }
-/// // Renders: <li><span>This is a list item with </span><strong>bold text</strong></li>
 /// ```
-public struct Item: Element {
+public struct Table: Element {
     private let id: String?
     private let classes: [String]?
     private let role: AriaRole?
@@ -19,29 +30,22 @@ public struct Item: Element {
     private let data: [String: String]?
     private let contentBuilder: MarkupContentBuilder
 
-    /// Creates a new HTML list item element.
+    /// Creates a new HTML table element.
     ///
     /// - Parameters:
     ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of stylesheet classnames for styling the list item.
+    ///   - classes: An array of stylesheet classnames for styling the table.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
-    ///   - content: Closure providing the list item's content (text or other HTML elements).
-    ///
-    /// ## Example
-    /// ```swift
-    /// Item {
-    ///   "List item content"
-    /// }
-    /// ```
+    ///   - content: Closure providing the table content (thead, tbody, tfoot).
     public init(
         id: String? = nil,
         classes: [String]? = nil,
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
+        @MarkupBuilder content: @escaping MarkupContentBuilder
     ) {
         self.id = id
         self.classes = classes
@@ -66,10 +70,9 @@ public struct Item: Element {
         let content = contentBuilder().map { $0.render() }.joined()
 
         return AttributeBuilder.buildMarkupTag(
-            "li",
+            "table",
             attributes: attributes,
-            content: content,
-            escapeContent: false  // Content is already rendered markup
+            content: content
         )
     }
 }

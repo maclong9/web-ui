@@ -26,9 +26,10 @@ public struct Style: Element {
     private let role: AriaRole?
     private let label: String?
     private let data: [String: String]?
-    private let contentBuilder: MarkupContentBuilder
+    private let contentBuilder: MarkupContentBuilder?
+    private let stringContent: (() -> String)?
 
-    /// Creates a new HTML style element.
+    /// Creates a new HTML style element with string content.
     ///
     /// - Parameters:
     ///   - id: Unique identifier for the HTML element.
@@ -36,13 +37,17 @@ public struct Style: Element {
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
-    ///   - content: Closure providing the CSS content as strings.
+    ///   - css: Closure returning the CSS content as a string.
     ///
     /// ## Example
     /// ```swift
-    /// Style(id: "theme-styles") {
-    ///   "body { background-color: #f5f5f5; }"
-    ///   "header { font-weight: bold; }"
+    /// Style {
+    ///   """
+    ///   .custom-heading {
+    ///     color: blue;
+    ///     font-size: 24px;
+    ///   }
+    ///   """
     /// }
     /// ```
     public init(
@@ -51,7 +56,41 @@ public struct Style: Element {
         role: AriaRole? = nil,
         label: String? = nil,
         data: [String: String]? = nil,
-        @MarkupBuilder content: @escaping MarkupContentBuilder = { [] }
+        css: @escaping () -> String
+    ) {
+        self.id = id
+        self.classes = classes
+        self.role = role
+        self.label = label
+        self.data = data
+        self.stringContent = css
+        self.contentBuilder = nil
+    }
+
+    /// Creates a new HTML style element with markup builder content.
+    ///
+    /// - Parameters:
+    ///   - id: Unique identifier for the HTML element.
+    ///   - classes: An array of stylesheet classnames for the style element itself.
+    ///   - role: ARIA role of the element for accessibility.
+    ///   - label: ARIA label to describe the element for screen readers.
+    ///   - data: Dictionary of `data-*` attributes for storing custom data.
+    ///   - content: Closure providing the CSS content as markup elements.
+    ///
+    /// ## Example
+    /// ```swift
+    /// Style(id: "theme-styles") {
+    ///   MarkupString(content: "body { background-color: #f5f5f5; }")
+    ///   MarkupString(content: "header { font-weight: bold; }")
+    /// }
+    /// ```
+    public init(
+        id: String? = nil,
+        classes: [String]? = nil,
+        role: AriaRole? = nil,
+        label: String? = nil,
+        data: [String: String]? = nil,
+        @MarkupBuilder content: @escaping MarkupContentBuilder
     ) {
         self.id = id
         self.classes = classes
@@ -59,6 +98,7 @@ public struct Style: Element {
         self.label = label
         self.data = data
         self.contentBuilder = content
+        self.stringContent = nil
     }
 
     public var body: some Markup {
@@ -73,9 +113,21 @@ public struct Style: Element {
             label: label,
             data: data
         )
-        let content = contentBuilder().map { $0.render() }.joined()
+
+        let content: String
+        if let stringContent = stringContent {
+            content = stringContent()
+        } else if let contentBuilder = contentBuilder {
+            content = contentBuilder().map { $0.render() }.joined()
+        } else {
+            content = ""
+        }
 
         return AttributeBuilder.buildMarkupTag(
-            "style", attributes: attributes, content: content)
+            "style",
+            attributes: attributes,
+            content: content,
+            escapeContent: false  // Styles contain trusted CSS, not user input
+        )
     }
 }

@@ -1,17 +1,19 @@
-/// Generates an HTML list item element (`<li>`).
+import Foundation
+
+/// Generates an HTML tbody element for table body content.
 ///
-/// `Item` elements should be used as children of a `List` element to represent
-/// individual entries in a list. Each item can contain any markup content.
+/// The `TableBody` element contains the main data rows of a table with `TableCell` elements.
 ///
 /// ## Example
 /// ```swift
-/// Item {
-///   Text { "This is a list item with " }
-///   Strong { "bold text" }
+/// TableBody(id: "data-rows", classes: ["divide-y"]) {
+///   TableRow {
+///     TableCell("Value 1")
+///     TableCell("Value 2")
+///   }
 /// }
-/// // Renders: <li><span>This is a list item with </span><strong>bold text</strong></li>
 /// ```
-public struct Item: Element {
+public struct TableBody: Element {
     private let id: String?
     private let classes: [String]?
     private let role: AriaRole?
@@ -19,22 +21,15 @@ public struct Item: Element {
     private let data: [String: String]?
     private let contentBuilder: MarkupContentBuilder
 
-    /// Creates a new HTML list item element.
+    /// Creates a new HTML tbody element.
     ///
     /// - Parameters:
     ///   - id: Unique identifier for the HTML element.
-    ///   - classes: An array of stylesheet classnames for styling the list item.
+    ///   - classes: An array of stylesheet classnames for styling.
     ///   - role: ARIA role of the element for accessibility.
     ///   - label: ARIA label to describe the element for screen readers.
     ///   - data: Dictionary of `data-*` attributes for storing custom data.
-    ///   - content: Closure providing the list item's content (text or other HTML elements).
-    ///
-    /// ## Example
-    /// ```swift
-    /// Item {
-    ///   "List item content"
-    /// }
-    /// ```
+    ///   - content: Closure providing the data rows.
     public init(
         id: String? = nil,
         classes: [String]? = nil,
@@ -66,10 +61,9 @@ public struct Item: Element {
         let content = contentBuilder().map { $0.render() }.joined()
 
         return AttributeBuilder.buildMarkupTag(
-            "li",
+            "tbody",
             attributes: attributes,
-            content: content,
-            escapeContent: false  // Content is already rendered markup
+            content: content
         )
     }
 }

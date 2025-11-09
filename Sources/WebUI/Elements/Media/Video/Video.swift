@@ -128,7 +128,8 @@ public struct Video: Element {
             "video",
             attributes: attributes,
             content:
-                "\(sourceElements)Your browser does not support the video tag."
+                "\(sourceElements)Your browser does not support the video tag.",
+            escapeContent: false  // sourceElements is already rendered markup
         )
     }
 }
